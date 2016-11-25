@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Class: GeoEngineer::Template
+  
+    &mdash; Documentation by YARD 0.9.5
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "GeoEngineer::Template";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../class_list.html"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (T)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../GeoEngineer.html" title="GeoEngineer (module)">GeoEngineer</a></span></span>
+     &raquo; 
+    <span class="title">Template</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <iframe id="search_frame" src="../class_list.html"></iframe>
+
+      <div id="content"><h1>Class: GeoEngineer::Template
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">GeoEngineer::Template</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+    </dd>
+  </dl>
+  
+
+  
+  
+  
+  
+  <dl>
+      <dt>Includes:</dt>
+      <dd><span class='object_link'><a href="../HasAttributes.html" title="HasAttributes (module)">HasAttributes</a></span>, <span class='object_link'><a href="../HasResources.html" title="HasResources (module)">HasResources</a></span></dd>
+  </dl>
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/geoengineer/template.rb</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Override to define recommended patterns of resource use</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(name, project, parameters = {})  &#x21d2; Template </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of Template.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#resource-instance_method" title="#resource (instance method)">#<strong>resource</strong>(type, id, &amp;block)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#template_resources-instance_method" title="#template_resources (instance method)">#<strong>template_resources</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The resources that are passed to the block on instantiation This can be
+overridden to specify the order of the templates resources.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../HasResources.html" title="HasResources (module)">HasResources</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../HasResources.html#all_resources-instance_method" title="HasResources#all_resources (method)">#all_resources</a></span>, <span class='object_link'><a href="../HasResources.html#create_resource-instance_method" title="HasResources#create_resource (method)">#create_resource</a></span>, <span class='object_link'><a href="../HasResources.html#find_resource-instance_method" title="HasResources#find_resource (method)">#find_resource</a></span>, <span class='object_link'><a href="../HasResources.html#find_resource_by_ref-instance_method" title="HasResources#find_resource_by_ref (method)">#find_resource_by_ref</a></span>, <span class='object_link'><a href="../HasResources.html#included-class_method" title="HasResources.included (method)">included</a></span>, <span class='object_link'><a href="../HasResources.html#resources-instance_method" title="HasResources#resources (method)">#resources</a></span>, <span class='object_link'><a href="../HasResources.html#resources_grouped_by-instance_method" title="HasResources#resources_grouped_by (method)">#resources_grouped_by</a></span>, <span class='object_link'><a href="../HasResources.html#resources_of_type-instance_method" title="HasResources#resources_of_type (method)">#resources_of_type</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../HasAttributes.html" title="HasAttributes (module)">HasAttributes</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../HasAttributes.html#%5B%5D-instance_method" title="HasAttributes#[] (method)">#[]</a></span>, <span class='object_link'><a href="../HasAttributes.html#%5B%5D%3D-instance_method" title="HasAttributes#[]= (method)">#[]=</a></span>, <span class='object_link'><a href="../HasAttributes.html#assign_attribute-instance_method" title="HasAttributes#assign_attribute (method)">#assign_attribute</a></span>, <span class='object_link'><a href="../HasAttributes.html#assign_block-instance_method" title="HasAttributes#assign_block (method)">#assign_block</a></span>, <span class='object_link'><a href="../HasAttributes.html#attribute_missing-instance_method" title="HasAttributes#attribute_missing (method)">#attribute_missing</a></span>, <span class='object_link'><a href="../HasAttributes.html#attributes-instance_method" title="HasAttributes#attributes (method)">#attributes</a></span>, <span class='object_link'><a href="../HasAttributes.html#delete-instance_method" title="HasAttributes#delete (method)">#delete</a></span>, <span class='object_link'><a href="../HasAttributes.html#method_missing-instance_method" title="HasAttributes#method_missing (method)">#method_missing</a></span>, <span class='object_link'><a href="../HasAttributes.html#retrieve_attribute-instance_method" title="HasAttributes#retrieve_attribute (method)">#retrieve_attribute</a></span>, <span class='object_link'><a href="../HasAttributes.html#terraform_attribute_ref-instance_method" title="HasAttributes#terraform_attribute_ref (method)">#terraform_attribute_ref</a></span>, <span class='object_link'><a href="../HasAttributes.html#terraform_attributes-instance_method" title="HasAttributes#terraform_attributes (method)">#terraform_attributes</a></span>, <span class='object_link'><a href="../HasAttributes.html#timeout-instance_method" title="HasAttributes#timeout (method)">#timeout</a></span></p>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    #<strong>initialize</strong>(name, project, parameters = {})  &#x21d2; <tt><span class='object_link'><a href="" title="GeoEngineer::Template (class)">Template</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a new instance of Template</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10
+11
+12</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 8</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_project'>project</span><span class='comma'>,</span> <span class='id identifier rubyid_parameters'>parameters</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='ivar'>@project</span> <span class='op'>=</span> <span class='id identifier rubyid_project'>project</span>
+  <span class='ivar'>@name</span> <span class='op'>=</span> <span class='id identifier rubyid_name'>name</span>
+  <span class='ivar'>@environment</span> <span class='op'>=</span> <span class='ivar'>@project</span><span class='period'>.</span><span class='id identifier rubyid_environment'>environment</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+<div id="method_missing_details" class="method_details_list">
+  <h2>Dynamic Method Handling</h2>
+  <p class="notice super">
+    This class handles dynamic methods through the <tt>method_missing</tt> method
+    
+      in the class <span class='object_link'><a href="../HasAttributes.html#method_missing-instance_method" title="HasAttributes#method_missing (method)">HasAttributes</a></span>
+    
+  </p>
+  
+</div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="resource-instance_method">
+  
+    #<strong>resource</strong>(type, id, &amp;block)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+14
+15
+16
+17
+18
+19
+20
+21</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 14</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_find_resource'>find_resource</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
+  <span class='id identifier rubyid_resource'>resource</span> <span class='op'>=</span> <span class='id identifier rubyid_create_resource'>create_resource</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_template'>template</span> <span class='op'>=</span> <span class='kw'>self</span>
+  <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_project'>project</span> <span class='op'>=</span> <span class='ivar'>@project</span>
+  <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_environment'>environment</span> <span class='op'>=</span> <span class='ivar'>@environment</span>
+  <span class='id identifier rubyid_resource'>resource</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="template_resources-instance_method">
+  
+    #<strong>template_resources</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The resources that are passed to the block on instantiation This can be
+overridden to specify the order of the templates resources</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+25
+26
+27</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 25</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_template_resources'>template_resources</span>
+  <span class='id identifier rubyid_resources'>resources</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Tue Sep 20 11:20:04 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.5 (ruby-2.3.1).
+</div>
+
+    </div>
+  </body>
+</html>

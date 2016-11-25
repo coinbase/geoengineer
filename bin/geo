@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/geoengineer'
+require_relative '../lib/geoengineer/cli/geo_cli'
+
+geo = GeoCLI.instance
+geo.run

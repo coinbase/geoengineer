@@ -1,0 +1,57 @@
+AllCops:
+  Excludes:
+    - 'vendor/**/*'
+    - 'examples/*'
+    - 'geoengineer.gemspec'
+Style/StringLiterals:
+  Enabled: false
+
+Style/MethodCallParentheses:
+  Enabled: false
+
+# Given that GeoEngineer is a DSL which encourages similarity to multiline blocks this is disabled
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+
+Lint/UnusedMethodArgument:
+  Enabled: false
+
+# Increase these a bit
+Metrics/LineLength:
+  Max: 100 # from 80
+
+Metrics/MethodLength:
+  CountComments: false  # count full line comments?
+  Max: 15 # from 10
+
+Style/Lambda:
+  Enabled: false
+
+Style/BracesAroundHashParameters:
+  EnforcedStyle: braces
+
+Style/RedundantSelf:
+  Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false
+
+Style/MethodMissing:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Metrics/ClassLength:
+  CountComments: false  # count full line comments?
+  Max: 200
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
