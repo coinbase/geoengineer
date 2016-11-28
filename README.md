@@ -30,7 +30,7 @@ Instruction to install Ruby can be found [here](https://www.ruby-lang.org/en/doc
 ### Install GeoEngineer
 
 ```
-gem build geoengineer.gempsec
+gem build geoengineer.gemspec
 gem install geoengineer
 ```
 
