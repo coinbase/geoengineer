@@ -39,6 +39,10 @@ module GeoCLI::StatusCommand
     puts Terminal::Table.new({ rows: rows })
   end
 
+  def status_types
+    environment.status_types ? environment.status_types : default_status_types
+  end
+
   def default_status_types
     [
       "aws_security_group",
@@ -77,7 +81,7 @@ module GeoCLI::StatusCommand
   def status_action
     lambda do |args, options|
       type_stats = {}
-      default_status_types.each do |type|
+      status_types.each do |type|
         codified = @environment.codified_resources(type)
         uncodified = @environment.uncodified_resources(type)
         type_stats[type] = calculate_type_status(codified, uncodified)
