@@ -36,7 +36,7 @@ class GeoEngineer::Resources::AwsIamPolicy < GeoEngineer::Resource
   end
 
   def self._all_remote_policies
-    AwsClients.iam.list_policies.each.map(&:policies).flatten.map(&:to_h)
+    AwsClients.iam.list_policies({ scope: "Local" }).each.map(&:policies).flatten.map(&:to_h)
   end
 
   def self._fetch_remote_resources
