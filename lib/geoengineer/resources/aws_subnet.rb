@@ -16,7 +16,7 @@ class GeoEngineer::Resources::AwsSubnet < GeoEngineer::Resource
       subnet.merge(
         {
           _terraform_id: subnet[:subnet_id],
-          _geo_id: subnet[:tags] ? subnet[:tags].find { |tag| tag[:key] == "Name" }[:value] : nil
+          _geo_id: subnet[:tags].find { |tag| tag[:key] == "Name" }[:value]
         }
       )
     end
