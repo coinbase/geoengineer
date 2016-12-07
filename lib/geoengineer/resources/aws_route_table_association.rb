@@ -6,7 +6,7 @@
 class GeoEngineer::Resources::AwsRouteTableAssociation < GeoEngineer::Resource
   validate -> { validate_required_attributes([:subnet_id, :route_table_id]) }
 
-  after :initialize, -> { _terraform_id -> { "#{zone_id}_#{name}_#{type}" } }
+  after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{subnet_id}|#{route_table_id}" } }
 
   def self._fetch_remote_resources

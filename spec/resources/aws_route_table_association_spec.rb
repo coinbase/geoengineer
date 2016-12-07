@@ -7,7 +7,7 @@ describe("GeoEngineer::Resources::AwsRouteTableAssociation") do
   )
 
   describe "#_fetch_remote_resources" do
-    it 'should create list of hashes from returned AWS SDK' do
+    before do
       ec2 = AwsClients.ec2
       stub = ec2.stub_data(
         :describe_route_tables,
@@ -33,6 +33,13 @@ describe("GeoEngineer::Resources::AwsRouteTableAssociation") do
         }
       )
       ec2.stub_responses(:describe_route_tables, stub)
+    end
+
+    after do
+      ec2.stub_responses(:describe_route_tables, [])
+    end
+
+    it 'should create list of hashes from returned AWS SDK' do
       remote_resources = GeoEngineer::Resources::AwsRouteTableAssociation._fetch_remote_resources
       expect(remote_resources.length).to eq(2)
     end
