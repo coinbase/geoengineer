@@ -4,9 +4,8 @@
 # {https://www.terraform.io/docs/providers/aws/r/internet_gateway.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsInternetGateway < GeoEngineer::Resource
-  validate -> { validate_required_attributes([:cidr_block]) }
+  validate -> { validate_required_attributes([:vpc_id]) }
   validate -> { validate_has_tag(:Name) }
-  validate -> { validate_cidr_block(self.cidr_block) if self.cidr_block }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
