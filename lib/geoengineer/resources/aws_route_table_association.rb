@@ -21,7 +21,7 @@ class GeoEngineer::Resources::AwsRouteTableAssociation < GeoEngineer::Resource
         association.merge(
           {
             _terraform_id: association[:route_table_association_id],
-            _geo_id: "#{association[:subnet_id]}|#{association[:route_table_id]}"
+            _geo_id: "#{association[:subnet_id]}::#{association[:route_table_id]}"
           }
         )
       end
