@@ -54,4 +54,20 @@ module HasValidations
   rescue NetAddr::ValidationError
     return [nil, "Bad cidr block \"#{cidr_block}\" #{for_resource}"]
   end
+
+  # Validates that at least one of the specified attributes is present
+  def validate_at_least_one_present(attributes)
+    errs = []
+    present = attributes.select { |attribute| !self[attribute].nil? }.count
+    errs << "At least one of #{attributes.join(', ')} must be defined" unless present.positive?
+    errs
+  end
+
+  # Validates that ONLY one of the specified attributes is present
+  def validate_only_one_present(attributes)
+    errs = []
+    present = attributes.select { |attribute| !self[attribute].nil? }.count
+    errs << "Only one of #{attributes.join(', ')} can be defined" unless present == 1
+    errs
+  end
 end
