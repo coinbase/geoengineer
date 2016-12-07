@@ -32,4 +32,49 @@ describe("HasValidations") do
     expect(errs).to include('sub')
     expect(errs).to include('super')
   end
+
+  describe "#validate_at_least_one_present" do
+    it "checks that at least of the specified attributes is defined" do
+      class Subject < GeoEngineer::Resource
+        include HasValidations
+        validate -> {
+          validate_at_least_one_present([:foo, :bar, :baz])
+        }
+
+        def _terraform_id
+          'id'
+        end
+      end
+
+      valid = Subject.new('subject', 'id') { foo("quack") }
+      expect(valid.errors).to be_empty
+
+      invalid = Subject.new('subject', 'id') { qux("quack") }
+      expect(invalid.errors).to_not be_empty
+    end
+  end
+
+  describe "#validate_at_least_one_present" do
+    it "checks that at least of the specified attributes is defined" do
+      class Subject < GeoEngineer::Resource
+        include HasValidations
+        validate -> {
+          validate_only_one_present([:foo, :bar, :baz])
+        }
+
+        def _terraform_id
+          'id'
+        end
+      end
+
+      valid = Subject.new('subject', 'id') { foo("quack") }
+      expect(valid.errors).to be_empty
+
+      invalid = Subject.new('subject', 'id') {
+        foo("quack")
+        bar("meow")
+      }
+      expect(invalid.errors).to_not be_empty
+    end
+  end
 end
