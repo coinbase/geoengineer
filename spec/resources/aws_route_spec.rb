@@ -7,8 +7,8 @@ describe("GeoEngineer::Resources::AwsRoute") do
   )
 
   describe "#_fetch_remote_resources" do
+    let(:ec2) { AwsClients.ec2 }
     before do
-      ec2 = AwsClients.ec2
       stub = ec2.stub_data(
         :describe_route_tables,
         {
