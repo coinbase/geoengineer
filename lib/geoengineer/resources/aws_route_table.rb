@@ -18,7 +18,7 @@ class GeoEngineer::Resources::AwsRouteTable < GeoEngineer::Resource
       route_table.merge(
         {
           _terraform_id: route_table[:route_table_id],
-          _geo_id: route_table[:tags].find { |tag| tag[:key] == "Name" }[:value]
+          _geo_id: route_table[:tags].find { |tag| tag[:key] == "Name" }&.dig(:value)
         }
       )
     end
