@@ -1,8 +1,10 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsVpnGateway") do
-  common_resource_tests(GeoEngineer::Resources::AwsVpnGateway, 'aws_vpn_gateway')
-  name_tag_geo_id_tests(GeoEngineer::Resources::AwsVpnGateway)
+describe("GeoEngineer::Resources::AwsVpnGatewayAttachment") do
+  common_resource_tests(
+    GeoEngineer::Resources::AwsVpnGatewayAttachment,
+    'aws_vpn_gateway_attachment'
+  )
 
   describe "#_fetch_remote_resources" do
     let(:ec2) { AwsClients.ec2 }
@@ -32,7 +34,7 @@ describe("GeoEngineer::Resources::AwsVpnGateway") do
     end
 
     it 'should create list of hashes from returned AWS SDK' do
-      remote_resources = GeoEngineer::Resources::AwsVpnGateway._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsVpnGatewayAttachment._fetch_remote_resources
       expect(remote_resources.length).to eq(2)
     end
   end

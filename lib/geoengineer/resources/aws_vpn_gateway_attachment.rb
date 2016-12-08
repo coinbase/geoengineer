@@ -1,12 +1,14 @@
 ########################################################################
-# AwsRoute is the +aws_route+ terrform resource,
+# AwsVpnGatewayAttachment is the +aws_vpn_gateway_attachment+ terrform resource,
 #
-# {https://www.terraform.io/docs/providers/aws/r/route.html Terraform Docs}
+# {https://www.terraform.io/docs/providers/aws/r/vpn_gateway_attachment.html Terraform Docs}
 ########################################################################
-class GeoEngineer::Resources::AwsRoute < GeoEngineer::Resource
+class GeoEngineer::Resources::AwsVpnGatewayAttachment < GeoEngineer::Resource
   validate -> { validate_required_attributes([:vpc_id, :vpn_gateway_id]) }
 
-  after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
+  after :initialize, -> {
+    _terraform_id -> { "vpn-attachment-#{Crc32.hashcode(vpc_id + '-' + vpn_gateway_id)}" }
+  }
   after :initialize, -> { _geo_id -> { "#{vpc_id}::#{vpn_gateway_id}" } }
 
   def self._fetch_remote_resources
@@ -15,7 +17,7 @@ class GeoEngineer::Resources::AwsRoute < GeoEngineer::Resource
       .describe_vpn_gateways['vpn_gateways']
       .map(&:to_h)
       .select { |gateway| !gateway[:vpc_attachments].empty? }
-      .map { |attachment| _generate_attachment(gateway) }
+      .map { |gateway| _generate_attachment(gateway) }
   end
 
   def self._generate_attachment(gateway)
