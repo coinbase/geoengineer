@@ -37,13 +37,25 @@ module HasResources
     find_resource(type, name)
   end
 
-  def resources_grouped_by
-    all_resources.each_with_object({}) do |r, c|
+  # Returns: { value1: [ ], value2: [ ] }
+  def resources_grouped_by(resources = all_resources)
+    resources.each_with_object({}) do |r, c|
       value = yield r
       c[value] ||= []
       c[value] << r
       c
     end
+  end
+
+  # Returns: { class1: { value1: [ ] }, class2: { value2: [ ] } }
+  def resources_of_class_grouped_by(&block)
+    grouped = resources_grouped_by(all_resources, &:class)
+
+    grouped_arr = grouped.map do |klass, resources|
+      [klass, resources_grouped_by(resources, &block)]
+    end
+
+    grouped_arr.to_h
   end
 
   def resources_of_type(type)

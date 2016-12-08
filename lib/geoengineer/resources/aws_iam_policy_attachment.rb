@@ -6,7 +6,8 @@
 class GeoEngineer::Resources::AwsIamPolicyAttachment < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name, :policy_arn]) }
 
-  after :initialize, -> { _terraform_id -> { name.to_s } }
+  after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_reource)._terraform_id } }
+  after :initialize, -> { _geo_id -> { name.to_s } }
 
   def to_terraform_state
     tfstate = super
@@ -59,7 +60,7 @@ class GeoEngineer::Resources::AwsIamPolicyAttachment < GeoEngineer::Resource
     policies.map do |policy|
       entities = _fetch_entities_for_policy(policy)
       attrs = collected_policy_attributes(policy, entities)
-      attrs[:_terraform_id] = policy[:policy_name]
+      attrs[:_terraform_id] = policy[:arn]
       attrs[:_geo_id] = policy[:policy_name]
       attrs
     end

@@ -40,7 +40,7 @@ describe "GeoEngineer::Resources::AwsIamPolicy" do
       expect(resources.count).to eql 1
 
       test_attachment = resources.first
-      expect(test_attachment[:_terraform_id]).to eql('Fake-Aws-ARN')
+      expect(test_attachment[:_terraform_id]).to eql('arn:aws:iam::aws:policy/xyv/FakeAwsARN')
       expect(test_attachment[:_geo_id]).to eql('Fake-Aws-ARN')
       expect(test_attachment[:users].count).to eql 2
       expect(test_attachment[:groups].count).to eql 1

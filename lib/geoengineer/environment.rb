@@ -17,21 +17,33 @@ class GeoEngineer::Environment
 
   # Validate resources have unique attributes
   validate -> {
-    resources_grouped_by(&:terraform_name)
-      .select { |k, v| v.length > 1 }
-      .map { |k, v| "Non-unique type.id #{v.first.for_resource}" }
+    resources = resources_of_class_grouped_by(&:terraform_name)
+
+    resources.map do |klass, grouped_resources|
+      grouped_resources
+        .select { |k, v| v.length > 1 }
+        .map { |k, v| "Non-unique type.id #{v.first.for_resource}" }
+    end.flatten
   }
 
   validate -> {
-    resources_grouped_by(&:_terraform_id)
-      .select { |k, v| v.length > 1 && !v.first._terraform_id.nil? }
-      .map { |k, v| "Non-unique _terraform_id #{v.first._terraform_id} #{v.first.for_resource}" }
+    resources = resources_of_class_grouped_by(&:_terraform_id)
+
+    resources.map do |klass, grouped_resources|
+      grouped_resources
+        .select { |k, v| v.length > 1 && !v.first._terraform_id.nil? }
+        .map { |k, v| "Non-unique _terraform_id #{v.first._terraform_id} #{v.first.for_resource}" }
+    end.flatten
   }
 
   validate -> {
-    resources_grouped_by(&:_geo_id)
-      .select { |k, v| v.length > 1 }
-      .map { |k, v| "Non-unique _geo_id #{v.first._geo_id} #{v.first.for_resource}" }
+    resources = resources_of_class_grouped_by(&:_geo_id)
+
+    resources.map do |klass, grouped_resources|
+      grouped_resources
+        .select { |k, v| v.length > 1 }
+        .map { |k, v| "Non-unique _geo_id #{v.first._geo_id} #{v.first.for_resource}" }
+    end.flatten
   }
 
   # Validate all resources
