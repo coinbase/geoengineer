@@ -1,20 +1,20 @@
 ########################################################################
-# AwsInternetGateway is the +aws_internet_gateway+ terrform resource,
+# AwsCustomerGateway is the +aws_customer_gateway+ terrform resource,
 #
-# {https://www.terraform.io/docs/providers/aws/r/internet_gateway.html Terraform Docs}
+# {https://www.terraform.io/docs/providers/aws/r/customer_gateway.html Terraform Docs}
 ########################################################################
-class GeoEngineer::Resources::AwsInternetGateway < GeoEngineer::Resource
-  validate -> { validate_required_attributes([:vpc_id]) }
+class GeoEngineer::Resources::AwsCustomerGateway < GeoEngineer::Resource
+  validate -> { validate_required_attributes([:bgp_asn, :ip_address, :type]) }
   validate -> { validate_has_tag(:Name) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
   def self._fetch_remote_resources
-    AwsClients.ec2.describe_internet_gateways['internet_gateways'].map(&:to_h).map do |gateway|
+    AwsClients.ec2.describe_customer_gateways['customer_gateways'].map(&:to_h).map do |gateway|
       gateway.merge(
         {
-          _terraform_id: gateway[:internet_gateway_id],
+          _terraform_id: gateway[:customer_gateway_id],
           _geo_id: gateway[:tags].find { |tag| tag[:key] == "Name" }&.dig(:value)
         }
       )

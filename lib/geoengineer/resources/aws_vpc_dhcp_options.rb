@@ -21,7 +21,7 @@ class GeoEngineer::Resources::AwsVpcDhcpOptions < GeoEngineer::Resource
       options.merge(
         {
           _terraform_id: options[:dhcp_options_id],
-          _geo_id: options[:tags].find { |tag| tag[:key] == "Name" }[:value]
+          _geo_id: options[:tags].find { |tag| tag[:key] == "Name" }&.dig(:value)
         }
       )
     end

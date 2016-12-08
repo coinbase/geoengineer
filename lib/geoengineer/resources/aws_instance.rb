@@ -15,10 +15,13 @@ class GeoEngineer::Resources::AwsInstance < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources
-    _all_remote_instances.map do |i|
-      i[:_terraform_id] = i[:instance_id]
-      i[:_geo_id] = i[:tags] ? i[:tags].select { |x| x[:key] == "Name" }.first[:value] : nil
-      i
+    _all_remote_instances.map do |instance|
+      instance.merge(
+        {
+          _terraform_id: instance[:instance_id],
+          _geo_id: instance[:tags].find { |tag| tag[:key] == "Name" }&.dig(:value)
+        }
+      )
     end
   end
 end

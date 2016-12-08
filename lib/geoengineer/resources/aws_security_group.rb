@@ -44,10 +44,13 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
 
   def self._fetch_remote_resources
     AwsClients.ec2.describe_security_groups['security_groups'].map(&:to_h).map do |sg|
-      sg[:name] = sg[:group_name]
-      sg[:_terraform_id] = sg[:group_id]
-      sg[:_geo_id] = sg[:tags] ? sg[:tags].select { |x| x[:key] == "Name" }.first[:value] : nil
-      sg
+      sg.merge(
+        {
+          name: sg[:group_name],
+          _terraform_id: sg[:group_id],
+          _geo_id: sg[:tags].find { |tag| tag[:key] == "Name" }&.dig(:value)
+        }
+      )
     end
   end
 end
