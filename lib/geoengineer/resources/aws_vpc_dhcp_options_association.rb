@@ -10,6 +10,10 @@ class GeoEngineer::Resources::AwsVpcDhcpOptionsAssociation < GeoEngineer::Resour
     _terraform_id -> { "#{dhcp_options_id}-#{vpc_id}" }
   }
 
+  def support_tags?
+    false
+  end
+
   def self._fetch_remote_resources
     AwsClients
       .ec2

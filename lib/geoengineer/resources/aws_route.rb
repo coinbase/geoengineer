@@ -9,6 +9,10 @@ class GeoEngineer::Resources::AwsRoute < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{route_table_id}|#{destination_cidr_block}" } }
 
+  def support_tags?
+    false
+  end
+
   def self._fetch_remote_resources
     AwsClients
       .ec2
