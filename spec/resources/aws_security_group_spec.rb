@@ -61,8 +61,12 @@ describe("GeoEngineer::Resources::AwsSecurityGroup") do
   end
 
   describe "#_fetch_remote_resources" do
+    let(:ec2) { AwsClients.ec2 }
+    before do
+      ec2.stub_responses(:describe_security_groups, [])
+    end
+
     it 'should create list of hashes from returned AWS SDK' do
-      ec2 = AwsClients.ec2
       stub = ec2.stub_data(
         :describe_security_groups,
         {
@@ -74,7 +78,37 @@ describe("GeoEngineer::Resources::AwsSecurityGroup") do
       )
       ec2.stub_responses(:describe_security_groups, stub)
       remote_resources = GeoEngineer::Resources::AwsSecurityGroup._fetch_remote_resources
-      expect(remote_resources.length).to eq 2
+      expect(remote_resources.length).to eq(2)
+    end
+
+    it 'works if remote resources have no tags' do
+      stub = ec2.stub_data(
+        :describe_security_groups,
+        {
+          security_groups: [
+            { group_name: 'name1', group_id: 'id1' },
+            { group_name: 'name2', group_id: 'id2' }
+          ]
+        }
+      )
+      ec2.stub_responses(:describe_security_groups, stub)
+      remote_resources = GeoEngineer::Resources::AwsSecurityGroup._fetch_remote_resources
+      expect(remote_resources.length).to eq(2)
+    end
+
+    it 'works if remote resources have tags with Name' do
+      stub = ec2.stub_data(
+        :describe_security_groups,
+        {
+          security_groups: [
+            { group_name: 'name1', group_id: 'id1', tags: [{ key: 'Foo', value: 'one' }] },
+            { group_name: 'name2', group_id: 'id2', tags: [{ key: 'Bar', value: 'two' }] }
+          ]
+        }
+      )
+      ec2.stub_responses(:describe_security_groups, stub)
+      remote_resources = GeoEngineer::Resources::AwsSecurityGroup._fetch_remote_resources
+      expect(remote_resources.length).to eq(2)
     end
   end
 end
