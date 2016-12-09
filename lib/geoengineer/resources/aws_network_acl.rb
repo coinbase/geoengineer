@@ -30,7 +30,7 @@ class GeoEngineer::Resources::AwsNetworkAcl < GeoEngineer::Resource
       network_acl.merge(
         {
           _terraform_id: network_acl[:network_acl_id],
-          _geo_id: network_acl[:tags].find { |tag| tag[:key] == "Name" }&.dig(:value)
+          _geo_id: network_acl[:tags]&.find { |tag| tag[:key] == "Name" }&.dig(:value)
         }
       )
     end

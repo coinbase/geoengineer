@@ -14,7 +14,7 @@ class GeoEngineer::Resources::AwsVpnGateway < GeoEngineer::Resource
       gateway.merge(
         {
           _terraform_id: gateway[:vpn_gateway_id],
-          _geo_id: gateway[:tags].find { |tag| tag[:key] == "Name" }&.dig(:value)
+          _geo_id: gateway[:tags]&.find { |tag| tag[:key] == "Name" }&.dig(:value)
         }
       )
     end

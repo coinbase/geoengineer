@@ -16,7 +16,7 @@ class GeoEngineer::Resources::AwsVpc < GeoEngineer::Resource
       vpc.merge(
         {
           _terraform_id: vpc[:vpc_id],
-          _geo_id: vpc[:tags].find { |tag| tag[:key] == "Name" }&.dig(:value)
+          _geo_id: vpc[:tags]&.find { |tag| tag[:key] == "Name" }&.dig(:value)
         }
       )
     end
