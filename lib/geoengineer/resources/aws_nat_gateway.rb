@@ -9,6 +9,10 @@ class GeoEngineer::Resources::AwsNatGateway < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{allocation_id}::#{subnet_id}" } }
 
+  def support_tags?
+    false
+  end
+
   def self._fetch_remote_resources
     AwsClients.ec2.describe_nat_gateways['nat_gateways'].map(&:to_h).map do |gateway|
       # AWS SDK has `nat_gateway_addresses` as an array, but you should only be able to

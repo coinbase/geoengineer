@@ -15,6 +15,10 @@ class GeoEngineer::Resources::AwsRoute53Record < GeoEngineer::Resource
 
   after :initialize, -> { _terraform_id -> { "#{zone_id}_#{name}_#{type}" } }
 
+  def support_tags?
+    false
+  end
+
   def self._fetch_remote_resources
     _fetch_zones.map { |zone| _fetch_records_for_zone(zone) }.flatten.compact
   end

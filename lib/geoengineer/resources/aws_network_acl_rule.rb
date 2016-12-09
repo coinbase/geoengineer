@@ -22,6 +22,10 @@ class GeoEngineer::Resources::AwsNetworkAclRule < GeoEngineer::Resource
     }
   }
 
+  def support_tags?
+    false
+  end
+
   def self._fetch_remote_resources
     AwsClients
       .ec2

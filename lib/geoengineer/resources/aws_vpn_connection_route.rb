@@ -8,6 +8,10 @@ class GeoEngineer::Resources::AwsVpnConnectionRoute < GeoEngineer::Resource
 
   after :initialize, -> { _terraform_id -> { "#{destination_cidr_block}:#{vpn_connection_id}" } }
 
+  def support_tags?
+    false
+  end
+
   def self._fetch_remote_resources
     AwsClients
       .ec2

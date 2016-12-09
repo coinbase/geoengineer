@@ -11,6 +11,10 @@ class GeoEngineer::Resources::AwsVpnGatewayAttachment < GeoEngineer::Resource
   }
   after :initialize, -> { _geo_id -> { "#{vpc_id}::#{vpn_gateway_id}" } }
 
+  def support_tags?
+    false
+  end
+
   def self._fetch_remote_resources
     AwsClients
       .ec2
