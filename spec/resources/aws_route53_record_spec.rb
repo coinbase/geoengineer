@@ -33,6 +33,11 @@ describe("GeoEngineer::Resources::AwsRoute53Record") do
       )
     end
 
+    after do
+      aws_client.stub_responses(:list_hosted_zones, [])
+      aws_client.stub_responses(:list_resource_record_sets, [])
+    end
+
     it 'should create list of hashes from returned AWS SDK' do
       remote_resources = GeoEngineer::Resources::AwsRoute53Record._fetch_remote_resources
       expect(remote_resources.length).to eq(2)
