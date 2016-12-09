@@ -15,7 +15,7 @@ class GeoEngineer::Resources::AwsInternetGateway < GeoEngineer::Resource
       gateway.merge(
         {
           _terraform_id: gateway[:internet_gateway_id],
-          _geo_id: gateway[:tags].find { |tag| tag[:key] == "Name" }&.dig(:value)
+          _geo_id: gateway[:tags]&.find { |tag| tag[:key] == "Name" }&.dig(:value)
         }
       )
     end

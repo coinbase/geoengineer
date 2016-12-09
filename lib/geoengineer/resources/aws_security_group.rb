@@ -48,7 +48,7 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
         {
           name: sg[:group_name],
           _terraform_id: sg[:group_id],
-          _geo_id: sg[:tags].find { |tag| tag[:key] == "Name" }&.dig(:value)
+          _geo_id: sg[:tags]&.find { |tag| tag[:key] == "Name" }&.dig(:value)
         }
       )
     end

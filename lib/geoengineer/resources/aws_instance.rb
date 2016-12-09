@@ -19,7 +19,7 @@ class GeoEngineer::Resources::AwsInstance < GeoEngineer::Resource
       instance.merge(
         {
           _terraform_id: instance[:instance_id],
-          _geo_id: instance[:tags].find { |tag| tag[:key] == "Name" }&.dig(:value)
+          _geo_id: instance[:tags]&.find { |tag| tag[:key] == "Name" }&.dig(:value)
         }
       )
     end
