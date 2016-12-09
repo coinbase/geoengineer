@@ -139,7 +139,6 @@ class GeoCLI
       throw "Environment not set" unless @environment
 
       @environment.execute_lifecycle(:before, action_name.to_sym)
-
       errs = @environment.errors.flatten.sort
       return print_validation_errors(errs) unless errs.empty?
 

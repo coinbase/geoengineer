@@ -38,8 +38,8 @@ module HasResources
   end
 
   # Returns: { value1: [ ], value2: [ ] }
-  def resources_grouped_by(resources = all_resources)
-    resources.each_with_object({}) do |r, c|
+  def resources_grouped_by(resources_to_group = all_resources)
+    resources_to_group.each_with_object({}) do |r, c|
       value = yield r
       c[value] ||= []
       c[value] << r
@@ -47,12 +47,12 @@ module HasResources
     end
   end
 
-  # Returns: { class1: { value1: [ ] }, class2: { value2: [ ] } }
-  def resources_of_class_grouped_by(&block)
-    grouped = resources_grouped_by(all_resources, &:class)
+  # Returns: { type1: { value1: [ ] }, type2: { value2: [ ] } }
+  def resources_of_type_grouped_by(&block)
+    grouped = resources_grouped_by(all_resources, &:type)
 
-    grouped_arr = grouped.map do |klass, resources|
-      [klass, resources_grouped_by(resources, &block)]
+    grouped_arr = grouped.map do |type, grouped_resources|
+      [type, resources_grouped_by(grouped_resources, &block)]
     end
 
     grouped_arr.to_h

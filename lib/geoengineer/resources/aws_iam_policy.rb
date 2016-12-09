@@ -19,9 +19,12 @@ class GeoEngineer::Resources::AwsIamPolicy < GeoEngineer::Resource
     policy = _get_policy_document(arn, default_version_id)
 
     tfstate = super
-    tfstate[:primary][:attributes] = {
-      'policy' => policy
-    }
+
+    attributes = { 'policy' => policy }
+    attributes['arn'] = arn if arn
+
+    tfstate[:primary][:attributes] = attributes
+
     tfstate
   end
 

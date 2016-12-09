@@ -1,3 +1,4 @@
+
 ########################################################################
 # An Environment is a group of projects, resources and attributes,
 # build to create a terraform file.
@@ -17,7 +18,7 @@ class GeoEngineer::Environment
 
   # Validate resources have unique attributes
   validate -> {
-    resources = resources_of_class_grouped_by(&:terraform_name)
+    resources = resources_of_type_grouped_by(&:terraform_name)
 
     resources.map do |klass, grouped_resources|
       grouped_resources
@@ -27,7 +28,7 @@ class GeoEngineer::Environment
   }
 
   validate -> {
-    resources = resources_of_class_grouped_by(&:_terraform_id)
+    resources = resources_of_type_grouped_by(&:_terraform_id)
 
     resources.map do |klass, grouped_resources|
       grouped_resources
@@ -37,7 +38,7 @@ class GeoEngineer::Environment
   }
 
   validate -> {
-    resources = resources_of_class_grouped_by(&:_geo_id)
+    resources = resources_of_type_grouped_by(&:_geo_id)
 
     resources.map do |klass, grouped_resources|
       grouped_resources
@@ -167,6 +168,7 @@ class GeoEngineer::Environment
 
   def to_terraform_state
     reses = all_resources.select(&:_terraform_id) # _terraform_id must not be nil
+
     reses = reses.map { |r| { "#{r.type}.#{r.id}" => r.to_terraform_state() } }.reduce({}, :merge)
 
     {
