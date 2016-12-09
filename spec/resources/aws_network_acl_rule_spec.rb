@@ -4,8 +4,8 @@ describe("GeoEngineer::Resources::AwsNetworkAclRule") do
   common_resource_tests(GeoEngineer::Resources::AwsNetworkAclRule, 'aws_network_acl_rule')
 
   describe "#_fetch_remote_resources" do
-    it 'should create list of hashes from returned AWS SDK' do
-      ec2 = AwsClients.ec2
+    let(:ec2) { AwsClients.ec2 }
+    before do
       stub = ec2.stub_data(
         :describe_network_acls,
         {
@@ -42,6 +42,13 @@ describe("GeoEngineer::Resources::AwsNetworkAclRule") do
         }
       )
       ec2.stub_responses(:describe_network_acls, stub)
+    end
+
+    after do
+      ec2.stub_responses(:describe_network_acls, [])
+    end
+
+    it 'should create list of hashes from returned AWS SDK' do
       remote_resources = GeoEngineer::Resources::AwsNetworkAclRule._fetch_remote_resources
       expect(remote_resources.length).to eq(2)
     end
