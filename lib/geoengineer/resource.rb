@@ -174,7 +174,7 @@ class GeoEngineer::Resource
     return unless self.project.tags
     return unless self.support_tags?
 
-    tags {} unless tags # defining tag subresource if it does not exist
+    tags {} unless tags # define tag subresource if nonexistent
 
     project_tags_hash = self.project.all_tags.map(&:attributes).reduce({}, :merge)
     project_tags_hash.each do |key, value|
