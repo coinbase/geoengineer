@@ -5,7 +5,9 @@
 ########################################################################
 class GeoEngineer::Project
   include HasAttributes
+  include HasLifecycle
   include HasResources
+  include HasSubResources
   include HasValidations
 
   attr_accessor :org, :name
@@ -21,6 +23,7 @@ class GeoEngineer::Project
     @environment = environment
     @templates = {}
     instance_exec(self, &block) if block_given?
+    execute_lifecycle(:after, :initialize)
   end
 
   def full_id_name
