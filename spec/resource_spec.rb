@@ -153,6 +153,62 @@ describe("GeoEngineer::Resource") do
     end
   end
 
+  describe '#validate_tag_merge' do
+    it 'should combine resource and project tags' do
+      project = GeoEngineer::Project.new('org', 'project_name', 'test') {
+        tags {
+          a  '1'
+        }
+      }
+      resource = project.resource('type', '1') {
+        tags {
+          d  '4'
+        }
+      }
+      resource.merge_project_tags
+      expect(resource.tags.attributes).to eq({ 'a' => '1', 'd' => '4' })
+    end
+
+    it 'should give priority to resource tags' do
+      project = GeoEngineer::Project.new('org', 'project_name', 'test') {
+        tags {
+          a  'project_value'
+        }
+      }
+      resource = project.resource('type', '1') {
+        tags {
+          a  'resource_value'
+        }
+      }
+      resource.merge_project_tags
+      expect(resource.tags.attributes).to eq({ 'a' => 'resource_value' })
+    end
+
+    it 'should return project tags if there are no resource tags' do
+      project = GeoEngineer::Project.new('org', 'project_name', 'test') {
+        tags {
+          a  '1'
+          b  '2'
+        }
+      }
+      resource = project.resource('type', '1') {}
+      resource.merge_project_tags
+      expect(resource.tags.attributes).to eq({ 'a' => '1', 'b' => '2' })
+    end
+
+    it 'should return resource tags if there are no project tags' do
+      project = GeoEngineer::Project.new('org', 'project_name', 'test') {}
+      resource = project.resource('type', '1') {
+        tags {
+          c  '3'
+          d  '4'
+        }
+      }
+      resource.merge_project_tags
+      expect(resource.tags.attributes).to eq({ 'c' => '3', 'd' => '4' })
+    end
+  end
+
   describe 'class method' do
     describe('#type_from_class_name') do
       it 'should return resource' do

@@ -17,6 +17,8 @@ class GeoEngineer::Resource
 
   attr_reader :type, :id
 
+  before :validation, :merge_project_tags
+
   validate -> { validate_required_attributes([:_geo_id]) }
 
   def initialize(type, id, &block)
@@ -165,6 +167,21 @@ class GeoEngineer::Resource
   # VALIDATION METHODS
   def support_tags?
     true
+  end
+
+  def merge_project_tags
+    return unless self.project
+    return unless self.project.tags
+    return unless self.support_tags?
+
+    tags {} unless tags # define tag subresource if nonexistent
+
+    project_tags_hash = self.project.all_tags.map(&:attributes).reduce({}, :merge)
+    project_tags_hash.each do |key, value|
+      next if tags.attributes[key]
+      tags.attributes[key] = value
+    end
+    tags
   end
 
   def validate_required_subresource(subresource)
