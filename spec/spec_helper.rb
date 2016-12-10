@@ -41,7 +41,7 @@ def fetch_empty_should_work(clazz)
   end
 end
 
-def common_resource_tests(clazz, clazz_name)
+def common_resource_tests(clazz, clazz_name, fetch_remote = true)
   describe 'init test' do
     init_test(clazz_name)
   end
@@ -49,6 +49,8 @@ def common_resource_tests(clazz, clazz_name)
   describe "class mapping" do
     mapping_tests(clazz, clazz_name)
   end
+
+  return unless fetch_remote
 
   describe "#_fetch_remote_resources" do
     fetch_empty_should_work(clazz)
