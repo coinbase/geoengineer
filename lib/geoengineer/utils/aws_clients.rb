@@ -60,4 +60,8 @@ class AwsClients
   def self.sqs
     @aws_sqs ||= Aws::SQS::Client.new({ stub_responses: stubbed? })
   end
+
+  def self.lambda
+    @aws_lambda ||= Aws::Lambda::Client.new({ stub_responses: stubbed? })
+  end
 end
