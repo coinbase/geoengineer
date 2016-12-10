@@ -4,10 +4,23 @@
 # {https://www.terraform.io/docs/providers/aws/r/iam_policy_attachment.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsIamPolicyAttachment < GeoEngineer::Resource
-  validate -> { validate_required_attributes([:name, :policy_arn]) }
+  validate -> { validate_required_attributes([:name, :_policy]) }
+
+  validate :shares_name_with_policy
+
+  before :validation, -> { policy_arn _policy.to_ref(:arn) if _policy }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { name.to_s } }
+
+  def validate_shares_name_with_policy
+    return "Policy attachment must share a name with the policy" unless shares_name_with_policy?
+    []
+  end
+
+  def shares_name_with_policy?
+    policy && name.to_s == policy.name
+  end
 
   def to_terraform_state
     tfstate = super
@@ -55,27 +68,28 @@ class GeoEngineer::Resources::AwsIamPolicyAttachment < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    policies = AwsClients.iam.list_policies['policies'].map(&:to_h)
-
-    policies.map do |policy|
-      entities = _fetch_entities_for_policy(policy)
-      attrs = collected_policy_attributes(policy, entities)
-
-      attrs[:_terraform_id] = policy[:arn]
-      attrs[:_geo_id] = policy[:policy_name]
-      attrs[:policy_arn] = policy[:arn]
-      attrs
-    end
+  def remote_resource
+    return @_remote if @_remote
+    @_remote = build_remote_resource
+    @_remote&.local_resource = self
+    @_remote
   end
 
-  def self._fetch_entities_for_policy(policy)
-    AwsClients.iam.list_entities_for_policy({ policy_arn: policy[:arn] })
+  def build_remote_resource
+    return nil unless _policy
+    return nil unless _policy.remote_resource
+
+    arn = _policy.remote_resource._terraform_id
+    entities = AwsClients.iam.list_entities_for_policy({ policy_arn: arn })
+    remote_resource_params(arn, entities)
   end
 
-  def self.collected_policy_attributes(policy, entities)
+  def remote_resource_params(arn, entities)
     {
-      name: policy[:policy_name],
+      name: _policy.name,
+      _terraform_id: arn,
+      _geo_id: _policy.name,
+      policy_arn: arn,
       users: entities[:policy_users].map(&:user_name),
       groups: entities[:policy_groups].map(&:group_name),
       roles: entities[:policy_roles].map(&:role_name)
