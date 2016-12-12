@@ -164,24 +164,28 @@ class GeoEngineer::Resource
     "for resource \"#{type}.#{id}\" #{in_project}"
   end
 
-  # VALIDATION METHODS
-  def support_tags?
-    true
+  def setup_tags_if_needed
+    tags {} unless tags
   end
 
   def merge_project_tags
-    return unless self.project
-    return unless self.project.tags
-    return unless self.support_tags?
+    return unless self.project && self.project.tags && self.support_tags?
 
-    tags {} unless tags # define tag subresource if nonexistent
+    setup_tags_if_needed
 
-    project_tags_hash = self.project.all_tags.map(&:attributes).reduce({}, :merge)
-    project_tags_hash.each do |key, value|
-      next if tags.attributes[key]
-      tags.attributes[key] = value
-    end
+    self
+      .project
+      .all_tags
+      .map(&:attributes)
+      .reduce({}, :merge)
+      .each { |key, value| tags.attributes[key] ||= value }
+
     tags
+  end
+
+  # VALIDATION METHODS
+  def support_tags?
+    true
   end
 
   def validate_required_subresource(subresource)

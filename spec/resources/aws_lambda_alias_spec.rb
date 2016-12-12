@@ -20,8 +20,7 @@ describe("GeoEngineer::Resources::AwsLambdaAlias") do
       aws_client.stub_responses(
         :list_aliases, {
           aliases: [
-            { name: "foonew", alias_arn: "arn:aws:lambda:fooalias", function_version: "1" },
-            { name: "barnew", alias_arn: "arn:aws:lambda:baralias", function_version: "2" }
+            { name: "foonew", alias_arn: "arn:aws:lambda:alias", function_version: "1" }
           ]
         }
       )
