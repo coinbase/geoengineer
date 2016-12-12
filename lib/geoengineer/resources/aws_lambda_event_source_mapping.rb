@@ -1,5 +1,5 @@
 ########################################################################
-# AwsLambdaEventSourceMappings is the +aws_lambda_event_source_mappings+ terrform resource,
+# AwsLambdaEventSourceMapping is the +aws_lambda_event_source_mapping+ terrform resource,
 #
 # {https://www.terraform.io/docs/providers/aws/r/lambda_event_source_mapping.html Terraform Docs}
 ########################################################################
