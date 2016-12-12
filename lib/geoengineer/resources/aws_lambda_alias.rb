@@ -1,7 +1,7 @@
 ########################################################################
 # AwsLambdaAlias is the +aws_lambda_function+ terrform resource,
 #
-# {https://www.terraform.io/docs/providers/aws/r/lambda_function.html Terraform Docs}
+# {https://www.terraform.io/docs/providers/aws/r/lambda_alias.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsLambdaAlias < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name, :function_name, :function_version]) }
@@ -19,27 +19,32 @@ class GeoEngineer::Resources::AwsLambdaAlias < GeoEngineer::Resource
     false
   end
 
+  # TODO(Brad) - May need to implement solution for pagination...
   def self._fetch_functions
     AwsClients
       .lambda
       .list_functions['functions']
       .map(&:to_h)
-      .map { |function| function[:function_name] }
+  end
+
+  # TODO(Brad) - May need to implement solution for pagination...
+  def self._fetch_aliases(function)
+    options = { function_name: function[:function_name] }
+    AwsClients.lambda.list_aliases(options)[:aliases].map(&:to_h).map do |f_alias|
+      geo_id_components = [f_alias[:name], f_alias[:function_name], f_alias[:function_version]]
+      f_alias.merge(
+        {
+          _terraform_id: f_alias[:alias_arn],
+          _geo_id: geo_id_components.join('::')
+        }
+      )
+    end
   end
 
   def self._fetch_remote_resources
-    _fetch_functions.map do |function_name|
-      options = { function_name: function_name }
-      AwsClients.lambda.list_aliases(options)[:aliases].map(&:to_h).map do |f_alias|
-        geo_id_components = [f_alias[:name], f_alias[:function_name], f_alias[:function_version]]
-        f_alias.merge(
-          {
-            _terraform_id: f_alias[:alias_arn],
-            _geo_id: geo_id_components.join('::'),
-            function_name: function_name
-          }
-        )
-      end
-    end
+    _fetch_functions
+      .map { |function| _fetch_aliases(function) }
+      .flatten
+      .compact
   end
 end
