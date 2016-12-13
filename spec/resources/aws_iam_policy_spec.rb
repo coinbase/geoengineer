@@ -1,14 +1,16 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsIamPolicy") do
+describe "GeoEngineer::Resources::AwsIamPolicy" do
+  let(:iam_client) { AwsClients.iam }
+
   common_resource_tests(GeoEngineer::Resources::AwsIamPolicy,
                         'aws_iam_policy')
 
+  before { iam_client.setup_stubbing }
+
   describe "#_fetch_remote_resources" do
     it 'should create list of hashes from returned AWS SDK' do
-      iam = AwsClients.iam
-      # iam.list_policies.policies
-      stub = iam.stub_data(
+      iam_client.stub_responses(
         :list_policies,
         {
           policies: [
@@ -27,7 +29,6 @@ describe("GeoEngineer::Resources::AwsIamPolicy") do
           ]
         }
       )
-      sns.stub_responses(:list_policies, stub)
       remote_resources = GeoEngineer::Resources::AwsIamPolicy._fetch_remote_resources
       expect(remote_resources.length).to eq 2
     end

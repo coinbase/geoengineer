@@ -16,6 +16,7 @@ class GeoEngineer::Resources::AwsIamPolicy < GeoEngineer::Resource
   def to_terraform_state
     arn = NullObject.maybe(remote_resource).arn
     default_version_id = NullObject.maybe(remote_resource).default_version_id
+
     policy = _get_policy_document(arn, default_version_id)
 
     tfstate = super
@@ -30,6 +31,10 @@ class GeoEngineer::Resources::AwsIamPolicy < GeoEngineer::Resource
 
   def support_tags?
     false
+  end
+
+  def _policy(path)
+    _json_file(:policy, path)
   end
 
   def _get_policy_document(arn, version_id)
