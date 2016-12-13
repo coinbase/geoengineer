@@ -163,7 +163,7 @@ class GeoCLI
     end
   end
 
-  def gloabl_options
+  def global_options
     global_option('-e', '--environment <name>', "Environment to use")
 
     @verbose = true
@@ -192,8 +192,8 @@ class GeoCLI
     # check terraform installed
     return puts "Please install terraform" unless terraform_installed?
 
-    # gloabl_options
-    gloabl_options
+    # global_options
+    global_options
 
     # Add commands
     plan_cmd
