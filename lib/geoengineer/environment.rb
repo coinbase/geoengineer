@@ -137,7 +137,8 @@ class GeoEngineer::Environment
     # Hopefully this will stop accidentally the environment
     unless self.allow_destroy
       all_resources.each { |r|
-        r.lifecycle { prevent_destroy true }
+        r.lifecycle {} unless r.lifecycle
+        r.lifecycle.prevent_destroy = true
       }
     end
 
@@ -149,7 +150,8 @@ class GeoEngineer::Environment
   def to_terraform_json
     unless self.allow_destroy
       all_resources.each { |r|
-        r.lifecycle { prevent_destroy true }
+        r.lifecycle {} unless r.lifecycle
+        r.lifecycle.prevent_destroy = true
       }
     end
 
