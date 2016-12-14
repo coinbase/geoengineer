@@ -51,6 +51,8 @@ class Crc32
   end
 
   def self.hashcode(string)
+    return 0 unless string
+
     value = checksum(string).to_i
     return value if value >= 0
     return -value if value <= 0
