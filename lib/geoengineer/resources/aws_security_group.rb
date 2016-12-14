@@ -31,7 +31,7 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
     (self.all_ingress + self.all_egress).each do |in_eg|
       next unless in_eg.cidr_blocks
       in_eg.cidr_blocks.each do |cidr|
-        _, error = validate_cidr_block(cidr)
+        error = validate_cidr_block(cidr)
         errors << error unless error.nil?
       end
     end

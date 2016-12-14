@@ -49,10 +49,9 @@ module HasValidations
   # Validates CIDR block format
   # Returns error when argument fails validation
   def validate_cidr_block(cidr_block)
-    parsed_cidr = NetAddr::CIDR.create(cidr_block)
-    return [parsed_cidr, nil]
+    return if NetAddr::CIDR.create(cidr_block)
   rescue NetAddr::ValidationError
-    return [nil, "Bad cidr block \"#{cidr_block}\" #{for_resource}"]
+    return "Bad cidr block \"#{cidr_block}\" #{for_resource}"
   end
 
   # Validates that at least one of the specified attributes is present

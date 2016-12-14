@@ -2,3 +2,4 @@
 *.gem
 .yardoc
 tmp
+.*.sw*
