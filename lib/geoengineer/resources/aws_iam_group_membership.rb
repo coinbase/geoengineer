@@ -18,8 +18,6 @@ class GeoEngineer::Resources::AwsIamGroupMembership < GeoEngineer::Resource
       'group' => _group.name.to_s,
       'name' => name.to_s
     }
-    # attributes = { 'users.#' => users.count.to_s }
-    # users.each_with_index { |u, i| attributes["users.#{i}"] = u }
 
     tfstate[:primary][:attributes] = attributes
     tfstate

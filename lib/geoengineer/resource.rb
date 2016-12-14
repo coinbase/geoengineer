@@ -122,7 +122,7 @@ class GeoEngineer::Resource
   # 3. return an instance of Resource with the remote attributes
   # 4. throw an error if more than one resource has the same _geo_id
   def _find_remote_resource
-    return build_individual_remote_resource if find_remote_as_individual?
+    return GeoEngineer::Resource.build(remote_resource_params) if find_remote_as_individual?
 
     matches = matched_remote_resource
 
@@ -132,10 +132,14 @@ class GeoEngineer::Resource
     throw "ERROR:\"#{self.type}.#{self.id}\" has #{matches.length} remote resources"
   end
 
-  # By default, remote resources are bulk-retrieved. In child-classes, the following methods
-  # can be used to define how to fetch a remote resource individually
+  # By default, remote resources are bulk-retrieved. In order to fetch a remote resource as an
+  # individual, the child-class over-write 'find_remote_as_individual?' and 'remote_resource_params'
   def find_remote_as_individual?
     false
+  end
+
+  def remote_resource_params
+    {}
   end
 
   def build_individual_remote_resource
@@ -145,10 +149,6 @@ class GeoEngineer::Resource
   def matched_remote_resource
     aws_resources = self.class.fetch_remote_resources()
     aws_resources.select { |r| r._geo_id == self._geo_id }
-  end
-
-  def remote_resource_params
-    {}
   end
 
   def self.fetch_remote_resources

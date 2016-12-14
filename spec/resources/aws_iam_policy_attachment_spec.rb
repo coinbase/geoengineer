@@ -10,9 +10,11 @@ describe "GeoEngineer::Resources::AwsIamPolicy" do
   end
 
   let(:iam_policy_attachment) do
+    policy = iam_policy
+
     GeoEngineer::Resources::AwsIamPolicyAttachment
       .new('aws_iam_policy_attachment', 'fake_policy_attachment') {
-        _policy iam_policy
+        _policy policy
       }
   end
 
@@ -54,8 +56,6 @@ describe "GeoEngineer::Resources::AwsIamPolicy" do
     end
 
     context 'with a policy' do
-      before { allow(iam_policy_attachment).to receive(:_policy).and_return(iam_policy) }
-
       context 'when the policy does not have a remote resource' do
         before { expect(iam_policy_attachment).to receive(:remote_resource).and_return(nil) }
 
