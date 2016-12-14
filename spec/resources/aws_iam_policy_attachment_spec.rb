@@ -10,9 +10,11 @@ describe "GeoEngineer::Resources::AwsIamPolicy" do
   end
 
   let(:iam_policy_attachment) do
+    policy = iam_policy
+
     GeoEngineer::Resources::AwsIamPolicyAttachment
       .new('aws_iam_policy_attachment', 'fake_policy_attachment') {
-        _policy iam_policy
+        _policy policy
       }
   end
 
@@ -53,15 +55,7 @@ describe "GeoEngineer::Resources::AwsIamPolicy" do
       )
     end
 
-    context 'without a policy' do
-      it 'should not have a remote resource' do
-        expect(iam_policy_attachment.remote_resource).to be_nil
-      end
-    end
-
     context 'with a policy' do
-      before { allow(iam_policy_attachment).to receive(:_policy).and_return(iam_policy) }
-
       context 'when the policy does not have a remote resource' do
         before { expect(iam_policy_attachment).to receive(:remote_resource).and_return(nil) }
 
@@ -71,7 +65,7 @@ describe "GeoEngineer::Resources::AwsIamPolicy" do
       end
 
       it 'should create a hash from the response' do
-        remote_resource = iam_policy_attachment.build_remote_resource
+        remote_resource = iam_policy_attachment.remote_resource_params
 
         expect(remote_resource[:name]).to eql 'Fake-Aws-Policy'
         expect(remote_resource[:_terraform_id]).to eql 'arn:aws:iam::aws:policy/xyv/FakeAwsARN'
