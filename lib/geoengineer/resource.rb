@@ -38,9 +38,8 @@ class GeoEngineer::Resource
   end
 
   def remote_resource
-    return @_remote if @_remote_searched
-    @_remote = _find_remote_resource
-    @_remote_searched = true
+    return @_remote if @_remote
+    @_remote = find_remote_resource
     @_remote&.local_resource = self
     @_remote
   end
@@ -117,10 +116,13 @@ class GeoEngineer::Resource
 
   # This method will fetch the remote resource that has the same _geo_id as the codified resource.
   # This method will:
-  # 1. return nil if no resource is found
-  # 2. return an instance of Resource with the remote attributes
-  # 3. throw an error if more than one resource has the same _geo_id
-  def _find_remote_resource
+  # 1. return resource individually if class has defined how to do so
+  # 2. return nil if no resource is found
+  # 3. return an instance of Resource with the remote attributes
+  # 4. throw an error if more than one resource has the same _geo_id
+  def find_remote_resource
+    return build_individual_remote_resource if find_remote_as_individual?
+
     aws_resources = self.class.fetch_remote_resources()
     matches = aws_resources.select { |r| r._geo_id == self._geo_id }
 
@@ -130,31 +132,42 @@ class GeoEngineer::Resource
     throw "ERROR:\"#{self.type}.#{self.id}\" has #{matches.length} remote resources"
   end
 
-  def self.fetch_remote_resources
-    return @_rr_cache if @_rr_cache
-    @_rr_cache = []
-    resource_hashes = _fetch_remote_resources()
-
-    resource_hashes.each do |res_hash|
-      @_rr_cache << GeoEngineer::Resource.new(self.type_from_class_name, res_hash['_geo_id']) {
-        # add attributes to the resource
-        res_hash.each do |k, v|
-          self[k] = v
-        end
-      }
-    end
-
-    @_rr_cache
+  # By default, remote resources are bulk-retrieved. In child-classes, the following methods
+  # can be used to define how to fetch a remote resource individually
+  def find_remote_as_individual?
+    false
   end
 
-  def self.clear_remote_resource_cache
-    @_rr_cache = nil
+  def build_individual_remote_resource
+    self.class.build(remote_resource_params)
+  end
+
+  def remote_resource_params
+    {}
+  end
+
+  def self.fetch_remote_resources
+    return @_rr_cache if @_rr_cache
+    resource_hashes = _fetch_remote_resources()
+    @rr_cache = resource_hashes.map { |res_hash| GeoEngineer::Resource.build(res_hash) }
   end
 
   # This method must be implemented for each resource type
   # it must return a list of hashes with at least the key
   def self._fetch_remote_resources
     throw "NOT IMPLEMENTED ERROR for #{self.name}"
+  end
+
+  def self.build(resource_hash)
+    GeoEngineer::Resource.new(self.type_from_class_name, resource_hash['_geo_id']) {
+      resource_hash.each do |k, v|
+        self[k] = v
+      end
+    }
+  end
+
+  def self.clear_remote_resource_cache
+    @_rr_cache = nil
   end
 
   # VIEW METHODS

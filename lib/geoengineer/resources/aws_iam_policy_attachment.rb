@@ -68,23 +68,20 @@ class GeoEngineer::Resources::AwsIamPolicyAttachment < GeoEngineer::Resource
     false
   end
 
-  def remote_resource
-    return @_remote if @_remote
-    @_remote = build_remote_resource
-    @_remote&.local_resource = self
-    @_remote
+  def find_remote_as_individual?
+    true
   end
 
-  def build_remote_resource
-    return nil unless _policy
-    return nil unless _policy.remote_resource
+  def remote_resource_params
+    return {} unless _policy
+    return {} unless _policy.remote_resource
 
     arn = _policy.remote_resource._terraform_id
     entities = AwsClients.iam.list_entities_for_policy({ policy_arn: arn })
-    remote_resource_params(arn, entities)
+    build_remote_resource_params(arn, entities)
   end
 
-  def remote_resource_params(arn, entities)
+  def build_remote_resource_params(arn, entities)
     {
       name: _policy.name,
       _terraform_id: arn,
