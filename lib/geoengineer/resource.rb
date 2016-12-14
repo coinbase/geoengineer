@@ -38,8 +38,9 @@ class GeoEngineer::Resource
   end
 
   def remote_resource
-    return @_remote if @_remote
-    @_remote = find_remote_resource
+    return @_remote if @_remote_searched
+    @_remote = _find_remote_resource
+    @_remote_searched = true
     @_remote&.local_resource = self
     @_remote
   end
@@ -120,11 +121,10 @@ class GeoEngineer::Resource
   # 2. return nil if no resource is found
   # 3. return an instance of Resource with the remote attributes
   # 4. throw an error if more than one resource has the same _geo_id
-  def find_remote_resource
+  def _find_remote_resource
     return build_individual_remote_resource if find_remote_as_individual?
 
-    aws_resources = self.class.fetch_remote_resources()
-    matches = aws_resources.select { |r| r._geo_id == self._geo_id }
+    matches = matched_remote_resource
 
     return matches.first if matches.length == 1
     return nil if matches.empty?
@@ -142,6 +142,11 @@ class GeoEngineer::Resource
     self.class.build(remote_resource_params)
   end
 
+  def matched_remote_resource
+    aws_resources = self.class.fetch_remote_resources()
+    aws_resources.select { |r| r._geo_id == self._geo_id }
+  end
+
   def remote_resource_params
     {}
   end
@@ -149,7 +154,7 @@ class GeoEngineer::Resource
   def self.fetch_remote_resources
     return @_rr_cache if @_rr_cache
     resource_hashes = _fetch_remote_resources()
-    @rr_cache = resource_hashes.map { |res_hash| GeoEngineer::Resource.build(res_hash) }
+    @_rr_cache = resource_hashes.map { |res_hash| GeoEngineer::Resource.build(res_hash) }
   end
 
   # This method must be implemented for each resource type

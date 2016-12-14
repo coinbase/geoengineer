@@ -66,6 +66,7 @@ describe("GeoEngineer::Environment") do
       env.resource('codified_resource', 'id1') {
         _terraform_id "geo_id1"
       }
+
       expect(env.codified_resources('codified_resource').length).to eq 1
       expect(env.uncodified_resources('codified_resource').length).to eq 1
     end
