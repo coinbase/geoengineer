@@ -120,10 +120,21 @@ describe("HasAttributes") do
       example.tags = { Name: 'foo' }
       example.attribute = -> { example.tags[:Name] }
       expect(example.attribute).to eq('foo')
+      expect(example.attributes['attribute']).to eq('foo')
 
       example.tags[:Name] = 'bar'
       example.reset
+      expect(example.attributes['attribute']).to be_nil
       expect(example.attribute).to eq('bar')
+    end
+
+    it 'allows you to eagerly load all lazy attributes' do
+      example = WithAttributes.new
+      example.lazy1 = -> { "foo" }
+      example.lazy2 = -> { "bar" }
+      expect(example.attributes.count).to eq(0)
+      example.eager_load
+      expect(example.attributes.count).to eq(2)
     end
   end
 end
