@@ -95,6 +95,11 @@ class GeoEngineer::Resource
     "${#{terraform_name}.#{attribute}}"
   end
 
+  # This tries to return the terraform ID, if that is nil, then it will return the ref
+  def to_id_or_ref
+    _terraform_id || to_ref
+  end
+
   def _json_file(attribute, path)
     raise "file #{path} not found" unless File.file?(path)
 
