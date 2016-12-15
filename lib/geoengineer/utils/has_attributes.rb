@@ -3,8 +3,7 @@
 ########################################################################
 module HasAttributes
   def attributes
-    @_attributes = {} unless @_attributes
-    @_attributes
+    @_attributes ||= {}
   end
 
   def [](key)
@@ -35,12 +34,17 @@ module HasAttributes
     # this is a getter
     val = attributes[name]
     val = attribute_missing(name) if val.nil?
-    if val.is_a? Proc
-      val = val.call()
-      # cache the value to override the Proc
-      attributes[name] = val
-    end
-    val
+    return val unless val.is_a?(Proc)
+
+    calculated = val.call()
+    resets[name] = val # cache the Proc for possible re-use
+    attributes[name] = calculated # cache the value to override the Proc
+  end
+
+  # For any value that has been lazily calculated, recalculate it
+  def reset
+    resets.each { |attribute, function| attributes[attribute] = function.call() }
+    nil
   end
 
   def attribute_missing(name)
@@ -93,5 +97,12 @@ module HasAttributes
     else
       v
     end
+  end
+
+  private
+
+  # Contains the reset functions for lazily evaluated attributes
+  def resets
+    @_resets ||= {}
   end
 end
