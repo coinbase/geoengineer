@@ -114,5 +114,16 @@ describe("HasAttributes") do
       expect(x["attribute"]).to eq "asd"
       expect(x[:attribute]).to eq "asd"
     end
+
+    it 'allows you to reset already evaluated values' do
+      example = WithAttributes.new
+      example.tags = { Name: 'foo' }
+      example.attribute = -> { example.tags[:Name] }
+      expect(example.attribute).to eq('foo')
+
+      example.tags[:Name] = 'bar'
+      example.reset
+      expect(example.attribute).to eq('bar')
+    end
   end
 end
