@@ -31,28 +31,24 @@ module HasAttributes
     # this is a setter
     name = name[0...-1] if name.end_with?"="
     val = args.length == 1 ? args[0] : args
-    if val.is_a?(Proc)
-      attribute_procs[name] = val
-    else
-      attributes[name] = val
-    end
+    attribute_procs[name] = val if val.is_a?(Proc)
+    attributes[name] = val
   end
 
   def retrieve_attribute(name)
     # this is a getter
     val = if attributes.key?(name)
             attributes[name]
-          elsif attribute_procs.key?(name)
-            attribute_procs[name].call()
           else
             attribute_missing(name)
           end
-    attributes[name] = val # cache the value to override the Proc
+    return val unless val.is_a?(Proc)
+    attributes[name] = val.call() # cache the value to override the Proc
   end
 
   # For any value that has been lazily calculated, recalculate it
   def reset
-    attribute_procs.each { |name, _function| delete(name) }
+    attribute_procs.each { |name, function| attributes[name] = function }
     self
   end
 
