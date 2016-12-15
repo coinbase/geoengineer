@@ -6,6 +6,11 @@ module HasAttributes
     @_attributes ||= {}
   end
 
+  # Contains the procs used to calculate attributes
+  def attribute_procs
+    @_procs ||= {}
+  end
+
   def [](key)
     retrieve_attribute(key.to_s)
   end
@@ -38,22 +43,21 @@ module HasAttributes
     val = if attributes.key?(name)
             attributes[name]
           elsif attribute_procs.key?(name)
-            attribute_procs[name]
+            attribute_procs[name].call()
           else
             attribute_missing(name)
           end
-    return val unless val.is_a?(Proc)
-    attributes[name] = val.call() # cache the value to override the Proc
+    attributes[name] = val # cache the value to override the Proc
   end
 
   # For any value that has been lazily calculated, recalculate it
   def reset
-    attribute_procs.each { |attribute, _function| delete(attribute) }
+    attribute_procs.each { |name, _function| delete(name) }
     self
   end
 
   def eager_load
-    attribute_procs.each { |attribute, function| attributes[attribute] = function.call() }
+    attribute_procs.each { |name, function| attributes[name] = function.call() }
     self
   end
 
@@ -107,12 +111,5 @@ module HasAttributes
     else
       v
     end
-  end
-
-  private
-
-  # Contains the procs used to calculate attributes
-  def attribute_procs
-    @_procs ||= {}
   end
 end
