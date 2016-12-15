@@ -114,5 +114,27 @@ describe("HasAttributes") do
       expect(x["attribute"]).to eq "asd"
       expect(x[:attribute]).to eq "asd"
     end
+
+    it 'allows you to reset already evaluated values' do
+      example = WithAttributes.new
+      example.tags = { Name: 'foo' }
+      example.attribute = -> { example.tags[:Name] }
+      expect(example.attribute).to eq('foo')
+
+      example.tags[:Name] = 'bar'
+      example.reset
+      expect(example.attribute).to eq('bar')
+    end
+
+    it 'allows you to eagerly load all lazy attributes' do
+      example = WithAttributes.new
+      example.lazy1 = -> { "foo" }
+      example.lazy2 = -> { "bar" }
+      expect(example.attributes['lazy1'].is_a?(Proc)).to eq(true)
+      expect(example.attributes['lazy2'].is_a?(Proc)).to eq(true)
+      example.eager_load
+      expect(example.attributes['lazy1'].is_a?(Proc)).to eq(false)
+      expect(example.attributes['lazy2'].is_a?(Proc)).to eq(false)
+    end
   end
 end

@@ -3,8 +3,12 @@
 ########################################################################
 module HasAttributes
   def attributes
-    @_attributes = {} unless @_attributes
-    @_attributes
+    @_attributes ||= {}
+  end
+
+  # Contains the procs used to calculate attributes
+  def attribute_procs
+    @_procs ||= {}
   end
 
   def [](key)
@@ -27,20 +31,30 @@ module HasAttributes
     # this is a setter
     name = name[0...-1] if name.end_with?"="
     val = args.length == 1 ? args[0] : args
+    attribute_procs[name] = val if val.is_a?(Proc)
     attributes[name] = val
-    val
   end
 
   def retrieve_attribute(name)
     # this is a getter
-    val = attributes[name]
-    val = attribute_missing(name) if val.nil?
-    if val.is_a? Proc
-      val = val.call()
-      # cache the value to override the Proc
-      attributes[name] = val
-    end
-    val
+    val = if attributes.key?(name)
+            attributes[name]
+          else
+            attribute_missing(name)
+          end
+    return val unless val.is_a?(Proc)
+    attributes[name] = val.call() # cache the value to override the Proc
+  end
+
+  # For any value that has been lazily calculated, recalculate it
+  def reset
+    attribute_procs.each { |name, function| attributes[name] = function }
+    self
+  end
+
+  def eager_load
+    attribute_procs.each { |name, function| attributes[name] = function.call() }
+    self
   end
 
   def attribute_missing(name)
