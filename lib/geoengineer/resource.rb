@@ -100,6 +100,13 @@ class GeoEngineer::Resource
     _terraform_id || to_ref
   end
 
+  def reset
+    reset_attributes
+    @_remote_searched = false
+    @_remote = nil
+    self
+  end
+
   def _json_file(attribute, path)
     raise "file #{path} not found" unless File.file?(path)
 

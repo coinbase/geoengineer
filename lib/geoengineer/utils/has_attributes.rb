@@ -47,12 +47,12 @@ module HasAttributes
   end
 
   # For any value that has been lazily calculated, recalculate it
-  def reset
+  def reset_attributes
     attribute_procs.each { |name, function| attributes[name] = function }
     self
   end
 
-  def eager_load
+  def eager_load_attributes
     attribute_procs.each { |name, function| attributes[name] = function.call() }
     self
   end

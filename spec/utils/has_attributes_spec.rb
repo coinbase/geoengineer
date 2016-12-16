@@ -122,7 +122,7 @@ describe("HasAttributes") do
       expect(example.attribute).to eq('foo')
 
       example.tags[:Name] = 'bar'
-      example.reset
+      example.reset_attributes
       expect(example.attribute).to eq('bar')
     end
 
@@ -132,7 +132,7 @@ describe("HasAttributes") do
       example.lazy2 = -> { "bar" }
       expect(example.attributes['lazy1'].is_a?(Proc)).to eq(true)
       expect(example.attributes['lazy2'].is_a?(Proc)).to eq(true)
-      example.eager_load
+      example.eager_load_attributes
       expect(example.attributes['lazy1'].is_a?(Proc)).to eq(false)
       expect(example.attributes['lazy2'].is_a?(Proc)).to eq(false)
     end

@@ -1,13 +1,13 @@
 require_relative './spec_helper'
 
+class GeoEngineer::RemoteResources < GeoEngineer::Resource
+  def self._fetch_remote_resources
+    [{ _geo_id: "geo_id1" }, { _geo_id: "geo_id2" }, { _geo_id: "geo_id2" }]
+  end
+end
+
 describe("GeoEngineer::Resource") do
   describe '#remote_resource' do
-    class GeoEngineer::RemoteResources < GeoEngineer::Resource
-      def self._fetch_remote_resources
-        [{ _geo_id: "geo_id1" }, { _geo_id: "geo_id2" }, { _geo_id: "geo_id2" }]
-      end
-    end
-
     it 'should return a list of resources' do
       rem_res = GeoEngineer::RemoteResources.new('rem', 'id') {
         _geo_id "geo_id1"
@@ -206,6 +206,31 @@ describe("GeoEngineer::Resource") do
       }
       resource.merge_project_tags
       expect(resource.tags.attributes).to eq({ 'c' => '3', 'd' => '4' })
+    end
+  end
+
+  describe '#reset' do
+    let(:subject) do
+      GeoEngineer::RemoteResources.new('resource', 'id') {
+        tags {
+          Name "foo"
+        }
+        _geo_id -> { tags['Name'] }
+      }
+    end
+
+    it 'resets lazily computed attributes' do
+      expect(subject._geo_id).to eq('foo')
+      subject.tags['Name'] = 'bar'
+      subject.reset
+      expect(subject._geo_id).to eq('bar')
+    end
+
+    it 'resets remote resource' do
+      expect(subject.remote_resource).to be_nil
+      subject.tags['Name'] = "geo_id1"
+      subject.reset
+      expect(subject.remote_resource).to_not be_nil
     end
   end
 
