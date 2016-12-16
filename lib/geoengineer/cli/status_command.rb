@@ -39,7 +39,8 @@ module GeoCLI::StatusCommand
     puts Terminal::Table.new({ rows: rows })
   end
 
-  def status_types
+  def status_types(options)
+    return options.resources.split(',') if options.resources
     environment.status_types ? environment.status_types : default_status_types
   end
 
@@ -81,7 +82,7 @@ module GeoCLI::StatusCommand
   def status_action
     lambda do |args, options|
       type_stats = {}
-      status_types.each do |type|
+      status_types(options).each do |type|
         codified = @environment.codified_resources(type)
         uncodified = @environment.uncodified_resources(type)
         type_stats[type] = calculate_type_status(codified, uncodified)
@@ -98,6 +99,7 @@ module GeoCLI::StatusCommand
     command :status do |c|
       c.syntax = 'geo status [<geo_files>]'
       c.description = 'Displays the the new, managed and unmanaged resources'
+      c.option '--resources COMMA SEPERATED STRING', String, 'select resources for statuses'
       action = status_action
       c.action init_action(:status, &action)
     end
