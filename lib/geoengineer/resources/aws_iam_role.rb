@@ -25,8 +25,8 @@ class GeoEngineer::Resources::AwsIamRole < GeoEngineer::Resource
     tfstate
   end
 
-  def _assume_role_policy(path)
-    _json_file(:assume_role_policy, path)
+  def _assume_role_policy_file(path, binding_obj = nil)
+    _json_file(:assume_role_policy, path, binding_obj)
   end
 
   def support_tags?
