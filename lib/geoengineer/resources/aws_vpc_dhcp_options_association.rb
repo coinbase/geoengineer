@@ -10,6 +10,15 @@ class GeoEngineer::Resources::AwsVpcDhcpOptionsAssociation < GeoEngineer::Resour
     _terraform_id -> { "#{dhcp_options_id}-#{vpc_id}" }
   }
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'vpc_id' => vpc_id,
+      'dhcp_options_id' => dhcp_options_id
+    }
+    tfstate
+  end
+
   def support_tags?
     false
   end

@@ -9,6 +9,15 @@ class GeoEngineer::Resources::AwsMainRouteTableAssociation < GeoEngineer::Resour
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{vpc_id}::#{route_table_id}" } }
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'vpc_id' => vpc_id,
+      'route_table_id' => route_table_id
+    }
+    tfstate
+  end
+
   def support_tags?
     false
   end
