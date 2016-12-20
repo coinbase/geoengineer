@@ -9,6 +9,15 @@ class GeoEngineer::Resources::AwsRouteTableAssociation < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{subnet_id}::#{route_table_id}" } }
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'subnet_id' => subnet_id,
+      'route_table_id' => route_table_id
+    }
+    tfstate
+  end
+
   def support_tags?
     false
   end
@@ -21,13 +30,16 @@ class GeoEngineer::Resources::AwsRouteTableAssociation < GeoEngineer::Resource
       .map { |route_table| route_table[:associations] }
       .flatten
       .compact
-      .map do |association|
-        association.merge(
-          {
-            _terraform_id: association[:route_table_association_id],
-            _geo_id: "#{association[:subnet_id]}::#{association[:route_table_id]}"
-          }
-        )
-      end
+      .reject { |association| association[:main] }
+      .map { |association| _merge_ids(association) }
+  end
+
+  def self._merge_ids(association)
+    association.merge(
+      {
+        _terraform_id: association[:route_table_association_id],
+        _geo_id: "#{association[:subnet_id]}::#{association[:route_table_id]}"
+      }
+    )
   end
 end
