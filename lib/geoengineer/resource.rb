@@ -107,11 +107,11 @@ class GeoEngineer::Resource
     self
   end
 
-  def _json_file(attribute, path)
+  def _json_file(attribute, path, binding_obj = nil)
     raise "file #{path} not found" unless File.file?(path)
 
     raw = File.open(path, "rb").read
-    interpolated = ERB.new(raw).result
+    interpolated = ERB.new(raw).result(binding_obj)
     escaped = interpolated.gsub("$", "$$")
 
     # normalize JSON to prevent terraform from e.g. newlines as legitimate changes

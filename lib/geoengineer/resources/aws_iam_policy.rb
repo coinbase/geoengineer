@@ -33,8 +33,8 @@ class GeoEngineer::Resources::AwsIamPolicy < GeoEngineer::Resource
     false
   end
 
-  def _policy(path)
-    _json_file(:policy, path)
+  def _policy_file(path, binding_obj = nil)
+    _json_file(:policy, path, binding_obj)
   end
 
   def _get_policy_document(arn, version_id)
