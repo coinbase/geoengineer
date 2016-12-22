@@ -5,17 +5,15 @@ class GeoEngineer::Template
   include HasAttributes
   include HasResources
 
-  def initialize(name, project, parameters = {})
-    @project = project
+  def initialize(name, environment, parameters = {})
     @name = name
-    @environment = @project.environment
+    @environment = @environment
   end
 
   def resource(type, id, &block)
     return find_resource(type, id) unless block_given?
     resource = create_resource(type, id, &block)
     resource.template = self
-    resource.project = @project
     resource.environment = @environment
     resource
   end

@@ -44,7 +44,7 @@ class GeoEngineer::Project
 
   def all_resources
     reses = resources
-    @templates.each { |name, template| reses += template.all_resources }
+    @templates.values.each { |template| reses += template.all_resources }
     reses
   end
 
@@ -64,6 +64,7 @@ class GeoEngineer::Project
     template = clazz.new(name, self, parameters)
     @templates[name] = template
     template.instance_exec(*template.template_resources, &block) if block_given?
+    template.all_resources.each { |resource| resource.project = self }
     template
   end
 

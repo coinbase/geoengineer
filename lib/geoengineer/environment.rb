@@ -12,7 +12,7 @@ class GeoEngineer::Environment
   include HasValidations
   include HasLifecycle
 
-  attr_reader :name, :projects
+  attr_reader :name, :projects, :templates
 
   validate -> { validate_required_attributes([:region, :account_id]) }
 
@@ -47,17 +47,18 @@ class GeoEngineer::Environment
     end.flatten
   }
 
-  # Validate all resources
-  validate -> { resources.map(&:errors).flatten }
-
   # Validate all projects (which validate resources)
-  validate -> { projects.map(&:errors).flatten }
+  validate -> { projects.values.map(&:errors).flatten }
+
+  # Validate all resources
+  validate -> { all_resources.map(&:errors).flatten }
 
   before :validation, -> { self.region = self.region || ENV['AWS_REGION'] }
 
   def initialize(name, &block)
     @name = name
-    @projects = []
+    @projects = {}
+    @templates = {}
     @outputs = []
     self.send("#{name}?=", true) # e.g. staging?
     instance_exec(self, &block) if block_given?
@@ -70,6 +71,25 @@ class GeoEngineer::Environment
     resource
   end
 
+  def find_template(type)
+    clazz_name = type.split('_').collect(&:capitalize).join
+    return Object.const_get(clazz_name) if Object.const_defined? clazz_name
+
+    module_clazz = "GeoEngineer::Templates::#{clazz_name}"
+    return Object.const_get(module_clazz) if Object.const_defined? module_clazz
+
+    throw "undefined template '#{type}' for '#{clazz_name}' or 'GeoEngineer::#{clazz_name}'"
+  end
+
+  def from_template(type, name, parameters = {}, &block)
+    throw "Template '#{name}' already defined for project #{full_name}" if @templates[name]
+    clazz = find_template(type)
+    template = clazz.new(name, self, parameters)
+    @templates[name] = template
+    template.instance_exec(*template.template_resources, &block) if block_given?
+    template
+  end
+
   def output(id, value, &block)
     output = GeoEngineer::Output.new(id, value, &block)
     @outputs << output
@@ -78,15 +98,15 @@ class GeoEngineer::Environment
 
   def all_resources
     reses = resources
-    @projects.each { |project| reses += project.all_resources }
+    @projects.values.each { |project| reses += project.all_resources }
+    @templates.values.each { |name, template| reses += template.all_resources }
     reses
   end
 
   # Factory for creating projects inside an environment
   def project(org, name, &block)
     # do not add the project a second time
-    exists = @projects.select { |p| p.org == org && p.name == name }.first
-    return exists if exists
+    return @projects[name] if @projects.key?(name)
 
     project = GeoEngineer::Project.new(org, name, self, &block)
 
@@ -94,8 +114,7 @@ class GeoEngineer::Environment
     # do not add the project if the project is not supported by this environment
     return NullObject.new unless supported_environments.include? @name
 
-    @projects << project
-    project
+    @projects[name] = project
   end
 
   # DOT Methods
@@ -122,8 +141,7 @@ class GeoEngineer::Environment
   end
 
   def to_dot
-    str = ["digraph {"]
-    str.concat(projects.map(&:to_dot))
+    str = ["digraph {", projects.values.map(&:to_dot)]
     all_resources.each do |res|
       str << depends_on(res).map { |r| "  #{res.to_ref.inspect} -> #{r.to_ref.inspect}" }
     end
