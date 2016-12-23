@@ -7,7 +7,7 @@ class GeoEngineer::Resources::AwsRoute < GeoEngineer::Resource
   validate -> { validate_required_attributes([:route_table_id, :destination_cidr_block]) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id -> { "#{route_table_id}|#{destination_cidr_block}" } }
+  after :initialize, -> { _geo_id -> { "#{route_table_id}::#{destination_cidr_block}" } }
 
   def support_tags?
     false
@@ -18,19 +18,21 @@ class GeoEngineer::Resources::AwsRoute < GeoEngineer::Resource
       .ec2
       .describe_route_tables['route_tables']
       .map(&:to_h)
-      .map { |route_table| route_table[:routes] }
+      .map { |route_table| _extract_routes(route_table) }
       .flatten
       .compact
-      .map { |route| _merge_ids(route) }
   end
 
-  def self._merge_ids(route)
-    terraform_id = "r-#{route[:route_table_id]}#{Crc32.hashcode(route[:destination_cidr_block])}"
-    route.merge(
-      {
-        _terraform_id: terraform_id,
-        _geo_id: "#{route[:route_table_id]}|#{route[:destination_cidr_block]}"
-      }
-    )
+  def self._extract_routes(route_table)
+    route_table[:routes]&.map do |route|
+      id = "r-#{route_table[:route_table_id]}#{Crc32.hashcode(route[:destination_cidr_block])}"
+      route.merge(
+        {
+          route_table_id: route_table[:route_table_id],
+          _terraform_id: id,
+          _geo_id: "#{route_table[:route_table_id]}::#{route[:destination_cidr_block]}"
+        }
+      )
+    end
   end
 end
