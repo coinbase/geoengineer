@@ -58,6 +58,15 @@ class GeoEngineer::Environment
     instance_exec(self, &block) if block_given?
   end
 
+  def project(org, name, &block)
+    project = create_project(org, name, &block)
+    supported_environments = [project.environments].flatten
+    # do not add the project if the project is not supported by this environment
+    return NullObject.new unless supported_environments.include?(@name)
+
+    projects[name] = project
+  end
+
   def resource(type, id, &block)
     return find_resource(type, id) unless block_given?
     resource = create_resource(type, id, &block)
