@@ -9,6 +9,15 @@ class GeoEngineer::Resources::AwsRoute < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{route_table_id}::#{destination_cidr_block}" } }
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'route_table_id' => route_table_id,
+      'destination_cidr_block' => destination_cidr_block
+    }
+    tfstate
+  end
+
   def support_tags?
     false
   end
