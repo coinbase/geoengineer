@@ -7,11 +7,11 @@ class GeoEngineer::Project
   include HasAttributes
   include HasLifecycle
   include HasResources
+  include HasTemplates
   include HasSubResources
   include HasValidations
 
   attr_accessor :org, :name
-  attr_reader :templates
   attr_reader :environment
 
   validate -> { environments.nil? ? "Project #{full_name} must have an environment" : nil }
@@ -21,7 +21,6 @@ class GeoEngineer::Project
     @org = org
     @name = name
     @environment = environment
-    @templates = {}
     instance_exec(self, &block) if block_given?
     execute_lifecycle(:after, :initialize)
   end
@@ -43,29 +42,7 @@ class GeoEngineer::Project
   end
 
   def all_resources
-    reses = resources
-    @templates.values.each { |template| reses += template.all_resources }
-    reses
-  end
-
-  def find_template(type)
-    clazz_name = type.split('_').collect(&:capitalize).join
-    return Object.const_get(clazz_name) if Object.const_defined? clazz_name
-
-    module_clazz = "GeoEngineer::Templates::#{clazz_name}"
-    return Object.const_get(module_clazz) if Object.const_defined? module_clazz
-
-    throw "undefined template '#{type}' for '#{clazz_name}' or 'GeoEngineer::#{clazz_name}'"
-  end
-
-  def from_template(type, name, parameters = {}, &block)
-    throw "Template '#{name}' already defined for project #{full_name}" if @templates[name]
-    clazz = find_template(type)
-    template = clazz.new(name, self, parameters)
-    @templates[name] = template
-    template.instance_exec(*template.template_resources, &block) if block_given?
-    template.all_resources.each { |resource| resource.project = self }
-    template
+    [resources, all_template_resources].flatten
   end
 
   # dot method

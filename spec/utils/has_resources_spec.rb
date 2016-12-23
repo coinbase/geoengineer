@@ -3,6 +3,10 @@ require_relative '../spec_helper'
 describe("HasResources") do
   class WithResources
     include HasResources
+
+    def all_resources
+      resources
+    end
   end
 
   class GeoEngineer::Resources::AwesomeResource < GeoEngineer::Resource

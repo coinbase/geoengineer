@@ -5,9 +5,22 @@ class GeoEngineer::Template
   include HasAttributes
   include HasResources
 
-  def initialize(name, environment, parameters = {})
+  def initialize(name, parent, parameters = {}, &block)
     @name = name
-    @environment = @environment
+    case parent
+    when GeoEngineer::Project then add_project_attributes(parent)
+    when GeoEngineer::Environment then add_env_attributes(parent)
+    end
+  end
+
+  # Helper method to accomodate different parents
+  def add_project_attributes(project)
+    @project = project
+    @environment = project.environment
+  end
+
+  def add_env_attributes(environment)
+    @environment = environment
   end
 
   def resource(type, id, &block)
@@ -15,7 +28,12 @@ class GeoEngineer::Template
     resource = create_resource(type, id, &block)
     resource.template = self
     resource.environment = @environment
+    resource.project = @project if @project
     resource
+  end
+
+  def all_resources
+    resources
   end
 
   # The resources that are passed to the block on instantiation
