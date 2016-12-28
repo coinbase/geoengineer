@@ -50,8 +50,8 @@ describe("GeoEngineer::Project") do
       project = GeoEngineer::Project.new('org', "project_name", nil)
       temp1 = project.from_template('in_module_template', 'in')
       temp2 = project.from_template('out_module_template', 'out')
-      expect(temp1.template_resources.length).to eq 0
-      expect(temp2.template_resources.length).to eq 2
+      expect(temp1.resources.length).to eq 0
+      expect(temp2.resources.length).to eq 2
     end
 
     it 'should error if the template is not found' do

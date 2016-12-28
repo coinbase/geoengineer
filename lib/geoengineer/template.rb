@@ -5,7 +5,7 @@ class GeoEngineer::Template
   include HasAttributes
   include HasResources
 
-  def initialize(name, parent, parameters = {}, &block)
+  def initialize(name, parent, parameters = {})
     @name = name
     case parent
     when GeoEngineer::Project then add_project_attributes(parent)

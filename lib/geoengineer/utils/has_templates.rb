@@ -21,7 +21,6 @@ module HasTemplates
     throw "Template '#{name}' already defined" if templates[name]
     clazz = find_template(type)
     template = clazz.new(name, self, parameters)
-    # TODO(Brad) - might be better to just pass template, instead of splatting template resources?
     template.instance_exec(*template.template_resources, &block) if block_given?
     templates[name] = template
   end
