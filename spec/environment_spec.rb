@@ -1,12 +1,15 @@
 require_relative './spec_helper'
 
-describe("GeoEngineer::Environment") do
+describe GeoEngineer::Environment do
+  let(:env) do
+    GeoEngineer::Environment.new("test") {
+      region "us-west-1"
+      account_id 1
+    }
+  end
+
   describe 'validations' do
     it 'should have unique terrform id' do
-      env = GeoEngineer::Environment.new("test") {
-        region "us-west-1"
-        account_id 1
-      }
       env.resource('type', 'id1') {
         _terraform_id "tid"
         _geo_id 'gid1'
@@ -20,10 +23,6 @@ describe("GeoEngineer::Environment") do
     end
 
     it 'should have unique geo_id' do
-      env = GeoEngineer::Environment.new("test") {
-        region "us-west-1"
-        account_id 1
-      }
       env.resource('type', 'id1') {
         _terraform_id "tid1"
         _geo_id 'gid'
@@ -37,10 +36,6 @@ describe("GeoEngineer::Environment") do
     end
 
     it 'should have unique type and ids' do
-      env = GeoEngineer::Environment.new("test") {
-        region "us-west-1"
-        account_id 1
-      }
       env.resource('type', 'id1') {
         _terraform_id "tid1"
         _geo_id 'gid1'
@@ -62,7 +57,6 @@ describe("GeoEngineer::Environment") do
         end
       end
 
-      env = GeoEngineer::Environment.new("test")
       env.resource('codified_resource', 'id1') {
         _terraform_id "geo_id1"
       }
@@ -74,7 +68,6 @@ describe("GeoEngineer::Environment") do
 
   describe '#to_terraform_state' do
     it 'should return state of resources' do
-      env = GeoEngineer::Environment.new("test")
       env.resource('type', 'id1') {
         _terraform_id "tid"
         _geo_id 'gid1'
@@ -86,7 +79,6 @@ describe("GeoEngineer::Environment") do
 
   describe '#to_terraform_json' do
     it 'should return terraform of all resources' do
-      env = GeoEngineer::Environment.new("test")
       env.resource('type', 'id1') {
         _terraform_id "tid"
         _geo_id 'gid1'
@@ -98,7 +90,6 @@ describe("GeoEngineer::Environment") do
 
   describe '#project' do
     it 'should create a project with this as environment' do
-      env = GeoEngineer::Environment.new("test")
       env.project("org", "name") {
         environments 'test'
       }
@@ -106,7 +97,6 @@ describe("GeoEngineer::Environment") do
     end
 
     it 'should only load projects in the environment' do
-      env = GeoEngineer::Environment.new("test")
       p0 = env.project("org", "0") {
         environments 'test'
       }
@@ -122,7 +112,6 @@ describe("GeoEngineer::Environment") do
 
   describe '#all_resources' do
     it 'should include local and project resources (if project in env)' do
-      env = GeoEngineer::Environment.new("test")
       env.resource('type', 'id0') { x 2 }
 
       p0 = env.project("org", "0") {
@@ -136,6 +125,37 @@ describe("GeoEngineer::Environment") do
       p1.resource('type', 'id2') { x 2 }
 
       expect(env.all_resources.length).to eq 2
+    end
+  end
+
+  describe '::HasTemplates' do
+    let!(:example_template) do
+      class Example < GeoEngineer::Template
+        def initialize(name, parent, parameters = {})
+          super(name, parent, parameters)
+          resource('aws_vpc', 'example') {
+            cidr_block('10.123.0.0/16')
+          }
+        end
+      end
+    end
+
+    describe '#from_template' do
+      it 'allows environments to create resources from templates' do
+        expect {
+          env.from_template('example', 'example_template')
+        }.to_not raise_error
+      end
+
+      it 'includes template resources in #all_resources' do
+        env.from_template('example', 'example_template')
+        expect(env.all_resources.count).to eq(1)
+      end
+
+      it 'adds a reference to the environment on each resource created' do
+        env.from_template('example', 'example_template')
+        expect(env.all_resources.first.environment).to eq(env)
+      end
     end
   end
 end

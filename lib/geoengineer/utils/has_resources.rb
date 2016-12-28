@@ -21,9 +21,10 @@ module HasResources
     @_resources
   end
 
-  # Overridden By Project and Environment
+  # Overridden By Template, Project and Environment,
+  # requires explicit override to avoid easy mistakes
   def all_resources
-    resources
+    raise NotImplementedError, "Including class must override this method"
   end
 
   def find_resource(type, id)

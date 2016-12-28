@@ -9,18 +9,18 @@
 class GeoEngineer::Environment
   include HasAttributes
   include HasResources
+  include HasProjects
+  include HasTemplates
   include HasValidations
   include HasLifecycle
 
-  attr_reader :name, :projects
+  attr_reader :name
 
   validate -> { validate_required_attributes([:region, :account_id]) }
 
   # Validate resources have unique attributes
   validate -> {
-    resources = resources_of_type_grouped_by(&:terraform_name)
-
-    resources.map do |klass, grouped_resources|
+    resources_of_type_grouped_by(&:terraform_name).map do |klass, grouped_resources|
       grouped_resources
         .select { |k, v| v.length > 1 }
         .map { |k, v| "Non-unique type.id #{v.first.for_resource}" }
@@ -28,9 +28,7 @@ class GeoEngineer::Environment
   }
 
   validate -> {
-    resources = resources_of_type_grouped_by(&:_terraform_id)
-
-    resources.map do |klass, grouped_resources|
+    resources_of_type_grouped_by(&:_terraform_id).map do |klass, grouped_resources|
       grouped_resources
         .select { |k, v| v.length > 1 && !v.first._terraform_id.nil? }
         .map { |k, v| "Non-unique _terraform_id #{v.first._terraform_id} #{v.first.for_resource}" }
@@ -38,29 +36,35 @@ class GeoEngineer::Environment
   }
 
   validate -> {
-    resources = resources_of_type_grouped_by(&:_geo_id)
-
-    resources.map do |klass, grouped_resources|
+    resources_of_type_grouped_by(&:_geo_id).map do |klass, grouped_resources|
       grouped_resources
         .select { |k, v| v.length > 1 }
         .map { |k, v| "Non-unique _geo_id #{v.first._geo_id} #{v.first.for_resource}" }
     end.flatten
   }
 
-  # Validate all resources
-  validate -> { resources.map(&:errors).flatten }
-
   # Validate all projects (which validate resources)
-  validate -> { projects.map(&:errors).flatten }
+  validate -> { projects.values.map(&:errors).flatten }
 
-  before :validation, -> { self.region = self.region || ENV['AWS_REGION'] }
+  # Validate all resources
+  validate -> { all_resources.map(&:errors).flatten }
+
+  before :validation, -> { self.region ||= ENV['AWS_REGION'] }
 
   def initialize(name, &block)
     @name = name
-    @projects = []
     @outputs = []
     self.send("#{name}?=", true) # e.g. staging?
     instance_exec(self, &block) if block_given?
+  end
+
+  def project(org, name, &block)
+    project = create_project(org, name, &block)
+    supported_environments = [project.environments].flatten
+    # do not add the project if the project is not supported by this environment
+    return NullObject.new unless supported_environments.include?(@name)
+
+    projects[name] = project
   end
 
   def resource(type, id, &block)
@@ -77,53 +81,35 @@ class GeoEngineer::Environment
   end
 
   def all_resources
-    reses = resources
-    @projects.each { |project| reses += project.all_resources }
-    reses
-  end
-
-  # Factory for creating projects inside an environment
-  def project(org, name, &block)
-    # do not add the project a second time
-    exists = @projects.select { |p| p.org == org && p.name == name }.first
-    return exists if exists
-
-    project = GeoEngineer::Project.new(org, name, self, &block)
-
-    supported_environments = [project.environments].flatten
-    # do not add the project if the project is not supported by this environment
-    return NullObject.new unless supported_environments.include? @name
-
-    @projects << project
-    project
+    [resources, all_template_resources, all_project_resources].flatten
   end
 
   # DOT Methods
   # Given an attribute it tries to identify a dependency and return it
   def extract_dependencies(x)
-    if x.is_a? Array
-      x.map { |y| extract_dependencies(y) }.flatten
-    elsif x.is_a?(String)
-      res = self.find_resource_by_ref(x)
+    return x.map { |y| extract_dependencies(y) }.flatten if x.is_a? Array
+    return [x] if x.is_a?(GeoEngineer::Resource)
+
+    if x.is_a?(String)
+      res = find_resource_by_ref(x)
       return [res] if res
-    elsif x.is_a?(GeoEngineer::Resource)
-      return [x]
     end
+
     []
   end
 
   def depends_on(res)
-    all_attributes = []
-    all_attributes.concat res.attributes.values
-    all_attributes.concat res.subresources.map { |sr| sr.attributes.values }.flatten
-    dependencies = Set.new(all_attributes.map { |x| extract_dependencies(x) }.flatten)
-    dependencies.delete(nil)
-    dependencies
+    all_attributes = [res.attributes.values]
+    all_attributes
+      .concat(res.subresources.map { |sr| sr.attributes.values })
+      .map { |attr| extract_dependencies(attr) }
+      .flatten
+      .compact
+      .uniq
   end
 
   def to_dot
-    str = ["digraph {"]
-    str.concat(projects.map(&:to_dot))
+    str = ["digraph {", projects.values.map(&:to_dot)]
     all_resources.each do |res|
       str << depends_on(res).map { |r| "  #{res.to_ref.inspect} -> #{r.to_ref.inspect}" }
     end
