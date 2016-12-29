@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://coinbase.github.io/geoengineer"
   s.authors     = ['coinbase']
   s.email       = ['graham.jenson@coinbase.com']
-  s.license     = 'Apache 2.0'
+  s.license     = 'Apache-2.0'
 
   s.cert_chain  = ['certs/geoengineer-gem.pem']
   s.signing_key = File.expand_path("~/.ssh/geoengineer-gem-private-key.pem") if $0 =~ /gem\z/
