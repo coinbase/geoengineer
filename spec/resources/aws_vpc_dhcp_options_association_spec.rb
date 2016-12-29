@@ -15,13 +15,13 @@ describe("GeoEngineer::Resources::AwsVpcDhcpOptionsAssociation") do
           vpcs: [
             {
               vpc_id: 'name1',
-              cidr_block: "10.120.0.0/24",
+              cidr_block: "10.10.0.0/24",
               tags: [{ key: 'Name', value: 'one' }],
               dhcp_options_id: '1'
             },
             {
               vpc_id: 'name2',
-              cidr_block: "10.120.1.0/24",
+              cidr_block: "10.10.1.0/24",
               tags: [{ key: 'Name', value: 'two' }],
               dhcp_options_id: '2'
             }

@@ -11,8 +11,8 @@ describe("GeoEngineer::Resources::AwsVpc") do
         :describe_vpcs,
         {
           vpcs: [
-            { vpc_id: 'name1', cidr_block: "10.120.0.0/24", tags: [{ key: 'Name', value: 'one' }] },
-            { vpc_id: 'name2', cidr_block: "10.120.1.0/24", tags: [{ key: 'Name', value: 'two' }] }
+            { vpc_id: 'name1', cidr_block: "10.10.0.0/24", tags: [{ key: 'Name', value: 'one' }] },
+            { vpc_id: 'name2', cidr_block: "10.10.1.0/24", tags: [{ key: 'Name', value: 'two' }] }
           ]
         }
       )

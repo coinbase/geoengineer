@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    geoengineer (0.1.0)
+    geoengineer (0.1.1)
       aws-sdk (~> 2.2)
       colorize (~> 0.7)
       commander (~> 4.4)
@@ -12,12 +12,12 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.3.0)
-    aws-sdk (2.6.3)
-      aws-sdk-resources (= 2.6.3)
-    aws-sdk-core (2.6.3)
+    aws-sdk (2.6.14)
+      aws-sdk-resources (= 2.6.14)
+    aws-sdk-core (2.6.14)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.6.3)
-      aws-sdk-core (= 2.6.3)
+    aws-sdk-resources (2.6.14)
+      aws-sdk-core (= 2.6.14)
     byebug (9.0.6)
     coderay (1.1.1)
     colorize (0.8.1)
@@ -61,7 +61,7 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
     slop (3.6.0)
-    terminal-table (1.7.2)
+    terminal-table (1.7.3)
       unicode-display_width (~> 1.1.1)
     unicode-display_width (1.1.1)
     yard (0.9.5)

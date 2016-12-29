@@ -176,7 +176,8 @@ resources</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Overridden By Project and Environment.</p>
+<p>Overridden By Template, Project and Environment, requires explicit override
+to avoid easy mistakes.</p>
 </div></span>
   
 </li>
@@ -275,7 +276,7 @@ resources</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#resources_grouped_by-instance_method" title="#resources_grouped_by (instance method)">#<strong>resources_grouped_by</strong>  &#x21d2; Object </a>
+      <a href="#resources_grouped_by-instance_method" title="#resources_grouped_by (instance method)">#<strong>resources_grouped_by</strong>(resources_to_group = all_resources)  &#x21d2; Object </a>
     
 
     
@@ -289,7 +290,9 @@ resources</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Returns: { value1: [ ], value2: [ ] }.</p>
+</div></span>
   
 </li>
 
@@ -312,6 +315,30 @@ resources</p>
 
   
     <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#resources_of_type_grouped_by-instance_method" title="#resources_of_type_grouped_by (instance method)">#<strong>resources_of_type_grouped_by</strong>(&amp;block)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns: { type1: { value1: [ ] }, type2: { value2: [ ] } }.</p>
+</div></span>
   
 </li>
 
@@ -373,13 +400,27 @@ resources</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Overridden By Project and Environment</p>
+<p>Overridden By Template, Project and Environment, requires explicit override
+to avoid easy mistakes</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>NotImplementedError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -387,15 +428,15 @@ resources</p>
       <pre class="lines">
 
 
-25
 26
-27</pre>
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_all_resources'>all_resources</span>
-  <span class='id identifier rubyid_resources'>resources</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Including class must override this method</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -428,18 +469,18 @@ resources</p>
       <pre class="lines">
 
 
-54
-55
-56
-57
-58
-59
-60
-61
-62</pre>
+67
+68
+69
+70
+71
+72
+73
+74
+75</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 67</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_resource'>create_resource</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='comment'># This will look for a class that is defined by the type so it can override functionality
@@ -470,12 +511,12 @@ resources</p>
       <pre class="lines">
 
 
-29
 30
-31</pre>
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 30</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_find_resource'>find_resource</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_all_resources'>all_resources</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span> <span class='op'>==</span> <span class='id identifier rubyid_type'>type</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span> <span class='op'>==</span> <span class='id identifier rubyid_id'>id</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -500,15 +541,15 @@ resources</p>
       <pre class="lines">
 
 
-33
 34
 35
 36
 37
-38</pre>
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_find_resource_by_ref'>find_resource_by_ref</span><span class='lparen'>(</span><span class='id identifier rubyid_ref'>ref</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_ref'>ref</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>${</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -556,32 +597,43 @@ resources</p>
       <div class="method_details ">
   <h3 class="signature " id="resources_grouped_by-instance_method">
   
-    #<strong>resources_grouped_by</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>resources_grouped_by</strong>(resources_to_group = all_resources)  &#x21d2; <tt>Object</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns: { value1: [ ], value2: [ ] }</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-40
-41
 42
 43
 44
 45
 46
-47</pre>
+47
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 42</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_resources_grouped_by'>resources_grouped_by</span>
-  <span class='id identifier rubyid_all_resources'>all_resources</span><span class='period'>.</span><span class='id identifier rubyid_each_with_object'>each_with_object</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_c'>c</span><span class='op'>|</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_resources_grouped_by'>resources_grouped_by</span><span class='lparen'>(</span><span class='id identifier rubyid_resources_to_group'>resources_to_group</span> <span class='op'>=</span> <span class='id identifier rubyid_all_resources'>all_resources</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_resources_to_group'>resources_to_group</span><span class='period'>.</span><span class='id identifier rubyid_each_with_object'>each_with_object</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_c'>c</span><span class='op'>|</span>
     <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_r'>r</span>
     <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='id identifier rubyid_value'>value</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
     <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='id identifier rubyid_value'>value</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_r'>r</span>
@@ -608,15 +660,68 @@ resources</p>
       <pre class="lines">
 
 
-49
-50
-51</pre>
+62
+63
+64</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 62</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_resources_of_type'>resources_of_type</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_all_resources'>all_resources</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span> <span class='op'>==</span> <span class='id identifier rubyid_type'>type</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="resources_of_type_grouped_by-instance_method">
+  
+    #<strong>resources_of_type_grouped_by</strong>(&amp;block)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns: { type1: { value1: [ ] }, type2: { value2: [ ] } }</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+52
+53
+54
+55
+56
+57
+58
+59
+60</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_resources.rb', line 52</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_resources_of_type_grouped_by'>resources_of_type_grouped_by</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_grouped'>grouped</span> <span class='op'>=</span> <span class='id identifier rubyid_resources_grouped_by'>resources_grouped_by</span><span class='lparen'>(</span><span class='id identifier rubyid_all_resources'>all_resources</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='symbol'>:type</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_grouped_arr'>grouped_arr</span> <span class='op'>=</span> <span class='id identifier rubyid_grouped'>grouped</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_grouped_resources'>grouped_resources</span><span class='op'>|</span>
+    <span class='lbracket'>[</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_resources_grouped_by'>resources_grouped_by</span><span class='lparen'>(</span><span class='id identifier rubyid_grouped_resources'>grouped_resources</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_grouped_arr'>grouped_arr</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -628,7 +733,7 @@ resources</p>
 </div>
 
       <div id="footer">
-  Generated on Tue Sep 20 11:20:04 2016 by
+  Generated on Thu Dec 29 11:27:31 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.3.1).
 </div>

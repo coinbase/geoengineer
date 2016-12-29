@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Class: Crc32
+  
+    &mdash; Documentation by YARD 0.9.5
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "Crc32";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="class_list.html"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index (C)</a> &raquo;
+    
+    
+    <span class="title">Crc32</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <iframe id="search_frame" src="class_list.html"></iframe>
+
+      <div id="content"><h1>Class: Crc32
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Crc32</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+    </dd>
+  </dl>
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/geoengineer/utils/crc32.rb</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Crc32 is a pure ruby implementation of CRC32. Copied from:</p>
+<ul><li>
+<p><a
+href="http://www.codeography.com/2009/05/22/pure-ruby-crc32-adccp-pkzip.html">www.codeography.com/2009/05/22/pure-ruby-crc32-adccp-pkzip.html</a></p>
+</li><li>
+<p><a
+href="https://github.com/postmodern/digest-crc/blob/master/lib/digest/crc32.rb">github.com/postmodern/digest-crc/blob/master/lib/digest/crc32.rb</a></p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  <h2>Constant Summary</h2>
+  <dl class="constants">
+    
+      <dt id="CRC_TABLE-constant" class="">CRC_TABLE =
+        
+      </dt>
+      <dd><pre class="code"><span class='lbracket'>[</span>
+  <span class='int'>0x00000000</span><span class='comma'>,</span> <span class='int'>0x77073096</span><span class='comma'>,</span> <span class='int'>0xee0e612c</span><span class='comma'>,</span> <span class='int'>0x990951ba</span><span class='comma'>,</span> <span class='int'>0x076dc419</span><span class='comma'>,</span> <span class='int'>0x706af48f</span><span class='comma'>,</span> <span class='int'>0xe963a535</span><span class='comma'>,</span> <span class='int'>0x9e6495a3</span><span class='comma'>,</span>
+  <span class='int'>0x0edb8832</span><span class='comma'>,</span> <span class='int'>0x79dcb8a4</span><span class='comma'>,</span> <span class='int'>0xe0d5e91e</span><span class='comma'>,</span> <span class='int'>0x97d2d988</span><span class='comma'>,</span> <span class='int'>0x09b64c2b</span><span class='comma'>,</span> <span class='int'>0x7eb17cbd</span><span class='comma'>,</span> <span class='int'>0xe7b82d07</span><span class='comma'>,</span> <span class='int'>0x90bf1d91</span><span class='comma'>,</span>
+  <span class='int'>0x1db71064</span><span class='comma'>,</span> <span class='int'>0x6ab020f2</span><span class='comma'>,</span> <span class='int'>0xf3b97148</span><span class='comma'>,</span> <span class='int'>0x84be41de</span><span class='comma'>,</span> <span class='int'>0x1adad47d</span><span class='comma'>,</span> <span class='int'>0x6ddde4eb</span><span class='comma'>,</span> <span class='int'>0xf4d4b551</span><span class='comma'>,</span> <span class='int'>0x83d385c7</span><span class='comma'>,</span>
+  <span class='int'>0x136c9856</span><span class='comma'>,</span> <span class='int'>0x646ba8c0</span><span class='comma'>,</span> <span class='int'>0xfd62f97a</span><span class='comma'>,</span> <span class='int'>0x8a65c9ec</span><span class='comma'>,</span> <span class='int'>0x14015c4f</span><span class='comma'>,</span> <span class='int'>0x63066cd9</span><span class='comma'>,</span> <span class='int'>0xfa0f3d63</span><span class='comma'>,</span> <span class='int'>0x8d080df5</span><span class='comma'>,</span>
+  <span class='int'>0x3b6e20c8</span><span class='comma'>,</span> <span class='int'>0x4c69105e</span><span class='comma'>,</span> <span class='int'>0xd56041e4</span><span class='comma'>,</span> <span class='int'>0xa2677172</span><span class='comma'>,</span> <span class='int'>0x3c03e4d1</span><span class='comma'>,</span> <span class='int'>0x4b04d447</span><span class='comma'>,</span> <span class='int'>0xd20d85fd</span><span class='comma'>,</span> <span class='int'>0xa50ab56b</span><span class='comma'>,</span>
+  <span class='int'>0x35b5a8fa</span><span class='comma'>,</span> <span class='int'>0x42b2986c</span><span class='comma'>,</span> <span class='int'>0xdbbbc9d6</span><span class='comma'>,</span> <span class='int'>0xacbcf940</span><span class='comma'>,</span> <span class='int'>0x32d86ce3</span><span class='comma'>,</span> <span class='int'>0x45df5c75</span><span class='comma'>,</span> <span class='int'>0xdcd60dcf</span><span class='comma'>,</span> <span class='int'>0xabd13d59</span><span class='comma'>,</span>
+  <span class='int'>0x26d930ac</span><span class='comma'>,</span> <span class='int'>0x51de003a</span><span class='comma'>,</span> <span class='int'>0xc8d75180</span><span class='comma'>,</span> <span class='int'>0xbfd06116</span><span class='comma'>,</span> <span class='int'>0x21b4f4b5</span><span class='comma'>,</span> <span class='int'>0x56b3c423</span><span class='comma'>,</span> <span class='int'>0xcfba9599</span><span class='comma'>,</span> <span class='int'>0xb8bda50f</span><span class='comma'>,</span>
+  <span class='int'>0x2802b89e</span><span class='comma'>,</span> <span class='int'>0x5f058808</span><span class='comma'>,</span> <span class='int'>0xc60cd9b2</span><span class='comma'>,</span> <span class='int'>0xb10be924</span><span class='comma'>,</span> <span class='int'>0x2f6f7c87</span><span class='comma'>,</span> <span class='int'>0x58684c11</span><span class='comma'>,</span> <span class='int'>0xc1611dab</span><span class='comma'>,</span> <span class='int'>0xb6662d3d</span><span class='comma'>,</span>
+  <span class='int'>0x76dc4190</span><span class='comma'>,</span> <span class='int'>0x01db7106</span><span class='comma'>,</span> <span class='int'>0x98d220bc</span><span class='comma'>,</span> <span class='int'>0xefd5102a</span><span class='comma'>,</span> <span class='int'>0x71b18589</span><span class='comma'>,</span> <span class='int'>0x06b6b51f</span><span class='comma'>,</span> <span class='int'>0x9fbfe4a5</span><span class='comma'>,</span> <span class='int'>0xe8b8d433</span><span class='comma'>,</span>
+  <span class='int'>0x7807c9a2</span><span class='comma'>,</span> <span class='int'>0x0f00f934</span><span class='comma'>,</span> <span class='int'>0x9609a88e</span><span class='comma'>,</span> <span class='int'>0xe10e9818</span><span class='comma'>,</span> <span class='int'>0x7f6a0dbb</span><span class='comma'>,</span> <span class='int'>0x086d3d2d</span><span class='comma'>,</span> <span class='int'>0x91646c97</span><span class='comma'>,</span> <span class='int'>0xe6635c01</span><span class='comma'>,</span>
+  <span class='int'>0x6b6b51f4</span><span class='comma'>,</span> <span class='int'>0x1c6c6162</span><span class='comma'>,</span> <span class='int'>0x856530d8</span><span class='comma'>,</span> <span class='int'>0xf262004e</span><span class='comma'>,</span> <span class='int'>0x6c0695ed</span><span class='comma'>,</span> <span class='int'>0x1b01a57b</span><span class='comma'>,</span> <span class='int'>0x8208f4c1</span><span class='comma'>,</span> <span class='int'>0xf50fc457</span><span class='comma'>,</span>
+  <span class='int'>0x65b0d9c6</span><span class='comma'>,</span> <span class='int'>0x12b7e950</span><span class='comma'>,</span> <span class='int'>0x8bbeb8ea</span><span class='comma'>,</span> <span class='int'>0xfcb9887c</span><span class='comma'>,</span> <span class='int'>0x62dd1ddf</span><span class='comma'>,</span> <span class='int'>0x15da2d49</span><span class='comma'>,</span> <span class='int'>0x8cd37cf3</span><span class='comma'>,</span> <span class='int'>0xfbd44c65</span><span class='comma'>,</span>
+  <span class='int'>0x4db26158</span><span class='comma'>,</span> <span class='int'>0x3ab551ce</span><span class='comma'>,</span> <span class='int'>0xa3bc0074</span><span class='comma'>,</span> <span class='int'>0xd4bb30e2</span><span class='comma'>,</span> <span class='int'>0x4adfa541</span><span class='comma'>,</span> <span class='int'>0x3dd895d7</span><span class='comma'>,</span> <span class='int'>0xa4d1c46d</span><span class='comma'>,</span> <span class='int'>0xd3d6f4fb</span><span class='comma'>,</span>
+  <span class='int'>0x4369e96a</span><span class='comma'>,</span> <span class='int'>0x346ed9fc</span><span class='comma'>,</span> <span class='int'>0xad678846</span><span class='comma'>,</span> <span class='int'>0xda60b8d0</span><span class='comma'>,</span> <span class='int'>0x44042d73</span><span class='comma'>,</span> <span class='int'>0x33031de5</span><span class='comma'>,</span> <span class='int'>0xaa0a4c5f</span><span class='comma'>,</span> <span class='int'>0xdd0d7cc9</span><span class='comma'>,</span>
+  <span class='int'>0x5005713c</span><span class='comma'>,</span> <span class='int'>0x270241aa</span><span class='comma'>,</span> <span class='int'>0xbe0b1010</span><span class='comma'>,</span> <span class='int'>0xc90c2086</span><span class='comma'>,</span> <span class='int'>0x5768b525</span><span class='comma'>,</span> <span class='int'>0x206f85b3</span><span class='comma'>,</span> <span class='int'>0xb966d409</span><span class='comma'>,</span> <span class='int'>0xce61e49f</span><span class='comma'>,</span>
+  <span class='int'>0x5edef90e</span><span class='comma'>,</span> <span class='int'>0x29d9c998</span><span class='comma'>,</span> <span class='int'>0xb0d09822</span><span class='comma'>,</span> <span class='int'>0xc7d7a8b4</span><span class='comma'>,</span> <span class='int'>0x59b33d17</span><span class='comma'>,</span> <span class='int'>0x2eb40d81</span><span class='comma'>,</span> <span class='int'>0xb7bd5c3b</span><span class='comma'>,</span> <span class='int'>0xc0ba6cad</span><span class='comma'>,</span>
+  <span class='int'>0xedb88320</span><span class='comma'>,</span> <span class='int'>0x9abfb3b6</span><span class='comma'>,</span> <span class='int'>0x03b6e20c</span><span class='comma'>,</span> <span class='int'>0x74b1d29a</span><span class='comma'>,</span> <span class='int'>0xead54739</span><span class='comma'>,</span> <span class='int'>0x9dd277af</span><span class='comma'>,</span> <span class='int'>0x04db2615</span><span class='comma'>,</span> <span class='int'>0x73dc1683</span><span class='comma'>,</span>
+  <span class='int'>0xe3630b12</span><span class='comma'>,</span> <span class='int'>0x94643b84</span><span class='comma'>,</span> <span class='int'>0x0d6d6a3e</span><span class='comma'>,</span> <span class='int'>0x7a6a5aa8</span><span class='comma'>,</span> <span class='int'>0xe40ecf0b</span><span class='comma'>,</span> <span class='int'>0x9309ff9d</span><span class='comma'>,</span> <span class='int'>0x0a00ae27</span><span class='comma'>,</span> <span class='int'>0x7d079eb1</span><span class='comma'>,</span>
+  <span class='int'>0xf00f9344</span><span class='comma'>,</span> <span class='int'>0x8708a3d2</span><span class='comma'>,</span> <span class='int'>0x1e01f268</span><span class='comma'>,</span> <span class='int'>0x6906c2fe</span><span class='comma'>,</span> <span class='int'>0xf762575d</span><span class='comma'>,</span> <span class='int'>0x806567cb</span><span class='comma'>,</span> <span class='int'>0x196c3671</span><span class='comma'>,</span> <span class='int'>0x6e6b06e7</span><span class='comma'>,</span>
+  <span class='int'>0xfed41b76</span><span class='comma'>,</span> <span class='int'>0x89d32be0</span><span class='comma'>,</span> <span class='int'>0x10da7a5a</span><span class='comma'>,</span> <span class='int'>0x67dd4acc</span><span class='comma'>,</span> <span class='int'>0xf9b9df6f</span><span class='comma'>,</span> <span class='int'>0x8ebeeff9</span><span class='comma'>,</span> <span class='int'>0x17b7be43</span><span class='comma'>,</span> <span class='int'>0x60b08ed5</span><span class='comma'>,</span>
+  <span class='int'>0xd6d6a3e8</span><span class='comma'>,</span> <span class='int'>0xa1d1937e</span><span class='comma'>,</span> <span class='int'>0x38d8c2c4</span><span class='comma'>,</span> <span class='int'>0x4fdff252</span><span class='comma'>,</span> <span class='int'>0xd1bb67f1</span><span class='comma'>,</span> <span class='int'>0xa6bc5767</span><span class='comma'>,</span> <span class='int'>0x3fb506dd</span><span class='comma'>,</span> <span class='int'>0x48b2364b</span><span class='comma'>,</span>
+  <span class='int'>0xd80d2bda</span><span class='comma'>,</span> <span class='int'>0xaf0a1b4c</span><span class='comma'>,</span> <span class='int'>0x36034af6</span><span class='comma'>,</span> <span class='int'>0x41047a60</span><span class='comma'>,</span> <span class='int'>0xdf60efc3</span><span class='comma'>,</span> <span class='int'>0xa867df55</span><span class='comma'>,</span> <span class='int'>0x316e8eef</span><span class='comma'>,</span> <span class='int'>0x4669be79</span><span class='comma'>,</span>
+  <span class='int'>0xcb61b38c</span><span class='comma'>,</span> <span class='int'>0xbc66831a</span><span class='comma'>,</span> <span class='int'>0x256fd2a0</span><span class='comma'>,</span> <span class='int'>0x5268e236</span><span class='comma'>,</span> <span class='int'>0xcc0c7795</span><span class='comma'>,</span> <span class='int'>0xbb0b4703</span><span class='comma'>,</span> <span class='int'>0x220216b9</span><span class='comma'>,</span> <span class='int'>0x5505262f</span><span class='comma'>,</span>
+  <span class='int'>0xc5ba3bbe</span><span class='comma'>,</span> <span class='int'>0xb2bd0b28</span><span class='comma'>,</span> <span class='int'>0x2bb45a92</span><span class='comma'>,</span> <span class='int'>0x5cb36a04</span><span class='comma'>,</span> <span class='int'>0xc2d7ffa7</span><span class='comma'>,</span> <span class='int'>0xb5d0cf31</span><span class='comma'>,</span> <span class='int'>0x2cd99e8b</span><span class='comma'>,</span> <span class='int'>0x5bdeae1d</span><span class='comma'>,</span>
+  <span class='int'>0x9b64c2b0</span><span class='comma'>,</span> <span class='int'>0xec63f226</span><span class='comma'>,</span> <span class='int'>0x756aa39c</span><span class='comma'>,</span> <span class='int'>0x026d930a</span><span class='comma'>,</span> <span class='int'>0x9c0906a9</span><span class='comma'>,</span> <span class='int'>0xeb0e363f</span><span class='comma'>,</span> <span class='int'>0x72076785</span><span class='comma'>,</span> <span class='int'>0x05005713</span><span class='comma'>,</span>
+  <span class='int'>0x95bf4a82</span><span class='comma'>,</span> <span class='int'>0xe2b87a14</span><span class='comma'>,</span> <span class='int'>0x7bb12bae</span><span class='comma'>,</span> <span class='int'>0x0cb61b38</span><span class='comma'>,</span> <span class='int'>0x92d28e9b</span><span class='comma'>,</span> <span class='int'>0xe5d5be0d</span><span class='comma'>,</span> <span class='int'>0x7cdcefb7</span><span class='comma'>,</span> <span class='int'>0x0bdbdf21</span><span class='comma'>,</span>
+  <span class='int'>0x86d3d2d4</span><span class='comma'>,</span> <span class='int'>0xf1d4e242</span><span class='comma'>,</span> <span class='int'>0x68ddb3f8</span><span class='comma'>,</span> <span class='int'>0x1fda836e</span><span class='comma'>,</span> <span class='int'>0x81be16cd</span><span class='comma'>,</span> <span class='int'>0xf6b9265b</span><span class='comma'>,</span> <span class='int'>0x6fb077e1</span><span class='comma'>,</span> <span class='int'>0x18b74777</span><span class='comma'>,</span>
+  <span class='int'>0x88085ae6</span><span class='comma'>,</span> <span class='int'>0xff0f6a70</span><span class='comma'>,</span> <span class='int'>0x66063bca</span><span class='comma'>,</span> <span class='int'>0x11010b5c</span><span class='comma'>,</span> <span class='int'>0x8f659eff</span><span class='comma'>,</span> <span class='int'>0xf862ae69</span><span class='comma'>,</span> <span class='int'>0x616bffd3</span><span class='comma'>,</span> <span class='int'>0x166ccf45</span><span class='comma'>,</span>
+  <span class='int'>0xa00ae278</span><span class='comma'>,</span> <span class='int'>0xd70dd2ee</span><span class='comma'>,</span> <span class='int'>0x4e048354</span><span class='comma'>,</span> <span class='int'>0x3903b3c2</span><span class='comma'>,</span> <span class='int'>0xa7672661</span><span class='comma'>,</span> <span class='int'>0xd06016f7</span><span class='comma'>,</span> <span class='int'>0x4969474d</span><span class='comma'>,</span> <span class='int'>0x3e6e77db</span><span class='comma'>,</span>
+  <span class='int'>0xaed16a4a</span><span class='comma'>,</span> <span class='int'>0xd9d65adc</span><span class='comma'>,</span> <span class='int'>0x40df0b66</span><span class='comma'>,</span> <span class='int'>0x37d83bf0</span><span class='comma'>,</span> <span class='int'>0xa9bcae53</span><span class='comma'>,</span> <span class='int'>0xdebb9ec5</span><span class='comma'>,</span> <span class='int'>0x47b2cf7f</span><span class='comma'>,</span> <span class='int'>0x30b5ffe9</span><span class='comma'>,</span>
+  <span class='int'>0xbdbdf21c</span><span class='comma'>,</span> <span class='int'>0xcabac28a</span><span class='comma'>,</span> <span class='int'>0x53b39330</span><span class='comma'>,</span> <span class='int'>0x24b4a3a6</span><span class='comma'>,</span> <span class='int'>0xbad03605</span><span class='comma'>,</span> <span class='int'>0xcdd70693</span><span class='comma'>,</span> <span class='int'>0x54de5729</span><span class='comma'>,</span> <span class='int'>0x23d967bf</span><span class='comma'>,</span>
+  <span class='int'>0xb3667a2e</span><span class='comma'>,</span> <span class='int'>0xc4614ab8</span><span class='comma'>,</span> <span class='int'>0x5d681b02</span><span class='comma'>,</span> <span class='int'>0x2a6f2b94</span><span class='comma'>,</span> <span class='int'>0xb40bbe37</span><span class='comma'>,</span> <span class='int'>0xc30c8ea1</span><span class='comma'>,</span> <span class='int'>0x5a05df1b</span><span class='comma'>,</span> <span class='int'>0x2d02ef8d</span>
+<span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+    
+      <dt id="INIT_CRC-constant" class="">INIT_CRC =
+        
+      </dt>
+      <dd><pre class="code"><span class='int'>0xffffffff</span></pre></dd>
+    
+      <dt id="XOR_MASK-constant" class="">XOR_MASK =
+        
+      </dt>
+      <dd><pre class="code"><span class='int'>0xffffffff</span></pre></dd>
+    
+  </dl>
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#checksum-class_method" title="checksum (class method)">.<strong>checksum</strong>(string, crc = INIT_CRC)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#hashcode-class_method" title="hashcode (class method)">.<strong>hashcode</strong>(string)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="checksum-class_method">
+  
+    .<strong>checksum</strong>(string, crc = INIT_CRC)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+46
+47
+48
+49
+50
+51</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/crc32.rb', line 46</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_checksum'>checksum</span><span class='lparen'>(</span><span class='id identifier rubyid_string'>string</span><span class='comma'>,</span> <span class='id identifier rubyid_crc'>crc</span> <span class='op'>=</span> <span class='const'>INIT_CRC</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_string'>string</span><span class='period'>.</span><span class='id identifier rubyid_each_byte'>each_byte</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_byte'>byte</span><span class='op'>|</span>
+    <span class='id identifier rubyid_crc'>crc</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='lparen'>(</span><span class='lparen'>(</span><span class='id identifier rubyid_crc'>crc</span> <span class='op'>&gt;&gt;</span> <span class='int'>8</span><span class='rparen'>)</span> <span class='op'>&amp;</span> <span class='int'>0x00ffffff</span><span class='rparen'>)</span> <span class='op'>^</span> <span class='const'>CRC_TABLE</span><span class='lbracket'>[</span><span class='lparen'>(</span><span class='id identifier rubyid_crc'>crc</span> <span class='op'>^</span> <span class='id identifier rubyid_byte'>byte</span><span class='rparen'>)</span> <span class='op'>&amp;</span> <span class='int'>0xff</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_crc'>crc</span> <span class='op'>^</span> <span class='const'>XOR_MASK</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="hashcode-class_method">
+  
+    .<strong>hashcode</strong>(string)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+53
+54
+55
+56
+57
+58
+59
+60</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/crc32.rb', line 53</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_hashcode'>hashcode</span><span class='lparen'>(</span><span class='id identifier rubyid_string'>string</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='int'>0</span> <span class='kw'>unless</span> <span class='id identifier rubyid_string'>string</span>
+
+  <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_checksum'>checksum</span><span class='lparen'>(</span><span class='id identifier rubyid_string'>string</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_value'>value</span> <span class='kw'>if</span> <span class='id identifier rubyid_value'>value</span> <span class='op'>&gt;=</span> <span class='int'>0</span>
+  <span class='kw'>return</span> <span class='op'>-</span><span class='id identifier rubyid_value'>value</span> <span class='kw'>if</span> <span class='id identifier rubyid_value'>value</span> <span class='op'>&lt;=</span> <span class='int'>0</span>
+  <span class='int'>0</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Thu Dec 29 11:27:32 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.5 (ruby-2.3.1).
+</div>
+
+    </div>
+  </body>
+</html>
