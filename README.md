@@ -30,7 +30,7 @@ Instructions to install Ruby can be found [here](https://www.ruby-lang.org/en/do
 ### Install GeoEngineer
 
 ```
-gem cert --add <(https://raw.githubusercontent.com/coinbase/geoengineer/master/certs/geoengineer-gem.pem)
+gem cert --add <(curl -Ls https://raw.githubusercontent.com/coinbase/geoengineer/master/certs/geoengineer-gem.pem)
 gem install geoengineer --trust-policy HighSecurity
 ```
 
