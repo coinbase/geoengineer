@@ -185,7 +185,7 @@ class GeoCLI
 
   def run
     program :name, 'GeoEngineer'
-    program :version, '0.0.1'
+    program :version, GeoEngineer::VERSION
     program :description, 'GeoEngineer will help you Terraform your resources'
     always_trace!
 
