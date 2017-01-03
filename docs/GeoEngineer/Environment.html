@@ -91,7 +91,7 @@
   
   <dl>
       <dt>Includes:</dt>
-      <dd><span class='object_link'><a href="../HasAttributes.html" title="HasAttributes (module)">HasAttributes</a></span>, <span class='object_link'><a href="../HasLifecycle.html" title="HasLifecycle (module)">HasLifecycle</a></span>, <span class='object_link'><a href="../HasResources.html" title="HasResources (module)">HasResources</a></span>, <span class='object_link'><a href="../HasValidations.html" title="HasValidations (module)">HasValidations</a></span></dd>
+      <dd><span class='object_link'><a href="../HasAttributes.html" title="HasAttributes (module)">HasAttributes</a></span>, <span class='object_link'><a href="../HasLifecycle.html" title="HasLifecycle (module)">HasLifecycle</a></span>, <span class='object_link'><a href="../HasProjects.html" title="HasProjects (module)">HasProjects</a></span>, <span class='object_link'><a href="../HasResources.html" title="HasResources (module)">HasResources</a></span>, <span class='object_link'><a href="../HasTemplates.html" title="HasTemplates (module)">HasTemplates</a></span>, <span class='object_link'><a href="../HasValidations.html" title="HasValidations (module)">HasValidations</a></span></dd>
   </dl>
   
   
@@ -153,35 +153,6 @@ lifecycle hooks</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Returns the value of attribute name.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#projects-instance_method" title="#projects (instance method)">#<strong>projects</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute projects.</p>
 </div></span>
   
 </li>
@@ -322,6 +293,28 @@ it.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#json_resources-instance_method" title="#json_resources (instance method)">#<strong>json_resources</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#output-instance_method" title="#output (instance method)">#<strong>output</strong>(id, value, &amp;block)  &#x21d2; Object </a>
     
 
@@ -358,9 +351,7 @@ it.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Factory for creating projects inside an environment.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -523,7 +514,29 @@ it.</p>
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../HasValidations.html" title="HasValidations (module)">HasValidations</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../HasValidations.html#errors-instance_method" title="HasValidations#errors (method)">#errors</a></span>, <span class='object_link'><a href="../HasValidations.html#included-class_method" title="HasValidations.included (method)">included</a></span>, <span class='object_link'><a href="../HasValidations.html#validate_required_attributes-instance_method" title="HasValidations#validate_required_attributes (method)">#validate_required_attributes</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../HasValidations.html#errors-instance_method" title="HasValidations#errors (method)">#errors</a></span>, <span class='object_link'><a href="../HasValidations.html#included-class_method" title="HasValidations.included (method)">included</a></span>, <span class='object_link'><a href="../HasValidations.html#validate_at_least_one_present-instance_method" title="HasValidations#validate_at_least_one_present (method)">#validate_at_least_one_present</a></span>, <span class='object_link'><a href="../HasValidations.html#validate_cidr_block-instance_method" title="HasValidations#validate_cidr_block (method)">#validate_cidr_block</a></span>, <span class='object_link'><a href="../HasValidations.html#validate_only_one_present-instance_method" title="HasValidations#validate_only_one_present (method)">#validate_only_one_present</a></span>, <span class='object_link'><a href="../HasValidations.html#validate_required_attributes-instance_method" title="HasValidations#validate_required_attributes (method)">#validate_required_attributes</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../HasTemplates.html" title="HasTemplates (module)">HasTemplates</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../HasTemplates.html#all_template_resources-instance_method" title="HasTemplates#all_template_resources (method)">#all_template_resources</a></span>, <span class='object_link'><a href="../HasTemplates.html#find_template-instance_method" title="HasTemplates#find_template (method)">#find_template</a></span>, <span class='object_link'><a href="../HasTemplates.html#from_template-instance_method" title="HasTemplates#from_template (method)">#from_template</a></span>, <span class='object_link'><a href="../HasTemplates.html#templates-instance_method" title="HasTemplates#templates (method)">#templates</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../HasProjects.html" title="HasProjects (module)">HasProjects</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../HasProjects.html#all_project_resources-instance_method" title="HasProjects#all_project_resources (method)">#all_project_resources</a></span>, <span class='object_link'><a href="../HasProjects.html#create_project-instance_method" title="HasProjects#create_project (method)">#create_project</a></span>, <span class='object_link'><a href="../HasProjects.html#projects-instance_method" title="HasProjects#projects (method)">#projects</a></span></p>
 
   
   
@@ -534,7 +547,7 @@ it.</p>
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../HasResources.html" title="HasResources (module)">HasResources</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../HasResources.html#create_resource-instance_method" title="HasResources#create_resource (method)">#create_resource</a></span>, <span class='object_link'><a href="../HasResources.html#find_resource-instance_method" title="HasResources#find_resource (method)">#find_resource</a></span>, <span class='object_link'><a href="../HasResources.html#find_resource_by_ref-instance_method" title="HasResources#find_resource_by_ref (method)">#find_resource_by_ref</a></span>, <span class='object_link'><a href="../HasResources.html#included-class_method" title="HasResources.included (method)">included</a></span>, <span class='object_link'><a href="../HasResources.html#resources-instance_method" title="HasResources#resources (method)">#resources</a></span>, <span class='object_link'><a href="../HasResources.html#resources_grouped_by-instance_method" title="HasResources#resources_grouped_by (method)">#resources_grouped_by</a></span>, <span class='object_link'><a href="../HasResources.html#resources_of_type-instance_method" title="HasResources#resources_of_type (method)">#resources_of_type</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../HasResources.html#create_resource-instance_method" title="HasResources#create_resource (method)">#create_resource</a></span>, <span class='object_link'><a href="../HasResources.html#find_resource-instance_method" title="HasResources#find_resource (method)">#find_resource</a></span>, <span class='object_link'><a href="../HasResources.html#find_resource_by_ref-instance_method" title="HasResources#find_resource_by_ref (method)">#find_resource_by_ref</a></span>, <span class='object_link'><a href="../HasResources.html#included-class_method" title="HasResources.included (method)">included</a></span>, <span class='object_link'><a href="../HasResources.html#resources-instance_method" title="HasResources#resources (method)">#resources</a></span>, <span class='object_link'><a href="../HasResources.html#resources_grouped_by-instance_method" title="HasResources#resources_grouped_by (method)">#resources_grouped_by</a></span>, <span class='object_link'><a href="../HasResources.html#resources_of_type-instance_method" title="HasResources#resources_of_type (method)">#resources_of_type</a></span>, <span class='object_link'><a href="../HasResources.html#resources_of_type_grouped_by-instance_method" title="HasResources#resources_of_type_grouped_by (method)">#resources_of_type_grouped_by</a></span></p>
 
   
   
@@ -545,7 +558,7 @@ it.</p>
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../HasAttributes.html" title="HasAttributes (module)">HasAttributes</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../HasAttributes.html#%5B%5D-instance_method" title="HasAttributes#[] (method)">#[]</a></span>, <span class='object_link'><a href="../HasAttributes.html#%5B%5D%3D-instance_method" title="HasAttributes#[]= (method)">#[]=</a></span>, <span class='object_link'><a href="../HasAttributes.html#assign_attribute-instance_method" title="HasAttributes#assign_attribute (method)">#assign_attribute</a></span>, <span class='object_link'><a href="../HasAttributes.html#assign_block-instance_method" title="HasAttributes#assign_block (method)">#assign_block</a></span>, <span class='object_link'><a href="../HasAttributes.html#attribute_missing-instance_method" title="HasAttributes#attribute_missing (method)">#attribute_missing</a></span>, <span class='object_link'><a href="../HasAttributes.html#attributes-instance_method" title="HasAttributes#attributes (method)">#attributes</a></span>, <span class='object_link'><a href="../HasAttributes.html#delete-instance_method" title="HasAttributes#delete (method)">#delete</a></span>, <span class='object_link'><a href="../HasAttributes.html#method_missing-instance_method" title="HasAttributes#method_missing (method)">#method_missing</a></span>, <span class='object_link'><a href="../HasAttributes.html#retrieve_attribute-instance_method" title="HasAttributes#retrieve_attribute (method)">#retrieve_attribute</a></span>, <span class='object_link'><a href="../HasAttributes.html#terraform_attribute_ref-instance_method" title="HasAttributes#terraform_attribute_ref (method)">#terraform_attribute_ref</a></span>, <span class='object_link'><a href="../HasAttributes.html#terraform_attributes-instance_method" title="HasAttributes#terraform_attributes (method)">#terraform_attributes</a></span>, <span class='object_link'><a href="../HasAttributes.html#timeout-instance_method" title="HasAttributes#timeout (method)">#timeout</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../HasAttributes.html#%5B%5D-instance_method" title="HasAttributes#[] (method)">#[]</a></span>, <span class='object_link'><a href="../HasAttributes.html#%5B%5D%3D-instance_method" title="HasAttributes#[]= (method)">#[]=</a></span>, <span class='object_link'><a href="../HasAttributes.html#assign_attribute-instance_method" title="HasAttributes#assign_attribute (method)">#assign_attribute</a></span>, <span class='object_link'><a href="../HasAttributes.html#assign_block-instance_method" title="HasAttributes#assign_block (method)">#assign_block</a></span>, <span class='object_link'><a href="../HasAttributes.html#attribute_missing-instance_method" title="HasAttributes#attribute_missing (method)">#attribute_missing</a></span>, <span class='object_link'><a href="../HasAttributes.html#attribute_procs-instance_method" title="HasAttributes#attribute_procs (method)">#attribute_procs</a></span>, <span class='object_link'><a href="../HasAttributes.html#attributes-instance_method" title="HasAttributes#attributes (method)">#attributes</a></span>, <span class='object_link'><a href="../HasAttributes.html#delete-instance_method" title="HasAttributes#delete (method)">#delete</a></span>, <span class='object_link'><a href="../HasAttributes.html#eager_load_attributes-instance_method" title="HasAttributes#eager_load_attributes (method)">#eager_load_attributes</a></span>, <span class='object_link'><a href="../HasAttributes.html#method_missing-instance_method" title="HasAttributes#method_missing (method)">#method_missing</a></span>, <span class='object_link'><a href="../HasAttributes.html#reset_attributes-instance_method" title="HasAttributes#reset_attributes (method)">#reset_attributes</a></span>, <span class='object_link'><a href="../HasAttributes.html#retrieve_attribute-instance_method" title="HasAttributes#retrieve_attribute (method)">#retrieve_attribute</a></span>, <span class='object_link'><a href="../HasAttributes.html#terraform_attribute_ref-instance_method" title="HasAttributes#terraform_attribute_ref (method)">#terraform_attribute_ref</a></span>, <span class='object_link'><a href="../HasAttributes.html#terraform_attributes-instance_method" title="HasAttributes#terraform_attributes (method)">#terraform_attributes</a></span>, <span class='object_link'><a href="../HasAttributes.html#timeout-instance_method" title="HasAttributes#timeout (method)">#timeout</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -575,20 +588,18 @@ it.</p>
       <pre class="lines">
 
 
-45
-46
-47
-48
-49
-50
-51</pre>
+54
+55
+56
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@name</span> <span class='op'>=</span> <span class='id identifier rubyid_name'>name</span>
-  <span class='ivar'>@projects</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='ivar'>@outputs</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'>?=</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span> <span class='comment'># e.g. staging?
 </span>  <span class='id identifier rubyid_instance_exec'>instance_exec</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -641,58 +652,15 @@ it.</p>
       <pre class="lines">
 
 
-14
-15
-16</pre>
+17
+18
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_name'>name</span>
   <span class='ivar'>@name</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="projects-instance_method">
-  
-    #<strong>projects</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute projects</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-14
-15
-16</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 14</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_projects'>projects</span>
-  <span class='ivar'>@projects</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -721,19 +689,15 @@ it.</p>
       <pre class="lines">
 
 
-66
-67
-68
-69
-70</pre>
+83
+84
+85</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 83</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_all_resources'>all_resources</span>
-  <span class='id identifier rubyid_reses'>reses</span> <span class='op'>=</span> <span class='id identifier rubyid_resources'>resources</span>
-  <span class='ivar'>@projects</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_project'>project</span><span class='op'>|</span> <span class='id identifier rubyid_reses'>reses</span> <span class='op'>+=</span> <span class='id identifier rubyid_project'>project</span><span class='period'>.</span><span class='id identifier rubyid_all_resources'>all_resources</span> <span class='rbrace'>}</span>
-  <span class='id identifier rubyid_reses'>reses</span>
+  <span class='lbracket'>[</span><span class='id identifier rubyid_resources'>resources</span><span class='comma'>,</span> <span class='id identifier rubyid_all_template_resources'>all_template_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_all_project_resources'>all_project_resources</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -766,19 +730,19 @@ it.</p>
       <pre class="lines">
 
 
-169
-170
-171
-172
-173</pre>
+176
+177
+178
+179
+180</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 169</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 176</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_codified_resources'>codified_resources</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
   <span class='comment'># managed resources have a remote resource
 </span>  <span class='id identifier rubyid_res'>res</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_resources_of_type'>resources_of_type</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='op'>!</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_remote_resource'>remote_resource</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='rbrace'>}</span>
-  <span class='id identifier rubyid_res'>res</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='id identifier rubyid_b'>b</span><span class='op'>|</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_terraform_name'>terraform_name</span> <span class='op'>&lt;=&gt;</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_terraform_name'>terraform_name</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_res'>res</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:terraform_name</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -800,6 +764,7 @@ it.</p>
       <pre class="lines">
 
 
+101
 102
 103
 104
@@ -810,15 +775,16 @@ it.</p>
 109</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 101</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_depends_on'>depends_on</span><span class='lparen'>(</span><span class='id identifier rubyid_res'>res</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_all_attributes'>all_attributes</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_all_attributes'>all_attributes</span><span class='period'>.</span><span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_res'>res</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span>
-  <span class='id identifier rubyid_all_attributes'>all_attributes</span><span class='period'>.</span><span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_res'>res</span><span class='period'>.</span><span class='id identifier rubyid_subresources'>subresources</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_sr'>sr</span><span class='op'>|</span> <span class='id identifier rubyid_sr'>sr</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span>
-  <span class='id identifier rubyid_dependencies'>dependencies</span> <span class='op'>=</span> <span class='const'>Set</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_all_attributes'>all_attributes</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_x'>x</span><span class='op'>|</span> <span class='id identifier rubyid_extract_dependencies'>extract_dependencies</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_dependencies'>dependencies</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_dependencies'>dependencies</span>
+  <span class='id identifier rubyid_all_attributes'>all_attributes</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='id identifier rubyid_res'>res</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_all_attributes'>all_attributes</span>
+    <span class='period'>.</span><span class='id identifier rubyid_concat'>concat</span><span class='lparen'>(</span><span class='id identifier rubyid_res'>res</span><span class='period'>.</span><span class='id identifier rubyid_subresources'>subresources</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_sr'>sr</span><span class='op'>|</span> <span class='id identifier rubyid_sr'>sr</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_attr'>attr</span><span class='op'>|</span> <span class='id identifier rubyid_extract_dependencies'>extract_dependencies</span><span class='lparen'>(</span><span class='id identifier rubyid_attr'>attr</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span>
+    <span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span>
+    <span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -852,6 +818,7 @@ it</p>
       <pre class="lines">
 
 
+89
 90
 91
 92
@@ -861,22 +828,59 @@ it</p>
 96
 97
 98
-99
-100</pre>
+99</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_extract_dependencies'>extract_dependencies</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Array</span>
-    <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_y'>y</span><span class='op'>|</span> <span class='id identifier rubyid_extract_dependencies'>extract_dependencies</span><span class='lparen'>(</span><span class='id identifier rubyid_y'>y</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span>
-  <span class='kw'>elsif</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_res'>res</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_find_resource_by_ref'>find_resource_by_ref</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_y'>y</span><span class='op'>|</span> <span class='id identifier rubyid_extract_dependencies'>extract_dependencies</span><span class='lparen'>(</span><span class='id identifier rubyid_y'>y</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span> <span class='kw'>if</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Array</span>
+  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='id identifier rubyid_x'>x</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resource</span><span class='rparen'>)</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_res'>res</span> <span class='op'>=</span> <span class='id identifier rubyid_find_resource_by_ref'>find_resource_by_ref</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='lbracket'>[</span><span class='id identifier rubyid_res'>res</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_res'>res</span>
-  <span class='kw'>elsif</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resource</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='lbracket'>[</span><span class='id identifier rubyid_x'>x</span><span class='rbracket'>]</span>
   <span class='kw'>end</span>
+
   <span class='lbracket'>[</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="json_resources-instance_method">
+  
+    #<strong>json_resources</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+149
+150
+151
+152
+153
+154
+155</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 149</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_json_resources'>json_resources</span>
+  <span class='id identifier rubyid_all_resources'>all_resources</span><span class='period'>.</span><span class='id identifier rubyid_each_with_object'>each_with_object</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_c'>c</span><span class='op'>|</span>
+    <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_terraform_json'>to_terraform_json</span>
+    <span class='id identifier rubyid_c'>c</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -898,14 +902,14 @@ it</p>
       <pre class="lines">
 
 
-60
-61
-62
-63
-64</pre>
+77
+78
+79
+80
+81</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 60</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_output'>output</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Output</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -926,54 +930,31 @@ it</p>
   
 
   
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Factory for creating projects inside an environment</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86</pre>
+61
+62
+63
+64
+65
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_project'>project</span><span class='lparen'>(</span><span class='id identifier rubyid_org'>org</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='comment'># do not add the project a second time
-</span>  <span class='id identifier rubyid_exists'>exists</span> <span class='op'>=</span> <span class='ivar'>@projects</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_p'>p</span><span class='op'>|</span> <span class='id identifier rubyid_p'>p</span><span class='period'>.</span><span class='id identifier rubyid_org'>org</span> <span class='op'>==</span> <span class='id identifier rubyid_org'>org</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_p'>p</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span> <span class='op'>==</span> <span class='id identifier rubyid_name'>name</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_exists'>exists</span> <span class='kw'>if</span> <span class='id identifier rubyid_exists'>exists</span>
-
-  <span class='id identifier rubyid_project'>project</span> <span class='op'>=</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Project</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_org'>org</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-
+  <span class='id identifier rubyid_project'>project</span> <span class='op'>=</span> <span class='id identifier rubyid_create_project'>create_project</span><span class='lparen'>(</span><span class='id identifier rubyid_org'>org</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_supported_environments'>supported_environments</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='id identifier rubyid_project'>project</span><span class='period'>.</span><span class='id identifier rubyid_environments'>environments</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span>
   <span class='comment'># do not add the project if the project is not supported by this environment
-</span>  <span class='kw'>return</span> <span class='const'>NullObject</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>unless</span> <span class='id identifier rubyid_supported_environments'>supported_environments</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='ivar'>@name</span>
+</span>  <span class='kw'>return</span> <span class='const'>NullObject</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>unless</span> <span class='id identifier rubyid_supported_environments'>supported_environments</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='ivar'>@name</span><span class='rparen'>)</span>
 
-  <span class='ivar'>@projects</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_project'>project</span>
-  <span class='id identifier rubyid_project'>project</span>
+  <span class='id identifier rubyid_projects'>projects</span><span class='lbracket'>[</span><span class='id identifier rubyid_name'>name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_project'>project</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -995,15 +976,15 @@ it</p>
       <pre class="lines">
 
 
-53
-54
-55
-56
-57
-58</pre>
+70
+71
+72
+73
+74
+75</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_find_resource'>find_resource</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -1038,15 +1019,13 @@ it</p>
 115
 116
 117
-118
-119</pre>
+118</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 111</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_dot'>to_dot</span>
-  <span class='id identifier rubyid_str'>str</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>digraph {</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_concat'>concat</span><span class='lparen'>(</span><span class='id identifier rubyid_projects'>projects</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_dot</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_str'>str</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>digraph {</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_projects'>projects</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_dot</span><span class='rparen'>)</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_all_resources'>all_resources</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_res'>res</span><span class='op'>|</span>
     <span class='id identifier rubyid_str'>str</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_depends_on'>depends_on</span><span class='lparen'>(</span><span class='id identifier rubyid_res'>res</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_res'>res</span><span class='period'>.</span><span class='id identifier rubyid_to_ref'>to_ref</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_content'> -&gt; </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_ref'>to_ref</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
   <span class='kw'>end</span>
@@ -1084,6 +1063,7 @@ it</p>
       <pre class="lines">
 
 
+121
 122
 123
 124
@@ -1093,20 +1073,27 @@ it</p>
 128
 129
 130
-131</pre>
+131
+132
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 122</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 121</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_terraform'>to_terraform</span>
   <span class='comment'># Force preventing the destruction of any resource unless explicitly set
 </span>  <span class='comment'># Hopefully this will stop accidentally the environment
 </span>  <span class='kw'>unless</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_allow_destroy'>allow_destroy</span>
     <span class='id identifier rubyid_all_resources'>all_resources</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span>
-      <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_lifecycle'>lifecycle</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_prevent_destroy'>prevent_destroy</span> <span class='kw'>true</span> <span class='rbrace'>}</span>
+      <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_lifecycle'>lifecycle</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_lifecycle'>lifecycle</span>
+      <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_lifecycle'>lifecycle</span><span class='period'>.</span><span class='id identifier rubyid_prevent_destroy'>prevent_destroy</span> <span class='op'>=</span> <span class='kw'>true</span>
     <span class='rbrace'>}</span>
   <span class='kw'>end</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_all_resources'>all_resources</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_terraform</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='ivar'>@outputs</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_terraform</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_tf_resources'>tf_resources</span> <span class='op'>=</span> <span class='id identifier rubyid_all_resources'>all_resources</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_terraform</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_tf_resources'>tf_resources</span> <span class='op'>+=</span> <span class='ivar'>@outputs</span><span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_terraform</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_tf_resources'>tf_resources</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1128,9 +1115,6 @@ it</p>
       <pre class="lines">
 
 
-133
-134
-135
 136
 137
 138
@@ -1142,31 +1126,22 @@ it</p>
 144
 145
 146
-147
-148
-149
-150</pre>
+147</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 133</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 136</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_terraform_json'>to_terraform_json</span>
   <span class='kw'>unless</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_allow_destroy'>allow_destroy</span>
     <span class='id identifier rubyid_all_resources'>all_resources</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span>
-      <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_lifecycle'>lifecycle</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_prevent_destroy'>prevent_destroy</span> <span class='kw'>true</span> <span class='rbrace'>}</span>
+      <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_lifecycle'>lifecycle</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_lifecycle'>lifecycle</span>
+      <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_lifecycle'>lifecycle</span><span class='period'>.</span><span class='id identifier rubyid_prevent_destroy'>prevent_destroy</span> <span class='op'>=</span> <span class='kw'>true</span>
     <span class='rbrace'>}</span>
   <span class='kw'>end</span>
 
-  <span class='id identifier rubyid_json_resources'>json_resources</span> <span class='op'>=</span> <span class='id identifier rubyid_all_resources'>all_resources</span><span class='period'>.</span><span class='id identifier rubyid_each_with_object'>each_with_object</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_c'>c</span><span class='op'>|</span>
-    <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
-    <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_terraform_json'>to_terraform_json</span>
-    <span class='id identifier rubyid_c'>c</span>
-  <span class='kw'>end</span>
-
-  <span class='lbrace'>{</span>
-    <span class='label'>resource:</span> <span class='id identifier rubyid_json_resources'>json_resources</span><span class='comma'>,</span>
-    <span class='label'>output:</span> <span class='ivar'>@outputs</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_terraform_json</span><span class='rparen'>)</span>
-  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_h'>h</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>resource:</span> <span class='id identifier rubyid_json_resources'>json_resources</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='symbol'>:output</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@outputs</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_terraform_json</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@outputs</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='id identifier rubyid_h'>h</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1188,11 +1163,6 @@ it</p>
       <pre class="lines">
 
 
-152
-153
-154
-155
-156
 157
 158
 159
@@ -1202,14 +1172,23 @@ it</p>
 163
 164
 165
-166</pre>
+166
+167
+168
+169
+170
+171
+172
+173</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 152</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 157</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_terraform_state'>to_terraform_state</span>
   <span class='id identifier rubyid_reses'>reses</span> <span class='op'>=</span> <span class='id identifier rubyid_all_resources'>all_resources</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:_terraform_id</span><span class='rparen'>)</span> <span class='comment'># _terraform_id must not be nil
-</span>  <span class='id identifier rubyid_reses'>reses</span> <span class='op'>=</span> <span class='id identifier rubyid_reses'>reses</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='embexpr_end'>}</span><span class='tstring_content'>.</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_terraform_state'>to_terraform_state</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='rbrace'>}</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_reduce'>reduce</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='symbol'>:merge</span><span class='rparen'>)</span>
+</span>
+  <span class='id identifier rubyid_reses'>reses</span> <span class='op'>=</span> <span class='id identifier rubyid_reses'>reses</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='embexpr_end'>}</span><span class='tstring_content'>.</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_terraform_state'>to_terraform_state</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='rbrace'>}</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_reduce'>reduce</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='symbol'>:merge</span><span class='rparen'>)</span>
+
   <span class='lbrace'>{</span>
     <span class='label'>version:</span> <span class='int'>1</span><span class='comma'>,</span>
     <span class='label'>serial:</span> <span class='int'>1</span><span class='comma'>,</span>
@@ -1242,21 +1221,21 @@ it</p>
       <pre class="lines">
 
 
-175
-176
-177
-178
-179
-180</pre>
+182
+183
+184
+185
+186
+187</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 175</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/environment.rb', line 182</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_uncodified_resources'>uncodified_resources</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
   <span class='comment'># unmanaged resources have a remote resource without local_resource
 </span>  <span class='id identifier rubyid_clazz'>clazz</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_get_resource_class_from_type'>get_resource_class_from_type</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_res'>res</span> <span class='op'>=</span> <span class='id identifier rubyid_clazz'>clazz</span><span class='period'>.</span><span class='id identifier rubyid_fetch_remote_resources'>fetch_remote_resources</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_local_resource'>local_resource</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='rbrace'>}</span>
-  <span class='id identifier rubyid_res'>res</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='id identifier rubyid_b'>b</span><span class='op'>|</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_terraform_name'>terraform_name</span> <span class='op'>&lt;=&gt;</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_terraform_name'>terraform_name</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_res'>res</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:terraform_name</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1268,7 +1247,7 @@ it</p>
 </div>
 
       <div id="footer">
-  Generated on Tue Sep 20 11:20:04 2016 by
+  Generated on Thu Dec 29 11:27:32 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.3.1).
 </div>

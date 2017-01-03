@@ -292,6 +292,28 @@
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#status_types-instance_method" title="#status_types (instance method)">#<strong>status_types</strong>(options)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
     </ul>
   
 
@@ -316,11 +338,6 @@
       <pre class="lines">
 
 
-53
-54
-55
-56
-57
 58
 59
 60
@@ -329,10 +346,15 @@
 63
 64
 65
-66</pre>
+66
+67
+68
+69
+70
+71</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/status_command.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/status_command.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_calculate_status'>calculate_status</span><span class='lparen'>(</span><span class='id identifier rubyid_type_stats'>type_stats</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_totals'>totals</span> <span class='op'>=</span> <span class='lbrace'>{</span>
@@ -410,19 +432,19 @@
       <pre class="lines">
 
 
-42
-43
-44
-45
-46
 47
 48
 49
 50
-51</pre>
+51
+52
+53
+54
+55
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/status_command.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/status_command.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_default_status_types'>default_status_types</span>
   <span class='lbracket'>[</span>
@@ -454,11 +476,6 @@
       <pre class="lines">
 
 
-77
-78
-79
-80
-81
 82
 83
 84
@@ -468,15 +485,20 @@
 88
 89
 90
-91</pre>
+91
+92
+93
+94
+95
+96</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/status_command.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/status_command.rb', line 82</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_status_action'>status_action</span>
   <span class='id identifier rubyid_lambda'>lambda</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='op'>|</span>
     <span class='id identifier rubyid_type_stats'>type_stats</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
-    <span class='id identifier rubyid_default_status_types'>default_status_types</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_type'>type</span><span class='op'>|</span>
+    <span class='id identifier rubyid_status_types'>status_types</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_type'>type</span><span class='op'>|</span>
       <span class='id identifier rubyid_codified'>codified</span> <span class='op'>=</span> <span class='ivar'>@environment</span><span class='period'>.</span><span class='id identifier rubyid_codified_resources'>codified_resources</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
       <span class='id identifier rubyid_uncodified'>uncodified</span> <span class='op'>=</span> <span class='ivar'>@environment</span><span class='period'>.</span><span class='id identifier rubyid_uncodified_resources'>uncodified_resources</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
       <span class='id identifier rubyid_type_stats'>type_stats</span><span class='lbracket'>[</span><span class='id identifier rubyid_type'>type</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_calculate_type_status'>calculate_type_status</span><span class='lparen'>(</span><span class='id identifier rubyid_codified'>codified</span><span class='comma'>,</span> <span class='id identifier rubyid_uncodified'>uncodified</span><span class='rparen'>)</span>
@@ -508,22 +530,24 @@
       <pre class="lines">
 
 
-93
-94
-95
-96
-97
 98
 99
-100</pre>
+100
+101
+102
+103
+104
+105
+106</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/status_command.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/status_command.rb', line 98</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_status_cmd'>status_cmd</span>
   <span class='id identifier rubyid_command'>command</span> <span class='symbol'>:status</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_c'>c</span><span class='op'>|</span>
     <span class='id identifier rubyid_c'>c</span><span class='period'>.</span><span class='id identifier rubyid_syntax'>syntax</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>geo status [&lt;geo_files&gt;]</span><span class='tstring_end'>&#39;</span></span>
     <span class='id identifier rubyid_c'>c</span><span class='period'>.</span><span class='id identifier rubyid_description'>description</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Displays the the new, managed and unmanaged resources</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_c'>c</span><span class='period'>.</span><span class='id identifier rubyid_option'>option</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>--resources COMMA SEPERATED STRING</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='const'>String</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select resources for statuses</span><span class='tstring_end'>&#39;</span></span>
     <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_status_action'>status_action</span>
     <span class='id identifier rubyid_c'>c</span><span class='period'>.</span><span class='id identifier rubyid_action'>action</span> <span class='id identifier rubyid_init_action'>init_action</span><span class='lparen'>(</span><span class='symbol'>:status</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_action'>action</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
@@ -598,17 +622,17 @@
       <pre class="lines">
 
 
-68
-69
-70
-71
-72
 73
 74
-75</pre>
+75
+76
+77
+78
+79
+80</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/status_command.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/status_command.rb', line 73</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_status_rows'>status_rows</span><span class='lparen'>(</span><span class='id identifier rubyid_stats'>stats</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_rows'>rows</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -675,12 +699,44 @@
 </table>
 </div>
     
+      <div class="method_details ">
+  <h3 class="signature " id="status_types-instance_method">
+  
+    #<strong>status_types</strong>(options)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+42
+43
+44
+45</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/status_command.rb', line 42</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_status_types'>status_types</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_resources'>resources</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>,</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_resources'>resources</span>
+  <span class='id identifier rubyid_environment'>environment</span><span class='period'>.</span><span class='id identifier rubyid_status_types'>status_types</span> <span class='op'>?</span> <span class='id identifier rubyid_environment'>environment</span><span class='period'>.</span><span class='id identifier rubyid_status_types'>status_types</span> <span class='op'>:</span> <span class='id identifier rubyid_default_status_types'>default_status_types</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
 
       <div id="footer">
-  Generated on Tue Sep 20 11:20:04 2016 by
+  Generated on Thu Dec 29 11:27:31 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.3.1).
 </div>

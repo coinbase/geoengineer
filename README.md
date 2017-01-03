@@ -1,8 +1,8 @@
 # GeoEngineer
 
-<a href="https://commons.wikimedia.org/wiki/File:Mantle_of_Responsibility.png"><img src="./assets/mantle.png" align="right" alt="Mantle_of_Responsibility" /></a>
+[![CircleCI](https://circleci.com/gh/coinbase/geoengineer.svg?style=shield)](https://circleci.com/gh/coinbase/geoengineer)
 
-*[🚀 Coinbase is looking for DevOps and Software Engineers](http://grnh.se/gri162)*
+<a href="https://commons.wikimedia.org/wiki/File:Mantle_of_Responsibility.png"><img src="./assets/mantle.png" align="right" alt="Mantle_of_Responsibility" /></a>
 
 GeoEngineer provides a Ruby DSL and command line tool (`geo`) to *codeify*  then plan and execute changes to cloud resources.
 
@@ -25,13 +25,13 @@ Instructions to install Terraform can be found [here](https://www.terraform.io/d
 
 ### Install Ruby
 
-Instruction to install Ruby can be found [here](https://www.ruby-lang.org/en/documentation/installation/).
+Instructions to install Ruby can be found [here](https://www.ruby-lang.org/en/documentation/installation/).
 
 ### Install GeoEngineer
 
 ```
-gem build geoengineer.gemspec
-gem install geoengineer
+gem cert --add <(curl -Ls https://raw.githubusercontent.com/coinbase/geoengineer/master/certs/geoengineer-gem.pem)
+gem install geoengineer --trust-policy HighSecurity
 ```
 
 Test it is installed correctly with:

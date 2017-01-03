@@ -59,73 +59,41 @@
 
       <iframe id="search_frame" src="class_list.html"></iframe>
 
-      <div id="content"><div id='filecontents'>
-<h1 id="label-GeoEngineer">GeoEngineer</h1>
-<a href="https://commons.wikimedia.org/wiki/File:Mantle_of_Responsibility.png"><img src="./assets/mantle.png" align="right" alt="Mantle_of_Responsibility" /></a>
-<p><em><a href="http://grnh.se/gri162">🚀 Coinbase is looking for DevOps and
-Software Engineers</a></em></p>
+      <div id="content"><div id='filecontents'><h1>GeoEngineer</h1>
 
-<p>GeoEngineer provides a Ruby DSL and command line tool (<code>geo</code>) to
-<em>codeify</em> then plan and execute changes to cloud resources.</p>
+<p><a href="https://circleci.com/gh/coinbase/geoengineer"><img src="https://circleci.com/gh/coinbase/geoengineer.svg?style=shield" alt="CircleCI"></a></p>
+
+<p><a href="https://commons.wikimedia.org/wiki/File:Mantle_of_Responsibility.png"><img src="./assets/mantle.png" align="right" alt="Mantle_of_Responsibility" /></a></p>
+
+<p>GeoEngineer provides a Ruby DSL and command line tool (<code>geo</code>) to <em>codeify</em>  then plan and execute changes to cloud resources.</p>
 
 <p>GeoEngineer&#39;s goals/requirements/features are:</p>
-<ol><li>
-<p><strong>DSL based on Terraform</strong>: GeoEngineer uses <a
-href="https://github.com/hashicorp/terraform">Terraform</a> to plan and
-execute changes, so the DSL to describe resources is similar to
-Terraform&#39;s. GeoEngineer&#39;s DSL also provides programming and object
-oriented features like inheritance, abstraction, branching and looping.</p>
-</li><li>
-<p><strong>Development Workflow</strong>: GeoEngineer is built to be used
-within existing development workflows, e.g. branching, creating pull
-requests, code reviewing and merging. To simplify these workflows,
-GeoEngineer dynamically generates Terraform state files using cloud APIs
-and opinionated tagging.</p>
-</li><li>
-<p><strong>Extensible Validation</strong>: Every team has their own standards
-when managing cloud resources e.g. naming patterns, tagging requirements,
-security rules. GeoEngineer resources can have custom validations added to
-ensure the resources conform to required standards.</p>
-</li><li>
-<p><strong>Reusable Templates</strong>: copy and pasting codified resources
-makes it difficult to understand and maintain infrastructure. By
-abstracting recommended patterns of reuse into <strong>templates</strong>,
-GeoEngineer aims to increase code reuse and decrease code copy/paste.</p>
-</li><li>
-<p><strong>Describe Existing Resources</strong>: Existing resources can be
-described with GeoEngineer without having to destroy and recreate them.</p>
-</li><li>
-<p><strong>Principle of Least Astonishment</strong>: show the exact plan
-before execution; do nothing without confirmation; do not allow a plan to
-be executed with failing validations; by default do not allow deletions;
-show warnings and hints to make code better.</p>
-</li><li>
-<p><strong>One File per Project</strong>: Managing dozens of projects with
-hundreds of files is difficult and error-prone, especially if a single
-project&#39;s resources are described across many files. Projects are
-easier to manage when they are each described in one file.</p>
-</li><li>
-<p><strong>Dependencies</strong>: resources have dependencies on other
-resources, projects have dependencies on other projects. Using Ruby&#39;s
-<code>require</code> file that describe resources can be included and
-referenced without having to hard-code any values.</p>
-</li></ol>
 
-<h2 id="label-Getting+Started">Getting Started</h2>
+<ol>
+<li><strong>DSL based on Terraform</strong>: GeoEngineer uses <a href="https://github.com/hashicorp/terraform">Terraform</a> to plan and execute changes, so the DSL to describe resources is similar to Terraform&#39;s. GeoEngineer&#39;s DSL also provides programming and object oriented features like inheritance, abstraction, branching and looping.</li>
+<li><strong>Development Workflow</strong>: GeoEngineer is built to be used within existing development workflows, e.g. branching, creating pull requests, code reviewing and merging. To simplify these workflows, GeoEngineer dynamically generates Terraform state files using cloud APIs and opinionated tagging.</li>
+<li><strong>Extensible Validation</strong>: Every team has their own standards when managing cloud resources e.g. naming patterns, tagging requirements, security rules. GeoEngineer resources can have custom validations added to ensure the resources conform to required standards.</li>
+<li><strong>Reusable Templates</strong>: copy and pasting codified resources makes it difficult to understand and maintain infrastructure. By abstracting recommended patterns of reuse into <strong>templates</strong>, GeoEngineer aims to increase code reuse and decrease code copy/paste.</li>
+<li><strong>Describe Existing Resources</strong>: Existing resources can be described with GeoEngineer without having to destroy and recreate them.</li>
+<li><strong>Principle of Least Astonishment</strong>: show the exact plan before execution; do nothing without confirmation; do not allow a plan to be executed with failing validations; by default do not allow deletions; show warnings and hints to make code better.</li>
+<li><strong>One File per Project</strong>: Managing dozens of projects with hundreds of files is difficult and error-prone, especially if a single project&#39;s resources are described across many files. Projects are easier to manage when they are each described in one file.</li>
+<li><strong>Dependencies</strong>: resources have dependencies on other resources, projects have dependencies on other projects. Using Ruby&#39;s <code>require</code> file that describe resources can be included and referenced without having to hard-code any values.</li>
+</ol>
 
-<h3 id="label-Install+Terraform">Install Terraform</h3>
+<h2>Getting Started</h2>
 
-<p>Instructions to install Terraform can be found <a
-href="https://www.terraform.io/downloads.html">here</a>.</p>
+<h3>Install Terraform</h3>
 
-<h3 id="label-Install+Ruby">Install Ruby</h3>
+<p>Instructions to install Terraform can be found <a href="https://www.terraform.io/downloads.html">here</a>.</p>
 
-<p>Instruction to install Ruby can be found <a
-href="https://www.ruby-lang.org/en/documentation/installation/">here</a>.</p>
+<h3>Install Ruby</h3>
 
-<h3 id="label-Install+GeoEngineer">Install GeoEngineer</h3>
+<p>Instructions to install Ruby can be found <a href="https://www.ruby-lang.org/en/documentation/installation/">here</a>.</p>
 
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='id identifier rubyid_install'>install</span> <span class='id identifier rubyid_geoengineer'>geoengineer</span>
+<h3>Install GeoEngineer</h3>
+
+<pre class="code ruby"><code class="ruby">gem cert --add &lt;(curl -Ls https://raw.githubusercontent.com/coinbase/geoengineer/master/certs/geoengineer-gem.pem)
+gem install geoengineer --trust-policy HighSecurity
 </code></pre>
 
 <p>Test it is installed correctly with:</p>
@@ -133,12 +101,9 @@ href="https://www.ruby-lang.org/en/documentation/installation/">here</a>.</p>
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_geo'>geo</span> <span class='op'>-</span><span class='op'>-</span><span class='id identifier rubyid_help'>help</span>
 </code></pre>
 
-<h3 id="label-First+GeoEngineer+Project">First GeoEngineer Project</h3>
+<h3>First GeoEngineer Project</h3>
 
-<p>GeoEngineer can use the folder structure where projects and environments
-are in the <code>projects</code> and <code>environments</code> directories
-respectively, however everything can also be defined in a single file, e.g.
-<code>first_project.rb</code>:</p>
+<p>GeoEngineer can use the folder structure where projects and environments are in the <code>projects</code> and <code>environments</code> directories respectively, however everything can also be defined in a single file, e.g. <code>first_project.rb</code>:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='comment'># First define the environment which is available with the variable `env`
 </span><span class='comment'># This is where project invariants are stored, e.g. subnets, vpc ...
@@ -219,33 +184,23 @@ runcmd:
 </code></pre>
 
 <p>GeoEngineer command line tool <code>geo</code> can:</p>
-<ol><li>
-<p><strong>Create a plan</strong> with <code>geo plan -e staging
-first_project.rb</code></p>
-</li><li>
-<p><strong>Execute the plan</strong> with <code>geo apply -e staging
-first_project.rb</code></p>
-</li><li>
-<p><strong>Create a graph</strong> with <code>geo graph -e staging --quiet
-first_project.rb | dot -Tpng &gt; graph.png &amp;&amp; open
-graph.png</code></p>
-</li><li>
-<p><strong>Status of Codeified Resources</strong> with <code>geo status
-first_project.rb -e staging</code></p>
-</li></ol>
+
+<ol>
+<li><strong>Create a plan</strong> with <code>geo plan -e staging first_project.rb</code></li>
+<li><strong>Execute the plan</strong> with <code>geo apply -e staging first_project.rb</code></li>
+<li><strong>Create a graph</strong> with <code>geo graph -e staging --quiet first_project.rb | dot -Tpng &gt; graph.png &amp;&amp; open graph.png</code></li>
+<li><strong>Status of Codeified Resources</strong> with <code>geo status first_project.rb -e staging</code></li>
+</ol>
 
 <p><em>There are more examples in the <code>examples</code> folder.</em></p>
 
-<h2 id="label-Customizations">Customizations</h2>
+<h2>Customizations</h2>
 
-<p>A core benefit of GeoEngineer is the ability to customize the DSL to your
-needs using custom validations, templates and reusable methods on
-resources.</p>
+<p>A core benefit of GeoEngineer is the ability to customize the DSL to your needs using custom validations, templates and reusable methods on resources.</p>
 
-<h3 id="label-Validations">Validations</h3>
+<h3>Validations</h3>
 
-<p>Below is an example which will add the validation to ensure that all
-listeners on all ELB&#39;s must be HTTPS, for security reasons.</p>
+<p>Below is an example which will add the validation to ensure that all listeners on all ELB&#39;s must be HTTPS, for security reasons.</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resources</span><span class='op'>::</span><span class='const'>AwsElb</span> <span class='op'>&lt;</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resource</span>
   <span class='id identifier rubyid_validate'>validate</span> <span class='symbol'>:validate_listeners_must_be_https</span>
@@ -260,10 +215,9 @@ listeners on all ELB&#39;s must be HTTPS, for security reasons.</p>
 <span class='kw'>end</span>
 </code></pre>
 
-<h3 id="label-Templates">Templates</h3>
+<h3>Templates</h3>
 
-<p>Below is an example template that builds a Elastic Load Balancer and a
-security group for an array of listeners:</p>
+<p>Below is an example template that builds a Elastic Load Balancer and a security group for an array of listeners:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>LoadBalancedInstance</span> <span class='op'>&lt;</span> <span class='const'>Template</span>
   <span class='id identifier rubyid_attr_reader'>attr_reader</span> <span class='symbol'>:elb</span><span class='comma'>,</span> <span class='symbol'>:elb_sg</span>
@@ -319,10 +273,9 @@ security group for an array of listeners:</p>
 <span class='rbrace'>}</span><span class='rparen'>)</span>
 </code></pre>
 
-<h3 id="label-Methods">Methods</h3>
+<h3>Methods</h3>
 
-<p>Define methods to be used in your own resources, e.g. a custom method to
-security group to add a rule:</p>
+<p>Define methods to be used in your own resources, e.g. a custom method to security group to add a rule:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resources</span><span class='op'>::</span><span class='const'>AwsSecurityGroup</span> <span class='op'>&lt;</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resource</span>
   <span class='comment'># ...
@@ -342,58 +295,31 @@ security group to add a rule:</p>
 </span><span class='rbrace'>}</span>
 </code></pre>
 
-<h2 id="label-Adding+New+Resources">Adding New Resources</h2>
+<h2>Adding New Resources</h2>
 
-<p>The best way to contribute is to add resources that exist in Terraform but
-are not yet described in GeoEngineer.</p>
+<p>The best way to contribute is to add resources that exist in Terraform but are not yet described in GeoEngineer.</p>
 
 <p>To define a resource:</p>
-<ol><li>
-<p>checkout and fork/branch GeoEngineer</p>
-</li><li>
-<p>create a file
-<code>./lib/geoengineer/resources/&lt;resource_type&gt;.rb</code></p>
-</li><li>
-<p>define a class <code>class GeoEngineer::Resources::&lt;ResourceType&gt;
-&lt; GeoEngineer::Resource</code></p>
-</li><li>
-<p>define <code>_terraform_id</code>, and potentially <code>_geo_id</code> and
-<code>self._fetch_remote_resources</code> method (more below).</p>
-</li><li>
-<p>write a test file for the resource that follows the style of other similar
-resources</p>
-</li></ol>
 
-<h3 id="label-Codeified+to+Remote+Resources">Codeified to Remote Resources</h3>
+<ol>
+<li>checkout and fork/branch GeoEngineer</li>
+<li>create a file <code>./lib/geoengineer/resources/&lt;resource_type&gt;.rb</code></li>
+<li>define a class <code>class GeoEngineer::Resources::&lt;ResourceType&gt; &lt; GeoEngineer::Resource</code></li>
+<li>define <code>_terraform_id</code>, and potentially <code>_geo_id</code> and <code>self._fetch_remote_resources</code> method (more below).</li>
+<li>write a test file for the resource that follows the style of other similar resources</li>
+</ol>
 
-<p>A fundamental problem with codifying resources is matching the in code
-resource to the real remote resource. Terraform does this by maintaining an
-<code>id</code> in a state file which is matched to a remote resources
-attribute. This attribute is different per resource, e.g. for ELB&#39;s it
-is their <code>name</code>, for security groups it is their
-<code>group_name</code> that is generated so cannot be codified.</p>
+<h3>Codeified to Remote Resources</h3>
 
-<p>Without a state file GeoEngineer uses API&#39;s to match resources, this
-makes generated <code>id</code>&#39;s likes security groups difficult. For
-these generated ids GeoEngineer uses tags e.g. for ELB&#39;s the
-GeoEngineer id is its <code>name</code> (just like Terraform) and for
-security groups it is their <code>Name</code> tag.</p>
+<p>A fundamental problem with codifying resources is matching the in code resource to the real remote resource. Terraform does this by maintaining an <code>id</code> in a state file which is matched to a remote resources attribute. This attribute is different per resource, e.g. for ELB&#39;s it is their <code>name</code>, for security groups it is their <code>group_name</code> that is generated so cannot be codified.</p>
 
-<p>In a GeoEngineer resource the <code>_terraform_id</code> is the id used by
-Terraform and the <code>_geo_id</code> is GeoEngineer ID. By default a
-resources <code>_geo_id</code> is the same as the
-<code>_terraform_id</code>, so for most resources only the
-<code>_terraform_id</code> is required.</p>
+<p>Without a state file GeoEngineer uses API&#39;s to match resources, this makes generated <code>id</code>&#39;s likes security groups difficult. For these generated ids GeoEngineer uses tags e.g. for ELB&#39;s the GeoEngineer id is its <code>name</code> (just like Terraform) and for security groups it is their <code>Name</code> tag.</p>
 
-<p>If <code>_terraform_id</code> is generated then the remote resource needed
-to be fetched via API and matched to the codified resource with
-<code>_geo_id</code>. This is done by implementing the
-<code>self._fetch_remote_resources</code> method to use the API and return
-a list of resources with both <code>_terraform_id</code> and
-<code>_geo_id</code>, then GeoEngineer can match them.</p>
+<p>In a GeoEngineer resource the <code>_terraform_id</code> is the id used by Terraform and the <code>_geo_id</code> is GeoEngineer ID. By default a resources <code>_geo_id</code> is the same as the <code>_terraform_id</code>, so for most resources only the <code>_terraform_id</code> is required.</p>
 
-<p>For example, in <code>aws_security_group</code>&#39;s the resource is
-matched based on the <code>Name</code> tag, implements as:</p>
+<p>If <code>_terraform_id</code> is generated then the remote resource needed to be fetched via API and matched to the codified resource with <code>_geo_id</code>. This is done by implementing the <code>self._fetch_remote_resources</code> method to use the API and return a list of resources with both <code>_terraform_id</code> and <code>_geo_id</code>, then GeoEngineer can match them.</p>
+
+<p>For example, in <code>aws_security_group</code>&#39;s the resource is matched based on the <code>Name</code> tag, implements as:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resources</span><span class='op'>::</span><span class='const'>AwsSecurityGroup</span> <span class='op'>&lt;</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resource</span>
   <span class='id identifier rubyid_after'>after</span> <span class='symbol'>:initialize</span><span class='comma'>,</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='id identifier rubyid__terraform_id'>_terraform_id</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'>NullObject</span><span class='period'>.</span><span class='id identifier rubyid_maybe'>maybe</span><span class='lparen'>(</span><span class='id identifier rubyid_remote_resource'>remote_resource</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid__terraform_id'>_terraform_id</span> <span class='rbrace'>}</span> <span class='rbrace'>}</span>
@@ -410,16 +336,11 @@ matched based on the <code>Name</code> tag, implements as:</p>
 <span class='kw'>end</span>
 </code></pre>
 
-<h3 id="label-Validations">Validations</h3>
+<h3>Validations</h3>
 
-<p>Terraform does not validate a lot of attributes before they are sent to the
-cloud. This means that often plans will fail for reasons that could have
-been initially validated. When creating a resource think about what
-validations could be done to ensure a plan is successful.</p>
+<p>Terraform does not validate a lot of attributes before they are sent to the cloud. This means that often plans will fail for reasons that could have been initially validated. When creating a resource think about what validations could be done to ensure a plan is successful.</p>
 
-<p>For example, a security groups needs a <code>Name</code> tag, requires a
-<code>name</code> and <code>description</code>, and a more complicated
-example is that its <code>cidr_blocks</code> should be valid:</p>
+<p>For example, a security groups needs a <code>Name</code> tag, requires a <code>name</code> and <code>description</code>, and a more complicated example is that its <code>cidr_blocks</code> should be valid:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resources</span><span class='op'>::</span><span class='const'>AwsSecurityGroup</span> <span class='op'>&lt;</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resource</span>
   <span class='comment'># ...
@@ -445,16 +366,11 @@ example is that its <code>cidr_blocks</code> should be valid:</p>
 </span><span class='kw'>end</span>
 </code></pre>
 
-<h3 id="label-Terraform+State">Terraform State</h3>
+<h3>Terraform State</h3>
 
-<p>Terraform by default will attempt to sync its resources with the API so
-that its state file is up to date with the real world. Given that
-GeoEngineer uses Terraform in a different way this sometimes causes plans
-to list changes that have already happened.</p>
+<p>Terraform by default will attempt to sync its resources with the API so that its state file is up to date with the real world. Given that GeoEngineer uses Terraform in a different way this sometimes causes plans to list changes that have already happened.</p>
 
-<p>To fix this issue a resource can override <code>to_terraform_state</code>
-method, e.g. <code>aws_db_instance</code> has issues with
-<code>final_snapshot_identifier</code> updating:</p>
+<p>To fix this issue a resource can override <code>to_terraform_state</code> method, e.g. <code>aws_db_instance</code> has issues with <code>final_snapshot_identifier</code> updating:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resources</span><span class='op'>::</span><span class='const'>AwsDbInstance</span> <span class='op'>&lt;</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Resource</span>
   <span class='comment'># ...
@@ -469,11 +385,11 @@ method, e.g. <code>aws_db_instance</code> has issues with
 </span><span class='kw'>end</span>
 </code></pre>
 
-<h2 id="label-GeoEngineer+Reference">GeoEngineer Reference</h2>
+<h2>GeoEngineer Reference</h2>
 
 <p>The core models in GeoEngineer are:</p>
 
-<pre class="code ruby"><code class="ruby">+-------------+ 1
+<pre class="code ruby"><code class="ruby"> +-------------+ 1
  | Environment +-----------+
  +-------------+           |
        | 1                 |
@@ -487,33 +403,17 @@ method, e.g. <code>aws_db_instance</code> has issues with
        v *                 |
  +-------------+           |
  | Template    +-----------+
- +-------------+ 1</code></pre>
-<ol><li>
-<p><code>Environment</code> contains many resources that may exist outside of
-a project, like VPCs or routing tables. Also every project defined to be in
-the environment, for example the <code>test_www</code> project is in
-<code>staging</code> but <code>monorail</code> is in <code>staging</code>
-and <code>production</code> environments.</p>
-</li><li>
-<p><code>Project</code> contains many resources and services grouped together
-into a name.</p>
-</li><li>
-<p><code>Template</code> has a <code>type</code> and <code>name</code>, and a
-group of resources that are defined in a pattern, e.g. every Load Balancer
-requires a unique security group that allows traffic in. It is an simple
-abstraction that can dramatically simplify and standardize cloud resources.</p>
-</li><li>
-<p><code>Resource</code> and <code>SubResource</code> are based off of how
-terraform models cloud resources. A <code>Resource</code> instance can have
-many <code>SubResource</code> instances, but a <code>SubResource</code>
-instance belongs to only one <code>Resource</code> instance, e.g. a load
-balancer resource may have a <code>health_check</code> sub-resource to only
-allow specific incoming ports.</p>
-</li></ol>
+ +-------------+ 1
+</code></pre>
 
-<p>All these models can have arbitrary attributes assigned to them either by
-directly assigning on the instance, or through passing a block to the
-constructor. For example:</p>
+<ol>
+<li><code>Environment</code> contains many resources that may exist outside of a project, like VPCs or routing tables. Also every project defined to be in the environment, for example the <code>test_www</code> project is in <code>staging</code> but <code>monorail</code> is in <code>staging</code> and <code>production</code> environments.</li>
+<li><code>Project</code> contains many resources and services grouped together into a name.</li>
+<li><code>Template</code> has a <code>type</code> and <code>name</code>, and a group of resources that are defined in a pattern, e.g. every Load Balancer requires a unique security group that allows traffic in. It is an simple abstraction that can dramatically simplify and standardize cloud resources.</li>
+<li><code>Resource</code> and <code>SubResource</code> are based off of how terraform models cloud resources. A <code>Resource</code> instance can have many <code>SubResource</code> instances, but a <code>SubResource</code> instance belongs to only one <code>Resource</code> instance, e.g. a load balancer resource may have a <code>health_check</code> sub-resource to only allow specific incoming ports.</li>
+</ol>
+
+<p>All these models can have arbitrary attributes assigned to them either by directly assigning on the instance, or through passing a block to the constructor. For example:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_resource'>resource</span> <span class='op'>=</span> <span class='const'>Resource</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>type</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_res'>res</span><span class='op'>|</span>
   <span class='comment'># CORRECT
@@ -533,9 +433,7 @@ constructor. For example:</p>
 <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_goodbye'>goodbye</span> <span class='comment'># &#39;see ya&#39;
 </span></code></pre>
 
-<p>Additionally, if the value is expensive to calculate or requires other
-attributes not yet assigned, an attribute can be assigned a
-<code>Proc</code> or <code>lambda</code> which will be calculated lazily:</p>
+<p>Additionally, if the value is expensive to calculate or requires other attributes not yet assigned, an attribute can be assigned a <code>Proc</code> or <code>lambda</code> which will be calculated lazily:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_resource'>resource</span> <span class='op'>=</span> <span class='const'>Resource</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>type</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_lazy_attr'>lazy_attr</span> <span class='op'>=</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>CALCULATING THE VALUE</span><span class='tstring_end'>&quot;</span></span><span class='semicolon'>;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>value</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span>
@@ -545,20 +443,13 @@ attributes not yet assigned, an attribute can be assigned a
 </span><span class='comment'>#$ &quot;value&quot;
 </span></code></pre>
 
-<h3 id="label-Environment">Environment</h3>
+<h3>Environment</h3>
 
-<p>The top level class in GeoEngineer is the <code>environment</code>, it
-contains all projects, resources and services, there should only ever be
-one initialized at a time.</p>
+<p>The top level class in GeoEngineer is the <code>environment</code>, it contains all projects, resources and services, there should only ever be one initialized at a time.</p>
 
-<p>An environment can mean many things to different people, e.g. an AWS
-account, an AWS region, or a specific AWS VPC. The only real constraint is
-that a resource has one instance per environment, e.g. a load balancer that
-is defined to be in <code>staging</code> and <code>production</code>
-environments, will have an instance in each.</p>
+<p>An environment can mean many things to different people, e.g. an AWS account, an AWS region, or a specific AWS VPC. The only real constraint is that a resource has one instance per environment, e.g. a load balancer that is defined to be in <code>staging</code> and <code>production</code> environments, will have an instance in each.</p>
 
-<p>The function <code>environment</code> is provided as a factory to build an
-environment:</p>
+<p>The function <code>environment</code> is provided as a factory to build an environment:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_environment'>environment</span> <span class='op'>=</span> <span class='id identifier rubyid_environment'>environment</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>environment_name</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_e'>e</span><span class='op'>|</span>
   <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_attr_1'>attr_1</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='int'>1</span><span class='comma'>,</span><span class='int'>2</span><span class='comma'>,</span><span class='int'>3</span><span class='rbracket'>]</span>
@@ -567,12 +458,9 @@ environment:</p>
 <span class='id identifier rubyid_environment'>environment</span><span class='period'>.</span><span class='id identifier rubyid_attr_3'>attr_3</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>another value</span><span class='tstring_end'>&quot;</span></span>
 </code></pre>
 
-<h3 id="label-Project">Project</h3>
+<h3>Project</h3>
 
-<p>A project is a group of resources typically provisioned to deploy one code
-base. A project has an <code>organization</code> and <code>name</code>, to
-mimic the github <code>username</code>/<code>organiztion</code> and
-<code>repository</code> structure.</p>
+<p>A project is a group of resources typically provisioned to deploy one code base. A project has an <code>organization</code> and <code>name</code>, to mimic the github <code>username</code>/<code>organiztion</code> and <code>repository</code> structure.</p>
 
 <p>A project is defined like:</p>
 
@@ -581,21 +469,13 @@ mimic the github <code>username</code>/<code>organiztion</code> and
 <span class='rbrace'>}</span>
 </code></pre>
 
-<p>This projects organization is <code>org</code>, its name
-<code>project_name</code> and will be provisioned in the
-<code>staging</code> and <code>production</code> environments. The
-<code>org</code> and <code>name</code> must be unique across all other
-projects.</p>
+<p>This projects organization is <code>org</code>, its name <code>project_name</code> and will be provisioned in the <code>staging</code> and <code>production</code> environments. The <code>org</code> and <code>name</code> must be unique across all other projects.</p>
 
-<p>The method <code>project</code> will automatically add the project to the
-instantiated environment object <strong>only if</strong> that environments
-name is in the list of environments, otherwise it is ignored.</p>
+<p>The method <code>project</code> will automatically add the project to the instantiated environment object <strong>only if</strong> that environments name is in the list of environments, otherwise it is ignored.</p>
 
-<h3 id="label-Templates">Templates</h3>
+<h3>Templates</h3>
 
-<p>A template is used to create a group of resources in a recommended pattern.
-For example, an HTTP service could create a load balancer, a load balancer
-security group, and a ec2 security group.</p>
+<p>A template is used to create a group of resources in a recommended pattern. For example, an HTTP service could create a load balancer, a load balancer security group, and a ec2 security group.</p>
 
 <pre class="code ruby"><code class="ruby">template_instance = project.from_template(&#39;template_type&#39;, &#39;name&#39;, { parameter: &#39;helloworld&#39;) { |resource, resource_sg|
 
@@ -614,25 +494,15 @@ security group, and a ec2 security group.</p>
 template_instance.resource_sg # access the created resources outside the block
 </code></pre>
 
-<p>This template will create a resource <code>resource</code> and a resource
-security group <code>resource_sg</code> with the option <code>hello</code>
-set to value <code>&#39;world&#39;</code>. The resources can then be
-customized and have their values overridden.</p>
+<p>This template will create a resource <code>resource</code> and a resource security group <code>resource_sg</code> with the option <code>hello</code> set to value <code>&#39;world&#39;</code>. The resources can then be customized and have their values overridden.</p>
 
-<p>Each template should be documented with the created resources and how to
-modify them.</p>
+<p>Each template should be documented with the created resources and how to modify them.</p>
 
-<h3 id="label-Resources+and+SubResources">Resources and SubResources</h3>
+<h3>Resources and SubResources</h3>
 
-<p>Resources are defined to be similar to the <a
-href="https://www.terraform.io/docs/configuration/resources.html">terraform
-resource</a> configuration. The main difference is to not use
-<code>=</code> as this will create a local ruby variable and not assign the
-value.</p>
+<p>Resources are defined to be similar to the <a href="https://www.terraform.io/docs/configuration/resources.html">terraform resource</a> configuration. The main difference is to not use <code>=</code> as this will create a local ruby variable and not assign the value.</p>
 
-<p>A <code>Resource</code> can be created with and <code>environment</code>,
-<code>project</code> or <code>template</code> object (this will add that
-resource to that object):</p>
+<p>A <code>Resource</code> can be created with and <code>environment</code>, <code>project</code> or <code>template</code> object (this will add that resource to that object):</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_environment'>environment</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>type</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>identifier</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span>
   <span class='id identifier rubyid_name'>name</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>resource_name</span><span class='tstring_end'>&quot;</span></span>
@@ -650,24 +520,15 @@ resource to that object):</p>
 </span><span class='rbrace'>}</span>
 </code></pre>
 
-<p>The <code>type</code> of a resource must be a valid terraform type, where
-AWS types are listed <a
-href="https://www.terraform.io/docs/providers/aws/index.html">here</a>.
-Some resources are not supported yet by GeoEngineer.</p>
+<p>The <code>type</code> of a resource must be a valid terraform type, where AWS types are listed <a href="https://www.terraform.io/docs/providers/aws/index.html">here</a>. Some resources are not supported yet by GeoEngineer.</p>
 
-<p><code>identifier</code> is used by GeoEngineer and terraform to reference
-this resource so must be unique, however it is not stored in the cloud so
-can be changed without affecting a plan.</p>
+<p><code>identifier</code> is used by GeoEngineer and terraform to reference this resource so must be unique, however it is not stored in the cloud so can be changed without affecting a plan.</p>
 
-<p>A resource also has a ruby block sent to it that contains parameters and
-sub-resources. These values are defined by terraform so for reference to
-what values are required please refer to the <a
-href="https://www.terraform.io/docs/providers/aws/index.html">terraform
-docs</a>.</p>
+<p>A resource also has a ruby block sent to it that contains parameters and sub-resources. These values are defined by terraform so for reference to what values are required please refer to the <a href="https://www.terraform.io/docs/providers/aws/index.html">terraform docs</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Tue Sep 20 11:20:02 2016 by
+  Generated on Thu Dec 29 11:27:31 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.3.1).
 </div>

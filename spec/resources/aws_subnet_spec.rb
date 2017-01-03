@@ -11,8 +11,8 @@ describe("GeoEngineer::Resources::AwsSubnet") do
         :describe_subnets,
         {
           subnets: [
-            { subnet_id: '1', cidr_block: "10.120.0.0/24", tags: [{ key: 'Name', value: 'one' }] },
-            { subnet_id: '2', cidr_block: "10.120.1.0/24", tags: [{ key: 'Name', value: 'two' }] }
+            { subnet_id: '1', cidr_block: "10.10.0.0/24", tags: [{ key: 'Name', value: 'one' }] },
+            { subnet_id: '2', cidr_block: "10.10.1.0/24", tags: [{ key: 'Name', value: 'two' }] }
           ]
         }
       )
