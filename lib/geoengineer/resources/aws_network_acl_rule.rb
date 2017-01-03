@@ -22,6 +22,14 @@ class GeoEngineer::Resources::AwsNetworkAclRule < GeoEngineer::Resource
     }
   }
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'network_acl_id' => network_acl_id
+    }
+    tfstate
+  end
+
   def support_tags?
     false
   end
