@@ -16,11 +16,21 @@ class GeoEngineer::Resources::AwsNetworkAclRule < GeoEngineer::Resource
         "#{network_acl_id}-",
         "#{rule_number}-",
         "#{egress}-",
-        "#{protocol == 'all' ? '-1' : protocol}-"
+        "#{self.class._number_for_protocol(protocol)}-"
       ]
       "nacl-#{Crc32.hashcode(terraform_id_components.join)}"
     }
   }
+
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'network_acl_id' => network_acl_id,
+      'rule_number' => rule_number,
+      'egress' => egress
+    }
+    tfstate
+  end
 
   def support_tags?
     false
@@ -42,9 +52,23 @@ class GeoEngineer::Resources::AwsNetworkAclRule < GeoEngineer::Resource
         "#{network_acl[:network_acl_id]}-",
         "#{rule[:rule_number]}-",
         "#{rule[:egress]}-",
-        "#{rule[:protocol] == 'all' ? '-1' : rule[:protocol]}-"
+        "#{_number_for_protocol(rule[:protocol])}-"
       ]
       rule.merge({ _terraform_id: "nacl-#{Crc32.hashcode(terraform_id_components.join)}" })
     end
+  end
+
+  def self._number_for_protocol(protocol)
+    protocols = {
+      ah: 51,
+      esp: 50,
+      udp: 17,
+      tcp: 6,
+      icmp: 1,
+      all: -1
+    }
+    return unless protocol
+    return protocol if protocols.values.map(&:to_s).include?(protocol.to_s)
+    protocols[protocol.to_s.downcase.to_sym]
   end
 end

@@ -11,6 +11,14 @@ class GeoEngineer::Resources::AwsVpnGatewayAttachment < GeoEngineer::Resource
   }
   after :initialize, -> { _geo_id -> { "#{vpc_id}::#{vpn_gateway_id}" } }
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'vpn_gateway_id' => vpn_gateway_id
+    }
+    tfstate
+  end
+
   def support_tags?
     false
   end
