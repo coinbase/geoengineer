@@ -11,9 +11,6 @@ class GeoEngineer::Resources::AwsLoadBalancerBackendServerPolicy < GeoEngineer::
   after :initialize, -> {
     _terraform_id -> { "#{load_balancer_name}:#{instance_port}" }
   }
-  after :initialize, -> {
-    _geo_id -> { "#{load_balancer_name}:#{instance_port}" }
-  }
 
   def to_terraform_state
     tfstate = super
@@ -34,7 +31,6 @@ class GeoEngineer::Resources::AwsLoadBalancerBackendServerPolicy < GeoEngineer::
     AwsClients
       .elb.describe_load_balancers({ load_balancer_names: [load_balancer_name] })
       .load_balancer_descriptions
-      .flatten
       .map(&:to_h)
       .map { |description| description[:backend_server_descriptions] }
       .flatten
