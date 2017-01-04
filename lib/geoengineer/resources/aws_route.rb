@@ -30,6 +30,8 @@ class GeoEngineer::Resources::AwsRoute < GeoEngineer::Resource
       .map { |route_table| _extract_routes(route_table) }
       .flatten
       .compact
+      .reject { |route| route[:gateway_id] == "local" }
+      .reject { |route| route.key?(:destination_prefix_list_id) }
   end
 
   def self._extract_routes(route_table)
