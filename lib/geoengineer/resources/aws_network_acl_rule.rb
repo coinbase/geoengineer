@@ -44,6 +44,7 @@ class GeoEngineer::Resources::AwsNetworkAclRule < GeoEngineer::Resource
       .select { |network_acl| !network_acl[:entries].empty? }
       .map { |network_acl| _generate_rules(network_acl) }
       .flatten
+      .reject { |rule| rule[:rule_number] == 32_767 }
   end
 
   def self._generate_rules(network_acl)
