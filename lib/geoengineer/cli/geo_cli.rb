@@ -140,7 +140,10 @@ class GeoCLI
 
       @environment.execute_lifecycle(:before, action_name.to_sym)
       errs = @environment.errors.flatten.sort
-      return print_validation_errors(errs) unless errs.empty?
+      unless errs.empty?
+        print_validation_errors(errs)
+        exit 1
+      end
 
       yield args, options
       @environment.execute_lifecycle(:after, action_name.to_sym)
