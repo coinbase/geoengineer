@@ -13,6 +13,10 @@ class AwsClients
 
   # Clients
 
+  def self.dynamo
+    @aws_dynamo ||= Aws::DynamoDB::Client.new({ stub_responses: stubbed? })
+  end
+
   def self.ec2
     @aws_ec2 ||= Aws::EC2::Client.new({ stub_responses: stubbed? })
   end
@@ -31,6 +35,14 @@ class AwsClients
 
   def self.iam
     @aws_iam ||= Aws::IAM::Client.new({ stub_responses: stubbed? })
+  end
+
+  def self.kinesis
+    @aws_kinesis ||= Aws::Kinesis::Client.new({ stub_responses: stubbed? })
+  end
+
+  def self.lambda
+    @aws_lambda ||= Aws::Lambda::Client.new({ stub_responses: stubbed? })
   end
 
   def self.rds
@@ -59,13 +71,5 @@ class AwsClients
 
   def self.sqs
     @aws_sqs ||= Aws::SQS::Client.new({ stub_responses: stubbed? })
-  end
-
-  def self.lambda
-    @aws_lambda ||= Aws::Lambda::Client.new({ stub_responses: stubbed? })
-  end
-
-  def self.dynamo
-    @aws_dynamo ||= Aws::DynamoDB::Client.new({ stub_responses: stubbed? })
   end
 end
