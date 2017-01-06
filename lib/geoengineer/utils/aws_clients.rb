@@ -64,4 +64,8 @@ class AwsClients
   def self.lambda
     @aws_lambda ||= Aws::Lambda::Client.new({ stub_responses: stubbed? })
   end
+
+  def self.dynamo
+    @aws_dynamo ||= Aws::DynamoDB::Client.new({ stub_responses: stubbed? })
+  end
 end

@@ -12,7 +12,9 @@ module HasProjects
     repository = "#{org}/#{name}"
     return projects[repository] if projects.key?(repository)
 
-    GeoEngineer::Project.new(org, name, self, &block)
+    proj = GeoEngineer::Project.new(org, name, self, &block)
+    projects[repository] = proj
+    proj
   end
 
   def all_project_resources
