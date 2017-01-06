@@ -8,6 +8,10 @@ class GeoEngineer::Resources::AwsDynamodbTable < GeoEngineer::Resource
 
   after :initialize, -> { _terraform_id -> { name } }
 
+  def support_tags?
+    false
+  end
+
   def self._fetch_remote_resources
     AwsClients.dynamo.list_tables['table_names'].map { |name|
       {
