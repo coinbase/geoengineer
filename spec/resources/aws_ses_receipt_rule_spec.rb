@@ -1,14 +1,16 @@
 require_relative '../spec_helper'
 
 describe("GeoEngineer::Resources::AwsSesReceiptRule") do
+  let(:ses_client) { AwsClients.ses }
+
   common_resource_tests(GeoEngineer::Resources::AwsSesReceiptRule,
-                        'aws_ses_policy')
+                        'aws_ses_receipt_rule')
+
+  before { ses_client.setup_stubbing }
 
   describe "#_fetch_remote_resources" do
     it 'should create list of hashes from returned AWS SDK' do
-      ses = AwsClients.ses
-      # ses.list_policies.policies
-      stub = ses.stub_data(
+      ses_client.stub_responses(
         :describe_active_receipt_rule_set,
         {
           rules: [
@@ -25,7 +27,6 @@ describe("GeoEngineer::Resources::AwsSesReceiptRule") do
           ]
         }
       )
-      sns.stub_responses(:describe_active_receipt_rule_set, stub)
       remote_resources = GeoEngineer::Resources::AwsSesReceiptRule._fetch_remote_resources
       expect(remote_resources.length).to eq 2
     end
