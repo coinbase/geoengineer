@@ -64,7 +64,7 @@ class GeoEngineer::Environment
     # do not add the project if the project is not supported by this environment
     return NullObject.new unless supported_environments.include?(@name)
 
-    projects[name] = project
+    project
   end
 
   def resource(type, id, &block)
