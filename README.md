@@ -4,7 +4,7 @@
 
 <a href="https://commons.wikimedia.org/wiki/File:Mantle_of_Responsibility.png"><img src="./assets/mantle.png" align="right" alt="Mantle_of_Responsibility" /></a>
 
-GeoEngineer provides a Ruby DSL and command line tool (`geo`) to *codeify*  then plan and execute changes to cloud resources.
+GeoEngineer provides a Ruby DSL and command line tool (`geo`) to *codify*  then plan and execute changes to cloud resources.
 
 GeoEngineer's goals/requirements/features are:
 
@@ -353,7 +353,7 @@ The core models in GeoEngineer are:
 
 1. `Environment` contains many resources that may exist outside of a project, like VPCs or routing tables. Also every project defined to be in the environment, for example the `test_www` project is in `staging` but `monorail` is in `staging` and `production` environments.
 2. `Project` contains many resources and services grouped together into a name.
-3. `Template` has a `type` and `name`, and a group of resources that are defined in a pattern, e.g. every Load Balancer requires a unique security group that allows traffic in. It is an simple abstraction that can dramatically simplify and standardize cloud resources.
+3. `Template` has a `type` and `name`, and a group of resources that are defined in a pattern, e.g. every Load Balancer requires a unique security group that allows traffic in. It is a simple abstraction that can dramatically simplify and standardize cloud resources.
 4. `Resource` and `SubResource` are based off of how terraform models cloud resources. A `Resource` instance can have many `SubResource` instances, but a `SubResource` instance belongs to only one `Resource` instance, e.g. a load balancer resource may have a `health_check` sub-resource to only allow specific incoming ports.
 
 All these models can have arbitrary attributes assigned to them either by directly assigning on the instance, or through passing a block to the constructor. For example:
@@ -390,7 +390,7 @@ puts resource.lazy_attr
 
 ### Environment
 
-The top level class in GeoEngineer is the `environment`, it contains all projects, resources and services, there should only ever be one initialized at a time.
+The top level class in GeoEngineer is the `environment`: it contains all projects, resources and services, and there should only ever be one initialized at a time.
 
 An environment can mean many things to different people, e.g. an AWS account, an AWS region, or a specific AWS VPC. The only real constraint is that a resource has one instance per environment, e.g. a load balancer that is defined to be in `staging` and `production` environments, will have an instance in each.
 
@@ -418,14 +418,14 @@ project = project('org', 'project_name') {
 
 This projects organization is `org`, its name `project_name` and will be provisioned in the `staging` and `production` environments. The `org` and `name` must be unique across all other projects.
 
-The method `project` will automatically add the project to the instantiated environment object **only if** that environments name is in the list of environments, otherwise it is ignored.
+The method `project` will automatically add the project to the instantiated environment object **only if** that environment's name is in the list of environments, otherwise it is ignored.
 
 ### Templates
 
 A template is used to create a group of resources in a recommended pattern. For example, an HTTP service could create a load balancer, a load balancer security group, and a ec2 security group.
 
 ```ruby
-template_instance = project.from_template('template_type', 'name', { parameter: 'helloworld') { |resource, resource_sg|
+template_instance = project.from_template('template_type', 'name', parameter: 'helloworld') { |resource, resource_sg|
 
   # set attribute
   attribute "custom attribute"
@@ -471,6 +471,6 @@ template.resource('type', 'identifier') {
 
 The `type` of a resource must be a valid terraform type, where AWS types are listed [here](https://www.terraform.io/docs/providers/aws/index.html). Some resources are not supported yet by GeoEngineer.
 
-`identifier` is used by GeoEngineer and terraform to reference this resource so must be unique, however it is not stored in the cloud so can be changed without affecting a plan.
+`identifier` is used by GeoEngineer and terraform to reference this resource must be unique, however it is not stored in the cloud so can be changed without affecting a plan.
 
 A resource also has a ruby block sent to it that contains parameters and sub-resources. These values are defined by terraform so for reference to what values are required please refer to the [terraform docs](https://www.terraform.io/docs/providers/aws/index.html).
