@@ -72,4 +72,8 @@ class AwsClients
   def self.sqs
     @aws_sqs ||= Aws::SQS::Client.new({ stub_responses: stubbed? })
   end
+
+  def self.cloudtrail
+    @aws_cloudtrail ||= Aws::CloudTrail::Client.new({ stub_responses: stubbed? })
+  end
 end
