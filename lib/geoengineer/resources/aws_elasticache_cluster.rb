@@ -4,6 +4,8 @@
 # {https://www.terraform.io/docs/providers/aws/r/elasticache_cluster.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsElasticacheCluster < GeoEngineer::Resource
+  class SecurityGroupError < StandardError; end
+
   validate -> {
     validate_required_attributes(
       [
@@ -21,14 +23,17 @@ class GeoEngineer::Resources::AwsElasticacheCluster < GeoEngineer::Resource
 
   def to_terraform_state
     tfstate = super
-    attributes = {
-      'port' => port.to_s,
-      'parameter_group_name' => parameter_group_name
-    }
+    attributes = { 'port' => port.to_s, 'parameter_group_name' => parameter_group_name }
 
     # Security groups workaround
     security_group_ids.each_with_index do |sg, i|
-      attributes["security_group_ids.#{i}"] = sg._terraform_id
+      if sg.is_a?(GeoEngineer::Resource)
+        attributes["security_group_ids.#{i}"] = sg._terraform_id
+      elsif sg.is_a?(String)
+        attributes["security_group_ids.#{i}"] = sg
+      else
+        raise SecurityGroupError, "Please pass a Geo Resource or string ID"
+      end
     end
     attributes['security_group_ids.#'] = security_group_ids.count.to_s
 
