@@ -13,6 +13,10 @@ class AwsClients
 
   # Clients
 
+  def self.cloudwatchevents
+    @aws_cloudwatchevents ||= Aws::CloudWatchEvents::Client.new({ stub_responses: stubbed? })
+  end
+
   def self.dynamo
     @aws_dynamo ||= Aws::DynamoDB::Client.new({ stub_responses: stubbed? })
   end
