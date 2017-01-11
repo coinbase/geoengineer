@@ -14,7 +14,11 @@ class GeoEngineer::Resources::AwsDbInstance < GeoEngineer::Resource
       )
     end
   }
-  validate -> { validate_required_attributes([:password, :username, :name]) if new? }
+  validate -> {
+    if new? && !(snapshot_identifier || replicate_source_db)
+      validate_required_attributes([:password, :username, :name])
+    end
+  }
   validate -> { validate_required_attributes([:instance_class, :engine]) }
   validate -> { validate_subresource_required_attributes(:access_logs, [:bucket]) }
 
