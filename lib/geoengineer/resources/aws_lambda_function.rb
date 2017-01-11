@@ -18,6 +18,17 @@ class GeoEngineer::Resources::AwsLambdaFunction < GeoEngineer::Resource
 
   after :initialize, -> { _terraform_id -> { function_name } }
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'function_name' => function_name,
+      'publish' => (publish || "false"),
+      's3_bucket' => (s3_bucket || ""),
+      's3_key' => (s3_key || "")
+    }
+    tfstate
+  end
+
   def support_tags?
     false
   end
