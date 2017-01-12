@@ -5,6 +5,7 @@
 ########################################################################
 class GeoEngineer::Resources::AwsCloudtrail < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name, :s3_bucket_name]) }
+  validate -> { validate_has_tag(:Name) }
 
   after :initialize, -> { _terraform_id -> { name } }
 
