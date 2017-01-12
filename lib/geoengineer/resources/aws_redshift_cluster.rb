@@ -5,10 +5,11 @@
 # {https://www.terraform.io/docs/providers/aws/r/redshift_cluster.html#cluster_version}
 ########################################################################
 class GeoEngineer::Resources::AwsRedshiftCluster < GeoEngineer::Resource
+  validate -> { validate_required_attributes([:cluster_identifier, :node_type]) }
   validate -> {
-    validate_required_attributes(
-      [:cluster_identifier, :node_type, :master_password, :master_username]
-    )
+    if new? && !snapshot_identifier
+      validate_required_attributes([:master_password, :master_username])
+    end
   }
   validate -> {
     validate_required_attributes([:number_of_nodes]) if self.cluster_type == 'multi-node'
