@@ -46,10 +46,18 @@ class GeoEngineer::Resources::AwsElasticacheCluster < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources
-    AwsClients.elasticache.describe_cache_clusters['cache_clusters'].map(&:to_h).map do |ec|
-      ec[:_geo_id] = ec[:cache_cluster_id]
-      ec[:_terraform_id] = ec[:cache_cluster_id]
-      ec
+    AwsClients
+      .elasticache
+      .describe_cache_clusters['cache_clusters']
+      .map(&:to_h)
+      .select { |ec| ec[:replication_group_id].nil? }
+      .map do |ec|
+      ec.merge(
+        {
+          _terraform_id: ec[:cache_cluster_id],
+          _geo_id: ec[:cache_cluster_id]
+        }
+      )
     end
   end
 end
