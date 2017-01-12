@@ -10,24 +10,27 @@ describe "GeoEngineer::Resources::AwsIamRole" do
   describe "#_fetch_remote_resources" do
     before do
       aws_client.stub_responses(
-        :list_roles, { roles: [
-          {
-            role_name: 'Some-IAM-role',
-            arn: "arn:aws:iam::123456789123:role/some-iam-role",
-            path: "/",
-            role_id: "XXXXXXXXXXXXXXXXXXXXY",
-            create_date: Time.parse("2016-12-13 01:00:06 UTC"),
-            assume_role_policy_document: ""
-          },
-          {
-            role_name: 'Another-IAM-role',
-            arn: "arn:aws:iam::123456789123:role/another-iam-role",
-            path: "/",
-            role_id: "XXXXXXXXXXXXXXXXXXXXY",
-            create_date: Time.parse("2016-12-13 01:00:06 UTC"),
-            assume_role_policy_document: ""
-          }
-        ] }
+        :list_roles,
+        {
+          roles: [
+            {
+              role_name: 'Some-IAM-role',
+              arn: "arn:aws:iam::123456789123:role/some-iam-role",
+              path: "/",
+              role_id: "XXXXXXXXXXXXXXXXXXXXY",
+              create_date: Time.parse("2016-12-13 01:00:06 UTC"),
+              assume_role_policy_document: ""
+            },
+            {
+              role_name: 'Another-IAM-role',
+              arn: "arn:aws:iam::123456789123:role/another-iam-role",
+              path: "/",
+              role_id: "XXXXXXXXXXXXXXXXXXXXY",
+              create_date: Time.parse("2016-12-13 01:00:06 UTC"),
+              assume_role_policy_document: ""
+            }
+          ]
+        }
       )
     end
 
