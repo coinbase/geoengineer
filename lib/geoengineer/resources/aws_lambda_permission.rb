@@ -12,6 +12,15 @@ class GeoEngineer::Resources::AwsLambdaPermission < GeoEngineer::Resource
     false
   end
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'function_name' => self.function_name,
+      'statement_id' => self.statement_id
+    }
+    tfstate
+  end
+
   def self._fetch_functions
     AwsClients
       .lambda
