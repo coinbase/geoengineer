@@ -7,7 +7,7 @@ class GeoEngineer::Resources::AwsIamRolePolicy < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name, :policy, :role]) }
 
   after :initialize, -> {
-    _terraform_id -> { "#{role}:#{policy}" }
+    _terraform_id -> { "#{role}:#{name}" }
   }
 
   def to_terraform_state
