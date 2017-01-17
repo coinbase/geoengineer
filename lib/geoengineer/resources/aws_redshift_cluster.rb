@@ -19,6 +19,11 @@ class GeoEngineer::Resources::AwsRedshiftCluster < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { cluster_identifier } }
 
   def self._fetch_remote_resources
-    AwsClients.redshift.describe_clusters.clusters.map(&:to_h)
+    AwsClients
+      .redshift
+      .describe_clusters
+      .clusters
+      .map(&:to_h)
+      .map { |cluster| cluster.merge({ _terraform_id: cluster[:cluster_identifier] }) }
   end
 end
