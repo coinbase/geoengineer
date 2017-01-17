@@ -5,6 +5,7 @@
 ########################################################################
 class GeoEngineer::Resources::AwsIamPolicy < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name, :policy]) }
+  validate -> { validate_policy_length(self.policy) }
 
   after :initialize, -> {
     _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id }

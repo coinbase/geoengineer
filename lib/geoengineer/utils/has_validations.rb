@@ -4,6 +4,8 @@ require 'netaddr'
 # HasValidations provides methods to enable validations
 ########################################################################
 module HasValidations
+  MAX_POLICY_LENGTH = 5120
+
   def self.included(base)
     base.extend(ClassMethods)
   end
@@ -52,6 +54,11 @@ module HasValidations
     return if NetAddr::CIDR.create(cidr_block)
   rescue NetAddr::ValidationError
     return "Bad cidr block \"#{cidr_block}\" #{for_resource}"
+  end
+
+  def validate_policy_length(policy)
+    return unless policy.to_s.length >= MAX_POLICY_LENGTH
+    "Policy is too large - must be less than #{MAX_POLICY_LENGTH} characters"
   end
 
   # Validates that at least one of the specified attributes is present
