@@ -6,10 +6,14 @@
 class GeoEngineer::Resources::AwsLambdaAlias < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name, :function_name, :function_version]) }
   validate -> {
-    !(name =~ /(?!^[0-9]+$)([a-zA-Z0-9\-_]+)/).nil? if name
+    if name && (name =~ /(?!^[0-9]+$)([a-zA-Z0-9\-_]+)/).nil?
+      "#{name} must match: /(?!^[0-9]+$)([a-zA-Z0-9\-_]+)/"
+    end
   }
   validate -> {
-    !(function_version =~ /(\$LATEST|[0-9]+)/).nil? if function_version
+    if function_version && (function_version =~ /(\$LATEST|[0-9]+)/).nil?
+      "#{function_version} must match: /(\$LATEST|[0-9]+)/"
+    end
   }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
@@ -17,6 +21,15 @@ class GeoEngineer::Resources::AwsLambdaAlias < GeoEngineer::Resource
 
   def support_tags?
     false
+  end
+
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'function_name' => function_name,
+      'name' => name
+    }
+    tfstate
   end
 
   # TODO(Brad) - May need to implement solution for pagination...
