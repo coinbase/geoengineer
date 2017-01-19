@@ -40,12 +40,26 @@ describe("GeoEngineer::Resource") do
         tags {
           not_blue "FALSE"
         }
+        # i.e. s3 bucket multilevel subresources
+        lifecycle_rule {
+          expiration {
+            days 90
+          }
+        }
+
+        lifecycle_rule {
+          transition {
+            days 60
+          }
+        }
       }
 
       tfjson = res.to_terraform_json
 
       expect(tfjson['blue']).to eq 'TRUE'
       expect(tfjson['tags'][0]['not_blue']).to eq 'FALSE'
+      expect(tfjson['lifecycle_rule'][0]['expiration'][0]['days']).to eq 90
+      expect(tfjson['lifecycle_rule'][1]['transition'][0]['days']).to eq 60
     end
   end
 
