@@ -6,7 +6,7 @@
 #  Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsLoadBalancerBackendServerPolicy < GeoEngineer::Resource
-  validate -> { validate_required_attributes([:instance_port, :load_balancer_name]) }
+  validate -> { validate_required_attributes([:instance_port, :load_balancer_name, :policy_names]) }
 
   after :initialize, -> {
     _terraform_id -> { "#{load_balancer_name}:#{instance_port}" }
@@ -26,20 +26,23 @@ class GeoEngineer::Resources::AwsLoadBalancerBackendServerPolicy < GeoEngineer::
   end
 
   def self._fetch_remote_resources
-    load_balancer_name ||= ""
-
     AwsClients
-      .elb.describe_load_balancers({ load_balancer_names: [load_balancer_name] })
+      .elb
+      .describe_load_balancers
       .load_balancer_descriptions
-      .map(&:to_h)
-      .map { |description| description[:backend_server_descriptions] }
+      .map { |load_balancer| _extract_backend_servers(load_balancer.to_h) }
       .flatten
       .compact
-      .map do |policy|
+  end
+
+  def self._extract_backend_servers(load_balancer)
+    load_balancer[:backend_server_descriptions].map do |server|
+      server.merge(
         {
-          '_terraform_id' => policy[:policy_names],
-          '_geo_id' => policy[:policy_names]
+          load_balancer_name: load_balancer[:load_balancer_name],
+          _terraform_id: "#{load_balancer[:load_balancer_name]}:#{server[:instance_port]}"
         }
-      end
+      )
+    end
   end
 end
