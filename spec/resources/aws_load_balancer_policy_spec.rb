@@ -17,16 +17,28 @@ describe("GeoEngineer::Resources::AwsLoadBalancerPolicy") do
             {
               policy_name: "ELBSecurityPolicy-2015-05",
               policy_type_name: "SSLNegotiationPolicyType"
-            },
+            }
+          ]
+        }
+      )
+      elb_client.stub_responses(
+        :describe_load_balancers,
+        {
+          load_balancer_descriptions: [
             {
-              policy_name: "ELBSecurityPolicy-2015-05",
-              policy_type_name: "SSLNegotiationPolicyType"
+              load_balancer_name: "test",
+              backend_server_descriptions: [
+                {
+                  instance_port: 5000,
+                  policy_names: ["test"]
+                }
+              ]
             }
           ]
         }
       )
       remote_resources = GeoEngineer::Resources::AwsLoadBalancerPolicy._fetch_remote_resources
-      expect(remote_resources.length).to eq 2
+      expect(remote_resources.length).to eq 1
     end
   end
 end
