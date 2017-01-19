@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsLambdaAlias") do
+describe GeoEngineer::Resources::AwsLambdaAlias do
   let(:aws_client) { AwsClients.lambda }
 
   before { aws_client.setup_stubbing }
@@ -12,8 +12,18 @@ describe("GeoEngineer::Resources::AwsLambdaAlias") do
       aws_client.stub_responses(
         :list_functions, {
           functions: [
-            { function_name: "foo", role: "arn:aws:iam:one", handler: "export.foo" },
-            { function_name: "bar", role: "arn:aws:iam:two", handler: "export.bar" }
+            {
+              function_name: "foo",
+              function_arn: "arn:aws:lambda:us-east-1:123:function:foo",
+              role: "arn:aws:iam:one",
+              handler: "export.foo"
+            },
+            {
+              function_name: "bar",
+              function_arn: "arn:aws:lambda:us-east-1:123:function:bar",
+              role: "arn:aws:iam:two",
+              handler: "export.bar"
+            }
           ]
         }
       )
@@ -34,6 +44,15 @@ describe("GeoEngineer::Resources::AwsLambdaAlias") do
     it 'should create list of hashes from returned AWS SDK' do
       remote_resources = GeoEngineer::Resources::AwsLambdaAlias._fetch_remote_resources
       expect(remote_resources.length).to eq(2)
+    end
+
+    it 'should match a local resource to the remote resource' do
+      subject = described_class.new('aws_lambda_alias', 'foo') {
+        name "foonew"
+        function_name "arn:aws:lambda:us-east-1:123:function:foo"
+        function_version 1
+      }
+      expect(subject.remote_resource).to_not be_nil
     end
   end
 end

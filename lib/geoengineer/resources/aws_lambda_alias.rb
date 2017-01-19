@@ -4,6 +4,8 @@
 # {https://www.terraform.io/docs/providers/aws/r/lambda_alias.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsLambdaAlias < GeoEngineer::Resource
+  # Note: function_name here actually means function_arn, even though
+  # function_name is also a key on a lambda function.
   validate -> { validate_required_attributes([:name, :function_name, :function_version]) }
   validate -> {
     if name && (name =~ /(?!^[0-9]+$)([a-zA-Z0-9\-_]+)/).nil?
@@ -44,7 +46,7 @@ class GeoEngineer::Resources::AwsLambdaAlias < GeoEngineer::Resource
   def self._fetch_aliases(function)
     options = { function_name: function[:function_name] }
     AwsClients.lambda.list_aliases(options)[:aliases].map(&:to_h).map do |f_alias|
-      geo_id_components = [f_alias[:name], function[:function_name], f_alias[:function_version]]
+      geo_id_components = [f_alias[:name], function[:function_arn], f_alias[:function_version]]
       f_alias.merge(
         {
           _terraform_id: f_alias[:alias_arn],
