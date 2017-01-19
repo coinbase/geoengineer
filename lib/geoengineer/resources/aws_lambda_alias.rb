@@ -44,7 +44,7 @@ class GeoEngineer::Resources::AwsLambdaAlias < GeoEngineer::Resource
   def self._fetch_aliases(function)
     options = { function_name: function[:function_name] }
     AwsClients.lambda.list_aliases(options)[:aliases].map(&:to_h).map do |f_alias|
-      geo_id_components = [f_alias[:name], f_alias[:function_name], f_alias[:function_version]]
+      geo_id_components = [f_alias[:name], function[:function_name], f_alias[:function_version]]
       f_alias.merge(
         {
           _terraform_id: f_alias[:alias_arn],
