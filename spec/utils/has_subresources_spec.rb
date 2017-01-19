@@ -10,10 +10,19 @@ describe("HasSubResources") do
     x = WithSubResources.new()
     x.one_sr {
       value 10
+      sr {
+        multi true
+      }
     }
 
+    # checks for assigned value
     expect(x.one_sr.value).to eq 10
+
+    # checks for non assigned value
     expect(x.no_one_value).to eq nil
+
+    # checks that there are multi level sub resources
+    expect(x.one_sr.sr.multi).to eq true
 
     x.multi_sr {
       value 20

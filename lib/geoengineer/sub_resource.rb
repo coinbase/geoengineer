@@ -7,6 +7,7 @@
 ########################################################################
 class GeoEngineer::SubResource
   include HasAttributes
+  include HasSubResources
 
   attr_reader :type
 
@@ -20,16 +21,25 @@ class GeoEngineer::SubResource
     @resource._terraform_id
   end
 
+  ## Terraform methods
   def to_terraform
     sb = ["  #{@type} { "]
+
     sb.concat terraform_attributes.map { |k, v|
-      "    #{k.to_s.inspect} = #{v.inspect}"
+      "  #{k.to_s.inspect} = #{v.inspect}"
     }
-    sb << "  }"
+
+    sb.concat subresources.map(&:to_terraform)
+    sb << " }"
     sb.join("\n")
   end
 
   def to_terraform_json
-    [@type, terraform_attributes]
+    json = terraform_attributes
+    subresources.map(&:to_terraform_json).each do |k, v|
+      json[k] ||= []
+      json[k] << v
+    end
+    [@type, json]
   end
 end
