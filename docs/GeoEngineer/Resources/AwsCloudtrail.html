@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Class: GeoEngineer::Resources::AwsVpnGateway
+  Class: GeoEngineer::Resources::AwsCloudtrail
   
     &mdash; Documentation by YARD 0.9.5
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "GeoEngineer::Resources::AwsVpnGateway";
+  pathId = "GeoEngineer::Resources::AwsCloudtrail";
   relpath = '../../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../../_index.html">Index (A)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../../GeoEngineer.html" title="GeoEngineer (module)">GeoEngineer</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Resources.html" title="GeoEngineer::Resources (module)">Resources</a></span></span>
      &raquo; 
-    <span class="title">AwsVpnGateway</span>
+    <span class="title">AwsCloudtrail</span>
   
 </div>
 
@@ -61,7 +61,7 @@
 
       <iframe id="search_frame" src="../../class_list.html"></iframe>
 
-      <div id="content"><h1>Class: GeoEngineer::Resources::AwsVpnGateway
+      <div id="content"><h1>Class: GeoEngineer::Resources::AwsCloudtrail
   
   
   
@@ -78,7 +78,7 @@
           
             <li class="next"><span class='object_link'><a href="../Resource.html" title="GeoEngineer::Resource (class)">GeoEngineer::Resource</a></span></li>
           
-            <li class="next">GeoEngineer::Resources::AwsVpnGateway</li>
+            <li class="next">GeoEngineer::Resources::AwsCloudtrail</li>
           
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
@@ -98,7 +98,7 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/geoengineer/resources/aws_vpn_gateway.rb</dd>
+    <dd>lib/geoengineer/resources/aws_cloudtrail.rb</dd>
   </dl>
   
 </div>
@@ -106,9 +106,9 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>AwsVpnGateway is the <code>aws_vpn_gateway</code> terrform resource,</p>
+<p>AwsCloudTrail is the <code>aws_cloudtrail</code> terrform resource,</p>
 
-<p><a href="https://www.terraform.io/docs/providers/aws/r/vpn_gateway.html" target="_parent" title="Terraform Docs">Terraform Docs</a></p>
+<p><a href="https://www.terraform.io/docs/providers/aws/r/cloudtrail.html" target="_parent" title="https://www.terraform.io/docs/providers/aws/r/cloudtrail.html">https://www.terraform.io/docs/providers/aws/r/cloudtrail.html</a></p>
 
 
   </div>
@@ -259,6 +259,7 @@
       <pre class="lines">
 
 
+11
 12
 13
 14
@@ -266,21 +267,18 @@
 16
 17
 18
-19
-20
-21</pre>
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_vpn_gateway.rb', line 12</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_cloudtrail.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__fetch_remote_resources'>_fetch_remote_resources</span>
-  <span class='const'>AwsClients</span><span class='period'>.</span><span class='id identifier rubyid_ec2'>ec2</span><span class='period'>.</span><span class='id identifier rubyid_describe_vpn_gateways'>describe_vpn_gateways</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>vpn_gateways</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_h</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_gateway'>gateway</span><span class='op'>|</span>
-    <span class='id identifier rubyid_gateway'>gateway</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span>
-      <span class='lbrace'>{</span>
-        <span class='label'>_terraform_id:</span> <span class='id identifier rubyid_gateway'>gateway</span><span class='lbracket'>[</span><span class='symbol'>:vpn_gateway_id</span><span class='rbracket'>]</span><span class='comma'>,</span>
-        <span class='label'>_geo_id:</span> <span class='id identifier rubyid_gateway'>gateway</span><span class='lbracket'>[</span><span class='symbol'>:tags</span><span class='rbracket'>]</span><span class='op'>&amp;.</span><span class='id identifier rubyid_find'>find</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_tag'>tag</span><span class='op'>|</span> <span class='id identifier rubyid_tag'>tag</span><span class='lbracket'>[</span><span class='symbol'>:key</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Name</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='op'>&amp;.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='symbol'>:value</span><span class='rparen'>)</span>
-      <span class='rbrace'>}</span>
-    <span class='rparen'>)</span>
+  <span class='id identifier rubyid_cloudtrails'>cloudtrails</span> <span class='op'>=</span> <span class='const'>AwsClients</span><span class='period'>.</span><span class='id identifier rubyid_cloudtrail'>cloudtrail</span><span class='period'>.</span><span class='id identifier rubyid_describe_trails'>describe_trails</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>trail_list</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_h</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_cloudtrails'>cloudtrails</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_ct'>ct</span><span class='op'>|</span>
+    <span class='id identifier rubyid_ct'>ct</span><span class='lbracket'>[</span><span class='symbol'>:_terraform_id</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_ct'>ct</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_ct'>ct</span><span class='lbracket'>[</span><span class='symbol'>:_geo_id</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_ct'>ct</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_ct'>ct</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -293,7 +291,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Jan 25 13:58:42 2017 by
+  Generated on Wed Jan 25 13:58:41 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.3.1).
 </div>

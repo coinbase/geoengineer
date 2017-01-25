@@ -29,9 +29,19 @@ Instructions to install Ruby can be found [here](https://www.ruby-lang.org/en/do
 
 ### Install GeoEngineer
 
+Secure install (this will validate the geoengineer gem):
+
 ```
 gem cert --add <(curl -Ls https://raw.githubusercontent.com/coinbase/geoengineer/master/certs/geoengineer-gem.pem)
-gem install geoengineer --trust-policy HighSecurity
+gem install geoengineer --trust-policy MediumSecurity
+```
+
+*Note: HighSecurity will not work because aws-sdk and other gems are not signed*
+
+Or just install normally:
+
+```
+gem install geoengineer
 ```
 
 Test it is installed correctly with:

@@ -119,6 +119,12 @@
 </div>
 
 
+  <h2>Constant Summary</h2>
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="../../HasValidations.html" title="HasValidations (module)">HasValidations</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../HasValidations.html#MAX_POLICY_LENGTH-constant" title="HasValidations::MAX_POLICY_LENGTH (constant)">HasValidations::MAX_POLICY_LENGTH</a></span></p>
+
 
 
 
@@ -312,7 +318,7 @@
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../../HasValidations.html" title="HasValidations (module)">HasValidations</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../../HasValidations.html#errors-instance_method" title="HasValidations#errors (method)">#errors</a></span>, <span class='object_link'><a href="../../HasValidations.html#included-class_method" title="HasValidations.included (method)">included</a></span>, <span class='object_link'><a href="../../HasValidations.html#validate_at_least_one_present-instance_method" title="HasValidations#validate_at_least_one_present (method)">#validate_at_least_one_present</a></span>, <span class='object_link'><a href="../../HasValidations.html#validate_cidr_block-instance_method" title="HasValidations#validate_cidr_block (method)">#validate_cidr_block</a></span>, <span class='object_link'><a href="../../HasValidations.html#validate_only_one_present-instance_method" title="HasValidations#validate_only_one_present (method)">#validate_only_one_present</a></span>, <span class='object_link'><a href="../../HasValidations.html#validate_required_attributes-instance_method" title="HasValidations#validate_required_attributes (method)">#validate_required_attributes</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../../HasValidations.html#errors-instance_method" title="HasValidations#errors (method)">#errors</a></span>, <span class='object_link'><a href="../../HasValidations.html#included-class_method" title="HasValidations.included (method)">included</a></span>, <span class='object_link'><a href="../../HasValidations.html#validate_at_least_one_present-instance_method" title="HasValidations#validate_at_least_one_present (method)">#validate_at_least_one_present</a></span>, <span class='object_link'><a href="../../HasValidations.html#validate_cidr_block-instance_method" title="HasValidations#validate_cidr_block (method)">#validate_cidr_block</a></span>, <span class='object_link'><a href="../../HasValidations.html#validate_only_one_present-instance_method" title="HasValidations#validate_only_one_present (method)">#validate_only_one_present</a></span>, <span class='object_link'><a href="../../HasValidations.html#validate_policy_length-instance_method" title="HasValidations#validate_policy_length (method)">#validate_policy_length</a></span>, <span class='object_link'><a href="../../HasValidations.html#validate_required_attributes-instance_method" title="HasValidations#validate_required_attributes (method)">#validate_required_attributes</a></span></p>
 
   
   
@@ -372,12 +378,12 @@
       <pre class="lines">
 
 
-46
 47
-48</pre>
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__all_remote_policies'>_all_remote_policies</span>
   <span class='const'>AwsClients</span><span class='period'>.</span><span class='id identifier rubyid_iam'>iam</span><span class='period'>.</span><span class='id identifier rubyid_list_policies'>list_policies</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>scope:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Local</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:policies</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_h</span><span class='rparen'>)</span>
@@ -402,7 +408,6 @@
       <pre class="lines">
 
 
-50
 51
 52
 53
@@ -412,10 +417,11 @@
 57
 58
 59
-60</pre>
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 51</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__fetch_remote_resources'>_fetch_remote_resources</span>
   <span class='id identifier rubyid__all_remote_policies'>_all_remote_policies</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_h</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_policy'>policy</span><span class='op'>|</span>
@@ -454,14 +460,14 @@
       <pre class="lines">
 
 
-40
 41
 42
 43
-44</pre>
+44
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid__get_policy_document'>_get_policy_document</span><span class='lparen'>(</span><span class='id identifier rubyid_arn'>arn</span><span class='comma'>,</span> <span class='id identifier rubyid_version_id'>version_id</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='const'>AwsClients</span><span class='period'>.</span><span class='id identifier rubyid_iam'>iam</span><span class='period'>.</span><span class='id identifier rubyid_get_policy_version'>get_policy_version</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>policy_arn:</span> <span class='id identifier rubyid_arn'>arn</span><span class='comma'>,</span>
@@ -488,12 +494,12 @@
       <pre class="lines">
 
 
-36
 37
-38</pre>
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid__policy_file'>_policy_file</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='id identifier rubyid_binding_obj'>binding_obj</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid__json_file'>_json_file</span><span class='lparen'>(</span><span class='symbol'>:policy</span><span class='comma'>,</span> <span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='id identifier rubyid_binding_obj'>binding_obj</span><span class='rparen'>)</span>
@@ -540,12 +546,12 @@
       <pre class="lines">
 
 
-32
 33
-34</pre>
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_support_tags?'>support_tags?</span>
   <span class='kw'>false</span>
@@ -570,7 +576,6 @@
       <pre class="lines">
 
 
-16
 17
 18
 19
@@ -584,10 +589,11 @@
 27
 28
 29
-30</pre>
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_policy.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_terraform_state'>to_terraform_state</span>
   <span class='id identifier rubyid_arn'>arn</span> <span class='op'>=</span> <span class='const'>NullObject</span><span class='period'>.</span><span class='id identifier rubyid_maybe'>maybe</span><span class='lparen'>(</span><span class='id identifier rubyid_remote_resource'>remote_resource</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_arn'>arn</span>
@@ -614,7 +620,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Dec 29 11:27:32 2016 by
+  Generated on Wed Jan 25 13:58:41 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.3.1).
 </div>

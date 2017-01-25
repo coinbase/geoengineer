@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Class: GeoEngineer::Resources::AwsSqsQueue
+  Class: GeoEngineer::Resources::AwsIamRolePolicy
   
     &mdash; Documentation by YARD 0.9.5
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "GeoEngineer::Resources::AwsSqsQueue";
+  pathId = "GeoEngineer::Resources::AwsIamRolePolicy";
   relpath = '../../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../../_index.html">Index (A)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../../GeoEngineer.html" title="GeoEngineer (module)">GeoEngineer</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Resources.html" title="GeoEngineer::Resources (module)">Resources</a></span></span>
      &raquo; 
-    <span class="title">AwsSqsQueue</span>
+    <span class="title">AwsIamRolePolicy</span>
   
 </div>
 
@@ -61,7 +61,7 @@
 
       <iframe id="search_frame" src="../../class_list.html"></iframe>
 
-      <div id="content"><h1>Class: GeoEngineer::Resources::AwsSqsQueue
+      <div id="content"><h1>Class: GeoEngineer::Resources::AwsIamRolePolicy
   
   
   
@@ -78,7 +78,7 @@
           
             <li class="next"><span class='object_link'><a href="../Resource.html" title="GeoEngineer::Resource (class)">GeoEngineer::Resource</a></span></li>
           
-            <li class="next">GeoEngineer::Resources::AwsSqsQueue</li>
+            <li class="next">GeoEngineer::Resources::AwsIamRolePolicy</li>
           
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
@@ -98,7 +98,7 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/geoengineer/resources/aws_sqs_queue.rb</dd>
+    <dd>lib/geoengineer/resources/aws_iam_role_policy.rb</dd>
   </dl>
   
 </div>
@@ -106,9 +106,9 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>AwsSqsQueue is the <code>aws_sqs_queue</code> terrform resource,</p>
+<p>AwsIamRolePolicy <code>aws_iam_role_policy</code> terrform resource,</p>
 
-<p><a href="https://www.terraform.io/docs/providers/aws/r/sqs_queue.html" target="_parent" title="Terraform Docs">Terraform Docs</a></p>
+<p><a href="https://www.terraform.io/docs/providers/aws/r/iam_role_policy.html" target="_parent" title="Terraform Docs">Terraform Docs</a></p>
 
 
   </div>
@@ -164,6 +164,50 @@
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#_get_policy-class_method" title="_get_policy (class method)">.<strong>_get_policy</strong>(role_policy)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#_get_role_policies-class_method" title="_get_role_policies (class method)">.<strong>_get_role_policies</strong>(role)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
     </ul>
   
     <h2>
@@ -172,6 +216,28 @@
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#_policy_file-instance_method" title="#_policy_file (instance method)">#<strong>_policy_file</strong>(path, binding_obj = nil)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -212,10 +278,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>The loadbalancer and the instance ports are necessary in the terraform
-state for the policy.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -315,27 +378,109 @@ state for the policy.</p>
       <pre class="lines">
 
 
-28
-29
-30
-31
-32
-33
-34
 35
-36</pre>
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_sqs_queue.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_role_policy.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__fetch_remote_resources'>_fetch_remote_resources</span>
-  <span class='const'>AwsClients</span><span class='period'>.</span><span class='id identifier rubyid_sqs'>sqs</span><span class='period'>.</span><span class='id identifier rubyid_list_queues'>list_queues</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>queue_urls</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_queue'>queue</span><span class='op'>|</span>
-    <span class='lbrace'>{</span>
-      <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>_terraform_id</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_queue'>queue</span><span class='comma'>,</span>
-      <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>_geo_id</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_queue'>queue</span><span class='comma'>,</span>
-      <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='const'>URI</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_queue'>queue</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_path'>path</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span>
-    <span class='rbrace'>}</span>
-  <span class='kw'>end</span>
+  <span class='const'>AwsClients</span>
+    <span class='period'>.</span><span class='id identifier rubyid_iam'>iam</span>
+    <span class='period'>.</span><span class='id identifier rubyid_list_roles'>list_roles</span>
+    <span class='period'>.</span><span class='id identifier rubyid_roles'>roles</span>
+    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_h</span><span class='rparen'>)</span>
+    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_role'>role</span><span class='op'>|</span> <span class='id identifier rubyid__get_role_policies'>_get_role_policies</span><span class='lparen'>(</span><span class='id identifier rubyid_role'>role</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span>
+    <span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span>
+    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_role_policy'>role_policy</span><span class='op'>|</span> <span class='id identifier rubyid__get_policy'>_get_policy</span><span class='lparen'>(</span><span class='id identifier rubyid_role_policy'>role_policy</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="_get_policy-class_method">
+  
+    .<strong>_get_policy</strong>(role_policy)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+56
+57
+58
+59
+60
+61
+62</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_role_policy.rb', line 56</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__get_policy'>_get_policy</span><span class='lparen'>(</span><span class='id identifier rubyid_role_policy'>role_policy</span><span class='rparen'>)</span>
+  <span class='const'>AwsClients</span>
+    <span class='period'>.</span><span class='id identifier rubyid_iam'>iam</span>
+    <span class='period'>.</span><span class='id identifier rubyid_get_role_policy'>get_role_policy</span><span class='lparen'>(</span><span class='id identifier rubyid_role_policy'>role_policy</span><span class='rparen'>)</span>
+    <span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span>
+    <span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>_terraform_id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_role_policy'>role_policy</span><span class='lbracket'>[</span><span class='symbol'>:role_name</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_role_policy'>role_policy</span><span class='lbracket'>[</span><span class='symbol'>:policy_name</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="_get_role_policies-class_method">
+  
+    .<strong>_get_role_policies</strong>(role)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+47
+48
+49
+50
+51
+52
+53
+54</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_role_policy.rb', line 47</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__get_role_policies'>_get_role_policies</span><span class='lparen'>(</span><span class='id identifier rubyid_role'>role</span><span class='rparen'>)</span>
+  <span class='const'>AwsClients</span>
+    <span class='period'>.</span><span class='id identifier rubyid_iam'>iam</span>
+    <span class='period'>.</span><span class='id identifier rubyid_list_role_policies'>list_role_policies</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>role_name:</span> <span class='id identifier rubyid_role'>role</span><span class='lbracket'>[</span><span class='symbol'>:role_name</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:policy_names</span><span class='rparen'>)</span>
+    <span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span>
+    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_policy'>policy</span><span class='op'>|</span> <span class='lbrace'>{</span> <span class='label'>role_name:</span> <span class='id identifier rubyid_role'>role</span><span class='lbracket'>[</span><span class='symbol'>:role_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>policy_name:</span> <span class='id identifier rubyid_policy'>policy</span> <span class='rbrace'>}</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -349,7 +494,37 @@ state for the policy.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="support_tags?-instance_method">
+  <h3 class="signature first" id="_policy_file-instance_method">
+  
+    #<strong>_policy_file</strong>(path, binding_obj = nil)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_role_policy.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid__policy_file'>_policy_file</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='id identifier rubyid_binding_obj'>binding_obj</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid__json_file'>_json_file</span><span class='lparen'>(</span><span class='symbol'>:policy</span><span class='comma'>,</span> <span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='id identifier rubyid_binding_obj'>binding_obj</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="support_tags?-instance_method">
   
     #<strong>support_tags?</strong>  &#x21d2; <tt>Boolean</tt> 
   
@@ -385,12 +560,12 @@ state for the policy.</p>
       <pre class="lines">
 
 
-24
-25
-26</pre>
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_sqs_queue.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_role_policy.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_support_tags?'>support_tags?</span>
   <span class='kw'>false</span>
@@ -409,40 +584,38 @@ state for the policy.</p>
   
 
   
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>The loadbalancer and the instance ports are necessary in the terraform
-state for the policy</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
+14
+15
 16
 17
 18
 19
 20
 21
-22</pre>
+22
+23
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_sqs_queue.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_iam_role_policy.rb', line 14</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_terraform_state'>to_terraform_state</span>
   <span class='id identifier rubyid_tfstate'>tfstate</span> <span class='op'>=</span> <span class='kw'>super</span>
-  <span class='id identifier rubyid_tfstate'>tfstate</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:attributes</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+  <span class='id identifier rubyid_attributes'>attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>policy</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_policy'>policy</span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>role</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_role'>role</span><span class='comma'>,</span>
     <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_name'>name</span>
   <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_tfstate'>tfstate</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:attributes</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_attributes'>attributes</span>
+
   <span class='id identifier rubyid_tfstate'>tfstate</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -455,7 +628,7 @@ state for the policy</p>
 </div>
 
       <div id="footer">
-  Generated on Wed Jan 25 13:58:41 2017 by
+  Generated on Wed Jan 25 13:58:43 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.3.1).
 </div>
