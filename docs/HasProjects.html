@@ -209,12 +209,12 @@ projects</p>
       <pre class="lines">
 
 
-18
-19
-20</pre>
+20
+21
+22</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_projects.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_projects.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_all_project_resources'>all_project_resources</span>
   <span class='id identifier rubyid_projects'>projects</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:all_resources</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span>
@@ -256,7 +256,9 @@ projects</p>
 13
 14
 15
-16</pre>
+16
+17
+18</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/has_projects.rb', line 10</span>
@@ -266,7 +268,9 @@ projects</p>
 </span>  <span class='id identifier rubyid_repository'>repository</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_org'>org</span><span class='embexpr_end'>}</span><span class='tstring_content'>/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
   <span class='kw'>return</span> <span class='id identifier rubyid_projects'>projects</span><span class='lbracket'>[</span><span class='id identifier rubyid_repository'>repository</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_projects'>projects</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='id identifier rubyid_repository'>repository</span><span class='rparen'>)</span>
 
-  <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Project</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_org'>org</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_proj'>proj</span> <span class='op'>=</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Project</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_org'>org</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_projects'>projects</span><span class='lbracket'>[</span><span class='id identifier rubyid_repository'>repository</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_proj'>proj</span>
+  <span class='id identifier rubyid_proj'>proj</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -308,7 +312,7 @@ projects</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Dec 29 11:27:31 2016 by
+  Generated on Wed Jan 25 13:58:37 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.3.1).
 </div>

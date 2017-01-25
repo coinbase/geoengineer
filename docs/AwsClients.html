@@ -131,7 +131,29 @@ central management is their initialisation testing and stubbing</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#ec2-class_method" title="ec2 (class method)">.<strong>ec2</strong>  &#x21d2; Object </a>
+      <a href="#cloudtrail-class_method" title="cloudtrail (class method)">.<strong>cloudtrail</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#cloudwatchevents-class_method" title="cloudwatchevents (class method)">.<strong>cloudwatchevents</strong>  &#x21d2; Object </a>
     
 
     
@@ -148,6 +170,50 @@ central management is their initialisation testing and stubbing</p>
     <span class="summary_desc"><div class='inline'>
 <p>Clients.</p>
 </div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dynamo-class_method" title="dynamo (class method)">.<strong>dynamo</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ec2-class_method" title="ec2 (class method)">.<strong>ec2</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -222,6 +288,28 @@ central management is their initialisation testing and stubbing</p>
   <span class="summary_signature">
     
       <a href="#iam-class_method" title="iam (class method)">.<strong>iam</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#kinesis-class_method" title="kinesis (class method)">.<strong>kinesis</strong>  &#x21d2; Object </a>
     
 
     
@@ -470,9 +558,39 @@ central management is their initialisation testing and stubbing</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="ec2-class_method">
+  <h3 class="signature first" id="cloudtrail-class_method">
   
-    .<strong>ec2</strong>  &#x21d2; <tt>Object</tt> 
+    .<strong>cloudtrail</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+80
+81
+82</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 80</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_cloudtrail'>cloudtrail</span>
+  <span class='ivar'>@aws_cloudtrail</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>CloudTrail</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="cloudwatchevents-class_method">
+  
+    .<strong>cloudwatchevents</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -502,6 +620,66 @@ central management is their initialisation testing and stubbing</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 16</span>
 
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_cloudwatchevents'>cloudwatchevents</span>
+  <span class='ivar'>@aws_cloudwatchevents</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>CloudWatchEvents</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dynamo-class_method">
+  
+    .<strong>dynamo</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+20
+21
+22</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 20</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_dynamo'>dynamo</span>
+  <span class='ivar'>@aws_dynamo</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>DynamoDB</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="ec2-class_method">
+  
+    .<strong>ec2</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+24
+25
+26</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 24</span>
+
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_ec2'>ec2</span>
   <span class='ivar'>@aws_ec2</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>EC2</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -525,12 +703,12 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-20
-21
-22</pre>
+28
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_elasticache'>elasticache</span>
   <span class='ivar'>@aws_elasticache</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>ElastiCache</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -555,12 +733,12 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-24
-25
-26</pre>
+32
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_elasticsearch'>elasticsearch</span>
   <span class='ivar'>@aws_elasticsearch</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>ElasticsearchService</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -585,12 +763,12 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-28
-29
-30</pre>
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_elb'>elb</span>
   <span class='ivar'>@aws_elb</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>ElasticLoadBalancing</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -615,15 +793,45 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-32
-33
-34</pre>
+40
+41
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_iam'>iam</span>
   <span class='ivar'>@aws_iam</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>IAM</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="kinesis-class_method">
+  
+    .<strong>kinesis</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+44
+45
+46</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 44</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_kinesis'>kinesis</span>
+  <span class='ivar'>@aws_kinesis</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>Kinesis</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -645,12 +853,12 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-64
-65
-66</pre>
+48
+49
+50</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_lambda'>lambda</span>
   <span class='ivar'>@aws_lambda</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>Lambda</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -675,12 +883,12 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-36
-37
-38</pre>
+52
+53
+54</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 52</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rds'>rds</span>
   <span class='ivar'>@aws_rds</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>RDS</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -705,12 +913,12 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-40
-41
-42</pre>
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_redshift'>redshift</span>
   <span class='ivar'>@aws_redshift</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>Redshift</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -735,12 +943,12 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-44
-45
-46</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 44</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_route53'>route53</span>
   <span class='ivar'>@aws_route53</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>Route53</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -765,12 +973,12 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-48
-49
-50</pre>
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_s3'>s3</span>
   <span class='ivar'>@aws_s3</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>S3</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -795,12 +1003,12 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-52
-53
-54</pre>
+68
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_ses'>ses</span>
   <span class='ivar'>@aws_ses</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>SES</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -825,12 +1033,12 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-56
-57
-58</pre>
+72
+73
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 72</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sns'>sns</span>
   <span class='ivar'>@aws_sns</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>SNS</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -855,12 +1063,12 @@ central management is their initialisation testing and stubbing</p>
       <pre class="lines">
 
 
-60
-61
-62</pre>
+76
+77
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 60</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/utils/aws_clients.rb', line 76</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sqs'>sqs</span>
   <span class='ivar'>@aws_sqs</span> <span class='op'>||=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>SQS</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>stub_responses:</span> <span class='id identifier rubyid_stubbed?'>stubbed?</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -957,7 +1165,7 @@ central management is their initialisation testing and stubbing</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Dec 29 11:27:32 2016 by
+  Generated on Wed Jan 25 13:58:40 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.3.1).
 </div>

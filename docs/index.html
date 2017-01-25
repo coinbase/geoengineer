@@ -65,7 +65,7 @@
 
 <p><a href="https://commons.wikimedia.org/wiki/File:Mantle_of_Responsibility.png"><img src="./assets/mantle.png" align="right" alt="Mantle_of_Responsibility" /></a></p>
 
-<p>GeoEngineer provides a Ruby DSL and command line tool (<code>geo</code>) to <em>codeify</em>  then plan and execute changes to cloud resources.</p>
+<p>GeoEngineer provides a Ruby DSL and command line tool (<code>geo</code>) to <em>codify</em>  then plan and execute changes to cloud resources.</p>
 
 <p>GeoEngineer&#39;s goals/requirements/features are:</p>
 
@@ -92,8 +92,17 @@
 
 <h3>Install GeoEngineer</h3>
 
+<p>Secure install (this will validate the geoengineer gem):</p>
+
 <pre class="code ruby"><code class="ruby">gem cert --add &lt;(curl -Ls https://raw.githubusercontent.com/coinbase/geoengineer/master/certs/geoengineer-gem.pem)
-gem install geoengineer --trust-policy HighSecurity
+gem install geoengineer --trust-policy MediumSecurity
+</code></pre>
+
+<p><em>Note: HighSecurity will not work because aws-sdk and other gems are not signed</em></p>
+
+<p>Or just install normally:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='id identifier rubyid_install'>install</span> <span class='id identifier rubyid_geoengineer'>geoengineer</span>
 </code></pre>
 
 <p>Test it is installed correctly with:</p>
@@ -409,7 +418,7 @@ runcmd:
 <ol>
 <li><code>Environment</code> contains many resources that may exist outside of a project, like VPCs or routing tables. Also every project defined to be in the environment, for example the <code>test_www</code> project is in <code>staging</code> but <code>monorail</code> is in <code>staging</code> and <code>production</code> environments.</li>
 <li><code>Project</code> contains many resources and services grouped together into a name.</li>
-<li><code>Template</code> has a <code>type</code> and <code>name</code>, and a group of resources that are defined in a pattern, e.g. every Load Balancer requires a unique security group that allows traffic in. It is an simple abstraction that can dramatically simplify and standardize cloud resources.</li>
+<li><code>Template</code> has a <code>type</code> and <code>name</code>, and a group of resources that are defined in a pattern, e.g. every Load Balancer requires a unique security group that allows traffic in. It is a simple abstraction that can dramatically simplify and standardize cloud resources.</li>
 <li><code>Resource</code> and <code>SubResource</code> are based off of how terraform models cloud resources. A <code>Resource</code> instance can have many <code>SubResource</code> instances, but a <code>SubResource</code> instance belongs to only one <code>Resource</code> instance, e.g. a load balancer resource may have a <code>health_check</code> sub-resource to only allow specific incoming ports.</li>
 </ol>
 
@@ -445,7 +454,7 @@ runcmd:
 
 <h3>Environment</h3>
 
-<p>The top level class in GeoEngineer is the <code>environment</code>, it contains all projects, resources and services, there should only ever be one initialized at a time.</p>
+<p>The top level class in GeoEngineer is the <code>environment</code>: it contains all projects, resources and services, and there should only ever be one initialized at a time.</p>
 
 <p>An environment can mean many things to different people, e.g. an AWS account, an AWS region, or a specific AWS VPC. The only real constraint is that a resource has one instance per environment, e.g. a load balancer that is defined to be in <code>staging</code> and <code>production</code> environments, will have an instance in each.</p>
 
@@ -471,28 +480,28 @@ runcmd:
 
 <p>This projects organization is <code>org</code>, its name <code>project_name</code> and will be provisioned in the <code>staging</code> and <code>production</code> environments. The <code>org</code> and <code>name</code> must be unique across all other projects.</p>
 
-<p>The method <code>project</code> will automatically add the project to the instantiated environment object <strong>only if</strong> that environments name is in the list of environments, otherwise it is ignored.</p>
+<p>The method <code>project</code> will automatically add the project to the instantiated environment object <strong>only if</strong> that environment&#39;s name is in the list of environments, otherwise it is ignored.</p>
 
 <h3>Templates</h3>
 
 <p>A template is used to create a group of resources in a recommended pattern. For example, an HTTP service could create a load balancer, a load balancer security group, and a ec2 security group.</p>
 
-<pre class="code ruby"><code class="ruby">template_instance = project.from_template(&#39;template_type&#39;, &#39;name&#39;, { parameter: &#39;helloworld&#39;) { |resource, resource_sg|
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_template_instance'>template_instance</span> <span class='op'>=</span> <span class='id identifier rubyid_project'>project</span><span class='period'>.</span><span class='id identifier rubyid_from_template'>from_template</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>template_type</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>parameter:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>helloworld</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_resource'>resource</span><span class='comma'>,</span> <span class='id identifier rubyid_resource_sg'>resource_sg</span><span class='op'>|</span>
 
-  # set attribute
-  attribute &quot;custom attribute&quot;
+  <span class='comment'># set attribute
+</span>  <span class='id identifier rubyid_attribute'>attribute</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>custom attribute</span><span class='tstring_end'>&quot;</span></span>
 
-  # Customize the values
-  resource.cutomize_value = &quot;Customize&quot;
-  resource.override_value = &quot;Override&quot;
+  <span class='comment'># Customize the values
+</span>  <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_cutomize_value'>cutomize_value</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Customize</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_override_value'>override_value</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Override</span><span class='tstring_end'>&quot;</span></span>
 
-  # Overrider a subresource value
-  resource.subresource.override_sr_value = &quot;first value&quot;
-  resource.all_subresource[1].override_sr_value = &quot;new value&quot;
-}
+  <span class='comment'># Overrider a subresource value
+</span>  <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_subresource'>subresource</span><span class='period'>.</span><span class='id identifier rubyid_override_sr_value'>override_sr_value</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>first value</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_all_subresource'>all_subresource</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_override_sr_value'>override_sr_value</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>new value</span><span class='tstring_end'>&quot;</span></span>
+<span class='rbrace'>}</span>
 
-template_instance.resource_sg # access the created resources outside the block
-</code></pre>
+<span class='id identifier rubyid_template_instance'>template_instance</span><span class='period'>.</span><span class='id identifier rubyid_resource_sg'>resource_sg</span> <span class='comment'># access the created resources outside the block
+</span></code></pre>
 
 <p>This template will create a resource <code>resource</code> and a resource security group <code>resource_sg</code> with the option <code>hello</code> set to value <code>&#39;world&#39;</code>. The resources can then be customized and have their values overridden.</p>
 
@@ -522,13 +531,13 @@ template_instance.resource_sg # access the created resources outside the block
 
 <p>The <code>type</code> of a resource must be a valid terraform type, where AWS types are listed <a href="https://www.terraform.io/docs/providers/aws/index.html">here</a>. Some resources are not supported yet by GeoEngineer.</p>
 
-<p><code>identifier</code> is used by GeoEngineer and terraform to reference this resource so must be unique, however it is not stored in the cloud so can be changed without affecting a plan.</p>
+<p><code>identifier</code> is used by GeoEngineer and terraform to reference this resource must be unique, however it is not stored in the cloud so can be changed without affecting a plan.</p>
 
 <p>A resource also has a ruby block sent to it that contains parameters and sub-resources. These values are defined by terraform so for reference to what values are required please refer to the <a href="https://www.terraform.io/docs/providers/aws/index.html">terraform docs</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Thu Dec 29 11:27:31 2016 by
+  Generated on Wed Jan 25 13:58:37 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.3.1).
 </div>
