@@ -166,13 +166,22 @@ class GeoEngineer::Resource
   def self.fetch_remote_resources
     return @_rr_cache if @_rr_cache
     resource_hashes = _fetch_remote_resources()
-    @_rr_cache = resource_hashes.map { |res_hash| GeoEngineer::Resource.build(res_hash) }
+    @_rr_cache = resource_hashes
+                 .reject { |resource| _resources_to_ignore.include?(resource[:_geo_id]) }
+                 .map { |resource| GeoEngineer::Resource.build(resource) }
   end
 
   # This method must be implemented for each resource type
   # it must return a list of hashes with at least the key
   def self._fetch_remote_resources
     throw "NOT IMPLEMENTED ERROR for #{self.name}"
+  end
+
+  # This method allows you to specify certain remote resources that for whatever reason,
+  # cannot or should not be codified. It expects a list of `_geo_ids`, and be overriden
+  # in child classes.
+  def self._resources_to_ignore
+    []
   end
 
   def self.build(resource_hash)
