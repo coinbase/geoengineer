@@ -10,33 +10,10 @@ module GeoCLI::StatusCommand
     }
   end
 
-  def status_resource_rows(reses)
-    rows = []
-    rows << :separator
-    rows << ['TerraformID', 'GeoID']
-    rows << :separator
-    reses.each do |sg|
-      g_id = sg._geo_id
-      g_id = "<<" if sg._terraform_id == sg._geo_id
-      rows << [sg._terraform_id, g_id]
-    end
-    rows << :separator
-    rows
-  end
-
-  def status_type_rows(type, codified, uncodified, stats)
-    rows = []
-
-    # Codified resources
-    rows << [{ value: "### CODIFIED #{type} ###".colorize(:green), colspan: 2, alignment: :left }]
-    rows.concat status_resource_rows(codified)
-
-    # Uncodified resources
-    rows << [{ value: "### UNCODIFIED #{type} ###".colorize(:red), colspan: 2, alignment: :left }]
-    rows.concat status_resource_rows(uncodified)
-
-    rows.concat status_rows(stats)
-    puts Terminal::Table.new({ rows: rows })
+  def resource_id_array(resources)
+    resources
+      .select { |r| !r.attributes.empty? }
+      .map { |r| r._geo_id || r._terraform_id }
   end
 
   def status_types(options)
@@ -62,35 +39,50 @@ module GeoCLI::StatusCommand
       total: 0
     }
     type_stats.each do |type, stats|
-      totals[:codified] += stats[:codified]
-      totals[:uncodified] += stats[:uncodified]
-      totals[:total] += stats[:total]
+      totals[:codified] += stats[:stats][:codified]
+      totals[:uncodified] += stats[:stats][:uncodified]
+      totals[:total] += stats[:stats][:total]
     end
     totals[:percent] = (100.0 * totals[:codified]) / totals[:total]
     totals
   end
 
-  def status_rows(stats)
-    rows = []
-    rows << ['CODIFIED'.colorize(:green), stats[:codified]]
-    rows << ['UNCODIFIED'.colorize(:red), stats[:uncodified]]
-    rows << ['TOTAL'.colorize(:blue), stats[:total]]
-    rows << ['PERCENT CODIFIED'.colorize({ mode: :bold }), format('%.2f%', stats[:percent])]
-    rows
+  def report_json(type_stats, status)
+    status[:resources] = {}
+    type_stats.each do |type, resources|
+      status[:resources][type] = {}
+      status[:resources][type][:uncodified] = resource_id_array(resources[:uncodified])
+      status[:resources][type][:codified] = resource_id_array(resources[:codified])
+    end
+    status
+  end
+
+  def type_stats(options)
+    type_stats = {}
+    status_types(options).each do |type|
+      type_stats[type] = {}
+      type_stats[type][:codified] = @environment.codified_resources(type)
+      type_stats[type][:uncodified] = @environment.uncodified_resources(type)
+      type_stats[type][:stats] = calculate_type_status(
+        type_stats[type][:codified],
+        type_stats[type][:uncodified]
+      )
+    end
+    type_stats
+  end
+
+  def only_codified(status)
+    status[:resources]
+      .select { |t, r| r[:uncodified].any? }
+      .each { |t, r| r.delete(:codified) }
   end
 
   def status_action
     lambda do |args, options|
-      type_stats = {}
-      status_types(options).each do |type|
-        codified = @environment.codified_resources(type)
-        uncodified = @environment.uncodified_resources(type)
-        type_stats[type] = calculate_type_status(codified, uncodified)
-        status_type_rows(type, codified, uncodified, type_stats[type]) if @verbose
-      end
-
+      type_stats = type_stats(options)
       status = calculate_status(type_stats)
-      puts Terminal::Table.new({ rows: status_rows(status) }) if @verbose
+      status = report_json(type_stats, status)
+      status[:resources] = only_codified(status) unless @verbose
       puts JSON.pretty_generate(status)
     end
   end
