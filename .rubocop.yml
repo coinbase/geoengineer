@@ -1,5 +1,5 @@
 AllCops:
-  Excludes:
+  Exclude:
     - 'vendor/**/*'
     - 'examples/*'
     - 'geoengineer.gemspec'

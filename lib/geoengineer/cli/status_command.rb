@@ -71,11 +71,19 @@ module GeoCLI::StatusCommand
     type_stats
   end
 
+  def only_codified(status)
+    status[:resources]
+      .select { |t, r| r[:uncodified].any? }
+      .each { |t, r| r.delete(:codified) }
+  end
+
   def status_action
     lambda do |args, options|
       type_stats = type_stats(options)
       status = calculate_status(type_stats)
-      puts JSON.pretty_generate(report_json(type_stats, status))
+      status = report_json(type_stats, status)
+      status[:resources] = only_codified(status) unless @verbose
+      puts JSON.pretty_generate(status)
     end
   end
 
