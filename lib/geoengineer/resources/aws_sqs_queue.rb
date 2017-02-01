@@ -28,9 +28,9 @@ class GeoEngineer::Resources::AwsSqsQueue < GeoEngineer::Resource
   def self._fetch_remote_resources
     AwsClients.sqs.list_queues['queue_urls'].map do |queue|
       {
-        '_terraform_id' => queue,
-        '_geo_id' => queue,
-        'name' => URI.parse(queue).path.split('/').last
+        _terraform_id: queue,
+        _geo_id: queue,
+        name: URI.parse(queue).path.split('/').last
       }
     end
   end

@@ -51,11 +51,11 @@ class GeoEngineer::Resources::AwsIamPolicy < GeoEngineer::Resource
   def self._fetch_remote_resources
     _all_remote_policies.map(&:to_h).map do |policy|
       {
-        '_terraform_id' => policy[:arn],
-        '_geo_id' => policy[:policy_name],
-        'arn' => policy[:arn],
-        'default_version_id' => policy[:default_version_id],
-        'name' => policy[:policy_name]
+        _terraform_id: policy[:arn],
+        _geo_id: policy[:policy_name],
+        arn: policy[:arn],
+        default_version_id: policy[:default_version_id],
+        name: policy[:policy_name]
       }
     end
   end

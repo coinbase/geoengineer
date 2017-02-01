@@ -33,9 +33,9 @@ class GeoEngineer::Resources::AwsIamUser < GeoEngineer::Resource
   def self._fetch_remote_resources
     _all_remote_users.map do |user|
       {
-        '_terraform_id' => user[:user_name],
-        '_geo_id' => user[:user_name],
-        'name' => user[:user_name]
+        _terraform_id: user[:user_name],
+        _geo_id: user[:user_name],
+        name: user[:user_name]
       }
     end
   end

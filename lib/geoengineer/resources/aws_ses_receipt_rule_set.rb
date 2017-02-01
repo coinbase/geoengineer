@@ -20,8 +20,8 @@ class GeoEngineer::Resources::AwsSesReceiptRuleSet < GeoEngineer::Resource
   def self._fetch_remote_resources
     AwsClients.ses.list_receipt_rule_sets.rule_sets.map(&:to_h).map do |rule_set|
       {
-        '_terraform_id' => rule_set[:name],
-        '_geo_id' => rule_set[:name]
+        _terraform_id: rule_set[:name],
+        _geo_id: rule_set[:name]
       }
     end
   end
