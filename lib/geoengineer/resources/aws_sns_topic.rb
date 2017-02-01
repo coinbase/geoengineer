@@ -19,9 +19,9 @@ class GeoEngineer::Resources::AwsSnsTopic < GeoEngineer::Resource
   def self._fetch_remote_resources
     AwsClients.sns.list_topics.topics.map(&:to_h).map do |topic|
       {
-        '_terraform_id' => topic[:topic_arn],
-        '_geo_id' => topic[:topic_arn],
-        'name' => topic[:topic_arn].split(':').last
+        _terraform_id: topic[:topic_arn],
+        _geo_id: topic[:topic_arn],
+        name: topic[:topic_arn].split(':').last
       }
     end
   end

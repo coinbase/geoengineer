@@ -32,10 +32,10 @@ class GeoEngineer::Resources::AwsSnsTopicSubscription < GeoEngineer::Resource
   def self._fetch_remote_resources
     AwsClients.sns.list_subscriptions.subscriptions.map(&:to_h).map do |subscription|
       {
-        '_terraform_id' => subscription[:subscription_arn],
-        '_geo_id' => "#{subscription[:topic_arn]}::" \
-                     "#{subscription[:protocol]}::" \
-                     "#{subscription[:endpoint]}"
+        _terraform_id: subscription[:subscription_arn],
+        _geo_id: "#{subscription[:topic_arn]}::" \
+                 "#{subscription[:protocol]}::" \
+                 "#{subscription[:endpoint]}"
       }
     end
   end
