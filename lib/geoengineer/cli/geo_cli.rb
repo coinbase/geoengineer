@@ -31,6 +31,7 @@ class GeoCLI
   include Singleton
   include StatusCommand
   include TerraformCommands
+  include HasLifecycle
 
   attr_accessor :environment, :env_name
 
@@ -185,6 +186,13 @@ class GeoCLI
     terraform_version.exitstatus.zero?
   end
 
+  def add_commands
+    plan_cmd
+    apply_cmd
+    graph_cmd
+    status_cmd
+  end
+
   def run
     program :name, 'GeoEngineer'
     program :version, GeoEngineer::VERSION
@@ -197,11 +205,16 @@ class GeoCLI
     # global_options
     global_options
 
+    # Require any patches to the way geo works
+    begin
+      require_from_pwd '.geo'
+    rescue LoadError
+      puts "unable to load '.geo.rb" if @verbose
+    end
+
     # Add commands
-    plan_cmd
-    apply_cmd
-    graph_cmd
-    status_cmd
+    add_commands
+    execute_lifecycle(:after, :add_commands)
 
     # Execute the CLI
     run!
