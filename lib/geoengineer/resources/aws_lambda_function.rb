@@ -26,6 +26,9 @@ class GeoEngineer::Resources::AwsLambdaFunction < GeoEngineer::Resource
       's3_bucket' => (s3_bucket || ""),
       's3_key' => (s3_key || "")
     }
+
+    tfstate[:primary][:attributes]['filename'] = filename if filename
+
     tfstate
   end
 
