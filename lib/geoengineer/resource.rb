@@ -167,7 +167,7 @@ class GeoEngineer::Resource
     return @_rr_cache if @_rr_cache
     resource_hashes = _fetch_remote_resources()
     @_rr_cache = resource_hashes
-                 .reject { |resource| _resources_to_ignore.include?(resource[:_geo_id]) }
+                 .reject { |resource| _ignore_remote_resource?(resource) }
                  .map { |resource| GeoEngineer::Resource.build(resource) }
   end
 
@@ -178,10 +178,26 @@ class GeoEngineer::Resource
   end
 
   # This method allows you to specify certain remote resources that for whatever reason,
-  # cannot or should not be codified. It expects a list of `_geo_ids`, and be overriden
+  # cannot or should not be codified. It expects a list of `_geo_ids`, and can be overriden
   # in child classes.
   def self._resources_to_ignore
     []
+  end
+
+  def self._ignore_remote_resource?(resource)
+    _resources_to_ignore.include?(_deep_symbolize_keys(resource)[:_geo_id])
+  end
+
+  def self._deep_symbolize_keys(obj)
+    if obj.is_a?(Hash)
+      obj.each_with_object({}) do |(key, value), hash|
+        hash[key.to_sym] = _deep_symbolize_keys(value)
+      end
+    elsif obj.is_a?(Array)
+      obj.map { |value| _deep_symbolize_keys(value) }
+    else
+      obj
+    end
   end
 
   def self.build(resource_hash)

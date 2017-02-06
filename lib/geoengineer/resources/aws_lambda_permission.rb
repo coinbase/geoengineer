@@ -40,18 +40,6 @@ class GeoEngineer::Resources::AwsLambdaPermission < GeoEngineer::Resource
     nil
   end
 
-  def self._deep_symbolize_keys(obj)
-    if obj.is_a?(Hash)
-      obj.each_with_object({}) do |(key, value), hash|
-        hash[key.to_sym] = _deep_symbolize_keys(value)
-      end
-    elsif obj.is_a?(Array)
-      obj.map { |value| _deep_symbolize_keys(value) }
-    else
-      obj
-    end
-  end
-
   def self._create_permission(function)
     policy = function[:policy]
     policy[:Statement].map do |statement|
@@ -80,4 +68,26 @@ class GeoEngineer::Resources::AwsLambdaPermission < GeoEngineer::Resource
       .flatten
       .compact
   end
+
+#   def remote_resource_params
+#     params = { function_name: function_name }
+#     params[:qualifier] = qualifier if qualifier.present?
+#     policy = AwsClients.lambda.get_policy(params)&.policy
+#     return {} unless policy
+
+#     permission = _parse_policy(policy)
+#       .find { |permission| permission == principal }
+#   end
+
+#   def build_remote_resource_params(arn, entities)
+#     {
+#       name: _policy.name,
+#       _terraform_id: arn,
+#       _geo_id: _policy.name,
+#       policy_arn: arn,
+#       users: entities[:policy_users].map(&:user_name),
+#       groups: entities[:policy_groups].map(&:group_name),
+#       roles: entities[:policy_roles].map(&:role_name)
+#     }
+#   end
 end

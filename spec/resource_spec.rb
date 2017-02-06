@@ -6,7 +6,7 @@ class GeoEngineer::RemoteResources < GeoEngineer::Resource
   end
 end
 
-describe("GeoEngineer::Resource") do
+describe GeoEngineer::Resource do
   describe '#remote_resource' do
     it 'should return a list of resources' do
       rem_res = GeoEngineer::RemoteResources.new('rem', 'id') {
@@ -277,6 +277,44 @@ describe("GeoEngineer::Resource") do
         end
         expect(GeoEngineer::ResourceType.type_from_class_name).to eq 'resource_type'
       end
+    end
+  end
+
+  describe '#_deep_symbolize_keys' do
+    let(:simple_obj) { JSON.parse({ foo: "bar", baz: "qux" }.to_json) }
+    let(:complex_obj) do
+      JSON.parse(
+        {
+          foo: {
+            bar: {
+              baz: [
+                { qux: "quack" }
+              ]
+            }
+          },
+          bar: [
+            { foo: "bar" },
+            nil,
+            [{ baz: "qux" }],
+            1,
+            "baz"
+          ]
+        }.to_json
+      )
+    end
+
+    it "converts top level keys to symbols" do
+      expect(simple_obj.keys.include?(:foo)).to eq(false)
+      expect(simple_obj.keys.include?("foo")).to eq(true)
+      converted = described_class._deep_symbolize_keys(simple_obj)
+      expect(converted.keys.include?(:foo)).to eq(true)
+      expect(converted.keys.include?("foo")).to eq(false)
+    end
+
+    it "converts deeply nested keys to symbols" do
+      converted = described_class._deep_symbolize_keys(complex_obj)
+      expect(converted[:foo][:bar][:baz].first[:qux]).to eq("quack")
+      expect(converted[:bar].first[:foo]).to eq("bar")
     end
   end
 end
