@@ -49,5 +49,4 @@ describe GeoEngineer::Resources::AwsLambdaPermission do
       end
     end
   end
-
 end

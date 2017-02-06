@@ -43,23 +43,23 @@ class GeoEngineer::Resources::AwsLambdaPermission < GeoEngineer::Resource
   def self._create_permission(function)
     policy = function[:policy]
     policy[:Statement].map do |statement|
-      # Note that the keys for a statement objection are all CamelCased
+      # Note that the keys for a statement object are all CamelCased
       # Whereas most other keys in this repo are snake_cased
       statement.merge(
         {
           _terraform_id: statement[:Sid],
           function_name: function[:function_name],
-          function_version: function[:version]
+          function_version: function[:version],
+          qualifer: function[:qualifer] || "$LATEST",
+          statement_id: statement[:Sid]
         }
       )
     end
   end
 
   # Right now, this only fetches policies for the $LATEST version
-  # If we want to support fetching the permissions for all of the aliases as well,
-  # We'll need to add another call per function, bring total calls to 2N+1...
-  # Same deal if we need to support older versions...
-  # (excluding any extra calls for pagination). Less than ideal...
+  # If you want to fetch the policy for a version other than $LATEST
+  # set `find_remote_as_individual?` to `true` for that resource
   def self._fetch_remote_resources
     _fetch_functions
       .map { |function| _fetch_policy(function) }
@@ -69,25 +69,21 @@ class GeoEngineer::Resources::AwsLambdaPermission < GeoEngineer::Resource
       .compact
   end
 
-#   def remote_resource_params
-#     params = { function_name: function_name }
-#     params[:qualifier] = qualifier if qualifier.present?
-#     policy = AwsClients.lambda.get_policy(params)&.policy
-#     return {} unless policy
+  def remote_resource_params
+    params = { function_name: function_name }
+    params[:qualifier] = qualifier if qualifier
 
-#     permission = _parse_policy(policy)
-#       .find { |permission| permission == principal }
-#   end
+    begin
+      policy = _fetch_policy(params)[:policy]
+      return {} if policy.nil?
+    rescue Aws::Lambda::Errors::ResourceNotFoundException
+      return {}
+    end
 
-#   def build_remote_resource_params(arn, entities)
-#     {
-#       name: _policy.name,
-#       _terraform_id: arn,
-#       _geo_id: _policy.name,
-#       policy_arn: arn,
-#       users: entities[:policy_users].map(&:user_name),
-#       groups: entities[:policy_groups].map(&:group_name),
-#       roles: entities[:policy_roles].map(&:role_name)
-#     }
-#   end
+    permission = _create_permission(policy).find do |statement|
+      statement[:_terraform_id] == statement_id
+    end
+
+    permission || {}
+  end
 end
