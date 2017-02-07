@@ -8,6 +8,7 @@
 ########################################################################
 class GeoEngineer::Environment
   include HasAttributes
+  include HasSubResources
   include HasResources
   include HasProjects
   include HasTemplates

@@ -7,6 +7,8 @@ class GeoEngineer::RemoteResources < GeoEngineer::Resource
 end
 
 describe GeoEngineer::Resource do
+  let(:env) { GeoEngineer::Environment.new("testing") }
+
   describe '#remote_resource' do
     it 'should return a list of resources' do
       rem_res = GeoEngineer::RemoteResources.new('rem', 'id') {
@@ -186,57 +188,100 @@ describe GeoEngineer::Resource do
   end
 
   describe '#validate_tag_merge' do
-    it 'should combine resource and project tags' do
-      project = GeoEngineer::Project.new('org', 'project_name', 'test') {
+    it 'combines resource and parent tags' do
+      environment = GeoEngineer::Environment.new('test') {
+        tags {
+          a '1'
+        }
+      }
+      project = GeoEngineer::Project.new('org', 'project_name', environment) {
+        tags {
+          b  '2'
+        }
+      }
+      resource = project.resource('type', '1') {
+        tags {
+          c  '3'
+        }
+      }
+      resource.merge_parent_tags
+      expect(resource.tags.attributes).to eq({ 'a' => '1', 'b' => '2', 'c' => '3' })
+    end
+
+    it 'works if just project is present' do
+      project = GeoEngineer::Project.new('org', 'project_name', nil) {
         tags {
           a  '1'
         }
       }
       resource = project.resource('type', '1') {
         tags {
-          d  '4'
+          b  '2'
         }
       }
-      resource.merge_project_tags
-      expect(resource.tags.attributes).to eq({ 'a' => '1', 'd' => '4' })
+      resource.merge_parent_tags
+      expect(resource.tags.attributes).to eq({ 'a' => '1', 'b' => '2' })
     end
 
-    it 'should give priority to resource tags' do
-      project = GeoEngineer::Project.new('org', 'project_name', 'test') {
+    it 'works if just environment is present' do
+      environment = GeoEngineer::Environment.new('test') {
         tags {
-          a  'project_value'
+          a  '1'
+        }
+      }
+      resource = environment.resource('type', '1') {
+        tags {
+          b  '2'
+        }
+      }
+      resource.merge_parent_tags
+      expect(resource.tags.attributes).to eq({ 'a' => '1', 'b' => '2' })
+    end
+
+    it 'uses priority: resource > project > environment' do
+      environment = GeoEngineer::Environment.new('test') {
+        tags {
+          a '1'
+        }
+      }
+      project = GeoEngineer::Project.new('org', 'project_name', environment) {
+        tags {
+          a  '2'
+          b  '1'
         }
       }
       resource = project.resource('type', '1') {
         tags {
-          a  'resource_value'
+          a  '3'
+          b  '2'
+          c  '1'
         }
       }
-      resource.merge_project_tags
-      expect(resource.tags.attributes).to eq({ 'a' => 'resource_value' })
+      resource.merge_parent_tags
+      expect(resource.tags.attributes).to eq({ 'a' => '3', 'b' => '2', 'c' => '1' })
     end
 
-    it 'should return project tags if there are no resource tags' do
-      project = GeoEngineer::Project.new('org', 'project_name', 'test') {
+    it 'returns project tags if there are no resource tags' do
+      project = GeoEngineer::Project.new('org', 'project_name', env) {
         tags {
           a  '1'
           b  '2'
         }
       }
       resource = project.resource('type', '1') {}
-      resource.merge_project_tags
+      resource.merge_parent_tags
       expect(resource.tags.attributes).to eq({ 'a' => '1', 'b' => '2' })
     end
 
-    it 'should return resource tags if there are no project tags' do
-      project = GeoEngineer::Project.new('org', 'project_name', 'test') {}
+    it 'returns resource tags if there are no project tags' do
+      project = GeoEngineer::Project.new('org', 'project_name', env) {}
       resource = project.resource('type', '1') {
         tags {
           c  '3'
           d  '4'
         }
       }
-      resource.merge_project_tags
+      resource.merge_parent_tags
       expect(resource.tags.attributes).to eq({ 'c' => '3', 'd' => '4' })
     end
   end

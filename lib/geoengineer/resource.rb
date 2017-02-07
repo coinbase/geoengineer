@@ -17,7 +17,7 @@ class GeoEngineer::Resource
 
   attr_reader :type, :id
 
-  before :validation, :merge_project_tags
+  before :validation, :merge_parent_tags
 
   validate -> { validate_required_attributes([:_geo_id]) }
 
@@ -113,7 +113,6 @@ class GeoEngineer::Resource
     raw = File.open(path, "rb").read
     interpolated = ERB.new(raw).result(binding_obj)
     escaped = interpolated.gsub("$", "$$")
-
     # normalize JSON to prevent terraform from e.g. newlines as legitimate changes
     normalized = _normalize_json(escaped)
 
@@ -121,8 +120,7 @@ class GeoEngineer::Resource
   end
 
   def _normalize_json(json)
-    h = JSON.parse(json)
-    h.to_json
+    JSON.parse(json).to_json
   end
 
   # REMOTE METHODS
@@ -137,11 +135,9 @@ class GeoEngineer::Resource
     return GeoEngineer::Resource.build(remote_resource_params) if find_remote_as_individual?
 
     matches = matched_remote_resource
+    throw "ERROR:\"#{type}.#{id}\" has #{matches.length} remote resources" if matches.length > 1
 
-    return matches.first if matches.length == 1
-    return nil if matches.empty?
-
-    throw "ERROR:\"#{self.type}.#{self.id}\" has #{matches.length} remote resources"
+    matches.first
   end
 
   # By default, remote resources are bulk-retrieved. In order to fetch a remote resource as an
@@ -159,14 +155,12 @@ class GeoEngineer::Resource
   end
 
   def matched_remote_resource
-    aws_resources = self.class.fetch_remote_resources()
-    aws_resources.select { |r| r._geo_id == self._geo_id }
+    self.class.fetch_remote_resources.select { |r| r._geo_id == _geo_id }
   end
 
   def self.fetch_remote_resources
     return @_rr_cache if @_rr_cache
-    resource_hashes = _fetch_remote_resources()
-    @_rr_cache = resource_hashes
+    @_rr_cache = _fetch_remote_resources
                  .reject { |resource| _ignore_remote_resource?(resource) }
                  .map { |resource| GeoEngineer::Resource.build(resource) }
   end
@@ -174,7 +168,7 @@ class GeoEngineer::Resource
   # This method must be implemented for each resource type
   # it must return a list of hashes with at least the key
   def self._fetch_remote_resources
-    throw "NOT IMPLEMENTED ERROR for #{self.name}"
+    throw "NOT IMPLEMENTED ERROR for #{name}"
   end
 
   # This method allows you to specify certain remote resources that for whatever reason,
@@ -189,22 +183,19 @@ class GeoEngineer::Resource
   end
 
   def self._deep_symbolize_keys(obj)
-    if obj.is_a?(Hash)
+    case obj
+    when Hash then
       obj.each_with_object({}) do |(key, value), hash|
         hash[key.to_sym] = _deep_symbolize_keys(value)
       end
-    elsif obj.is_a?(Array)
-      obj.map { |value| _deep_symbolize_keys(value) }
-    else
-      obj
+    when Array then obj.map { |value| _deep_symbolize_keys(value) }
+    else obj
     end
   end
 
   def self.build(resource_hash)
-    GeoEngineer::Resource.new(self.type_from_class_name, resource_hash['_geo_id']) {
-      resource_hash.each do |k, v|
-        self[k] = v
-      end
+    GeoEngineer::Resource.new(type_from_class_name, resource_hash['_geo_id']) {
+      resource_hash.each { |k, v| self[k] = v }
     }
   end
 
@@ -221,8 +212,7 @@ class GeoEngineer::Resource
   def short_id
     si = id.to_s.tr('-', "_")
     si = si.gsub(project.full_id_name, '') if project
-    si = si.gsub('__', '_').gsub(/^_|_$/, '')
-    si
+    si.gsub('__', '_').gsub(/^_|_$/, '')
   end
 
   def short_name
@@ -241,19 +231,26 @@ class GeoEngineer::Resource
     tags {} unless tags
   end
 
-  def merge_project_tags
-    return unless self.project && self.project.tags && self.support_tags?
+  def merge_parent_tags
+    return unless support_tags?
 
+    %i(project environment).each do |source|
+      parent = send(source)
+      next unless parent
+      next unless parent.methods.include?(:attributes)
+      next unless parent&.tags
+      merge_tags(source)
+    end
+  end
+
+  def merge_tags(source)
     setup_tags_if_needed
 
-    self
-      .project
+    send(source)
       .all_tags
       .map(&:attributes)
       .reduce({}, :merge)
       .each { |key, value| tags.attributes[key] ||= value }
-
-    tags
   end
 
   # VALIDATION METHODS
@@ -262,17 +259,15 @@ class GeoEngineer::Resource
   end
 
   def validate_required_subresource(subresource)
-    "Subresource '#{subresource}'' required #{for_resource}" if self.send(subresource.to_sym).nil?
+    "Subresource '#{subresource}'' required #{for_resource}" if send(subresource.to_sym).nil?
   end
 
   def validate_subresource_required_attributes(subresource, keys)
-    errs = []
-    self.send("all_#{subresource}".to_sym).each do |sr|
-      keys.each do |key|
-        errs << "#{key} attribute on subresource #{subresource} nil #{for_resource}" if sr[key].nil?
+    send("all_#{subresource}".to_sym).map do |sr|
+      keys.map do |key|
+        "#{key} attribute on subresource #{subresource} nil #{for_resource}" if sr[key].nil?
       end
-    end
-    errs
+    end.flatten.compact
   end
 
   def validate_has_tag(tag)
@@ -285,10 +280,9 @@ class GeoEngineer::Resource
   # CLASS METHODS
   def self.type_from_class_name
     # from http://stackoverflow.com/questions/1509915/converting-camel-case-to-underscore-case-in-ruby
-    self.name.split('::').last
+    name.split('::').last
         .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
         .gsub(/([a-z\d])([A-Z])/, '\1_\2')
-        .tr("-", "_")
-        .downcase
+        .tr("-", "_").downcase
   end
 end
