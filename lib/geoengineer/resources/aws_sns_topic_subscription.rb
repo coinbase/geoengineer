@@ -30,7 +30,6 @@ class GeoEngineer::Resources::AwsSnsTopicSubscription < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources
-    require 'pry'
     _get_all_subscriptions.map do |subscription|
       {
         _terraform_id: subscription[:subscription_arn],
