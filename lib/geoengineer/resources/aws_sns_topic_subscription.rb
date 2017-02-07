@@ -30,7 +30,7 @@ class GeoEngineer::Resources::AwsSnsTopicSubscription < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources
-    AwsClients.sns.list_subscriptions.subscriptions.map(&:to_h).map do |subscription|
+    _get_all_subscriptions.map do |subscription|
       {
         _terraform_id: subscription[:subscription_arn],
         _geo_id: "#{subscription[:topic_arn]}::" \
@@ -38,5 +38,15 @@ class GeoEngineer::Resources::AwsSnsTopicSubscription < GeoEngineer::Resource
                  "#{subscription[:endpoint]}"
       }
     end
+  end
+
+  def self._get_all_subscriptions
+    subs_page = AwsClients.sns.list_subscriptions
+    subs = subs_page.subscriptions.map(&:to_h)
+    while subs_page.next_token
+      subs_page = AwsClients.sns.list_subscriptions({ next_token: subs_page.next_token })
+      subs.concat subs_page.subscriptions.map(&:to_h)
+    end
+    subs
   end
 end
