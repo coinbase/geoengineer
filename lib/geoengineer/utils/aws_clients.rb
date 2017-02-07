@@ -12,6 +12,9 @@ class AwsClients
   end
 
   # Clients
+  def self.cloudwatch
+    @aws_cloudwatch ||= Aws::CloudWatch::Client.new({ stub_responses: stubbed? })
+  end
 
   def self.cloudwatchevents
     @aws_cloudwatchevents ||= Aws::CloudWatchEvents::Client.new({ stub_responses: stubbed? })
