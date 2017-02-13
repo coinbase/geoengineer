@@ -18,7 +18,7 @@ def init_test(clazz_name)
     }
     expect(res.some_value).to eq 10
     expect(res.sub_resource.another_value).to eq 20
-    expect(res.errors.length).to_not eq 0
+    expect(res.errors.length).to_not(eq(0)) if res.class.validations.size > 1
   end
 end
 
