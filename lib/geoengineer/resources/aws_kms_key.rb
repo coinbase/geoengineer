@@ -4,6 +4,8 @@
 # {https://www.terraform.io/docs/providers/aws/r/kms_key.html}
 ########################################################################
 class GeoEngineer::Resources::AwsKmsKey < GeoEngineer::Resource
+  validate -> { validate_required_attributes([:description]) }
+
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { description } }
 
@@ -17,11 +19,6 @@ class GeoEngineer::Resources::AwsKmsKey < GeoEngineer::Resource
       k[:_geo_id] = k[:description]
       k
     end
-  end
-
-  # overwrites description field for id storage
-  def description(*_)
-    self[:description] = @id
   end
 
   def support_tags?
