@@ -1,3 +1,4 @@
+require 'parallel'
 
 ########################################################################
 # An Environment is a group of projects, resources and attributes,
@@ -158,7 +159,9 @@ class GeoEngineer::Environment
   def to_terraform_state
     reses = all_resources.select(&:_terraform_id) # _terraform_id must not be nil
 
-    reses = reses.map { |r| { "#{r.type}.#{r.id}" => r.to_terraform_state() } }.reduce({}, :merge)
+    reses = Parallel.map(reses, { in_threads: Parallel.processor_count }) do |r|
+      { "#{r.type}.#{r.id}" => r.to_terraform_state() }
+    end.reduce({}, :merge)
 
     {
       version: 1,

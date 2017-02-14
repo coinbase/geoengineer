@@ -34,4 +34,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'aws-sdk',           '~> 2.2'
   s.add_dependency 'commander',         '~> 4.4'
   s.add_dependency 'colorize',          '~> 0.7'
+  s.add_dependency 'parallel',          '~> 1.10'
 end
