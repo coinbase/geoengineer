@@ -20,7 +20,8 @@ class GeoEngineer::Resources::AwsSnsTopicSubscription < GeoEngineer::Resource
       'endpoint' => endpoint,
       'protocol' => protocol,
       'confirmation_timeout_in_minutes' => "1",
-      'endpoint_auto_confirms' => "false"
+      'endpoint_auto_confirms' => "false",
+      'raw_message_delivery' => "false"
     }
     tfstate
   end
