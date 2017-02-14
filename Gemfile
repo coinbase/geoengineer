@@ -1,3 +1,5 @@
 source 'https://rubygems.org'
 gemspec
-ruby '2.3.1'
+
+# Use .ruby-version file as canonical Ruby version
+ruby File.read(File.join(File.dirname(__FILE__), '.ruby-version')).chomp
