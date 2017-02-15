@@ -15,10 +15,15 @@ module GeoCLI::TerraformCommands
     }
   end
 
+  def terraform_parallelism
+    Parallel.processor_count * 3 # Determined through trial/error
+  end
+
   def terraform_plan
     plan_commands = [
       "cd #{@tmpdir}",
-      "terraform plan -state=#{@terraform_state_file} -out=#{@plan_file} #{@no_color}"
+      "terraform plan -parallelism=#{terraform_parallelism}" \
+      " -state=#{@terraform_state_file} -out=#{@plan_file} #{@no_color}"
     ]
     shell_exec(plan_commands.join(" && "), true)
   end
@@ -26,7 +31,8 @@ module GeoCLI::TerraformCommands
   def terraform_apply
     apply_commands = [
       "cd #{@tmpdir}",
-      "terraform apply -state=#{@terraform_state_file} #{@plan_file} #{@no_color}"
+      "terraform apply -parallelism=#{terraform_parallelism}" \
+      " -state=#{@terraform_state_file} #{@plan_file} #{@no_color}"
     ]
     shell_exec(apply_commands.join(" && "), true)
   end
