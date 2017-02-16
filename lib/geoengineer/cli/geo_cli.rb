@@ -126,7 +126,7 @@ class GeoCLI
     wait_thr.value
   end
 
-  def shell_exec_stream(cmd, &block)
+  def shell_exec_stream(cmd, &block) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     Open3.popen3(*cmd) do |stdin, stdout, stderr, wait_thread|
       begin
         stdin.close_write
@@ -135,20 +135,22 @@ class GeoCLI
         buffer = { stdout => nil, stderr => nil }
 
         until fds.empty?
-          readable_fds, _ = IO.select(fds)
-          if readable_fds
-            readable_fds.each do |f|
-              begin
-                buffer[f] = f.read_nonblock(block_size)
-              rescue IO::WaitReadable
-                # Ignore; we'll call IO.select again
-              rescue EOFError => e
-                fds.delete(f) # Stream exhausted
-              end
+          readable_fds, = IO.select(fds)
+          next unless readable_fds
+
+          readable_fds.each do |f|
+            begin
+              buffer[f] = f.read_nonblock(block_size)
+            rescue IO::WaitReadable # rubocop:disable Lint/HandleExceptions
+              # Ignore; we'll call IO.select again
+            rescue EOFError
+              fds.delete(f) # Stream exhausted
             end
-            yield buffer[stdout], buffer[stderr]
-            buffer[stdout], buffer[stderr] = nil, nil
           end
+
+          yield buffer[stdout], buffer[stderr]
+          buffer[stdout] = nil
+          buffer[stderr] = nil
         end
 
         wait_thread.value
