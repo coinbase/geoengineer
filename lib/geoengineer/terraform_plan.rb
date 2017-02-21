@@ -1,3 +1,4 @@
+require 'colorize'
 require 'diffy'
 require 'json'
 require 'treetop'
@@ -25,6 +26,7 @@ class GeoEngineer::TerraformPlan
 
   class << self
     def from_output(string)
+      return new([]) if string.strip.empty?
       tree = parser.parse(string)
       raise ParseError, parser.failure_reason unless tree
       new(tree.to_ast)
@@ -47,10 +49,11 @@ class GeoEngineer::TerraformPlan
     @diff_context_lines = options.fetch(:diff_context_lines, DEFAULT_DIFF_CONTEXT_LINES)
   end
 
-  def display
+  def display(output_io = STDOUT)
+    @out = output_io
     @ast.each do |resource|
       display_resource(resource)
-      puts
+      @out.puts
     end
   end
 
@@ -59,8 +62,8 @@ class GeoEngineer::TerraformPlan
   def display_resource(resource)
     change_color = CHANGE_SYMBOL_TO_COLOR[resource[:change]]
 
-    puts "#{resource[:change]} #{resource[:resource_type]}." \
-         "#{resource[:resource_name]}".colorize(change_color)
+    @out.puts "#{resource[:change]} #{resource[:resource_type]}." \
+              "#{resource[:resource_name]}".colorize(change_color)
 
     # Determine longest attribute name so we align all values at same indentation
     attribute_value_indent_amount = attribute_indent_amount_for_resource(resource)
@@ -97,7 +100,7 @@ class GeoEngineer::TerraformPlan
   end
 
   def display_diff(old, new, indent)
-    print Diffy::Diff.new(old, new, { context: @diff_context_lines })
+    @out.print Diffy::Diff.new(old, new, { context: @diff_context_lines })
       .to_s(String.disable_colorization ? :text : :color)
       .gsub("\n", "\n" + indent)
       .strip
@@ -141,7 +144,7 @@ class GeoEngineer::TerraformPlan
 
     return if old == new # Don't show unchanged attributes
 
-    print "    #{attribute_name}:".ljust(attribute_value_indent_amount, ' ')
+    @out.print "    #{attribute_name}:".ljust(attribute_value_indent_amount, ' ')
       .colorize(change_color)
 
     if json?(new)
@@ -154,12 +157,12 @@ class GeoEngineer::TerraformPlan
       display_diff("#{old}\n", "#{new}\n", attribute_value_indent)
     else
       # Typical values, so just show before/after
-      print '"' + old.colorize(:red) + '"'
-      print ' => '.colorize(:light_black)
-      print '"' + new.colorize(:green) + '"'
+      @out.print '"' + old.colorize(:red) + '"'
+      @out.print ' => '.colorize(:light_black)
+      @out.print '"' + new.colorize(:green) + '"'
     end
 
-    puts
+    @out.puts
   end
 
   def display_added_or_removed_attribute(
@@ -169,17 +172,17 @@ class GeoEngineer::TerraformPlan
     attribute_value_indent,
     attribute_value_indent_amount
   )
-    print "    #{attribute_name}:".ljust(attribute_value_indent_amount, ' ')
+    @out.print "    #{attribute_name}:".ljust(attribute_value_indent_amount, ' ')
       .colorize(change_color)
 
     evaluated_string = eval(attribute_value) # rubocop:disable Lint/Eval
     if json?(evaluated_string)
-      print to_pretty_json(evaluated_string).gsub("\n", "\n" + attribute_value_indent)
+      @out.print to_pretty_json(evaluated_string).gsub("\n", "\n" + attribute_value_indent)
         .colorize(change_color)
     else
-      print "\"#{evaluated_string.colorize(change_color)}\""
+      @out.print "\"#{evaluated_string.colorize(change_color)}\""
     end
 
-    puts
+    @out.puts
   end
 end
