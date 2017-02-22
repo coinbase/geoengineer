@@ -56,6 +56,7 @@ class GeoEngineer::Environment
   def initialize(name, &block)
     @name = name
     @outputs = []
+    @providers = []
     self.send("#{name}?=", true) # e.g. staging?
     instance_exec(self, &block) if block_given?
   end
@@ -74,6 +75,12 @@ class GeoEngineer::Environment
     resource = create_resource(type, id, &block)
     resource.environment = self
     resource
+  end
+
+  def provider(id, &block)
+    provider = GeoEngineer::Provider.new(id, &block)
+    @providers << provider
+    provider
   end
 
   def output(id, value, &block)
@@ -130,7 +137,9 @@ class GeoEngineer::Environment
       }
     end
 
+
     tf_resources = all_resources.map(&:to_terraform)
+    tf_resources += @providers.compact.map(&:to_terraform)
     tf_resources += @outputs.compact.map(&:to_terraform)
     tf_resources.join("\n\n")
   end
@@ -145,6 +154,7 @@ class GeoEngineer::Environment
 
     h = { resource: json_resources }
     h[:output] = @outputs.map(&:to_terraform_json) unless @outputs.empty?
+    h[:provider] = @providers.map(&:to_terraform_json) unless @providers.empty?
     h
   end
 
