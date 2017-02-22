@@ -20,7 +20,7 @@ class AwsClients
   def self.client_cache(client_name, provider, client)
     @client_cache ||= {}
     key = "#{client_name}_" + (provider&.terraform_id || GeoEngineer::Resource::DEFAULT_PROVIDER)
-    @client_cache[key] ||= client
+    @client_cache[key] ||= client.new(client_params(provider))
   end
 
   # Clients
@@ -28,7 +28,7 @@ class AwsClients
     self.client_cache(
       'cloudwatch',
       provider,
-      Aws::CloudWatch::Client.new(client_params(provider))
+      Aws::CloudWatch::Client
     )
   end
 
@@ -36,7 +36,7 @@ class AwsClients
     self.client_cache(
       'cloudwatchevents',
       provider,
-      Aws::CloudWatchEvents::Client.new(client_params(provider))
+      Aws::CloudWatchEvents::Client
     )
   end
 
@@ -44,7 +44,7 @@ class AwsClients
     self.client_cache(
       'dynamo',
       provider,
-      Aws::DynamoDB::Client.new(client_params(provider))
+      Aws::DynamoDB::Client
     )
   end
 
@@ -52,7 +52,7 @@ class AwsClients
     self.client_cache(
       'ec2',
       provider,
-      Aws::EC2::Client.new(client_params(provider))
+      Aws::EC2::Client
     )
   end
 
@@ -60,7 +60,7 @@ class AwsClients
     self.client_cache(
       'elasticache',
       provider,
-      Aws::ElastiCache::Client.new(client_params(provider))
+      Aws::ElastiCache::Client
     )
   end
 
@@ -68,7 +68,7 @@ class AwsClients
     self.client_cache(
       'elasticsearch',
       provider,
-      Aws::ElasticsearchService::Client.new(client_params(provider))
+      Aws::ElasticsearchService::Client
     )
   end
 
@@ -76,7 +76,7 @@ class AwsClients
     self.client_cache(
       'elb',
       provider,
-      Aws::ElasticLoadBalancing::Client.new(client_params(provider))
+      Aws::ElasticLoadBalancing::Client
     )
   end
 
@@ -84,7 +84,7 @@ class AwsClients
     self.client_cache(
       'iam',
       provider,
-      Aws::IAM::Client.new(client_params(provider))
+      Aws::IAM::Client
     )
   end
 
@@ -92,7 +92,7 @@ class AwsClients
     self.client_cache(
       'kinesis',
       provider,
-      Aws::Kinesis::Client.new(client_params(provider))
+      Aws::Kinesis::Client
     )
   end
 
@@ -100,7 +100,7 @@ class AwsClients
     self.client_cache(
       'lambda',
       provider,
-      Aws::Lambda::Client.new(client_params(provider))
+      Aws::Lambda::Client
     )
   end
 
@@ -108,7 +108,7 @@ class AwsClients
     self.client_cache(
       'rds',
       provider,
-      Aws::RDS::Client.new(client_params(provider))
+      Aws::RDS::Client
     )
   end
 
@@ -116,7 +116,7 @@ class AwsClients
     self.client_cache(
       'redshift',
       provider,
-      Aws::Redshift::Client.new(client_params(provider))
+      Aws::Redshift::Client
     )
   end
 
@@ -124,7 +124,7 @@ class AwsClients
     self.client_cache(
       'route53',
       provider,
-      Aws::Route53::Client.new(client_params(provider))
+      Aws::Route53::Client
     )
   end
 
@@ -132,7 +132,7 @@ class AwsClients
     self.client_cache(
       's3',
       provider,
-      Aws::S3::Client.new(client_params(provider))
+      Aws::S3::Client
     )
   end
 
@@ -140,7 +140,7 @@ class AwsClients
     self.client_cache(
       'ses',
       provider,
-      Aws::SES::Client.new(client_params(provider))
+      Aws::SES::Client
     )
   end
 
@@ -148,7 +148,7 @@ class AwsClients
     self.client_cache(
       'sns',
       provider,
-      Aws::SNS::Client.new(client_params(provider))
+      Aws::SNS::Client
     )
   end
 
@@ -156,7 +156,7 @@ class AwsClients
     self.client_cache(
       'sqs',
       provider,
-      Aws::SQS::Client.new(client_params(provider))
+      Aws::SQS::Client
     )
   end
 
@@ -164,7 +164,7 @@ class AwsClients
     self.client_cache(
       'cloudtrail',
       provider,
-      Aws::CloudTrail::Client.new(client_params(provider))
+      Aws::CloudTrail::Client
     )
   end
 
@@ -172,7 +172,7 @@ class AwsClients
     self.client_cache(
       'kms',
       provider,
-      Aws::KMS::Client.new(client_params(provider))
+      Aws::KMS::Client
     )
   end
 end
