@@ -8,6 +8,7 @@ class GeoEngineer::Resources::AwsKmsKey < GeoEngineer::Resource
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { description } }
+  after :initialize, -> { _arn -> { NullObject.maybe(remote_resource)._arn } }
 
   def self._fetch_remote_resources(provider)
     keys = AwsClients.kms(provider).list_keys[:keys].map do |i|
@@ -16,6 +17,7 @@ class GeoEngineer::Resources::AwsKmsKey < GeoEngineer::Resource
 
     keys.map do |k|
       k[:_terraform_id] = k[:key_id]
+      k[:_arn] = k[:arn]
       k[:_geo_id] = k[:description]
       k
     end
