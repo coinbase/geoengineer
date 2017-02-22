@@ -8,8 +8,8 @@ class GeoEngineer::Resources::AwsCloudtrail < GeoEngineer::Resource
 
   after :initialize, -> { _terraform_id -> { name } }
 
-  def self._fetch_remote_resources
-    cloudtrails = AwsClients.cloudtrail.describe_trails["trail_list"].map(&:to_h)
+  def self._fetch_remote_resources(provider)
+    cloudtrails = AwsClients.cloudtrail(provider).describe_trails["trail_list"].map(&:to_h)
 
     cloudtrails.map do |ct|
       ct[:_terraform_id] = ct[:name]

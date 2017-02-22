@@ -12,9 +12,9 @@ class GeoEngineer::Resources::AwsVpnConnectionRoute < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .ec2
+      .ec2(provider)
       .describe_vpn_connections['vpn_connections']
       .map(&:to_h)
       .select { |connection| !connection[:routes].empty? }

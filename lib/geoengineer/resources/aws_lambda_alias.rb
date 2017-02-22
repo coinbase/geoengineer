@@ -35,17 +35,17 @@ class GeoEngineer::Resources::AwsLambdaAlias < GeoEngineer::Resource
   end
 
   # TODO(Brad) - May need to implement solution for pagination...
-  def self._fetch_functions
+  def self._fetch_functions(provider)
     AwsClients
-      .lambda
+      .lambda(provider)
       .list_functions['functions']
       .map(&:to_h)
   end
 
   # TODO(Brad) - May need to implement solution for pagination...
-  def self._fetch_aliases(function)
+  def self._fetch_aliases(provider, function)
     options = { function_name: function[:function_name] }
-    AwsClients.lambda.list_aliases(options)[:aliases].map(&:to_h).map do |f_alias|
+    AwsClients.lambda(provider).list_aliases(options)[:aliases].map(&:to_h).map do |f_alias|
       geo_id_components = [f_alias[:name], function[:function_arn], f_alias[:function_version]]
       f_alias.merge(
         {
@@ -56,9 +56,9 @@ class GeoEngineer::Resources::AwsLambdaAlias < GeoEngineer::Resource
     end
   end
 
-  def self._fetch_remote_resources
-    _fetch_functions
-      .map { |function| _fetch_aliases(function) }
+  def self._fetch_remote_resources(provider)
+    _fetch_functions(provider)
+      .map { |function| _fetch_aliases(provider, function) }
       .flatten
       .compact
   end

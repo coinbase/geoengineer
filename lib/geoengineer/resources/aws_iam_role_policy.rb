@@ -32,30 +32,30 @@ class GeoEngineer::Resources::AwsIamRolePolicy < GeoEngineer::Resource
     _json_file(:policy, path, binding_obj)
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .iam
+      .iam(provider)
       .list_roles
       .roles
       .map(&:to_h)
-      .map { |role| _get_role_policies(role) }
+      .map { |role| _get_role_policies(provider, role) }
       .flatten
       .compact
-      .map { |role_policy| _get_policy(role_policy) }
+      .map { |role_policy| _get_policy(provider, role_policy) }
   end
 
-  def self._get_role_policies(role)
+  def self._get_role_policies(provider, role)
     AwsClients
-      .iam
+      .iam(provider)
       .list_role_policies({ role_name: role[:role_name] })
       .map(&:policy_names)
       .flatten
       .map { |policy| { role_name: role[:role_name], policy_name: policy } }
   end
 
-  def self._get_policy(role_policy)
+  def self._get_policy(provider, role_policy)
     AwsClients
-      .iam
+      .iam(provider)
       .get_role_policy(role_policy)
       .to_h
       .merge({ _terraform_id: "#{role_policy[:role_name]}:#{role_policy[:policy_name]}" })

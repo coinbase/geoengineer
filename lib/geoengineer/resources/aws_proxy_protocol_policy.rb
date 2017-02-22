@@ -33,7 +33,7 @@ class GeoEngineer::Resources::AwsProxyProtocolPolicy < GeoEngineer::Resource
   end
 
   # This is a weird resource and it is not listed
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     []
   end
 end

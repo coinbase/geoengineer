@@ -19,16 +19,16 @@ class GeoEngineer::Resources::AwsRoute53Record < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    _fetch_zones.map { |zone| _fetch_records_for_zone(zone) }.flatten.compact
+  def self._fetch_remote_resources(provider)
+    _fetch_zones(provider).map { |zone| _fetch_records_for_zone(provider, zone) }.flatten.compact
   end
 
-  def self._fetch_zones
-    AwsClients.route53.list_hosted_zones.hosted_zones.map(&:to_h)
+  def self._fetch_zones(provider)
+    AwsClients.route53(provider).list_hosted_zones.hosted_zones.map(&:to_h)
   end
 
-  def self._fetch_records_for_zone(zone)
-    records = AwsClients.route53.list_resource_record_sets({ hosted_zone_id: zone[:id] })
+  def self._fetch_records_for_zone(provider, zone)
+    records = AwsClients.route53(provider).list_resource_record_sets({ hosted_zone_id: zone[:id] })
     records.resource_record_sets.map(&:to_h).map do |record|
       record.merge({ _terraform_id: "#{record[:zone_id]}_#{record[:name]}_#{record[:type]}" })
     end

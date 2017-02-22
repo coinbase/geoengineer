@@ -56,6 +56,7 @@ class GeoEngineer::Environment
   def initialize(name, &block)
     @name = name
     @outputs = []
+    @providers = []
     self.send("#{name}?=", true) # e.g. staging?
     instance_exec(self, &block) if block_given?
   end
@@ -74,6 +75,16 @@ class GeoEngineer::Environment
     resource = create_resource(type, id, &block)
     resource.environment = self
     resource
+  end
+
+  def provider(id, &block)
+    provider = GeoEngineer::Provider.new(id, &block)
+    @providers << provider
+    provider
+  end
+
+  def find_provider(id_alias)
+    @providers.find { |p| p.terraform_id == id_alias }
   end
 
   def output(id, value, &block)
@@ -131,6 +142,7 @@ class GeoEngineer::Environment
     end
 
     tf_resources = all_resources.map(&:to_terraform)
+    tf_resources += @providers.compact.map(&:to_terraform)
     tf_resources += @outputs.compact.map(&:to_terraform)
     tf_resources.join("\n\n")
   end
@@ -145,6 +157,7 @@ class GeoEngineer::Environment
 
     h = { resource: json_resources }
     h[:output] = @outputs.map(&:to_terraform_json) unless @outputs.empty?
+    h[:provider] = @providers.map(&:to_terraform_json) unless @providers.empty?
     h
   end
 
@@ -186,7 +199,7 @@ class GeoEngineer::Environment
   def uncodified_resources(type)
     # unmanaged resources have a remote resource without local_resource
     clazz = self.class.get_resource_class_from_type(type)
-    res = clazz.fetch_remote_resources.select { |r| r.local_resource.nil? }
+    res = clazz.fetch_remote_resources(nil).select { |r| r.local_resource.nil? }
     res.sort_by(&:terraform_name)
   end
 end

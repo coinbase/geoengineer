@@ -29,9 +29,9 @@ class GeoEngineer::Resources::AwsLambdaEventSourceMapping < GeoEngineer::Resourc
     arn_components[arn_components.index("function") + 1] if arn_components.index("function")
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .lambda
+      .lambda(provider)
       .list_event_source_mappings['event_source_mappings']
       .map(&:to_h)
       .map do |event|

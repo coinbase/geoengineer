@@ -37,7 +37,7 @@ describe("GeoEngineer::Resources::AwsLoadBalancerPolicy") do
           ]
         }
       )
-      remote_resources = GeoEngineer::Resources::AwsLoadBalancerPolicy._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsLoadBalancerPolicy._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 1
     end
   end

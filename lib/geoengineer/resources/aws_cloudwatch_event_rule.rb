@@ -20,8 +20,10 @@ class GeoEngineer::Resources::AwsCloudwatchEventRule < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    AwsClients.cloudwatchevents.list_rules.rules.map(&:to_h).map do |cloudwatch_event_rule|
+  def self._fetch_remote_resources(provider)
+    AwsClients
+      .cloudwatchevents(provider)
+      .list_rules.rules.map(&:to_h).map do |cloudwatch_event_rule|
       cloudwatch_event_rule.merge(
         {
           _terraform_id: cloudwatch_event_rule[:name],

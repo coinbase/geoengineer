@@ -42,7 +42,7 @@ describe GeoEngineer::Resources::AwsLambdaAlias do
     end
 
     it 'should create list of hashes from returned AWS SDK' do
-      remote_resources = GeoEngineer::Resources::AwsLambdaAlias._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsLambdaAlias._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq(2)
     end
 

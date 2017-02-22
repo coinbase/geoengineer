@@ -9,8 +9,8 @@ class GeoEngineer::Resources::AwsRoute53Zone < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { self.name } }
 
-  def self._fetch_remote_resources
-    hosted_zones = AwsClients.route53.list_hosted_zones.hosted_zones.map(&:to_h)
+  def self._fetch_remote_resources(provider)
+    hosted_zones = AwsClients.route53(provider).list_hosted_zones.hosted_zones.map(&:to_h)
 
     hosted_zones.map do |zone|
       zone[:_terraform_id] = zone[:id]

@@ -13,7 +13,7 @@ describe "GeoEngineer::Resources::AwsDynamodbTable" do
     end
 
     it 'should create an array of hashes from the AWS response' do
-      resources = GeoEngineer::Resources::AwsDynamodbTable._fetch_remote_resources
+      resources = GeoEngineer::Resources::AwsDynamodbTable._fetch_remote_resources(nil)
       expect(resources.count).to eql 2
 
       test_dynamot = resources.first

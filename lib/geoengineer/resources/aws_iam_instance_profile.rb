@@ -15,8 +15,8 @@ class GeoEngineer::Resources::AwsIamInstanceProfile < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    profiles = AwsClients.iam.list_instance_profiles['instance_profiles'].map(&:to_h)
+  def self._fetch_remote_resources(provider)
+    profiles = AwsClients.iam(provider).list_instance_profiles['instance_profiles'].map(&:to_h)
     profiles.map do |p|
       {
         name: p[:instance_profile_name],

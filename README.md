@@ -275,12 +275,14 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
-  def self._fetch_remote_resources
-    AwsClients.ec2.describe_security_groups['security_groups'].map(&:to_h).map do |sg|
-      sg[:name] = sg[:group_name]
-      sg[:_terraform_id] = sg[:group_id]
-      sg[:_geo_id] = sg[:tags] ? sg[:tags].select { |x| x[:key] == "Name" }.first[:value] : nil
-      sg
+  def self._fetch_remote_resources(provider)
+    AwsClients.ec2(provider)
+      .describe_security_groups['security_groups']
+      .map(&:to_h).map do |sg|
+        sg[:name] = sg[:group_name]
+        sg[:_terraform_id] = sg[:group_id]
+        sg[:_geo_id] = sg[:tags] ? sg[:tags].select { |x| x[:key] == "Name" }.first[:value] : nil
+        sg
     end
   end
 end

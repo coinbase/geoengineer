@@ -27,8 +27,8 @@ class GeoEngineer::Resources::AwsSesReceiptRule < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    AwsClients.ses.describe_active_receipt_rule_set.rules.map(&:to_h).map do |rule|
+  def self._fetch_remote_resources(provider)
+    AwsClients.ses(provider).describe_active_receipt_rule_set.rules.map(&:to_h).map do |rule|
       {
         _terraform_id: rule[:name],
         _geo_id: rule[:name]

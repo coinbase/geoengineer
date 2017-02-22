@@ -1,7 +1,7 @@
 require_relative './spec_helper'
 
 class GeoEngineer::RemoteResources < GeoEngineer::Resource
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     [{ _geo_id: "geo_id1" }, { _geo_id: "geo_id2" }, { _geo_id: "geo_id2" }]
   end
 end
@@ -88,23 +88,36 @@ describe GeoEngineer::Resource do
   end
 
   describe '#fetch_remote_resources' do
-    it 'should return a list of resources' do
-      class GeoEngineer::FetchableResources < GeoEngineer::Resource
-        def self._fetch_remote_resources
-          [{ _geo_id: "geoid" }]
-        end
+    class GeoEngineer::FetchableResources < GeoEngineer::Resource
+      def self._fetch_remote_resources(provider)
+        [{ _geo_id: "geoid #{provider.id}" }]
       end
+    end
 
-      resources = GeoEngineer::FetchableResources.fetch_remote_resources()
+    it 'should return a list of resources' do
+      provider = GeoEngineer::Provider.new("prov_1")
+      resources = GeoEngineer::FetchableResources.fetch_remote_resources(provider)
       expect(resources.length).to eq 1
-      expect(resources[0]._geo_id).to eq "geoid"
+      expect(resources[0]._geo_id).to eq "geoid prov_1"
+    end
+
+    it 'should retrieve different resources for different providers' do
+      provider1 = GeoEngineer::Provider.new("prov_1")
+      resources = GeoEngineer::FetchableResources.fetch_remote_resources(provider1)
+      expect(resources.length).to eq 1
+      expect(resources[0]._geo_id).to eq "geoid prov_1"
+
+      provider2 = GeoEngineer::Provider.new("prov_2")
+      resources = GeoEngineer::FetchableResources.fetch_remote_resources(provider2)
+      expect(resources.length).to eq 1
+      expect(resources[0]._geo_id).to eq "geoid prov_2"
     end
   end
 
   describe '#_resources_to_ignore' do
     it 'lets you ignore certain resources' do
       class GeoEngineer::IgnorableResources < GeoEngineer::Resource
-        def self._fetch_remote_resources
+        def self._fetch_remote_resources(provider)
           [{ _geo_id: "geoid1" }, { _geo_id: "geoid2" }]
         end
 
@@ -113,7 +126,8 @@ describe GeoEngineer::Resource do
         end
       end
 
-      resources = GeoEngineer::IgnorableResources.fetch_remote_resources()
+      resources = GeoEngineer::IgnorableResources
+                  .fetch_remote_resources(GeoEngineer::Provider.new('aws'))
       expect(resources.length).to eq 1
       expect(resources[0]._geo_id).to eq "geoid2"
     end

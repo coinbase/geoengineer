@@ -33,8 +33,8 @@ class GeoEngineer::Resources::AwsElasticacheReplicationGroup < GeoEngineer::Reso
     tfstate
   end
 
-  def self._fetch_remote_resources
-    ec = AwsClients.elasticache
+  def self._fetch_remote_resources(provider)
+    ec = AwsClients.elasticache(provider)
     ec.describe_replication_groups['replication_groups'].map(&:to_h).map do |rg|
       rg[:_terraform_id] = rg[:replication_group_id]
       rg[:_geo_id] = rg[:replication_group_id]

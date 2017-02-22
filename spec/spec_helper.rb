@@ -36,7 +36,7 @@ end
 
 def fetch_empty_should_work(clazz)
   it 'should work with emtpy response' do
-    remote_resources = clazz._fetch_remote_resources
+    remote_resources = clazz._fetch_remote_resources(nil)
     expect(remote_resources.length).to eq 0
   end
 end

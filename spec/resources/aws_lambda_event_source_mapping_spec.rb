@@ -33,7 +33,7 @@ describe GeoEngineer::Resources::AwsLambdaEventSourceMapping do
     after { aws_client.stub_responses(:list_event_source_mappings, {}) }
 
     it 'should create an array of hashes from the AWS response' do
-      resources = GeoEngineer::Resources::AwsLambdaEventSourceMapping._fetch_remote_resources
+      resources = GeoEngineer::Resources::AwsLambdaEventSourceMapping._fetch_remote_resources(nil)
       expect(resources.count).to eql(2)
     end
   end

@@ -13,8 +13,8 @@ class GeoEngineer::Resources::AwsVpcEndpoint < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    AwsClients.ec2.describe_vpc_endpoints['vpc_endpoints'].map(&:to_h).map do |endpoint|
+  def self._fetch_remote_resources(provider)
+    AwsClients.ec2(provider).describe_vpc_endpoints['vpc_endpoints'].map(&:to_h).map do |endpoint|
       endpoint.merge(
         {
           _terraform_id: endpoint[:vpc_endpoint_id],

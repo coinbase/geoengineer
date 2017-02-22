@@ -16,8 +16,8 @@ class GeoEngineer::Resources::AwsSnsTopic < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    AwsClients.sns.list_topics.topics.map(&:to_h).map do |topic|
+  def self._fetch_remote_resources(provider)
+    AwsClients.sns(provider).list_topics.topics.map(&:to_h).map do |topic|
       {
         _terraform_id: topic[:topic_arn],
         _geo_id: topic[:topic_arn],

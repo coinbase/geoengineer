@@ -12,8 +12,8 @@ class GeoEngineer::Resources::AwsElasticacheSubnetGroup < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    cache_subnet_groups = AwsClients.elasticache.describe_cache_subnet_groups
+  def self._fetch_remote_resources(provider)
+    cache_subnet_groups = AwsClients.elasticache(provider).describe_cache_subnet_groups
 
     cache_subnet_groups['cache_subnet_groups'].map(&:to_h).map do |csg|
       csg[:name] = csg[:cache_subnet_group_name]

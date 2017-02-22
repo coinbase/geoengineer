@@ -14,20 +14,20 @@ class GeoEngineer::Resources::AwsLoadBalancerPolicy < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .elb
+      .elb(provider)
       .describe_load_balancers
       .load_balancer_descriptions
       .map(&:to_h)
-      .map { |load_balancer| _policies_for_load_balancer(load_balancer) }
+      .map { |load_balancer| _policies_for_load_balancer(provider, load_balancer) }
       .flatten
       .compact
   end
 
-  def self._policies_for_load_balancer(load_balancer)
+  def self._policies_for_load_balancer(provider, load_balancer)
     AwsClients
-      .elb
+      .elb(provider)
       .describe_load_balancer_policies({ load_balancer_name: load_balancer[:load_balancer_name] })
       .policy_descriptions
       .map(&:to_h)

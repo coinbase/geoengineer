@@ -26,12 +26,12 @@ class GeoEngineer::Resources::AwsIamUser < GeoEngineer::Resource
     false
   end
 
-  def self._all_remote_users
-    AwsClients.iam.list_users.each.map(&:users).flatten.map(&:to_h)
+  def self._all_remote_users(provider)
+    AwsClients.iam(provider).list_users.each.map(&:users).flatten.map(&:to_h)
   end
 
-  def self._fetch_remote_resources
-    _all_remote_users.map do |user|
+  def self._fetch_remote_resources(provider)
+    _all_remote_users(provider).map do |user|
       {
         _terraform_id: user[:user_name],
         _geo_id: user[:user_name],
