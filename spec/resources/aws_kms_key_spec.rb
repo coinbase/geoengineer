@@ -32,7 +32,7 @@ describe "GeoEngineer::Resources::AwsKmsKey" do
     end
 
     it 'should create an array of hashes from the AWS response' do
-      resources = GeoEngineer::Resources::AwsKmsKey._fetch_remote_resources
+      resources = GeoEngineer::Resources::AwsKmsKey._fetch_remote_resources(nil)
       expect(resources.count).to eql 1
 
       test_key = resources.first

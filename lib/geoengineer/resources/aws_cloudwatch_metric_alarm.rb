@@ -23,8 +23,8 @@ class GeoEngineer::Resources::AwsCloudwatchMetricAlarm < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    _get_all_alarms.map { |alarm|
+  def self._fetch_remote_resources(provider)
+    _get_all_alarms(provider).map { |alarm|
       {
         _terraform_id: alarm[:alarm_name],
         _geo_id: alarm[:alarm_name],
@@ -33,14 +33,16 @@ class GeoEngineer::Resources::AwsCloudwatchMetricAlarm < GeoEngineer::Resource
     }
   end
 
-  def self._get_all_alarms
-    alarm_page = AwsClients.cloudwatch.describe_alarms({ max_records: 100 })
+  def self._get_all_alarms(provider)
+    alarm_page = AwsClients.cloudwatch(provider).describe_alarms({ max_records: 100 })
     alarms = alarm_page.metric_alarms.map(&:to_h)
     while alarm_page.next_token
-      alarm_page = AwsClients.cloudwatch.describe_alarms({
-                                                           max_records: 100,
-                                                           next_token: alarm_page.next_token
-                                                         })
+      alarm_page = AwsClients
+                   .cloudwatch(provider)
+                   .describe_alarms({
+                                      max_records: 100,
+                                      next_token: alarm_page.next_token
+                                    })
       alarms.concat alarm_page.metric_alarms.map(&:to_h)
     end
     alarms

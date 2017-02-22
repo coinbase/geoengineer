@@ -45,9 +45,9 @@ class GeoEngineer::Resources::AwsElasticacheCluster < GeoEngineer::Resource
     "ec"
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .elasticache
+      .elasticache(provider)
       .describe_cache_clusters['cache_clusters']
       .map(&:to_h)
       .select { |ec| ec[:replication_group_id].nil? }

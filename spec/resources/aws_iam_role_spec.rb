@@ -35,7 +35,7 @@ describe "GeoEngineer::Resources::AwsIamRole" do
     end
 
     it 'should create a list of hashes from the AWS SDK' do
-      remote_resources = GeoEngineer::Resources::AwsIamRole._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsIamRole._fetch_remote_resources(nil)
       expect(remote_resources.length).to eql 2
 
       test_role = remote_resources.first

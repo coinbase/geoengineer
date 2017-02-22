@@ -8,6 +8,8 @@
 # A Resource can have arbitrary attributes, validation rules and lifecycle hooks
 ########################################################################
 class GeoEngineer::Resource
+  DEFAULT_PROVIDER = "default_provider".freeze
+
   include HasAttributes
   include HasSubResources
   include HasValidations
@@ -155,19 +157,28 @@ class GeoEngineer::Resource
   end
 
   def matched_remote_resource
-    self.class.fetch_remote_resources.select { |r| r._geo_id == _geo_id }
+    self.class.fetch_remote_resources(fetch_provider).select { |r| r._geo_id == _geo_id }
   end
 
-  def self.fetch_remote_resources
-    return @_rr_cache if @_rr_cache
-    @_rr_cache = _fetch_remote_resources
-                 .reject { |resource| _ignore_remote_resource?(resource) }
-                 .map { |resource| GeoEngineer::Resource.build(resource) }
+  def fetch_provider
+    environment&.find_provider(provider)
+  end
+
+  def self.fetch_remote_resources(provider)
+    # The cache key is the provider
+    # no provider no resource
+    provider_id = provider&.terraform_id || DEFAULT_PROVIDER
+    puts provider_id
+    @_rr_cache ||= {}
+    return @_rr_cache[provider_id] if @_rr_cache[provider_id]
+    @_rr_cache[provider_id] = _fetch_remote_resources(provider)
+                              .reject { |resource| _ignore_remote_resource?(resource) }
+                              .map { |resource| GeoEngineer::Resource.build(resource) }
   end
 
   # This method must be implemented for each resource type
   # it must return a list of hashes with at least the key
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     throw "NOT IMPLEMENTED ERROR for #{name}"
   end
 
@@ -246,11 +257,8 @@ class GeoEngineer::Resource
   def merge_tags(source)
     setup_tags_if_needed
 
-    send(source)
-      .all_tags
-      .map(&:attributes)
-      .reduce({}, :merge)
-      .each { |key, value| tags.attributes[key] ||= value }
+    send(source).all_tags.map(&:attributes).reduce({}, :merge)
+                .each { |key, value| tags.attributes[key] ||= value }
   end
 
   # VALIDATION METHODS

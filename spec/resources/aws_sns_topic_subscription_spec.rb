@@ -28,7 +28,8 @@ describe("GeoEngineer::Resources::AwsSnsTopic") do
         }
       )
       sns.stub_responses(:list_subscriptions, stub)
-      remote_resources = GeoEngineer::Resources::AwsSnsTopicSubscription._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsSnsTopicSubscription
+                         ._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2
     end
   end

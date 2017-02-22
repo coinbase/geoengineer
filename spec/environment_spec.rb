@@ -52,7 +52,7 @@ describe GeoEngineer::Environment do
   describe '#codifies_resources' do
     it 'should return both codified and uncodified resources' do
       class GeoEngineer::Resources::CodifiedResource < GeoEngineer::Resource
-        def self._fetch_remote_resources
+        def self._fetch_remote_resources(provider)
           [{ _geo_id: "geo_id1" }, { _geo_id: "geo_id2" }]
         end
       end

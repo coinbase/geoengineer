@@ -23,9 +23,9 @@ class GeoEngineer::Resources::AwsVpnGatewayAttachment < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .ec2
+      .ec2(provider)
       .describe_vpn_gateways['vpn_gateways']
       .map(&:to_h)
       .select { |gateway| !gateway[:vpc_attachments].empty? }

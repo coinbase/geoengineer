@@ -26,8 +26,8 @@ class GeoEngineer::Resources::AwsElasticsearchDomain < GeoEngineer::Resource
     "es"
   end
 
-  def self._fetch_remote_resources
-    AwsClients.elasticsearch.list_domain_names['domain_names'].map(&:to_h).map do |esd|
+  def self._fetch_remote_resources(provider)
+    AwsClients.elasticsearch(provider).list_domain_names['domain_names'].map(&:to_h).map do |esd|
       esd[:_geo_id] = esd[:domain_name]
       esd
     end

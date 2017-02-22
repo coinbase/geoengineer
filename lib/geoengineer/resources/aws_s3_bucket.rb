@@ -43,8 +43,8 @@ class GeoEngineer::Resources::AwsS3Bucket < GeoEngineer::Resource
     "s3"
   end
 
-  def self._fetch_remote_resources
-    AwsClients.s3.list_buckets[:buckets].map(&:to_h).map do |s3b|
+  def self._fetch_remote_resources(provider)
+    AwsClients.s3(provider).list_buckets[:buckets].map(&:to_h).map do |s3b|
       s3b[:_terraform_id] = s3b[:name]
       s3b[:_geo_id] = s3b[:name]
       s3b[:bucket]  = s3b[:name]

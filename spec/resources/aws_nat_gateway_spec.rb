@@ -24,7 +24,7 @@ describe("GeoEngineer::Resources::AwsNatGateway") do
         }
       )
       ec2.stub_responses(:describe_nat_gateways, stub)
-      remote_resources = GeoEngineer::Resources::AwsNatGateway._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsNatGateway._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq(2)
     end
   end

@@ -12,8 +12,8 @@ class GeoEngineer::Resources::AwsDynamodbTable < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    AwsClients.dynamo.list_tables['table_names'].map { |name|
+  def self._fetch_remote_resources(provider)
+    AwsClients.dynamo(provider).list_tables['table_names'].map { |name|
       {
         name: name,
         _geo_id: name,

@@ -13,8 +13,8 @@ class GeoEngineer::Resources::AwsIamGroup < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    groups = AwsClients.iam.list_groups['groups'].map(&:to_h)
+  def self._fetch_remote_resources(provider)
+    groups = AwsClients.iam(provider).list_groups['groups'].map(&:to_h)
 
     groups.map do |g|
       g[:name] = g[:group_name]

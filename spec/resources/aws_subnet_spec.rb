@@ -17,7 +17,7 @@ describe("GeoEngineer::Resources::AwsSubnet") do
         }
       )
       ec2.stub_responses(:describe_subnets, stub)
-      remote_resources = GeoEngineer::Resources::AwsSubnet._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsSubnet._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq(2)
     end
   end

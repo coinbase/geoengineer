@@ -23,7 +23,7 @@ describe("GeoEngineer::Resources::AwsRoute53Zone") do
     end
 
     it 'should create an array of hashes from the AWS response' do
-      resources = GeoEngineer::Resources::AwsRoute53Zone._fetch_remote_resources
+      resources = GeoEngineer::Resources::AwsRoute53Zone._fetch_remote_resources(nil)
       expect(resources.count).to eql(2)
 
       testzone = resources.first

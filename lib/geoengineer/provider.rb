@@ -12,6 +12,14 @@ class GeoEngineer::Provider
     instance_exec(self, &block) if block_given?
   end
 
+  def terraform_id
+    if self.alias
+      "#{id}.#{self.alias}"
+    else
+      id
+    end
+  end
+
   ## Terraform methods
   def to_terraform
     sb = ["provider #{@id.inspect} { "]
@@ -25,6 +33,6 @@ class GeoEngineer::Provider
   end
 
   def to_terraform_json
-    { "#{id}" => terraform_attributes }
+    { id.to_s => terraform_attributes }
   end
 end

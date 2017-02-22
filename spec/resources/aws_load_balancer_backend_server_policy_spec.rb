@@ -35,7 +35,7 @@ describe GeoEngineer::Resources::AwsLoadBalancerBackendServerPolicy do
           ]
         }
       )
-      remote_resources = described_class._fetch_remote_resources
+      remote_resources = described_class._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2
     end
   end

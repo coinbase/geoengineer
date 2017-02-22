@@ -16,7 +16,7 @@ class GeoEngineer::Environment
   include HasValidations
   include HasLifecycle
 
-  attr_reader :name
+  attr_reader :name, :providers
 
   validate -> { validate_required_attributes([:region, :account_id]) }
 
@@ -83,6 +83,10 @@ class GeoEngineer::Environment
     provider
   end
 
+  def find_provider(id_alias)
+    @providers.find { |p| p.terraform_id == id_alias }
+  end
+
   def output(id, value, &block)
     output = GeoEngineer::Output.new(id, value, &block)
     @outputs << output
@@ -136,7 +140,6 @@ class GeoEngineer::Environment
         r.lifecycle.prevent_destroy = true
       }
     end
-
 
     tf_resources = all_resources.map(&:to_terraform)
     tf_resources += @providers.compact.map(&:to_terraform)
@@ -196,7 +199,7 @@ class GeoEngineer::Environment
   def uncodified_resources(type)
     # unmanaged resources have a remote resource without local_resource
     clazz = self.class.get_resource_class_from_type(type)
-    res = clazz.fetch_remote_resources.select { |r| r.local_resource.nil? }
+    res = clazz.fetch_remote_resources(nil).select { |r| r.local_resource.nil? }
     res.sort_by(&:terraform_name)
   end
 end

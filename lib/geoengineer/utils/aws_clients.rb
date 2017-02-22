@@ -11,80 +11,130 @@ class AwsClients
     @stub_aws || false
   end
 
+  def self.client_params(provider = nil)
+    client_params = { stub_responses: stubbed? }
+    client_params[:region] = provider.region if provider
+    client_params
+  end
+
+  def self.client_cache(client, provider, &block)
+    @client_cache ||= {}
+    key = "#{client}_" + (provider&.terraform_id || GeoEngineer::Resource::DEFAULT_PROVIDER)
+    @client_cache[key] ||= block.call
+  end
+
   # Clients
-  def self.cloudwatch
-    @aws_cloudwatch ||= Aws::CloudWatch::Client.new({ stub_responses: stubbed? })
+  def self.cloudwatch(provider = nil)
+    self.client_cache('cloudwatch', provider) {
+      Aws::CloudWatch::Client.new(client_params(provider))
+    }
   end
 
-  def self.cloudwatchevents
-    @aws_cloudwatchevents ||= Aws::CloudWatchEvents::Client.new({ stub_responses: stubbed? })
+  def self.cloudwatchevents(provider = nil)
+    self.client_cache('cloudwatchevents', provider) {
+      Aws::CloudWatchEvents::Client.new(client_params(provider))
+    }
   end
 
-  def self.dynamo
-    @aws_dynamo ||= Aws::DynamoDB::Client.new({ stub_responses: stubbed? })
+  def self.dynamo(provider = nil)
+    self.client_cache('dynamo', provider) {
+      Aws::DynamoDB::Client.new(client_params(provider))
+    }
   end
 
-  def self.ec2
-    @aws_ec2 ||= Aws::EC2::Client.new({ stub_responses: stubbed? })
+  def self.ec2(provider = nil)
+    self.client_cache('ec2', provider) {
+      Aws::EC2::Client.new(client_params(provider))
+    }
   end
 
-  def self.elasticache
-    @aws_elasticache ||= Aws::ElastiCache::Client.new({ stub_responses: stubbed? })
+  def self.elasticache(provider = nil)
+    self.client_cache('elasticache', provider) {
+      Aws::ElastiCache::Client.new(client_params(provider))
+    }
   end
 
-  def self.elasticsearch
-    @aws_elasticsearch ||= Aws::ElasticsearchService::Client.new({ stub_responses: stubbed? })
+  def self.elasticsearch(provider = nil)
+    self.client_cache('elasticsearch', provider) {
+      Aws::ElasticsearchService::Client.new(client_params(provider))
+    }
   end
 
-  def self.elb
-    @aws_elb ||= Aws::ElasticLoadBalancing::Client.new({ stub_responses: stubbed? })
+  def self.elb(provider = nil)
+    self.client_cache('elb', provider) {
+      Aws::ElasticLoadBalancing::Client.new(client_params(provider))
+    }
   end
 
-  def self.iam
-    @aws_iam ||= Aws::IAM::Client.new({ stub_responses: stubbed? })
+  def self.iam(provider = nil)
+    self.client_cache('iam', provider) {
+      Aws::IAM::Client.new(client_params(provider))
+    }
   end
 
-  def self.kinesis
-    @aws_kinesis ||= Aws::Kinesis::Client.new({ stub_responses: stubbed? })
+  def self.kinesis(provider = nil)
+    self.client_cache('kinesis', provider) {
+      Aws::Kinesis::Client.new(client_params(provider))
+    }
   end
 
-  def self.lambda
-    @aws_lambda ||= Aws::Lambda::Client.new({ stub_responses: stubbed? })
+  def self.lambda(provider = nil)
+    self.client_cache('lambda', provider) {
+      Aws::Lambda::Client.new(client_params(provider))
+    }
   end
 
-  def self.rds
-    @aws_rds ||= Aws::RDS::Client.new({ stub_responses: stubbed? })
+  def self.rds(provider = nil)
+    self.client_cache('rds', provider) {
+      Aws::RDS::Client.new(client_params(provider))
+    }
   end
 
-  def self.redshift
-    @aws_redshift ||= Aws::Redshift::Client.new({ stub_responses: stubbed? })
+  def self.redshift(provider = nil)
+    self.client_cache('redshift', provider) {
+      Aws::Redshift::Client.new(client_params(provider))
+    }
   end
 
-  def self.route53
-    @aws_route53 ||= Aws::Route53::Client.new({ stub_responses: stubbed? })
+  def self.route53(provider = nil)
+    self.client_cache('route53', provider) {
+      Aws::Route53::Client.new(client_params(provider))
+    }
   end
 
-  def self.s3
-    @aws_s3 ||= Aws::S3::Client.new({ stub_responses: stubbed? })
+  def self.s3(provider = nil)
+    self.client_cache('s3', provider) {
+      Aws::S3::Client.new(client_params(provider))
+    }
   end
 
-  def self.ses
-    @aws_ses ||= Aws::SES::Client.new({ stub_responses: stubbed? })
+  def self.ses(provider = nil)
+    self.client_cache('ses', provider) {
+      Aws::SES::Client.new(client_params(provider))
+    }
   end
 
-  def self.sns
-    @aws_sns ||= Aws::SNS::Client.new({ stub_responses: stubbed? })
+  def self.sns(provider = nil)
+    self.client_cache('sns', provider) {
+      Aws::SNS::Client.new(client_params(provider))
+    }
   end
 
-  def self.sqs
-    @aws_sqs ||= Aws::SQS::Client.new({ stub_responses: stubbed? })
+  def self.sqs(provider = nil)
+    self.client_cache('sqs', provider) {
+      Aws::SQS::Client.new(client_params(provider))
+    }
   end
 
-  def self.cloudtrail
-    @aws_cloudtrail ||= Aws::CloudTrail::Client.new({ stub_responses: stubbed? })
+  def self.cloudtrail(provider = nil)
+    self.client_cache('cloudtrail', provider) {
+      Aws::CloudTrail::Client.new(client_params(provider))
+    }
   end
 
-  def self.kms
-    @aws_kms ||= Aws::KMS::Client.new({ stub_responses: stubbed? })
+  def self.kms(provider = nil)
+    self.client_cache('kms', provider) {
+      Aws::KMS::Client.new(client_params(provider))
+    }
   end
 end

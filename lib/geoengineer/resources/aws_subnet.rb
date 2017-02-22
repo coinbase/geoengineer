@@ -11,8 +11,8 @@ class GeoEngineer::Resources::AwsSubnet < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
-  def self._fetch_remote_resources
-    AwsClients.ec2.describe_subnets['subnets'].map(&:to_h).map do |subnet|
+  def self._fetch_remote_resources(provider)
+    AwsClients.ec2(provider).describe_subnets['subnets'].map(&:to_h).map do |subnet|
       subnet.merge(
         {
           _terraform_id: subnet[:subnet_id],

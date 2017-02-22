@@ -77,7 +77,7 @@ describe("GeoEngineer::Resources::AwsSecurityGroup") do
         }
       )
       ec2.stub_responses(:describe_security_groups, stub)
-      remote_resources = GeoEngineer::Resources::AwsSecurityGroup._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsSecurityGroup._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq(2)
     end
 
@@ -92,7 +92,7 @@ describe("GeoEngineer::Resources::AwsSecurityGroup") do
         }
       )
       ec2.stub_responses(:describe_security_groups, stub)
-      remote_resources = GeoEngineer::Resources::AwsSecurityGroup._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsSecurityGroup._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq(2)
     end
 
@@ -107,7 +107,7 @@ describe("GeoEngineer::Resources::AwsSecurityGroup") do
         }
       )
       ec2.stub_responses(:describe_security_groups, stub)
-      remote_resources = GeoEngineer::Resources::AwsSecurityGroup._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsSecurityGroup._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq(2)
     end
   end

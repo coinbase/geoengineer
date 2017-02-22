@@ -58,7 +58,7 @@ describe("GeoEngineer::Resources::AwsElb") do
         }
       )
       elb.stub_responses(:describe_load_balancers, stub)
-      remote_resources = GeoEngineer::Resources::AwsElb._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsElb._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2
     end
   end

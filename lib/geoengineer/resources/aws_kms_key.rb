@@ -9,9 +9,9 @@ class GeoEngineer::Resources::AwsKmsKey < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { description } }
 
-  def self._fetch_remote_resources
-    keys = AwsClients.kms.list_keys[:keys].map do |i|
-      AwsClients.kms.describe_key({ key_id: i.key_id }).key_metadata.to_h
+  def self._fetch_remote_resources(provider)
+    keys = AwsClients.kms(provider).list_keys[:keys].map do |i|
+      AwsClients.kms(provider).describe_key({ key_id: i.key_id }).key_metadata.to_h
     end
 
     keys.map do |k|

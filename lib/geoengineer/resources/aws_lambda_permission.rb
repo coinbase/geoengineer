@@ -21,15 +21,16 @@ class GeoEngineer::Resources::AwsLambdaPermission < GeoEngineer::Resource
     tfstate
   end
 
-  def self._fetch_functions
+  def self._fetch_functions(provider)
     AwsClients
-      .lambda
+      .lambda(provider)
       .list_functions['functions']
       .map(&:to_h)
   end
 
-  def self._fetch_policy(function)
-    policy = AwsClients.lambda.get_policy({ function_name: function[:function_name] })&.policy
+  def self._fetch_policy(provider, function)
+    policy = AwsClients.lambda(provider)
+                       .get_policy({ function_name: function[:function_name] })&.policy
     parsed = _parse_policy(policy) if policy
     function.merge({ policy: parsed }) if parsed
   end
@@ -60,9 +61,9 @@ class GeoEngineer::Resources::AwsLambdaPermission < GeoEngineer::Resource
   # Right now, this only fetches policies for the $LATEST version
   # If you want to fetch the policy for a version other than $LATEST
   # set `find_remote_as_individual?` to `true` for that resource
-  def self._fetch_remote_resources
-    _fetch_functions
-      .map { |function| _fetch_policy(function) }
+  def self._fetch_remote_resources(provider)
+    _fetch_functions(provider)
+      .map { |function| _fetch_policy(provider, function) }
       .compact
       .map { |function| _create_permission(function) }
       .flatten
@@ -74,7 +75,7 @@ class GeoEngineer::Resources::AwsLambdaPermission < GeoEngineer::Resource
     params[:qualifier] = qualifier if qualifier
 
     begin
-      policy = _fetch_policy(params)[:policy]
+      policy = _fetch_policy(fetch_provider, params)[:policy]
       return {} if policy.nil?
     rescue Aws::Lambda::Errors::ResourceNotFoundException
       return {}

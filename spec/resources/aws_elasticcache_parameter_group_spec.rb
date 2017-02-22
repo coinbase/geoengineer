@@ -19,7 +19,7 @@ describe("GeoEngineer::Resources::AwsElasticacheParameterGroup") do
         }
       )
       elasticache.stub_responses(:describe_cache_parameter_groups, stub)
-      rr = GeoEngineer::Resources::AwsElasticacheParameterGroup._fetch_remote_resources
+      rr = GeoEngineer::Resources::AwsElasticacheParameterGroup._fetch_remote_resources(nil)
       expect(rr.length).to eq 2
     end
   end

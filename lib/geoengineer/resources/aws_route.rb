@@ -22,9 +22,9 @@ class GeoEngineer::Resources::AwsRoute < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .ec2
+      .ec2(provider)
       .describe_route_tables['route_tables']
       .map(&:to_h)
       .map { |route_table| _extract_routes(route_table) }
