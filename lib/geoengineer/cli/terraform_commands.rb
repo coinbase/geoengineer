@@ -2,7 +2,7 @@
 # TerraformCommands provides command line terraform commands
 # +plan+ and +apply+ for GeoEngineer
 ########################################################################
-module GeoCLI::TerraformCommands
+module GeoCLI::TerraformCommands # rubocop:disable Metrics/ModuleLength
   def create_terraform_files
     # create terraform file
     File.open("#{@tmpdir}/#{@terraform_file}", 'w') { |file|
@@ -64,8 +64,21 @@ module GeoCLI::TerraformCommands
     [status, plan_output, plan_summary]
   end
 
-  def display_plan(plan_output)
+  def display_plan(plan_output) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     scrubbed_output = plan_output.gsub(/\e\[\d+m/, '') # Remove ANSI escape sequences
+
+    puts "----------------------------------------------\n" \
+         "ORIGINAL TERRAFORM PLAN OUTPUT\n" \
+         '----------------------------------------------'.colorize(:light_white)
+    if String.disable_colorization
+      print scrubbed_output
+    else
+      print plan_output
+    end
+    puts "----------------------------------------------\n" \
+         "NEW PLAN OUTPUT\n" \
+         '----------------------------------------------'.colorize(:light_white)
+
     begin
       plan = GeoEngineer::TerraformPlan.from_output(scrubbed_output)
       plan.display
