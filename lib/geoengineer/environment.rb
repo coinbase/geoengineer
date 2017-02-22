@@ -16,7 +16,7 @@ class GeoEngineer::Environment
   include HasValidations
   include HasLifecycle
 
-  attr_reader :name, :providers
+  attr_reader :name
 
   validate -> { validate_required_attributes([:region, :account_id]) }
 
