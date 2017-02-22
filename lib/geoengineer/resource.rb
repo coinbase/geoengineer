@@ -168,7 +168,6 @@ class GeoEngineer::Resource
     # The cache key is the provider
     # no provider no resource
     provider_id = provider&.terraform_id || DEFAULT_PROVIDER
-    puts provider_id
     @_rr_cache ||= {}
     return @_rr_cache[provider_id] if @_rr_cache[provider_id]
     @_rr_cache[provider_id] = _fetch_remote_resources(provider)
