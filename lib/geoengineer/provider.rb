@@ -1,7 +1,7 @@
 ########################################################################
 # Outputs are mapped 1:1 to terraform outputs
 #
-# {https://www.terraform.io/docs/configuration/outputs.html Terraform Docs}
+# {https://www.terraform.io/docs/providers/aws/ Terraform Docs}
 ########################################################################
 class GeoEngineer::Provider
   attr_reader :id
