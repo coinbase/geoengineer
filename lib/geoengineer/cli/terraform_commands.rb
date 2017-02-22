@@ -69,7 +69,7 @@ module GeoCLI::TerraformCommands # rubocop:disable Metrics/ModuleLength
 
     puts "----------------------------------------------\n" \
          "ORIGINAL TERRAFORM PLAN OUTPUT\n" \
-         '----------------------------------------------'.colorize(:light_white)
+         '----------------------------------------------'
     if String.disable_colorization
       print scrubbed_output
     else
@@ -77,7 +77,7 @@ module GeoCLI::TerraformCommands # rubocop:disable Metrics/ModuleLength
     end
     puts "----------------------------------------------\n" \
          "NEW PLAN OUTPUT\n" \
-         '----------------------------------------------'.colorize(:light_white)
+         '----------------------------------------------'
 
     begin
       plan = GeoEngineer::TerraformPlan.from_output(scrubbed_output)
