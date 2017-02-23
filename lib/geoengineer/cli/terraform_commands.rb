@@ -38,7 +38,7 @@ module GeoCLI::TerraformCommands # rubocop:disable Metrics/ModuleLength
     status
   end
 
-  def run_and_collect_plan_output(plan_command) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength, Metrics/LineLength
+  def run_and_collect_plan_output(plan_command) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength, Metrics/LineLength
     record = false
     plan_output = StringIO.new
     plan_summary = nil
@@ -46,15 +46,23 @@ module GeoCLI::TerraformCommands # rubocop:disable Metrics/ModuleLength
       print stderr_chunk if stderr_chunk
       next unless stdout_chunk
       if record
-        if stdout_chunk.include?('Plan:')
-          plan_summary = stdout_chunk
+        if (m = stdout_chunk.match(/Plan[^\n]+/))
+          match_start = m.begin(0)
+          plan_output << stdout_chunk[0...match_start]
+          plan_summary = stdout_chunk[match_start..-1]
           next
+        else
+          plan_output << stdout_chunk
         end
-        plan_output << stdout_chunk
-      elsif stdout_chunk.include?("Path: #{@plan_file}")
-        print stdout_chunk if @verbose
+      elsif (m = stdout_chunk.match(/Path: #{@plan_file}[^\n]*/))
+        match_start = m.begin(0)
+        print stdout_chunk[0...match_start] if @verbose
+
         # Once this output is received, the diff will follow, so start recording
         record = true
+
+        # Record anything that came after the "Path: ..." line
+        plan_output << stdout_chunk[m.end(0)..-1]
       elsif @verbose
         # Live stream output so user sees that work is happening
         print stdout_chunk
