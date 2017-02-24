@@ -21,7 +21,7 @@ describe("GeoEngineer::Resources::AwsElasticacheReplicationGroup") do
       elasticache.stub_responses(:describe_replication_groups, stub)
 
       replication_group_class = GeoEngineer::Resources::AwsElasticacheReplicationGroup
-      remote_resources = replication_group_class._fetch_remote_resources
+      remote_resources = replication_group_class._fetch_remote_resources(nil)
 
       expect(remote_resources.length).to eq 2
     end

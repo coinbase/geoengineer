@@ -32,7 +32,7 @@ describe "GeoEngineer::Resource::AwsIamGroup" do
     end
 
     it 'should create a list of hashes returned AWS SDK' do
-      resources = GeoEngineer::Resources::AwsIamGroup._fetch_remote_resources
+      resources = GeoEngineer::Resources::AwsIamGroup._fetch_remote_resources(nil)
       expect(resources.count).to eql(2)
 
       test_iam_group = resources.first

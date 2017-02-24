@@ -42,8 +42,8 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
     "sg"
   end
 
-  def self._fetch_remote_resources
-    AwsClients.ec2.describe_security_groups['security_groups'].map(&:to_h).map do |sg|
+  def self._fetch_remote_resources(provider)
+    AwsClients.ec2(provider).describe_security_groups['security_groups'].map(&:to_h).map do |sg|
       sg.merge(
         {
           name: sg[:group_name],

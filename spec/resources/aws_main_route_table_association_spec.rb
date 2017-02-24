@@ -50,7 +50,7 @@ describe GeoEngineer::Resources::AwsMainRouteTableAssociation do
     end
 
     it 'should create list of hashes from returned AWS SDK' do
-      remote_resources = described_class._fetch_remote_resources
+      remote_resources = described_class._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq(1)
     end
   end

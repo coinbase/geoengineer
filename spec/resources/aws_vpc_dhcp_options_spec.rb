@@ -17,7 +17,7 @@ describe("GeoEngineer::Resources::AwsVpcDhcpOptions") do
         }
       )
       ec2.stub_responses(:describe_dhcp_options, stub)
-      remote_resources = GeoEngineer::Resources::AwsVpcDhcpOptions._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsVpcDhcpOptions._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq(2)
     end
   end

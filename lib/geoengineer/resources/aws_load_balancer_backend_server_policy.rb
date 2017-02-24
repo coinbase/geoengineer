@@ -25,9 +25,9 @@ class GeoEngineer::Resources::AwsLoadBalancerBackendServerPolicy < GeoEngineer::
     false
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .elb
+      .elb(provider)
       .describe_load_balancers
       .load_balancer_descriptions
       .map { |load_balancer| _extract_backend_servers(load_balancer.to_h) }

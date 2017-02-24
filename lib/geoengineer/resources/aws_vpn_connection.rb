@@ -10,8 +10,9 @@ class GeoEngineer::Resources::AwsVpnConnection < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
-  def self._fetch_remote_resources
-    AwsClients.ec2.describe_vpn_connections['vpn_connections'].map(&:to_h).map do |connection|
+  def self._fetch_remote_resources(provider)
+    AwsClients.ec2(provider)
+              .describe_vpn_connections['vpn_connections'].map(&:to_h).map do |connection|
       connection.merge(
         {
           _terraform_id: connection[:vpn_connection_id],

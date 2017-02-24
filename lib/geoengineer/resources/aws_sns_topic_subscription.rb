@@ -20,7 +20,8 @@ class GeoEngineer::Resources::AwsSnsTopicSubscription < GeoEngineer::Resource
       'endpoint' => endpoint,
       'protocol' => protocol,
       'confirmation_timeout_in_minutes' => "1",
-      'endpoint_auto_confirms' => "false"
+      'endpoint_auto_confirms' => "false",
+      'raw_message_delivery' => "false"
     }
     tfstate
   end
@@ -29,8 +30,8 @@ class GeoEngineer::Resources::AwsSnsTopicSubscription < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    _get_all_subscriptions.map do |subscription|
+  def self._fetch_remote_resources(provider)
+    _get_all_subscriptions(provider).map do |subscription|
       {
         _terraform_id: subscription[:subscription_arn],
         _geo_id: "#{subscription[:topic_arn]}::" \
@@ -40,11 +41,11 @@ class GeoEngineer::Resources::AwsSnsTopicSubscription < GeoEngineer::Resource
     end
   end
 
-  def self._get_all_subscriptions
-    subs_page = AwsClients.sns.list_subscriptions
+  def self._get_all_subscriptions(provider)
+    subs_page = AwsClients.sns(provider).list_subscriptions
     subs = subs_page.subscriptions.map(&:to_h)
     while subs_page.next_token
-      subs_page = AwsClients.sns.list_subscriptions({ next_token: subs_page.next_token })
+      subs_page = AwsClients.sns(provider).list_subscriptions({ next_token: subs_page.next_token })
       subs.concat subs_page.subscriptions.map(&:to_h)
     end
     subs

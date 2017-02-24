@@ -35,7 +35,7 @@ class GeoEngineer::Resources::AwsIamGroupMembership < GeoEngineer::Resource
     return {} unless _group
     return {} unless _group.remote_resource
 
-    users = AwsClients.iam.get_group({ group_name: _group.name })['users']
+    users = AwsClients.iam(provider).get_group({ group_name: _group.name })['users']
     build_remote_resource_params(users)
   end
 

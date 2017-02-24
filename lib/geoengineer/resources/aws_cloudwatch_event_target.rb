@@ -22,9 +22,9 @@ class GeoEngineer::Resources::AwsCloudwatchEventTarget < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .cloudwatchevents
+      .cloudwatchevents(provider)
       .list_rules
       .rules
       .map(&:to_h)

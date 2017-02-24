@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.signing_key = File.expand_path("~/.ssh/geoengineer-gem-private-key.pem") if $0 =~ /gem\z/
 
   s.files       = Dir.glob('lib/**/*.rb')
+  s.files       += Dir.glob('grammar/**/*.treetop')
   s.files       << "README.md"
   s.files       << "LICENSE"
 
@@ -34,4 +35,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'aws-sdk',           '~> 2.2'
   s.add_dependency 'commander',         '~> 4.4'
   s.add_dependency 'colorize',          '~> 0.7'
+  s.add_dependency 'diffy',             '~> 3.0'
+  s.add_dependency 'parallel',          '~> 1.10'
+  s.add_dependency 'treetop',           '~> 1.6'
 end

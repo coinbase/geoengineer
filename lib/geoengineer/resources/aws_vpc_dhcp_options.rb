@@ -16,8 +16,8 @@ class GeoEngineer::Resources::AwsVpcDhcpOptions < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
-  def self._fetch_remote_resources
-    AwsClients.ec2.describe_dhcp_options['dhcp_options'].map(&:to_h).map do |options|
+  def self._fetch_remote_resources(provider)
+    AwsClients.ec2(provider).describe_dhcp_options['dhcp_options'].map(&:to_h).map do |options|
       options.merge(
         {
           _terraform_id: options[:dhcp_options_id],

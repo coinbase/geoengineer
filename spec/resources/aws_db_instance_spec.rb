@@ -16,7 +16,7 @@ describe("GeoEngineer::Resources::AwsDbInstance") do
         }
       )
       rds.stub_responses(:describe_db_instances, stub)
-      remote_resources = GeoEngineer::Resources::AwsDbInstance._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsDbInstance._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2
     end
   end

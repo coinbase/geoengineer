@@ -22,7 +22,7 @@ describe("GeoEngineer::Resources::AwsLambdaFunction") do
     after { aws_client.stub_responses(:list_functions, {}) }
 
     it 'should create an array of hashes from the AWS response' do
-      resources = GeoEngineer::Resources::AwsLambdaFunction._fetch_remote_resources
+      resources = GeoEngineer::Resources::AwsLambdaFunction._fetch_remote_resources(nil)
       expect(resources.count).to eql(2)
     end
   end

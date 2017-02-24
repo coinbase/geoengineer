@@ -42,7 +42,7 @@ describe GeoEngineer::Resources::AwsIamRolePolicy do
           policy_document: "{ Some Policy Here... }"
         }
       )
-      remote_resources = GeoEngineer::Resources::AwsIamRolePolicy._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsIamRolePolicy._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 1
     end
   end

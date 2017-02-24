@@ -33,8 +33,8 @@ class GeoEngineer::Resources::AwsIamRole < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    roles = AwsClients.iam.list_roles['roles'].map(&:to_h)
+  def self._fetch_remote_resources(provider)
+    roles = AwsClients.iam(provider).list_roles['roles'].map(&:to_h)
     roles.map do |r|
       r.merge({ name: r[:role_name],
                 _geo_id: r[:role_name],

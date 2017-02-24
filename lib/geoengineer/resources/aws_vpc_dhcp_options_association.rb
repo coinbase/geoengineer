@@ -23,9 +23,9 @@ class GeoEngineer::Resources::AwsVpcDhcpOptionsAssociation < GeoEngineer::Resour
     false
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .ec2
+      .ec2(provider)
       .describe_vpcs['vpcs']
       .map(&:to_h)
       .select { |vpc| vpc[:dhcp_options_id] }

@@ -22,7 +22,7 @@ describe "GeoEngineer::Resources::AwsCloudtrail" do
     end
 
     it 'should create an array of hashes from the AWS response' do
-      resources = GeoEngineer::Resources::AwsCloudtrail._fetch_remote_resources
+      resources = GeoEngineer::Resources::AwsCloudtrail._fetch_remote_resources(nil)
       expect(resources.count).to eql 2
 
       test_cloudtrail = resources.first

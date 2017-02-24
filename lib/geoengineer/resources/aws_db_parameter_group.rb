@@ -14,8 +14,10 @@ class GeoEngineer::Resources::AwsDbParameterGroup < GeoEngineer::Resource
     "dbpg"
   end
 
-  def self._fetch_remote_resources
-    AwsClients.rds.describe_db_parameter_groups['db_parameter_groups'].map(&:to_h).map do |pg|
+  def self._fetch_remote_resources(provider)
+    AwsClients.rds(provider)
+              .describe_db_parameter_groups['db_parameter_groups']
+              .map(&:to_h).map do |pg|
       pg[:_terraform_id] = pg[:db_parameter_group_name]
       pg[:_geo_id] = pg[:db_parameter_group_name]
       pg[:name] = pg[:db_parameter_group_name]

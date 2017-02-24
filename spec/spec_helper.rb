@@ -2,6 +2,8 @@ require 'rspec'
 require_relative '../lib/geoengineer'
 require 'pry'
 
+Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
+
 # https://ruby.awsblog.com/post/Tx2SU6TYJWQQLC3/Stubbing-AWS-Responses
 AwsClients.stub!
 
@@ -36,7 +38,7 @@ end
 
 def fetch_empty_should_work(clazz)
   it 'should work with emtpy response' do
-    remote_resources = clazz._fetch_remote_resources
+    remote_resources = clazz._fetch_remote_resources(nil)
     expect(remote_resources.length).to eq 0
   end
 end

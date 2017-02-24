@@ -13,8 +13,8 @@ class GeoEngineer::Resources::AwsNatGateway < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
-    AwsClients.ec2.describe_nat_gateways['nat_gateways'].map(&:to_h).map do |gateway|
+  def self._fetch_remote_resources(provider)
+    AwsClients.ec2(provider).describe_nat_gateways['nat_gateways'].map(&:to_h).map do |gateway|
       # AWS SDK has `nat_gateway_addresses` as an array, but you should only be able to
       # have exactly 1 elastic IP association. This logic should cover the bases...
       allocation = gateway[:nat_gateway_addresses].find { |addr| addr.key?(:allocation_id) }

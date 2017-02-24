@@ -19,9 +19,9 @@ class GeoEngineer::Resources::AwsKinesisStream < GeoEngineer::Resource
     tfstate
   end
 
-  def self._all_streams
+  def self._all_streams(provider)
     streams = []
-    AwsClients.kinesis.list_streams[:stream_names].each do |stream_name|
+    AwsClients.kinesis(provider).list_streams[:stream_names].each do |stream_name|
       AwsClients.kinesis.describe_stream({ stream_name: stream_name }).map(&:to_h).map do |stream|
         streams << stream[:stream_description]
       end
@@ -29,8 +29,8 @@ class GeoEngineer::Resources::AwsKinesisStream < GeoEngineer::Resource
     streams
   end
 
-  def self._fetch_remote_resources
-    self._all_streams.map do |stream|
+  def self._fetch_remote_resources(provider)
+    self._all_streams(provider).map do |stream|
       stream.merge({
                      _terraform_id: stream[:stream_arn],
                      _geo_id: stream[:stream_name]

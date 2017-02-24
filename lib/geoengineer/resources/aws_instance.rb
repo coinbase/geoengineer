@@ -10,12 +10,12 @@ class GeoEngineer::Resources::AwsInstance < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
-  def self._all_remote_instances
+  def self._all_remote_instances(provider)
     AwsClients.ec2.describe_instances.reservations.map(&:instances).flatten.map(&:to_h)
   end
 
-  def self._fetch_remote_resources
-    _all_remote_instances.map do |instance|
+  def self._fetch_remote_resources(provider)
+    _all_remote_instances(provider).map do |instance|
       instance.merge(
         {
           _terraform_id: instance[:instance_id],

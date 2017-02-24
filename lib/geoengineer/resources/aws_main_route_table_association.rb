@@ -22,9 +22,9 @@ class GeoEngineer::Resources::AwsMainRouteTableAssociation < GeoEngineer::Resour
     false
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .ec2
+      .ec2(provider)
       .describe_route_tables['route_tables']
       .map(&:to_h)
       .select { |route_table| route_table[:associations] }

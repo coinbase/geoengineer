@@ -19,7 +19,7 @@ describe("GeoEngineer::Resources::AwsInstance") do
         }
       )
       ec2.stub_responses(:describe_instances, stub)
-      remote_resources = GeoEngineer::Resources::AwsInstance._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsInstance._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2
     end
   end

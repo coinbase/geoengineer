@@ -16,7 +16,7 @@ describe("GeoEngineer::Resources::AwsElasticacheCluster") do
         }
       )
       elasticache.stub_responses(:describe_cache_clusters, stub)
-      remote_resources = GeoEngineer::Resources::AwsElasticacheCluster._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsElasticacheCluster._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2
     end
   end

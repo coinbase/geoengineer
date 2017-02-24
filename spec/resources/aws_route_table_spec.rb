@@ -17,7 +17,7 @@ describe("GeoEngineer::Resources::AwsRouteTable") do
         }
       )
       ec2.stub_responses(:describe_route_tables, stub)
-      remote_resources = GeoEngineer::Resources::AwsRouteTable._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsRouteTable._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq(2)
     end
   end

@@ -24,7 +24,8 @@ class GeoEngineer::Resources::AwsIamAccountPasswordPolicy < GeoEngineer::Resourc
   end
 
   def remote_resource_params
-    password_policy = AwsClients.iam.get_account_password_policy.password_policy.to_h
+    password_policy = AwsClients.iam(fetch_provider)
+                                .get_account_password_policy.password_policy.to_h
     password_policy.merge({ _geo_id: SINGLETON_ID, _terraform_id: SINGLETON_ID })
   rescue Aws::IAM::Errors::NoSuchEntity
     {}

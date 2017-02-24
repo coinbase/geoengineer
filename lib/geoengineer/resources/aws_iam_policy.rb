@@ -44,12 +44,14 @@ class GeoEngineer::Resources::AwsIamPolicy < GeoEngineer::Resource
     URI.decode(response.policy_version.document)
   end
 
-  def self._all_remote_policies
-    AwsClients.iam.list_policies({ scope: "Local" }).each.map(&:policies).flatten.map(&:to_h)
+  def self._all_remote_policies(provider)
+    AwsClients.iam(provider)
+              .list_policies({ scope: "Local" })
+              .each.map(&:policies).flatten.map(&:to_h)
   end
 
-  def self._fetch_remote_resources
-    _all_remote_policies.map(&:to_h).map do |policy|
+  def self._fetch_remote_resources(provider)
+    _all_remote_policies(provider).map(&:to_h).map do |policy|
       {
         _terraform_id: policy[:arn],
         _geo_id: policy[:policy_name],

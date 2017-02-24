@@ -16,7 +16,7 @@ describe("GeoEngineer::Resources::AwsDbParameterGroup") do
         }
       )
       rds.stub_responses(:describe_db_parameter_groups, stub)
-      remote_resources = GeoEngineer::Resources::AwsDbParameterGroup._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsDbParameterGroup._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2
     end
   end

@@ -46,8 +46,10 @@ class GeoEngineer::Resources::AwsElb < GeoEngineer::Resource
     "elb"
   end
 
-  def self._fetch_remote_resources
-    AwsClients.elb.describe_load_balancers['load_balancer_descriptions'].map(&:to_h).map do |elb|
+  def self._fetch_remote_resources(provider)
+    AwsClients.elb(provider)
+              .describe_load_balancers['load_balancer_descriptions']
+              .map(&:to_h).map do |elb|
       elb[:_terraform_id] = elb[:load_balancer_name]
       elb[:_geo_id] = elb[:load_balancer_name]
       elb[:name] = elb[:load_balancer_name]

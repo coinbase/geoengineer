@@ -36,9 +36,9 @@ class GeoEngineer::Resources::AwsNetworkAclRule < GeoEngineer::Resource
     false
   end
 
-  def self._fetch_remote_resources
+  def self._fetch_remote_resources(provider)
     AwsClients
-      .ec2
+      .ec2(provider)
       .describe_network_acls['network_acls']
       .map(&:to_h)
       .select { |network_acl| !network_acl[:entries].empty? }

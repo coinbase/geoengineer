@@ -77,7 +77,7 @@ class GeoEngineer::Resources::AwsIamPolicyAttachment < GeoEngineer::Resource
     return {} unless _policy.remote_resource
 
     arn = _policy.remote_resource._terraform_id
-    entities = AwsClients.iam.list_entities_for_policy({ policy_arn: arn })
+    entities = AwsClients.iam(provider).list_entities_for_policy({ policy_arn: arn })
     build_remote_resource_params(arn, entities)
   end
 

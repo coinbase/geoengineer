@@ -33,8 +33,8 @@ class GeoEngineer::Resources::AwsEip < GeoEngineer::Resource
     true
   end
 
-  def self._fetch_remote_resources
-    AwsClients.ec2.describe_addresses['addresses'].map(&:to_h).map do |address|
+  def self._fetch_remote_resources(provider)
+    AwsClients.ec2(provider).describe_addresses['addresses'].map(&:to_h).map do |address|
       address[:_terraform_id] = address[:allocation_id]
       address[:_geo_id] = address[:public_ip]
       address

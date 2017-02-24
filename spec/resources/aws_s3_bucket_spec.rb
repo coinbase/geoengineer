@@ -32,7 +32,7 @@ describe("GeoEngineer::Resources::AwsS3Bucket") do
         }
       )
       s3.stub_responses(:list_buckets, stub)
-      remote_resources = GeoEngineer::Resources::AwsS3Bucket._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsS3Bucket._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2
     end
   end

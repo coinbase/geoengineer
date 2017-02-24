@@ -13,7 +13,7 @@ describe("GeoEngineer::Resources::AwsSqsQueue") do
         }
       )
       sqs.stub_responses(:list_queues, stub)
-      remote_resources = GeoEngineer::Resources::AwsSqsQueue._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsSqsQueue._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2
     end
   end

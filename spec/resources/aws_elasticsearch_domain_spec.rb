@@ -15,7 +15,7 @@ describe("GeoEngineer::Resources::AwsElasticsearchDomain") do
         }
       )
       AwsClients.elasticsearch.stub_responses(:list_domain_names, stub)
-      remote_resources = GeoEngineer::Resources::AwsElasticsearchDomain._fetch_remote_resources
+      remote_resources = GeoEngineer::Resources::AwsElasticsearchDomain._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2
     end
   end

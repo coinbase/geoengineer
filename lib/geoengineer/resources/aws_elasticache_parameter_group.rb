@@ -18,8 +18,8 @@ class GeoEngineer::Resources::AwsElasticacheParameterGroup < GeoEngineer::Resour
     "ecpg"
   end
 
-  def self._fetch_remote_resources
-    ec = AwsClients.elasticache
+  def self._fetch_remote_resources(provider)
+    ec = AwsClients.elasticache(provider)
     ec.describe_cache_parameter_groups['cache_parameter_groups'].map(&:to_h).map do |pg|
       pg[:_terraform_id] = pg[:cache_parameter_group_name]
       pg[:_geo_id] = pg[:cache_parameter_group_name]
