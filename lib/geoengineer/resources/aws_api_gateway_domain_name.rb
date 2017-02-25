@@ -11,4 +11,12 @@ class GeoEngineer::Resources::AwsApiGatewayDomainName < GeoEngineer::Resource
                 :certificate_chain,
                 :certificate_private_key
             ]) }
+
+  after :initialize, -> { _terraform_id -> { nil } }
+  after :initialize, -> { _geo_id -> { rand(36**20).to_s(36) } }
+
+  def support_tags?
+    false
+  end
 end
+

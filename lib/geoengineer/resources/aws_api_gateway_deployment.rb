@@ -9,4 +9,10 @@ class GeoEngineer::Resources::AwsApiGatewayDeployment < GeoEngineer::Resource
                   :stage_name
               ]) }
 
+  after :initialize, -> { _terraform_id -> { nil } }
+  after :initialize, -> { _geo_id -> { rand(36**20).to_s(36) } }
+
+  def support_tags?
+    false
+  end
 end
