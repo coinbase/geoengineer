@@ -24,6 +24,13 @@ class AwsClients
   end
 
   # Clients
+  def self.api_gateway(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::APIGateway::Client
+    )
+  end
+
   def self.cloudwatch(provider = nil)
     self.client_cache(
       provider,
