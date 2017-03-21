@@ -206,10 +206,7 @@ class GeoCLI
     global_options
 
     # Require any patches to the way geo works
-    if File.file?("#{Dir.pwd}/.geo.rb")
-      require_from_pwd '.geo'
-      puts "Loaded patches from .geo.rb" if @verbose
-    end
+    require_from_pwd '.geo' if File.file?("#{Dir.pwd}/.geo.rb")
 
     # Add commands
     add_commands
