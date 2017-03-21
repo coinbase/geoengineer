@@ -58,6 +58,7 @@ class GeoEngineer::Resources::AwsIamRolePolicy < GeoEngineer::Resource
       .iam(provider)
       .get_role_policy(role_policy)
       .to_h
-      .merge({ _terraform_id: "#{role_policy[:role_name]}:#{role_policy[:policy_name]}" })
+      .merge({ _terraform_id: "#{role_policy[:role_name]}:#{role_policy[:policy_name]}",
+               _geo_id: "#{role_policy[:role_name]}:#{role_policy[:policy_name]}" })
   end
 end
