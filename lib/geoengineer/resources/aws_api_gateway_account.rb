@@ -11,7 +11,7 @@ class GeoEngineer::Resources::AwsApiGatewayAccount < GeoEngineer::Resource
     false
   end
 
-  # TODO only get account is visible
+  # TODO: only get account is visible
   # def self._fetch_remote_resources(provider)
   #   AwsClients.api_gateway(provider)
   # end

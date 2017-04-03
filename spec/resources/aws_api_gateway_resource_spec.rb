@@ -4,7 +4,7 @@ describe GeoEngineer::Resources::AwsApiGatewayResource do
   let(:aws_client) { AwsClients.api_gateway }
 
   before { aws_client.setup_stubbing }
-  common_resource_tests( described_class, described_class.type_from_class_name)
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   describe "#_fetch_remote_resources" do
     before do

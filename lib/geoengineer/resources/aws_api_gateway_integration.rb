@@ -19,5 +19,4 @@ class GeoEngineer::Resources::AwsApiGatewayIntegration < GeoEngineer::Resource
   def support_tags?
     false
   end
-
 end
