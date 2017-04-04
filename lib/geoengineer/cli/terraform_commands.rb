@@ -22,6 +22,7 @@ module GeoCLI::TerraformCommands
   def terraform_plan
     plan_commands = [
       "cd #{@tmpdir}",
+      "terraform refresh",
       "terraform plan -parallelism=#{terraform_parallelism}" \
       " -state=#{@terraform_state_file} -out=#{@plan_file} #{@no_color}"
     ]
@@ -33,7 +34,7 @@ module GeoCLI::TerraformCommands
     apply_commands = [
       "cd #{@tmpdir}",
       "terraform apply -parallelism=#{terraform_parallelism}" \
-      " -state=#{@terraform_state_file} #{@plan_file} #{@no_color}"
+      " #{@plan_file} #{@no_color}"
     ]
     shell_exec(apply_commands.join(" && "), true)
   end

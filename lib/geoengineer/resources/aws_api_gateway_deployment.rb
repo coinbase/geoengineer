@@ -10,12 +10,22 @@ class GeoEngineer::Resources::AwsApiGatewayDeployment < GeoEngineer::Resource
     validate_required_attributes([:rest_api_id, :stage_name])
   }
 
-  # Must pass the rest_api as _rest_api resource for additional information
-  validate -> { validate_required_attributes([:_rest_api]) }
-  before :validation, -> { self.rest_api_id = _rest_api&.to_ref }
+  after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
+  after :initialize, -> { depends_on [_rest_api].map(&:terraform_name) }
+
   after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{stage_name}" } }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
+
+
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      "rest_api_id" => _rest_api._terraform_id,
+      "stage_name" => stage_name
+    }
+    tfstate
+  end
 
   def support_tags?
     false

@@ -15,10 +15,10 @@ class GeoEngineer::Resources::AwsApiGatewayIntegrationResponse < GeoEngineer::Re
                                  ])
   }
 
-  # Must pass the rest_api as _rest_api resource for additional information
-  validate -> { validate_required_attributes([:_rest_api, :_resource]) }
-  before :validation, -> { self.rest_api_id = _rest_api&.to_ref }
-  before :validation, -> { self.resource_id = _resource&.to_ref }
+  after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
+  after :initialize, -> { self.resource_id = _resource.to_ref }
+  after :initialize, -> { depends_on [_rest_api, _resource].map(&:terraform_name) }
+
   after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{_resource.geo_id}::#{http_method}::#{status_code}" } }
 
 

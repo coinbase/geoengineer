@@ -15,10 +15,16 @@ class GeoEngineer::Resources::AwsApiGatewayRestApi < GeoEngineer::Resource
     false
   end
 
-  def _root_resource
-    AwsApiGatewayResource.fetch_remote_resources
-                         .select { |r| r.rest_api_id == self._terraform_id }
-                         .find { r.path == '/' }
+  def root_resource_id
+    NullObject.maybe(remote_resource).root_resource_id
+  end
+
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      "root_resource_id" => root_resource_id
+    }
+    tfstate
   end
 
   # This method will tag for deletion all remote resources that are not codeified
@@ -27,9 +33,18 @@ class GeoEngineer::Resources::AwsApiGatewayRestApi < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     AwsClients.api_gateway(provider).get_rest_apis['items'].map(&:to_h).map do |api|
-      api[:_terraform_id] = api[:id]
-      api[:_geo_id]       = api[:name]
+      api[:_terraform_id]    = api[:id]
+      api[:_geo_id]          = api[:name]
+      api[:root_resource_id] = _fetch_root_resource_id(provider, api)
       api
     end
   end
+
+  def self._fetch_root_resource_id(provider, api)
+    AwsClients.api_gateway(provider).get_resources({ rest_api_id: api[:id] })['items'].map do |res|
+      return res.id if res.path == '/'
+    end
+    return nil
+  end
+
 end
