@@ -29,20 +29,11 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
       depends_on params[:lambda].values.map(&:terraform_name)
     }
 
-    # Deployments
-    api_deployments = {}
-    for deployment_name, deployment_params in params[:deployments]
-      api_deployment = project.resource("aws_api_gateway_deployment", "#{@name}_deployment_#{deployment_name}") {
-        _rest_api rest_api
-        stage_name deployment_name
-      }
-      api_deployments[deployment_name] = api_deployment
-    end
-
     # Resources and Responses
     api_resources = {}
     for method_name, method_params in params[:methods]
       path = method_params[:path]
+      next if api_resources[path]
 
       api_resource = project.resource("aws_api_gateway_resource", "#{@name}_resource_#{path}") {
         _rest_api rest_api
@@ -97,7 +88,7 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
           _resource api_resource
           http_method http_method
           status_code resp
-          depends_on [api_method.terraform_name]
+          depends_on [api_method, api_integration].map(&:terraform_name)
         }
 
         api_integration_response = project.resource("aws_api_gateway_integration_response", "#{method_name}_200_integration_response") {
@@ -105,12 +96,23 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
           _resource api_resource
           http_method http_method
           status_code resp
-          depends_on [api_integration.terraform_name]
+          depends_on [api_method, api_integration].map(&:terraform_name)
         }
 
         api_method_responses[method_name] << api_method_response
         api_integration_responses[method_name] << api_integration_response
       end
+    end
+
+    # Deployments
+    api_deployments = {}
+    for deployment_name, deployment_params in params[:deployments]
+      api_deployment = project.resource("aws_api_gateway_deployment", "#{@name}_deployment_#{deployment_name}") {
+        _rest_api rest_api
+        depends_on api_methods.values.map(&:terraform_name)
+        stage_name deployment_name
+      }
+      api_deployments[deployment_name] = api_deployment
     end
 
     # TODO: delete uncodified resources

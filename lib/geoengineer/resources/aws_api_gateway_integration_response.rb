@@ -42,11 +42,15 @@ class GeoEngineer::Resources::AwsApiGatewayIntegrationResponse < GeoEngineer::Re
     _remote_rest_apis(provider).map do |rr|
       _remote_rest_resources(provider).map do |res|
         res.resource_methods.keys.map do |meth|
-          api_integration = AwsClients.api_gateway(provider).get_integration({
+          begin
+            api_integration = AwsClients.api_gateway(provider).get_integration({
                                                                                rest_api_id: rr._terraform_id,
                                                                                resource_id: res._terraform_id,
                                                                                http_method: meth
                                                                              }).to_h
+          rescue Aws::APIGateway::Errors::NotFoundException => e
+            next nil
+          end
 
           (api_integration[:integration_responses] || {}).keys.map do |status_code|
             agir = {}

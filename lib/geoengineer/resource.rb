@@ -47,6 +47,11 @@ class GeoEngineer::Resource
     @_remote
   end
 
+  def depends_on(list_or_item)
+    self[:depends_on] ||= []
+    self[:depends_on].concat([list_or_item].flatten.compact)
+  end
+
   # Look up the resource remotly to see if it exists
   # This method will not work within a resource definition
   def new?
