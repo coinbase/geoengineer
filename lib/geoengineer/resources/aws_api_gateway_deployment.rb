@@ -17,7 +17,6 @@ class GeoEngineer::Resources::AwsApiGatewayDeployment < GeoEngineer::Resource
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
 
-
   def to_terraform_state
     tfstate = super
     tfstate[:primary][:attributes] = {
@@ -34,7 +33,7 @@ class GeoEngineer::Resources::AwsApiGatewayDeployment < GeoEngineer::Resource
   def self._fetch_remote_resources(provider)
     _remote_rest_apis(provider).map do |rr|
       AwsClients.api_gateway(provider).get_deployments({ rest_api_id: rr._terraform_id })['items'].map(&:to_h).map do |deployment|
-        stage_name = AwsClients.api_gateway(provider).get_stages({ rest_api_id: rr._terraform_id, deployment_id:  deployment[:id]}).item.first.stage_name
+        stage_name = AwsClients.api_gateway(provider).get_stages({ rest_api_id: rr._terraform_id, deployment_id: deployment[:id] }).item.first.stage_name
         deployment[:_terraform_id] = deployment[:id]
         deployment[:_geo_id]       = "#{rr._geo_id}::#{stage_name}"
         deployment[:stage_name]    = stage_name

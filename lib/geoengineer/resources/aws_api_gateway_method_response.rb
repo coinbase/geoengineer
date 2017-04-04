@@ -33,10 +33,10 @@ class GeoEngineer::Resources::AwsApiGatewayMethodResponse < GeoEngineer::Resourc
       _remote_rest_resources(provider).map do |res|
         res.resource_methods.keys.map do |meth|
           api_method = AwsClients.api_gateway(provider).get_method({
-            rest_api_id: rr._terraform_id,
-            resource_id: res._terraform_id,
-            http_method: meth
-          }).to_h
+                                                                     rest_api_id: rr._terraform_id,
+                                                                     resource_id: res._terraform_id,
+                                                                     http_method: meth
+                                                                   }).to_h
 
           api_method[:method_responses].keys.map do |status_code|
             agmr = {}

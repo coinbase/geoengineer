@@ -4,7 +4,6 @@
 # This resource will also delete any resource on the API that is not defined
 # within this template as a means of managing the resources
 class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
-
   attr_reader :rest_api, :api_resources, :api_methods
 
   def initialize(name, project, params)
@@ -87,7 +86,6 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
       api_methods[method_name] = api_method
       api_integrations[method_name] = api_integration
 
-
       # RESPONSES
       api_method_responses[method_name] = []
       api_integration_responses[method_name] = []
@@ -115,7 +113,7 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
       end
     end
 
-    # TODO delete uncodified resources
+    # TODO: delete uncodified resources
     rest_api.delete_uncodified_children_resoures
     @rest_api = rest_api
   end
@@ -124,4 +122,3 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
     [@rest_api, @deployments, @resources]
   end
 end
-

@@ -44,7 +44,6 @@ class GeoEngineer::Resources::AwsApiGatewayRestApi < GeoEngineer::Resource
     AwsClients.api_gateway(provider).get_resources({ rest_api_id: api[:id] })['items'].map do |res|
       return res.id if res.path == '/'
     end
-    return nil
+    nil
   end
-
 end
