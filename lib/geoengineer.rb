@@ -27,3 +27,5 @@ Dir["#{File.dirname(__FILE__)}/geoengineer/utils/**/*.rb"].each { |f| require f 
 Dir["#{File.dirname(__FILE__)}/geoengineer/*.rb"].each { |f| require f }
 
 Dir["#{File.dirname(__FILE__)}/geoengineer/resources/**/*.rb"].each { |f| require f }
+
+Dir["#{File.dirname(__FILE__)}/geoengineer/templates/**/*.rb"].each { |f| require f }

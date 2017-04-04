@@ -4,6 +4,8 @@
 # {https://www.terraform.io/docs/providers/aws/r/aws_api_gateway_base_path_mapping.html}
 ########################################################################
 class GeoEngineer::Resources::AwsApiGatewayBasePathMapping < GeoEngineer::Resource
+  include GeoEngineer::ApiGatewayHelpers
+
   validate -> { validate_required_attributes([:domain_name, :rest_api_id]) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }

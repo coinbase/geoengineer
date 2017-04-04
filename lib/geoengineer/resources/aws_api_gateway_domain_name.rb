@@ -4,6 +4,8 @@
 # {https://www.terraform.io/docs/providers/aws/r/aws_api_gateway_domain_name.html}
 ########################################################################
 class GeoEngineer::Resources::AwsApiGatewayDomainName < GeoEngineer::Resource
+  include GeoEngineer::ApiGatewayHelpers
+
   validate -> {
     validate_required_attributes([
                                    :domain_name,

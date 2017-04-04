@@ -4,6 +4,8 @@
 # {https://www.terraform.io/docs/providers/aws/r/aws_api_gateway_client_certificate.html}
 ########################################################################
 class GeoEngineer::Resources::AwsApiGatewayClientCertificate < GeoEngineer::Resource
+  include GeoEngineer::ApiGatewayHelpers
+
   validate -> {
     validate_required_attributes([
                                    :description

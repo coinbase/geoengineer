@@ -4,11 +4,12 @@
 # {https://www.terraform.io/docs/providers/aws/r/api_gateway_rest_api.html}
 ########################################################################
 class GeoEngineer::Resources::AwsApiGatewayRestApi < GeoEngineer::Resource
+  include GeoEngineer::ApiGatewayHelpers
+
   validate -> { validate_required_attributes([:name]) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { name } }
-  after :initialize, -> { _id -> { _terraform_id } }
 
   def support_tags?
     false
@@ -16,8 +17,12 @@ class GeoEngineer::Resources::AwsApiGatewayRestApi < GeoEngineer::Resource
 
   def _root_resource
     AwsApiGatewayResource.fetch_remote_resources
-                         .select { |r| r.rest_api_id == self._id }
+                         .select { |r| r.rest_api_id == self._terraform_id }
                          .find { r.path == '/' }
+  end
+
+  # This method will tag for deletion all remote resources that are not codeified
+  def delete_uncodified_children_resoures
   end
 
   def self._fetch_remote_resources(provider)

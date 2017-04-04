@@ -4,26 +4,32 @@
 # {https://www.terraform.io/docs/providers/aws/r/api_gateway_deployment.html}
 ########################################################################
 class GeoEngineer::Resources::AwsApiGatewayDeployment < GeoEngineer::Resource
+  include GeoEngineer::ApiGatewayHelpers
+
   validate -> {
-    validate_required_attributes([
-                                   :rest_api_id,
-                                   :stage_name,
-                                   :description
-                                 ])
+    validate_required_attributes([:rest_api_id, :stage_name])
   }
 
+  # Must pass the rest_api as _rest_api resource for additional information
+  validate -> { validate_required_attributes([:_rest_api]) }
+  before :validation, -> { self.rest_api_id = _rest_api&.to_ref }
+  after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{stage_name}" } }
+
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id -> { description } }
 
   def support_tags?
     false
   end
 
   def self._fetch_remote_resources(provider)
-    AwsClients.api_gateway(provider).get_deployments['items'].map(&:to_h).map do |api|
-      api[:_terraform_id] = api[:id]
-      api[:_geo_id]       = api[:description]
-      api
-    end
+    _remote_rest_apis(provider).map do |rr|
+      AwsClients.api_gateway(provider).get_deployments({ rest_api_id: rr._terraform_id })['items'].map(&:to_h).map do |deployment|
+        stage_name = AwsClients.api_gateway(provider).get_stages({ rest_api_id: rr._terraform_id, deployment_id:  deployment[:id]}).item.first.stage_name
+        deployment[:_terraform_id] = deployment[:id]
+        deployment[:_geo_id]       = "#{rr._geo_id}::#{stage_name}"
+        deployment[:stage_name]    = stage_name
+        deployment
+      end
+    end.flatten.compact
   end
 end

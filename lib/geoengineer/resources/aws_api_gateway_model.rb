@@ -4,6 +4,8 @@
 # {https://www.terraform.io/docs/providers/aws/r/api_gateway_model.html}
 ########################################################################
 class GeoEngineer::Resources::AwsApiGatewayModel < GeoEngineer::Resource
+  include GeoEngineer::ApiGatewayHelpers
+
   validate -> { validate_required_attributes([:rest_api_id, :name, :content_type, :schema]) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
