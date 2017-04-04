@@ -19,9 +19,20 @@ class GeoEngineer::Resources::AwsApiGatewayIntegration < GeoEngineer::Resource
   after :initialize, -> { self.resource_id = _resource.to_ref }
   after :initialize, -> { depends_on [_rest_api, _resource].map(&:terraform_name) }
 
-  after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{_resource.geo_id}::#{http_method}" } }
+  after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{_resource._geo_id}::#{http_method}" } }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
+
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      "rest_api_id" => _rest_api._terraform_id,
+      "resource_id" => _resource._terraform_id,
+      "http_method" => http_method,
+      "integration_http_method" => integration_http_method
+    }
+    tfstate
+  end
 
   def support_tags?
     false

@@ -19,9 +19,20 @@ class GeoEngineer::Resources::AwsApiGatewayIntegrationResponse < GeoEngineer::Re
   after :initialize, -> { self.resource_id = _resource.to_ref }
   after :initialize, -> { depends_on [_rest_api, _resource].map(&:terraform_name) }
 
-  after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{_resource.geo_id}::#{http_method}::#{status_code}" } }
+  after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{_resource._geo_id}::#{http_method}::#{status_code}" } }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
+
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      "rest_api_id" => _rest_api._terraform_id,
+      "resource_id" => _resource._terraform_id,
+      "http_method" => http_method,
+      "status_code" => status_code
+    }
+    tfstate
+  end
 
   def support_tags?
     false
@@ -37,7 +48,7 @@ class GeoEngineer::Resources::AwsApiGatewayIntegrationResponse < GeoEngineer::Re
                                                                                http_method: meth
                                                                              }).to_h
 
-          api_integration[:integration_responses].keys.map do |status_code|
+          (api_integration[:integration_responses] || {}).keys.map do |status_code|
             agir = {}
             agir[:_terraform_id] = "agir-#{rr._terraform_id}-#{res._terraform_id}-#{meth}-#{status_code}"
             agir[:_geo_id] = "#{rr._geo_id}::#{res._geo_id}::#{meth}::#{status_code}"
