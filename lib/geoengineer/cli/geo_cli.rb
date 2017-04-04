@@ -126,41 +126,6 @@ class GeoCLI
     wait_thr.value
   end
 
-  def shell_exec_stream(cmd, &block) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    Open3.popen3(*cmd) do |stdin, stdout, stderr, wait_thread|
-      begin
-        stdin.close_write
-        fds = [stdin, stdout].reject(&:closed?)
-        block_size = 1024
-        buffer = { stdout => nil, stderr => nil }
-
-        until fds.empty?
-          readable_fds, = IO.select(fds)
-          next unless readable_fds
-
-          readable_fds.each do |f|
-            begin
-              buffer[f] = f.read_nonblock(block_size)
-            rescue IO::WaitReadable # rubocop:disable Lint/HandleExceptions
-              # Ignore; we'll call IO.select again
-            rescue EOFError
-              fds.delete(f) # Stream exhausted
-            end
-          end
-
-          yield buffer[stdout], buffer[stderr]
-          buffer[stdout] = nil
-          buffer[stderr] = nil
-        end
-
-        wait_thread.value
-      ensure
-        stdout.close
-        stderr.close
-      end
-    end
-  end
-
   # This defines the typical action in geo engineer
   # - require the environment
   # - require the geo files
@@ -241,10 +206,7 @@ class GeoCLI
     global_options
 
     # Require any patches to the way geo works
-    if File.file?("#{Dir.pwd}/.geo.rb")
-      require_from_pwd '.geo'
-      puts "Loaded patches from .geo.rb" if @verbose
-    end
+    require_from_pwd '.geo' if File.file?("#{Dir.pwd}/.geo.rb")
 
     # Add commands
     add_commands
