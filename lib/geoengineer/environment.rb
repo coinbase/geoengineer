@@ -72,6 +72,7 @@ class GeoEngineer::Environment
 
   def resource(type, id, &block)
     return find_resource(type, id) unless block_given?
+
     resource = create_resource(type, id, &block)
     resource.environment = self
     resource
