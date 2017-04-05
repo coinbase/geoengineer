@@ -16,6 +16,8 @@ class GeoEngineer::Resources::AwsApiGatewayIntegrationResponse < GeoEngineer::Re
   }
 
   after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
+  after :initialize, -> { _rest_api.api_resources[self.type][self.id] = self }
+
   after :initialize, -> { self.resource_id = _resource.to_ref }
   after :initialize, -> { depends_on [_rest_api, _resource].map(&:terraform_name) }
 
@@ -44,10 +46,10 @@ class GeoEngineer::Resources::AwsApiGatewayIntegrationResponse < GeoEngineer::Re
         res.resource_methods.keys.map do |meth|
           begin
             api_integration = AwsClients.api_gateway(provider).get_integration({
-                                                                               rest_api_id: rr._terraform_id,
-                                                                               resource_id: res._terraform_id,
-                                                                               http_method: meth
-                                                                             }).to_h
+                                                                                 rest_api_id: rr._terraform_id,
+                                                                                 resource_id: res._terraform_id,
+                                                                                 http_method: meth
+                                                                               }).to_h
           rescue Aws::APIGateway::Errors::NotFoundException => e
             next nil
           end

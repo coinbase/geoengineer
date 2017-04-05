@@ -11,6 +11,8 @@ class GeoEngineer::Resources::AwsApiGatewayDeployment < GeoEngineer::Resource
   }
 
   after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
+  after :initialize, -> { _rest_api.api_resources[self.type][self.id] = self }
+
   after :initialize, -> { depends_on [_rest_api].map(&:terraform_name) }
 
   after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{stage_name}" } }

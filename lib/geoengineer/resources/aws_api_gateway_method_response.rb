@@ -17,6 +17,8 @@ class GeoEngineer::Resources::AwsApiGatewayMethodResponse < GeoEngineer::Resourc
 
   # Must pass the rest_api as _rest_api resource for additional information
   after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
+  after :initialize, -> { _rest_api.api_resources[self.type][self.id] = self }
+
   after :initialize, -> { self.resource_id = _resource.to_ref }
   after :initialize, -> { depends_on [_rest_api, _resource].map(&:terraform_name) }
 

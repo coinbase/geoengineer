@@ -10,6 +10,8 @@ class GeoEngineer::Resources::AwsApiGatewayResource < GeoEngineer::Resource
   validate -> { validate_required_attributes([:rest_api_id, :parent_id, :path_part]) }
 
   after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
+  after :initialize, -> { _rest_api.api_resources[self.type][self.id] = self }
+
   # Parent is a resource (the default being the root resource of the rest_api '/')
   # At the moment we only support rest_api being the root resource
   after :initialize, -> { self.parent_id = _rest_api.to_ref("root_resource_id") }
