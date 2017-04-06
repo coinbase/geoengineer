@@ -16,7 +16,8 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
     #   <name>:
     #     path:
     #     method: <POST,PUT,GET...>
-    #     authorization: <NONE,CUSTOM,AWS_IAM>
+    #     auth: <NONE,CUSTOM,AWS_IAM>
+    #     api_key: <false>
     #     handler: <lambda ref>
     #
 
@@ -58,6 +59,7 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
         _resource api_resource
         http_method http_method
         authorization method_params[:auth]
+        api_key_required !!method_params[:api_key]
       }
 
       # INTEGRATION
@@ -80,26 +82,21 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
     api_method_responses = []
     api_integration_responses = []
 
-    response_mappings = {
-      get_success: {
+    https_methods = params[:methods].values.map { |m| m[:method] }.uniq
+
+    response_mappings = {}
+    https_methods.each do |m|
+      response_mappings["#{m}_success"] = {
         status: "200",
-        method: "GET"
-      },
-      get_notfound: {
+        method: m
+      }
+
+      response_mappings["#{m}_notfound"] = {
         status: "404",
-        method: "GET",
-        selection_pattern: ".*NotFound.*"
-      },
-      post_success: {
-        status: "200",
-        method: "POST"
-      },
-      post_notfound: {
-        status: "404",
-        method: "POST",
+        method: m,
         selection_pattern: ".*NotFound.*"
       }
-    }
+    end
 
     api_resources.values.each do |api_resource|
       response_mappings.each do |name, mapping|

@@ -43,7 +43,7 @@ class GeoEngineer::Resources::AwsApiGatewayIntegrationResponse < GeoEngineer::Re
   def self._fetch_remote_resources(provider)
     _remote_rest_apis(provider).map do |rr|
       _remote_rest_resources(provider).map do |res|
-        res.resource_methods.keys.map do |meth|
+        (res.resource_methods || {}).keys.map do |meth|
           begin
             api_integration = AwsClients.api_gateway(provider).get_integration({
                                                                                  rest_api_id: rr._terraform_id,
