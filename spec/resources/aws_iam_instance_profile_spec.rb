@@ -1,16 +1,13 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsIamInstanceProfile") do
+describe GeoEngineer::Resources::AwsIamInstanceProfile do
   let(:aws_client) { AwsClients.iam }
 
   before do
     aws_client.setup_stubbing
   end
 
-  common_resource_tests(
-    GeoEngineer::Resources::AwsIamInstanceProfile,
-    'aws_iam_instance_profile'
-  )
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   describe "#_fetch_remote_resources" do
     before do

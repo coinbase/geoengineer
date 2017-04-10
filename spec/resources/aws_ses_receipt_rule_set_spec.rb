@@ -1,10 +1,9 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsSesReceiptRuleSet") do
+describe(GeoEngineer::Resources::AwsSesReceiptRuleSet) do
   let(:ses_client) { AwsClients.ses }
 
-  common_resource_tests(GeoEngineer::Resources::AwsSesReceiptRuleSet,
-                        'aws_ses_receipt_rule_set')
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   before { ses_client.setup_stubbing }
 

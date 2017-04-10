@@ -1,8 +1,7 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsSnsTopic") do
-  common_resource_tests(GeoEngineer::Resources::AwsSnsTopicSubscription,
-                        'aws_sns_topic_subscription')
+describe(GeoEngineer::Resources::AwsSnsTopic) do
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   describe "#_fetch_remote_resources" do
     it 'should create list of hashes from returned AWS SDK' do

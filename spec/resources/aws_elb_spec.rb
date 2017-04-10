@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsElb") do
-  common_resource_tests(GeoEngineer::Resources::AwsElb, 'aws_elb')
+describe GeoEngineer::Resources::AwsElb do
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   describe "validations" do
     it 'should validate unique lb ports for listeners' do

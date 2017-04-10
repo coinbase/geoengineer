@@ -1,10 +1,10 @@
 require_relative '../spec_helper'
 
-describe "GeoEngineer::Resources::AwsCloudtrail" do
+describe GeoEngineer::Resources::AwsCloudtrail do
   let(:aws_client) { AwsClients.cloudtrail }
 
   before { aws_client.setup_stubbing }
-  common_resource_tests(GeoEngineer::Resources::AwsCloudtrail, 'aws_cloudtrail')
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   let(:trail_name) { 'some-fake-cloudtrail' }
 

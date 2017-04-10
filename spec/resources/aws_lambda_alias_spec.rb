@@ -5,8 +5,7 @@ describe GeoEngineer::Resources::AwsLambdaAlias do
 
   before { aws_client.setup_stubbing }
 
-  common_resource_tests(GeoEngineer::Resources::AwsLambdaAlias, 'aws_lambda_alias')
-
+  common_resource_tests(described_class, described_class.type_from_class_name)
   describe "#_fetch_remote_resources" do
     before do
       aws_client.stub_responses(

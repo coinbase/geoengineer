@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
-describe "GeoEngineer::Resource::AwsIamGroup" do
-  common_resource_tests(GeoEngineer::Resources::AwsIamGroup, 'aws_iam_group')
+describe GeoEngineer::Resource::AwsIamGroup do
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   let(:aws_client) { AwsClients.iam }
 

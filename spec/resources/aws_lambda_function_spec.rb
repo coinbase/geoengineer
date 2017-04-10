@@ -1,12 +1,11 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsLambdaFunction") do
+describe(GeoEngineer::Resources::AwsLambdaFunction) do
   let(:aws_client) { AwsClients.lambda }
 
   before { aws_client.setup_stubbing }
 
-  common_resource_tests(GeoEngineer::Resources::AwsLambdaFunction, 'aws_lambda_function')
-
+  common_resource_tests(described_class, described_class.type_from_class_name)
   describe '#_fetch_remote_resources' do
     before do
       aws_client.stub_responses(

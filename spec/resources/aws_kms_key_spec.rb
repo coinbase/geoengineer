@@ -1,11 +1,11 @@
 require_relative '../spec_helper'
 require 'ostruct'
 
-describe "GeoEngineer::Resources::AwsKmsKey" do
+describe GeoEngineer::Resources::AwsKmsKey do
   let(:aws_client) { AwsClients.kms }
 
   before { aws_client.setup_stubbing }
-  common_resource_tests(GeoEngineer::Resources::AwsKmsKey, 'aws_kms_key')
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   let(:key_geo_id) { 'myid' }
   let(:key_id) { 'some-key-id' }

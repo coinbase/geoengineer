@@ -1,11 +1,11 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsRedshiftCluster") do
+describe(GeoEngineer::Resources::AwsRedshiftCluster) do
   let(:aws_client) { AwsClients.redshift }
 
   before { aws_client.setup_stubbing }
 
-  common_resource_tests(GeoEngineer::Resources::AwsRedshiftCluster, 'aws_redshift_cluster')
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   describe "#_fetch_remote_resources" do
     before do

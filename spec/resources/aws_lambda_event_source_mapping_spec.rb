@@ -5,10 +5,7 @@ describe GeoEngineer::Resources::AwsLambdaEventSourceMapping do
 
   before { aws_client.setup_stubbing }
 
-  common_resource_tests(
-    GeoEngineer::Resources::AwsLambdaEventSourceMapping,
-    'aws_lambda_event_source_mapping'
-  )
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   describe '#_fetch_remote_resources' do
     before do

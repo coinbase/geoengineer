@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsSubnet") do
-  common_resource_tests(GeoEngineer::Resources::AwsSubnet, 'aws_subnet')
+describe(GeoEngineer::Resources::AwsSubnet) do
+  common_resource_tests(described_class, described_class.type_from_class_name)
   name_tag_geo_id_tests(GeoEngineer::Resources::AwsSubnet)
 
   describe "#_fetch_remote_resources" do

@@ -1,16 +1,13 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsCloudwatchEventTarget") do
+describe GeoEngineer::Resources::AwsCloudwatchEventTarget do
   let(:aws_client) { AwsClients.cloudwatchevents }
 
   before do
     aws_client.setup_stubbing
   end
 
-  common_resource_tests(
-    GeoEngineer::Resources::AwsCloudwatchEventTarget,
-    'aws_cloudwatch_event_target'
-  )
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   describe "#_fetch_remote_resources" do
     before do
