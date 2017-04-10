@@ -3,6 +3,7 @@
 #
 # {https://www.terraform.io/docs/providers/aws/r/aws_api_gateway_api_key.html}
 ########################################################################
+# TODO: not fully implemented
 class GeoEngineer::Resources::AwsApiGatewayApiKey < GeoEngineer::Resource
   include GeoEngineer::ApiGatewayHelpers
 
@@ -13,13 +14,5 @@ class GeoEngineer::Resources::AwsApiGatewayApiKey < GeoEngineer::Resource
 
   def support_tags?
     false
-  end
-
-  def self._fetch_remote_resources(provider)
-    AwsClients.api_gateway(provider).get_api_keys['items'].map(&:to_h).map do |api|
-      api[:_terraform_id] = api[:id]
-      api[:_geo_id]       = api[:name]
-      api
-    end
   end
 end

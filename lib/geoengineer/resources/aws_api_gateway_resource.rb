@@ -36,13 +36,6 @@ class GeoEngineer::Resources::AwsApiGatewayResource < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    _remote_rest_apis(provider).map do |rr|
-      AwsClients.api_gateway(provider).get_resources({ rest_api_id: rr._terraform_id })['items'].map(&:to_h).map do |res|
-        next unless res[:path_part] # default resource has no path_part
-        res[:_terraform_id] = res[:id]
-        res[:_geo_id]       = "#{rr._geo_id}::#{res[:path_part]}"
-        res
-      end
-    end.flatten.compact
+    _fetch_remote_rest_api_resources(provider)
   end
 end

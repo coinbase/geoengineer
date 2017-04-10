@@ -22,12 +22,4 @@ class GeoEngineer::Resources::AwsApiGatewayDomainName < GeoEngineer::Resource
   def support_tags?
     false
   end
-
-  def self._fetch_remote_resources(provider)
-    AwsClients.api_gateway(provider).get_domain_names['items'].map(&:to_h).map do |api|
-      api[:_terraform_id] = api[:domain_name]
-      api[:_geo_id]       = api[:domain_name]
-      api
-    end
-  end
 end

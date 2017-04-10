@@ -3,6 +3,7 @@
 #
 # {https://www.terraform.io/docs/providers/aws/r/aws_api_gateway_client_certificate.html}
 ########################################################################
+# TODO: not fully implemented
 class GeoEngineer::Resources::AwsApiGatewayClientCertificate < GeoEngineer::Resource
   include GeoEngineer::ApiGatewayHelpers
 
@@ -17,13 +18,5 @@ class GeoEngineer::Resources::AwsApiGatewayClientCertificate < GeoEngineer::Reso
 
   def support_tags?
     false
-  end
-
-  def self._fetch_remote_resources(provider)
-    AwsClients.api_gateway(provider).get_client_certificates['items'].map(&:to_h).map do |api|
-      api[:_terraform_id] = api[:client_certificate_id]
-      api[:_geo_id]       = api[:description]
-      api
-    end
   end
 end

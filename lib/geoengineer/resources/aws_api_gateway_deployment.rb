@@ -32,10 +32,26 @@ class GeoEngineer::Resources::AwsApiGatewayDeployment < GeoEngineer::Resource
     false
   end
 
+  def self._fetch_deployments(provider, rr)
+    client = AwsClients.api_gateway(provider)
+    client.get_deployments({
+                             rest_api_id: rr._terraform_id
+                           })['items'].map(&:to_h)
+  end
+
+  def self._fetch_stage_name(provider, rr, deployment)
+    client = AwsClients.api_gateway(provider)
+
+    client.get_stages({
+                        rest_api_id: rr._terraform_id,
+                        deployment_id: deployment[:id]
+                      }).item.first&.stage_name
+  end
+
   def self._fetch_remote_resources(provider)
     _remote_rest_apis(provider).map do |rr|
-      AwsClients.api_gateway(provider).get_deployments({ rest_api_id: rr._terraform_id })['items'].map(&:to_h).map do |deployment|
-        stage_name = AwsClients.api_gateway(provider).get_stages({ rest_api_id: rr._terraform_id, deployment_id: deployment[:id] }).item.first&.stage_name
+      _fetch_deployments.map do |deployment|
+        stage_name = _fetch_stage_name(provider, rr, deployment)
         next unless stage_name
         deployment[:_terraform_id] = deployment[:id]
         deployment[:_geo_id]       = "#{rr._geo_id}::#{stage_name}"

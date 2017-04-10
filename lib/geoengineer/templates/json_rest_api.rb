@@ -6,46 +6,26 @@
 class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
   attr_reader :rest_api
 
-  def initialize(name, project, params)
-    super(name, project, params)
-
-    # parameters
-    # lambda:
-    #   <ref>: lambda_resource
-    # methods:
-    #   <name>:
-    #     path:
-    #     method: <POST,PUT,GET...>
-    #     auth: <NONE,CUSTOM,AWS_IAM>
-    #     api_key: <false>
-    #     handler: <lambda ref>
-    #
-
-    ### Rest API
-    rest_api = project.resource("aws_api_gateway_rest_api", "#{@name}_rest_api") {
-      name name
-      # Depends on the lambda functions existing
-      depends_on params[:lambda].values.map(&:terraform_name)
-    }
-
-    # Resources and Responses
+  def create_rest_resources(params)
+    rest_api = @rest_api
     api_resources = {}
-    for method_name, method_params in params[:methods]
+    params[:methods].each do |method_name, method_params|
       path = method_params[:path]
       next if api_resources[path]
 
-      api_resource = project.resource("aws_api_gateway_resource", "#{@name}_resource_#{path}") {
+      api_resource = parent.resource("aws_api_gateway_resource", "#{@name}_resource_#{path}") {
         _rest_api rest_api
         path_part path
       }
 
       api_resources[path] = api_resource
     end
+    api_resources
+  end
 
-    # Methods
-    api_methods = {}
-    api_integrations = {}
-    for method_name, method_params in params[:methods]
+  def create_rest_methods_integrations(api_resources, params)
+    rest_api = @rest_api
+    params[:methods].each do |method_name, method_params|
       path = method_params[:path]
       api_resource = api_resources[path]
       lambda_function = params[:lambda][method_params[:handler]]
@@ -54,7 +34,7 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
       method_name = "#{@name}_resource_#{path}_method_#{http_method}"
 
       # METHOD
-      api_method = project.resource("aws_api_gateway_method", method_name) {
+      api_method = parent.resource("aws_api_gateway_method", method_name) {
         _rest_api rest_api
         _resource api_resource
         http_method http_method
@@ -63,7 +43,7 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
       }
 
       # INTEGRATION
-      api_integration = project.resource("aws_api_gateway_integration", "#{method_name}_integration") {
+      api_integration = parent.resource("aws_api_gateway_integration", "#{method_name}_integration") {
         _rest_api rest_api
         _resource api_resource
         depends_on [api_method.terraform_name]
@@ -75,10 +55,13 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
 
       api_methods[method_name] = api_method
       api_integrations[method_name] = api_integration
-
     end
 
-    # RESPONSES
+    [api_methods, api_integrations]
+  end
+
+  def create_rest_methods_integrations_responses(api_resources, api_methods, api_integrations, params)
+    rest_api = @rest_api
     api_method_responses = []
     api_integration_responses = []
 
@@ -104,22 +87,28 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
         status = mapping[:status]
         selection_pattern = mapping[:selection_pattern]
 
-        api_method_response = project.resource("aws_api_gateway_method_response", "mr_#{api_resource.id}_#{name}") {
+        api_method_response = parent.resource(
+          "aws_api_gateway_method_response",
+          "mr_#{api_resource.id}_#{name}"
+        ) {
           _rest_api rest_api
           _resource api_resource
           http_method http_method
           status_code status
-          depends_on [api_methods.values.map(&:terraform_name), api_integrations.values.map(&:terraform_name)].flatten
+          depends_on [api_methods.values, api_integrations.values].flatten.map(&:terraform_name)
           depends_on api_method_responses.map(&:terraform_name) # force order
         }
 
-        api_integration_response = project.resource("aws_api_gateway_integration_response", "ir_#{api_resource.id}_#{name}") {
+        api_integration_response = parent.resource(
+          "aws_api_gateway_integration_response",
+          "ir_#{api_resource.id}_#{name}"
+        ) {
           _rest_api rest_api
           _resource api_resource
           http_method http_method
           status_code status
           selection_pattern selection_pattern if selection_pattern
-          depends_on [api_methods.values.map(&:terraform_name), api_integrations.values.map(&:terraform_name)].flatten
+          depends_on [api_methods.values, api_integrations.values].flatten.map(&:terraform_name)
           depends_on api_integration_responses.map(&:terraform_name) # force order
         }
 
@@ -128,9 +117,42 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
       end
     end
 
+    [api_method_responses, api_integration_responses]
+  end
+
+  attr_reader :rest_api
+
+  def initialize(name, parent, params)
+    super(name, parent, params)
+
+    # parameters
+    # lambda:
+    #   <ref>: lambda_resource
+    # methods:
+    #   <name>:
+    #     path:
+    #     method: <POST,PUT,GET...>
+    #     auth: <NONE,CUSTOM,AWS_IAM>
+    #     api_key: <false>
+    #     handler: <lambda ref>
+    #
+
+    ### Rest API
+    @rest_api = parent.resource("aws_api_gateway_rest_api", "#{@name}_rest_api") {
+      name name
+      # Depends on the lambda functions existing
+      depends_on params[:lambda].values.map(&:terraform_name)
+    }
+
+    # Resources and Responses
+    api_resources = create_rest_resources(params)
+
+    api_methods, api_integrations = create_rest_methods_integrations(api_resources, params)
+
+    # RESPONSES
+    create_rest_methods_integrations_responses(api_resources, api_methods, api_integrations, params)
+
     # TODO: delete uncodified resources
-    rest_api.delete_uncodified_children_resoures
-    @rest_api = rest_api
   end
 
   def template_resources

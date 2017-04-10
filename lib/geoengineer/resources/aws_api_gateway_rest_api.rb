@@ -72,18 +72,6 @@ class GeoEngineer::Resources::AwsApiGatewayRestApi < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    AwsClients.api_gateway(provider).get_rest_apis['items'].map(&:to_h).map do |api|
-      api[:_terraform_id]    = api[:id]
-      api[:_geo_id]          = api[:name]
-      api[:root_resource_id] = _fetch_root_resource_id(provider, api)
-      api
-    end
-  end
-
-  def self._fetch_root_resource_id(provider, api)
-    AwsClients.api_gateway(provider).get_resources({ rest_api_id: api[:id] })['items'].map do |res|
-      return res.id if res.path == '/'
-    end
-    nil
+    _fetch_remote_rest_apis(provider)
   end
 end

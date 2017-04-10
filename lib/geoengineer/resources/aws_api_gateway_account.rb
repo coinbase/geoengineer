@@ -3,6 +3,7 @@
 #
 # {https://www.terraform.io/docs/providers/aws/r/api_gateway_account.html}
 ########################################################################
+# TODO: not fully implemented
 class GeoEngineer::Resources::AwsApiGatewayAccount < GeoEngineer::Resource
   include GeoEngineer::ApiGatewayHelpers
 
@@ -12,9 +13,4 @@ class GeoEngineer::Resources::AwsApiGatewayAccount < GeoEngineer::Resource
   def support_tags?
     false
   end
-
-  # TODO: only get account is visible
-  # def self._fetch_remote_resources(provider)
-  #   AwsClients.api_gateway(provider)
-  # end
 end

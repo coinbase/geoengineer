@@ -51,7 +51,7 @@ Style/WordArray:
 
 Metrics/ClassLength:
   CountComments: false  # count full line comments?
-  Max: 200
+  Max: 250
 
 Style/FrozenStringLiteralComment:
   Enabled: false

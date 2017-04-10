@@ -21,7 +21,10 @@ class GeoEngineer::Resources::AwsApiGatewayIntegration < GeoEngineer::Resource
   after :initialize, -> { self.resource_id = _resource.to_ref }
   after :initialize, -> { depends_on [_rest_api, _resource].map(&:terraform_name) }
 
-  after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{_resource._geo_id}::#{http_method}" } }
+  after :initialize, -> {
+                       _geo_id -> {
+                                 "#{_rest_api._geo_id}::#{_resource._geo_id}::#{http_method}"
+                               } }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
 
@@ -41,24 +44,13 @@ class GeoEngineer::Resources::AwsApiGatewayIntegration < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    _remote_rest_apis(provider).map do |rr|
-      _remote_rest_resources(provider).map do |res|
-        (res.resource_methods || {}).keys.map do |meth|
-          begin
-            api_integration = AwsClients.api_gateway(provider).get_integration({
-                                                                                 rest_api_id: rr._terraform_id,
-                                                                                 resource_id: res._terraform_id,
-                                                                                 http_method: meth
-                                                                               }).to_h
-          rescue Aws::APIGateway::Errors::NotFoundException => e
-            next nil
-          end
+    _remote_rest_api_resource_method(provider) do |rr, res, meth|
+      api_integration = self._fetch_integration(rr, res, meth)
+      next nil if api_integration.nil?
 
-          api_integration[:_terraform_id] = "agi-#{rr._terraform_id}-#{res._terraform_id}-#{meth}"
-          api_integration[:_geo_id] = "#{rr._geo_id}::#{res._geo_id}::#{meth}"
-          api_integration
-        end
-      end
+      api_integration[:_terraform_id] = "agi-#{rr._terraform_id}-#{res._terraform_id}-#{meth}"
+      api_integration[:_geo_id] = "#{rr._geo_id}::#{res._geo_id}::#{meth}"
+      api_integration
     end.flatten.compact
   end
 end
