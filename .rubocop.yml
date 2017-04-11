@@ -3,6 +3,7 @@ AllCops:
     - 'vendor/**/*'
     - 'examples/*'
     - 'geoengineer.gemspec'
+    - 'lib/geoengineer/templates/*'
 Style/StringLiterals:
   Enabled: false
 
@@ -54,4 +55,7 @@ Metrics/ClassLength:
   Max: 250
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/DoubleNegation:
   Enabled: false
