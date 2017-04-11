@@ -46,11 +46,11 @@ class GeoEngineer::Resources::AwsApiGatewayMethod < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     _remote_rest_api_resource_method(provider) do |rr, res, meth|
-      api_method = self._fetch_method(rr, res, meth)
+      api_method = self._fetch_method(provider, rr, res, meth)
       next nil if api_method.nil?
 
-      api_method[:_terraform_id] = "agm-#{rr._terraform_id}-#{res._terraform_id}-#{meth}"
-      api_method[:_geo_id] = "#{rr._geo_id}::#{res._geo_id}::#{meth}"
+      api_method[:_terraform_id] = "agm-#{rr[:_terraform_id]}-#{res[:_terraform_id]}-#{meth}"
+      api_method[:_geo_id] = "#{rr[:_geo_id]}::#{res[:_geo_id]}::#{meth}"
       api_method
     end.flatten.compact
   end

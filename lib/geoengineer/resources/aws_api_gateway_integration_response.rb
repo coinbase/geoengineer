@@ -24,8 +24,8 @@ class GeoEngineer::Resources::AwsApiGatewayIntegrationResponse < GeoEngineer::Re
   after :initialize, -> {
     _geo_id -> {
               [
-                _rest_api._geo_id,
-                _resource._geo_id,
+                _rest_api[:_geo_id],
+                _resource[:_geo_id],
                 http_method,
                 status_code
               ].join("::")
@@ -51,14 +51,14 @@ class GeoEngineer::Resources::AwsApiGatewayIntegrationResponse < GeoEngineer::Re
 
   def self._fetch_remote_resources(provider)
     _remote_rest_api_resource_method(provider) do |rr, res, meth|
-      api_integration = self._fetch_integration(rr, res, meth)
+      api_integration = self._fetch_integration(provider, rr, res, meth)
       next nil if api_integration.nil?
 
       (api_integration[:integration_responses] || {}).keys.map do |status_code|
         agir = {}
-        tr_id = "agir-#{rr._terraform_id}-#{res._terraform_id}-#{meth}-#{status_code}"
+        tr_id = "agir-#{rr[:_terraform_id]}-#{res[:_terraform_id]}-#{meth}-#{status_code}"
         agir[:_terraform_id] = tr_id
-        agir[:_geo_id] = "#{rr._geo_id}::#{res._geo_id}::#{meth}::#{status_code}"
+        agir[:_geo_id] = "#{rr[:_geo_id]}::#{res[:_geo_id]}::#{meth}::#{status_code}"
         agir
       end
     end.flatten.compact

@@ -3,6 +3,7 @@
 # to use such a template
 # This resource will also delete any resource on the API that is not defined
 # within this template as a means of managing the resources
+# Beta Template
 class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
   attr_reader :rest_api
 
@@ -25,6 +26,8 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
 
   def create_rest_methods_integrations(api_resources, params)
     rest_api = @rest_api
+    api_methods = {}
+    api_integrations = {}
     params[:methods].each do |method_name, method_params|
       path = method_params[:path]
       api_resource = api_resources[path]

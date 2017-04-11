@@ -36,6 +36,10 @@ class GeoEngineer::Resources::AwsApiGatewayResource < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    _fetch_remote_rest_api_resources(provider)
+    rest_api_resources = []
+    _remote_rest_api_resource(provider) do |rr, res|
+      rest_api_resources << res
+    end
+    rest_api_resources
   end
 end

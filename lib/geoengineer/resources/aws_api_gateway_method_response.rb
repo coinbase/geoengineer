@@ -52,14 +52,14 @@ class GeoEngineer::Resources::AwsApiGatewayMethodResponse < GeoEngineer::Resourc
 
   def self._fetch_remote_resources(provider)
     _remote_rest_api_resource_method(provider) do |rr, res, meth|
-      api_method = self._fetch_method(rr, res, meth)
+      api_method = self._fetch_method(provider, rr, res, meth)
       next nil if api_method.nil?
 
       (api_method[:method_responses] || {}).keys.map do |status_code|
         agmr = {}
-        tf_id = "agmr-#{rr._terraform_id}-#{res._terraform_id}-#{meth}-#{status_code}"
+        tf_id = "agmr-#{rr[:_terraform_id]}-#{res[:_terraform_id]}-#{meth}-#{status_code}"
         agmr[:_terraform_id] = tf_id
-        agmr[:_geo_id] = "#{rr._geo_id}::#{res._geo_id}::#{meth}::#{status_code}"
+        agmr[:_geo_id] = "#{rr[:_geo_id]}::#{res[:_geo_id]}::#{meth}::#{status_code}"
         agmr
       end
     end.flatten.compact

@@ -3,6 +3,16 @@
 #
 ########################################################################
 module GeoEngineer::ApiGatewayHelpers
+  def self._rest_api_cache
+    @_rest_api_cache ||= {}
+    @_rest_api_cache
+  end
+
+  def self._rest_api_resource_cache
+    @_rest_api_resource_cache ||= {}
+    @_rest_api_resource_cache
+  end
+
   def self.included(base)
     base.extend(ClassMethods)
   end
@@ -16,12 +26,17 @@ module GeoEngineer::ApiGatewayHelpers
 
     # Rest API
     def _fetch_remote_rest_apis(provider)
-      _client(provider).get_rest_apis['items'].map(&:to_h).map do |rr|
+      cache = GeoEngineer::ApiGatewayHelpers._rest_api_cache
+      return cache[provider] if cache[provider]
+
+      ret = _client(provider).get_rest_apis['items'].map(&:to_h).map do |rr|
         rr[:_terraform_id]    = rr[:id]
         rr[:_geo_id]          = rr[:name]
         rr[:root_resource_id] = _root_resource_id(provider, rr)
         rr
-      end
+      end.compact
+      cache[provider] = ret
+      ret
     end
 
     def _root_resource_id(provider, rr)
@@ -31,22 +46,23 @@ module GeoEngineer::ApiGatewayHelpers
       nil
     end
 
-    # Resources
-    def _fetch_remote_rest_api_resources_for_rest_api(provider, rr)
+    def __fetch_remote_rest_api_resources_for_rest_api(provider, rr)
       _client(provider).get_resources({
-                                        rest_api_id: rr._terraform_id
+                                        rest_api_id: rr[:_terraform_id]
                                       })['items'].map(&:to_h).map do |res|
-        next unless res[:path_part] # default resource has no path_part
+        next nil unless res[:path_part] # default resource has no path_part
         res[:_terraform_id] = res[:id]
-        res[:_geo_id]       = "#{rr._geo_id}::#{res[:path_part]}"
+        res[:_geo_id]       = "#{rr[:_geo_id]}::#{res[:path_part]}"
         res
-      end
+      end.compact
     end
 
-    def _fetch_remote_rest_api_resources(provider)
-      _fetch_remote_rest_apis(provider).map do |rr|
-        _fetch_remote_rest_api_resources_for_rest_api(provider, rr)
-      end.flatten.compact
+    # Resources
+    def _fetch_remote_rest_api_resources_for_rest_api(provider, rr)
+      cache = GeoEngineer::ApiGatewayHelpers._rest_api_resource_cache[provider] ||= {}
+      return cache[rr[:_terraform_id]] if cache[rr[:_terraform_id]]
+
+      cache[rr[:_terraform_id]] = __fetch_remote_rest_api_resources_for_rest_api(provider, rr)
     end
 
     # Combination Methods
@@ -59,18 +75,18 @@ module GeoEngineer::ApiGatewayHelpers
     end
 
     def _remote_rest_api_resource_method(provider)
-      _remote_rest_and_resource(provider) do |rr, res|
-        (res.resource_methods || {}).keys.map do |meth|
+      _remote_rest_api_resource(provider) do |rr, res|
+        (res[:resource_methods] || {}).keys.map do |meth|
           yield rr, res, meth
         end
       end
     end
 
     # Integration
-    def _fetch_integration(rr, res, meth)
+    def _fetch_integration(provider, rr, res, meth)
       return _client(provider).get_integration({
-                                                 rest_api_id: rr._terraform_id,
-                                                 resource_id: res._terraform_id,
+                                                 rest_api_id: rr[:_terraform_id],
+                                                 resource_id: res[:_terraform_id],
                                                  http_method: meth
                                                }).to_h
     rescue Aws::APIGateway::Errors::NotFoundException
@@ -78,10 +94,10 @@ module GeoEngineer::ApiGatewayHelpers
     end
 
     # Method
-    def _fetch_method(rr, res, meth)
+    def _fetch_method(provider, rr, res, meth)
       return _client(provider).get_method({
-                                            rest_api_id: rr._terraform_id,
-                                            resource_id: res._terraform_id,
+                                            rest_api_id: rr[:_terraform_id],
+                                            resource_id: res[:_terraform_id],
                                             http_method: meth
                                           }).to_h
     rescue Aws::APIGateway::Errors::NotFoundException
