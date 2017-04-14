@@ -1,10 +1,9 @@
 require_relative '../spec_helper'
 
-describe "GeoEngineer::Resources::AwsIamRole" do
+describe GeoEngineer::Resources::AwsIamRole do
   let(:aws_client) { AwsClients.iam }
 
-  common_resource_tests(GeoEngineer::Resources::AwsIamRole, 'aws_iam_role')
-
+  common_resource_tests(described_class, described_class.type_from_class_name)
   before { aws_client.setup_stubbing }
 
   describe "#_fetch_remote_resources" do

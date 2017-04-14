@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsS3Bucket") do
-  common_resource_tests(GeoEngineer::Resources::AwsS3Bucket, 'aws_s3_bucket')
+describe(GeoEngineer::Resources::AwsS3Bucket) do
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   describe "validations" do
     it 'should validate that policy is valid JSON' do

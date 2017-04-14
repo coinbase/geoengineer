@@ -1,13 +1,10 @@
 require_relative '../spec_helper'
 
-describe "GeoEngineer::Resources::AwsCloudwatchMetricAlarm" do
+describe GeoEngineer::Resources::AwsCloudwatchMetricAlarm do
   let(:aws_client) { AwsClients.cloudwatch }
 
   before { aws_client.setup_stubbing }
-  common_resource_tests(
-    GeoEngineer::Resources::AwsCloudwatchMetricAlarm,
-    'aws_cloudwatch_metric_alarm'
-  )
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   let(:alarm_name) { 'some-fake-alarm' }
 

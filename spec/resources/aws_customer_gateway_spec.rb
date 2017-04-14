@@ -1,7 +1,8 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsCustomerGateway") do
-  common_resource_tests(GeoEngineer::Resources::AwsCustomerGateway, 'aws_customer_gateway')
+describe GeoEngineer::Resources::AwsCustomerGateway do
+  common_resource_tests(described_class, described_class.type_from_class_name)
+
   name_tag_geo_id_tests(GeoEngineer::Resources::AwsCustomerGateway)
 
   describe "#_fetch_remote_resources" do

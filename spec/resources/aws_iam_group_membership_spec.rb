@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe "GeoEngineer::Resources::AwsIamGroupMembership" do
+describe GeoEngineer::Resources::AwsIamGroupMembership do
   let(:aws_client) { AwsClients.iam }
 
   let!(:iam_user) do
@@ -27,11 +27,7 @@ describe "GeoEngineer::Resources::AwsIamGroupMembership" do
       }
   end
 
-  common_resource_tests(
-    GeoEngineer::Resources::AwsIamGroupMembership,
-    'aws_iam_group_membership',
-    false
-  )
+  common_resource_tests(described_class, described_class.type_from_class_name, false)
 
   before do
     aws_client.stub_responses(

@@ -1,10 +1,7 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsElasticacheReplicationGroup") do
-  common_resource_tests(
-    GeoEngineer::Resources::AwsElasticacheReplicationGroup,
-    'aws_elasticache_replication_group'
-  )
+describe GeoEngineer::Resources::AwsElasticacheReplicationGroup do
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   describe "#_fetch_remote_resources" do
     it 'should create list of hashes from returned AWS SDK' do

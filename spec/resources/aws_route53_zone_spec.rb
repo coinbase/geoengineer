@@ -1,12 +1,11 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsRoute53Zone") do
+describe(GeoEngineer::Resources::AwsRoute53Zone) do
   let(:aws_client) { AwsClients.route53 }
 
   before { aws_client.setup_stubbing }
 
-  common_resource_tests(GeoEngineer::Resources::AwsRoute53Zone, 'aws_route53_zone')
-
+  common_resource_tests(described_class, described_class.type_from_class_name)
   describe '#_fetch_remote_resources' do
     before do
       aws_client.stub_responses(

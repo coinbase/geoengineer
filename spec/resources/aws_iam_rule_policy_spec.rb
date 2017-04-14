@@ -3,10 +3,7 @@ require_relative '../spec_helper'
 describe GeoEngineer::Resources::AwsIamRolePolicy do
   let(:iam_client) { AwsClients.iam }
 
-  common_resource_tests(
-    GeoEngineer::Resources::AwsIamRolePolicy,
-    'aws_iam_role_policy'
-  )
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   before { iam_client.setup_stubbing }
 

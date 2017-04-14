@@ -1,10 +1,9 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsLoadBalancerPolicy") do
+describe(GeoEngineer::Resources::AwsLoadBalancerPolicy) do
   let(:elb_client) { AwsClients.elb }
 
-  common_resource_tests(GeoEngineer::Resources::AwsLoadBalancerPolicy,
-                        'aws_load_balancer_policy')
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   before { elb_client.setup_stubbing }
 

@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe "GeoEngineer::Resources::AwsIamPolicy" do
+describe GeoEngineer::Resources::AwsIamPolicy do
   let(:aws_client) { AwsClients.iam }
 
   let(:iam_policy) do
@@ -18,11 +18,7 @@ describe "GeoEngineer::Resources::AwsIamPolicy" do
       }
   end
 
-  common_resource_tests(
-    GeoEngineer::Resources::AwsIamPolicyAttachment,
-    'aws_iam_policy_attachment',
-    false
-  )
+  common_resource_tests(described_class, described_class.type_from_class_name, false)
 
   describe '#remote_resource' do
     before do

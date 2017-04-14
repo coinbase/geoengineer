@@ -1,14 +1,11 @@
 require_relative '../spec_helper'
 
-describe "GeoEngineer::Resources::AwsElasticacheSubnetGroup" do
+describe GeoEngineer::Resources::AwsElasticacheSubnetGroup do
   let(:aws_client) { AwsClients.elasticache }
 
   before { aws_client.setup_stubbing }
 
-  common_resource_tests(
-    GeoEngineer::Resources::AwsElasticacheSubnetGroup,
-    'aws_elasticache_subnet_group'
-  )
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   describe "#_fetch_remote_resources" do
     before do

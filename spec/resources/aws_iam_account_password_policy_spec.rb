@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe 'GeoEngineer::Resources::AwsIamAccountPasswordPolicy' do
+describe GeoEngineer::Resources::AwsIamAccountPasswordPolicy do
   let(:aws_client) { AwsClients.iam }
 
   before { aws_client.setup_stubbing }
@@ -12,11 +12,7 @@ describe 'GeoEngineer::Resources::AwsIamAccountPasswordPolicy' do
       }
   end
 
-  common_resource_tests(
-    GeoEngineer::Resources::AwsIamAccountPasswordPolicy,
-    'aws_iam_account_password_policy',
-    false
-  )
+  common_resource_tests(described_class, described_class.type_from_class_name, false)
 
   let(:password_policy_params) do
     { require_symbols: true,

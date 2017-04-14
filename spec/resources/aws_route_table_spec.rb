@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsRouteTable") do
-  common_resource_tests(GeoEngineer::Resources::AwsRouteTable, 'aws_route_table')
+describe(GeoEngineer::Resources::AwsRouteTable) do
+  common_resource_tests(described_class, described_class.type_from_class_name)
   name_tag_geo_id_tests(GeoEngineer::Resources::AwsRouteTable)
 
   describe "#_fetch_remote_resources" do

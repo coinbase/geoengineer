@@ -5,11 +5,13 @@ class GeoEngineer::Template
   include HasAttributes
   include HasResources
 
-  attr_accessor :name, :parameters
+  attr_accessor :name, :parameters, :parent
 
   def initialize(name, parent, parameters = {})
     @name = name
     @parameters = parameters
+    @parent = parent
+
     case parent
     when GeoEngineer::Project then add_project_attributes(parent)
     when GeoEngineer::Environment then add_env_attributes(parent)

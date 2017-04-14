@@ -3,6 +3,7 @@ AllCops:
     - 'vendor/**/*'
     - 'examples/*'
     - 'geoengineer.gemspec'
+    - 'lib/geoengineer/templates/*'
 Style/StringLiterals:
   Enabled: false
 
@@ -51,7 +52,10 @@ Style/WordArray:
 
 Metrics/ClassLength:
   CountComments: false  # count full line comments?
-  Max: 200
+  Max: 250
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/DoubleNegation:
   Enabled: false

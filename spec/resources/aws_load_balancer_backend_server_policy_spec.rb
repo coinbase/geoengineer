@@ -3,8 +3,7 @@ require_relative '../spec_helper'
 describe GeoEngineer::Resources::AwsLoadBalancerBackendServerPolicy do
   let(:elb_client) { AwsClients.elb }
 
-  common_resource_tests(GeoEngineer::Resources::AwsLoadBalancerBackendServerPolicy,
-                        'aws_load_balancer_backend_server_policy')
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   before { elb_client.setup_stubbing }
 

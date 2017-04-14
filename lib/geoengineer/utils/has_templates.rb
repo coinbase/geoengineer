@@ -14,7 +14,7 @@ module HasTemplates
     module_clazz = "GeoEngineer::Templates::#{clazz_name}"
     return Object.const_get(module_clazz) if Object.const_defined? module_clazz
 
-    throw "undefined template '#{type}' for '#{clazz_name}' or 'GeoEngineer::#{clazz_name}'"
+    throw "undefined template '#{type}' for '#{clazz_name}' or '#{module_clazz}'"
   end
 
   def from_template(type, name, parameters = {}, &block)

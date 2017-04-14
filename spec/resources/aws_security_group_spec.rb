@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsSecurityGroup") do
-  common_resource_tests(GeoEngineer::Resources::AwsSecurityGroup, 'aws_security_group')
+describe(GeoEngineer::Resources::AwsSecurityGroup) do
+  common_resource_tests(described_class, described_class.type_from_class_name)
   name_tag_geo_id_tests(GeoEngineer::Resources::AwsSecurityGroup)
 
   describe "validations" do

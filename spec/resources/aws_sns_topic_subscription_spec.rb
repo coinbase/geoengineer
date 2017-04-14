@@ -1,14 +1,14 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsSnsTopic") do
-  common_resource_tests(GeoEngineer::Resources::AwsSnsTopicSubscription,
-                        'aws_sns_topic_subscription')
+describe(GeoEngineer::Resources::AwsSnsTopic) do
+  common_resource_tests(described_class, described_class.type_from_class_name)
+  let(:sns_client) { AwsClients.sns }
+  before { sns_client.setup_stubbing }
 
   describe "#_fetch_remote_resources" do
     it 'should create list of hashes from returned AWS SDK' do
-      sns = AwsClients.sns
       # list_subscriptions.subscriptions
-      stub = sns.stub_data(
+      stub = sns_client.stub_data(
         :list_subscriptions,
         {
           subscriptions: [
@@ -27,7 +27,7 @@ describe("GeoEngineer::Resources::AwsSnsTopic") do
           ]
         }
       )
-      sns.stub_responses(:list_subscriptions, stub)
+      sns_client.stub_responses(:list_subscriptions, stub)
       remote_resources = GeoEngineer::Resources::AwsSnsTopicSubscription
                          ._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2

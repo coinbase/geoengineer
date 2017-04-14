@@ -1,10 +1,7 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsVpcDhcpOptionsAssociation") do
-  common_resource_tests(
-    GeoEngineer::Resources::AwsVpcDhcpOptionsAssociation,
-    'aws_vpc_dhcp_options_association'
-  )
+describe(GeoEngineer::Resources::AwsVpcDhcpOptionsAssociation) do
+  common_resource_tests(described_class, described_class.type_from_class_name)
 
   describe "#_fetch_remote_resources" do
     let(:ec2) { AwsClients.ec2 }

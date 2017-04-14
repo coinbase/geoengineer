@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe("GeoEngineer::Resources::AwsKinesisStream") do
+describe(GeoEngineer::Resources::AwsKinesisStream) do
   let(:aws_client) { AwsClients.kinesis }
 
   before do
@@ -14,8 +14,7 @@ describe("GeoEngineer::Resources::AwsKinesisStream") do
     )
   end
 
-  common_resource_tests(GeoEngineer::Resources::AwsKinesisStream, 'aws_kinesis_stream')
-
+  common_resource_tests(described_class, described_class.type_from_class_name)
   describe "#_fetch_remote_resources" do
     before do
       aws_client.stub_responses(
