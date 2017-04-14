@@ -1,3 +1,5 @@
+require_relative "./api_gateway/helpers"
+
 ########################################################################
 # AwsCloudTrail is the +api_gateway_deployment+ terrform resource,
 #
