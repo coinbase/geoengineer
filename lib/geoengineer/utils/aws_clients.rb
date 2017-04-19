@@ -31,6 +31,13 @@ class AwsClients
     )
   end
 
+  def self.cloudfront(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::CloudFront::Client
+    )
+  end
+
   def self.cloudwatch(provider = nil)
     self.client_cache(
       provider,
