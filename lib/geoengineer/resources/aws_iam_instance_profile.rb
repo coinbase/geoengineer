@@ -4,7 +4,7 @@
 # {https://www.terraform.io/docs/providers/aws/r/iam_instance_profile.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsIamInstanceProfile < GeoEngineer::Resource
-  validate -> { validate_required_attributes([:name, :roles]) }
+  validate -> { validate_required_attributes([:name, :role]) }
 
   before :validation, -> { policy_arn _policy.to_ref(:arn) if _policy }
 
