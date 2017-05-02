@@ -118,10 +118,10 @@ class GeoEngineer::Resource
     raise "file #{path} not found" unless File.file?(path)
 
     raw = File.open(path, "rb").read
-    interpolated = ERB.new(raw).result(binding_obj)
-    escaped = interpolated.gsub("$", "$$")
+    interpolated = ERB.new(raw).result(binding_obj).to_s
+
     # normalize JSON to prevent terraform from e.g. newlines as legitimate changes
-    normalized = _normalize_json(escaped)
+    normalized = _normalize_json(interpolated)
 
     send(attribute, normalized)
   end
