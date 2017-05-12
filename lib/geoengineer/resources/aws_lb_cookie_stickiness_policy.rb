@@ -17,7 +17,7 @@ class GeoEngineer::Resources::AwsLbCookieStickinessPolicy < GeoEngineer::Resourc
   end
 
   def self._generate_policies(elb, policies)
-    policies.map do |policy|
+    policies&.map do |policy|
       listener = elb[:listener_descriptions]
                  .find { |desc| desc[:policy_names].include?(policy[:policy_name]) }
 
