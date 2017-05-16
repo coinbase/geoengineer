@@ -24,6 +24,14 @@ class AwsClients
   end
 
   # Clients
+
+  def self.alb(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::ElasticLoadBalancingV2::Client
+    )
+  end
+
   def self.api_gateway(provider = nil)
     self.client_cache(
       provider,
