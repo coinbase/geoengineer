@@ -91,7 +91,7 @@
   
   <dl>
       <dt>Includes:</dt>
-      <dd>Commander::Methods, <span class='object_link'><a href="GeoCLI/StatusCommand.html" title="GeoCLI::StatusCommand (module)">StatusCommand</a></span>, <span class='object_link'><a href="GeoCLI/TerraformCommands.html" title="GeoCLI::TerraformCommands (module)">TerraformCommands</a></span>, Singleton</dd>
+      <dd>Commander::Methods, <span class='object_link'><a href="GeoCLI/StatusCommand.html" title="GeoCLI::StatusCommand (module)">StatusCommand</a></span>, <span class='object_link'><a href="GeoCLI/TerraformCommands.html" title="GeoCLI::TerraformCommands (module)">TerraformCommands</a></span>, <span class='object_link'><a href="HasLifecycle.html" title="HasLifecycle (module)">HasLifecycle</a></span>, Singleton</dd>
   </dl>
   
   
@@ -256,6 +256,28 @@
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#add_commands-instance_method" title="#add_commands (instance method)">#<strong>add_commands</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -625,8 +647,19 @@ execute the after hook.</p>
   
   
   
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="HasLifecycle.html" title="HasLifecycle (module)">HasLifecycle</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="HasLifecycle.html#execute_lifecycle-instance_method" title="HasLifecycle#execute_lifecycle (method)">#execute_lifecycle</a></span>, <span class='object_link'><a href="HasLifecycle.html#included-class_method" title="HasLifecycle.included (method)">included</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
   <h3 class="inherited">Methods included from <span class='object_link'><a href="GeoCLI/TerraformCommands.html" title="GeoCLI::TerraformCommands (module)">TerraformCommands</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="GeoCLI/TerraformCommands.html#apply_cmd-instance_method" title="GeoCLI::TerraformCommands#apply_cmd (method)">#apply_cmd</a></span>, <span class='object_link'><a href="GeoCLI/TerraformCommands.html#create_terraform_files-instance_method" title="GeoCLI::TerraformCommands#create_terraform_files (method)">#create_terraform_files</a></span>, <span class='object_link'><a href="GeoCLI/TerraformCommands.html#plan_cmd-instance_method" title="GeoCLI::TerraformCommands#plan_cmd (method)">#plan_cmd</a></span>, <span class='object_link'><a href="GeoCLI/TerraformCommands.html#terraform_apply-instance_method" title="GeoCLI::TerraformCommands#terraform_apply (method)">#terraform_apply</a></span>, <span class='object_link'><a href="GeoCLI/TerraformCommands.html#terraform_plan-instance_method" title="GeoCLI::TerraformCommands#terraform_plan (method)">#terraform_plan</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="GeoCLI/TerraformCommands.html#apply_cmd-instance_method" title="GeoCLI::TerraformCommands#apply_cmd (method)">#apply_cmd</a></span>, <span class='object_link'><a href="GeoCLI/TerraformCommands.html#create_terraform_files-instance_method" title="GeoCLI::TerraformCommands#create_terraform_files (method)">#create_terraform_files</a></span>, <span class='object_link'><a href="GeoCLI/TerraformCommands.html#plan_cmd-instance_method" title="GeoCLI::TerraformCommands#plan_cmd (method)">#plan_cmd</a></span>, <span class='object_link'><a href="GeoCLI/TerraformCommands.html#terraform_apply-instance_method" title="GeoCLI::TerraformCommands#terraform_apply (method)">#terraform_apply</a></span>, <span class='object_link'><a href="GeoCLI/TerraformCommands.html#terraform_parallelism-instance_method" title="GeoCLI::TerraformCommands#terraform_parallelism (method)">#terraform_parallelism</a></span>, <span class='object_link'><a href="GeoCLI/TerraformCommands.html#terraform_plan-instance_method" title="GeoCLI::TerraformCommands#terraform_plan (method)">#terraform_plan</a></span></p>
 
   
   
@@ -637,7 +670,7 @@ execute the after hook.</p>
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="GeoCLI/StatusCommand.html" title="GeoCLI::StatusCommand (module)">StatusCommand</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="GeoCLI/StatusCommand.html#calculate_status-instance_method" title="GeoCLI::StatusCommand#calculate_status (method)">#calculate_status</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#calculate_type_status-instance_method" title="GeoCLI::StatusCommand#calculate_type_status (method)">#calculate_type_status</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#default_status_types-instance_method" title="GeoCLI::StatusCommand#default_status_types (method)">#default_status_types</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#status_action-instance_method" title="GeoCLI::StatusCommand#status_action (method)">#status_action</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#status_cmd-instance_method" title="GeoCLI::StatusCommand#status_cmd (method)">#status_cmd</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#status_resource_rows-instance_method" title="GeoCLI::StatusCommand#status_resource_rows (method)">#status_resource_rows</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#status_rows-instance_method" title="GeoCLI::StatusCommand#status_rows (method)">#status_rows</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#status_type_rows-instance_method" title="GeoCLI::StatusCommand#status_type_rows (method)">#status_type_rows</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#status_types-instance_method" title="GeoCLI::StatusCommand#status_types (method)">#status_types</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="GeoCLI/StatusCommand.html#calculate_status-instance_method" title="GeoCLI::StatusCommand#calculate_status (method)">#calculate_status</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#calculate_type_status-instance_method" title="GeoCLI::StatusCommand#calculate_type_status (method)">#calculate_type_status</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#default_status_types-instance_method" title="GeoCLI::StatusCommand#default_status_types (method)">#default_status_types</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#only_codified-instance_method" title="GeoCLI::StatusCommand#only_codified (method)">#only_codified</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#report_json-instance_method" title="GeoCLI::StatusCommand#report_json (method)">#report_json</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#resource_id_array-instance_method" title="GeoCLI::StatusCommand#resource_id_array (method)">#resource_id_array</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#status_action-instance_method" title="GeoCLI::StatusCommand#status_action (method)">#status_action</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#status_cmd-instance_method" title="GeoCLI::StatusCommand#status_cmd (method)">#status_cmd</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#status_types-instance_method" title="GeoCLI::StatusCommand#status_types (method)">#status_types</a></span>, <span class='object_link'><a href="GeoCLI/StatusCommand.html#type_stats-instance_method" title="GeoCLI::StatusCommand#type_stats (method)">#type_stats</a></span></p>
 
   
   
@@ -824,7 +857,43 @@ execute the after hook.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="create_environment-instance_method">
+  <h3 class="signature first" id="add_commands-instance_method">
+  
+    #<strong>add_commands</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+189
+190
+191
+192
+193
+194</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/geo_cli.rb', line 189</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_add_commands'>add_commands</span>
+  <span class='id identifier rubyid_plan_cmd'>plan_cmd</span>
+  <span class='id identifier rubyid_apply_cmd'>apply_cmd</span>
+  <span class='id identifier rubyid_graph_cmd'>graph_cmd</span>
+  <span class='id identifier rubyid_status_cmd'>status_cmd</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="create_environment-instance_method">
   
     #<strong>create_environment</strong>(name, &amp;block)  &#x21d2; <tt>Object</tt> 
   
@@ -1358,13 +1427,6 @@ execute the after hook.</p>
       <pre class="lines">
 
 
-189
-190
-191
-192
-193
-194
-195
 196
 197
 198
@@ -1378,10 +1440,18 @@ execute the after hook.</p>
 206
 207
 208
-209</pre>
+209
+210
+211
+212
+213
+214
+215
+216
+217</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/geo_cli.rb', line 189</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/cli/geo_cli.rb', line 196</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span>
   <span class='id identifier rubyid_program'>program</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>GeoEngineer</span><span class='tstring_end'>&#39;</span></span>
@@ -1395,11 +1465,12 @@ execute the after hook.</p>
   <span class='comment'># global_options
 </span>  <span class='id identifier rubyid_global_options'>global_options</span>
 
+  <span class='comment'># Require any patches to the way geo works
+</span>  <span class='id identifier rubyid_require_from_pwd'>require_from_pwd</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.geo</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_file?'>file?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_pwd'>pwd</span><span class='embexpr_end'>}</span><span class='tstring_content'>/.geo.rb</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
   <span class='comment'># Add commands
-</span>  <span class='id identifier rubyid_plan_cmd'>plan_cmd</span>
-  <span class='id identifier rubyid_apply_cmd'>apply_cmd</span>
-  <span class='id identifier rubyid_graph_cmd'>graph_cmd</span>
-  <span class='id identifier rubyid_status_cmd'>status_cmd</span>
+</span>  <span class='id identifier rubyid_add_commands'>add_commands</span>
+  <span class='id identifier rubyid_execute_lifecycle'>execute_lifecycle</span><span class='lparen'>(</span><span class='symbol'>:after</span><span class='comma'>,</span> <span class='symbol'>:add_commands</span><span class='rparen'>)</span>
 
   <span class='comment'># Execute the CLI
 </span>  <span class='id identifier rubyid_run!'>run!</span>
@@ -1574,9 +1645,9 @@ execute the after hook.</p>
 </div>
 
       <div id="footer">
-  Generated on Wed Jan 25 13:58:39 2017 by
+  Generated on Thu May 18 10:24:33 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.5 (ruby-2.3.1).
+  0.9.5 (ruby-2.4.1).
 </div>
 
     </div>
