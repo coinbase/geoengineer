@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Class: GeoEngineer::Templates::JsonRestApi
+  
+    &mdash; Documentation by YARD 0.9.5
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "GeoEngineer::Templates::JsonRestApi";
+  relpath = '../../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../../class_list.html"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../../_index.html">Index (J)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../GeoEngineer.html" title="GeoEngineer (module)">GeoEngineer</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Templates.html" title="GeoEngineer::Templates (module)">Templates</a></span></span>
+     &raquo; 
+    <span class="title">JsonRestApi</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <iframe id="search_frame" src="../../class_list.html"></iframe>
+
+      <div id="content"><h1>Class: GeoEngineer::Templates::JsonRestApi
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
+      <span class="inheritName"><span class='object_link'><a href="../Template.html" title="GeoEngineer::Template (class)">GeoEngineer::Template</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="../Template.html" title="GeoEngineer::Template (class)">GeoEngineer::Template</a></span></li>
+          
+            <li class="next">GeoEngineer::Templates::JsonRestApi</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+    </dd>
+  </dl>
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/geoengineer/templates/json_rest_api.rb</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>This template will create basic JSON REST API gateway resources It is
+recommended due to difficulties managing API_Gateway resources to use such
+a template This resource will also delete any resource on the API that is
+not defined within this template as a means of managing the resources Beta
+Template</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rest_api-instance_method" title="#rest_api (instance method)">#<strong>rest_api</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute rest_api.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+  
+  
+  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="../Template.html" title="GeoEngineer::Template (class)">GeoEngineer::Template</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../Template.html#name-instance_method" title="GeoEngineer::Template#name (method)">#name</a></span>, <span class='object_link'><a href="../Template.html#parameters-instance_method" title="GeoEngineer::Template#parameters (method)">#parameters</a></span>, <span class='object_link'><a href="../Template.html#parent-instance_method" title="GeoEngineer::Template#parent (method)">#parent</a></span></p>
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_api_integrations_responses-instance_method" title="#create_api_integrations_responses (instance method)">#<strong>create_api_integrations_responses</strong>(api_resources, api_integrations, params)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_api_methods_responses-instance_method" title="#create_api_methods_responses (instance method)">#<strong>create_api_methods_responses</strong>(api_resources, api_methods, params)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_rest_integrations-instance_method" title="#create_rest_integrations (instance method)">#<strong>create_rest_integrations</strong>(api_resources, params)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_rest_methods-instance_method" title="#create_rest_methods (instance method)">#<strong>create_rest_methods</strong>(api_resources, params)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_rest_resources-instance_method" title="#create_rest_resources (instance method)">#<strong>create_rest_resources</strong>(params)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#http_method_response_mappings-instance_method" title="#http_method_response_mappings (instance method)">#<strong>http_method_response_mappings</strong>(api_resources, params)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(name, parent, params)  &#x21d2; JsonRestApi </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of JsonRestApi.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#template_resources-instance_method" title="#template_resources (instance method)">#<strong>template_resources</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../Template.html" title="GeoEngineer::Template (class)">GeoEngineer::Template</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../Template.html#add_env_attributes-instance_method" title="GeoEngineer::Template#add_env_attributes (method)">#add_env_attributes</a></span>, <span class='object_link'><a href="../Template.html#add_project_attributes-instance_method" title="GeoEngineer::Template#add_project_attributes (method)">#add_project_attributes</a></span>, <span class='object_link'><a href="../Template.html#all_resources-instance_method" title="GeoEngineer::Template#all_resources (method)">#all_resources</a></span>, <span class='object_link'><a href="../Template.html#resource-instance_method" title="GeoEngineer::Template#resource (method)">#resource</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../../HasResources.html" title="HasResources (module)">HasResources</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../HasResources.html#all_resources-instance_method" title="HasResources#all_resources (method)">#all_resources</a></span>, <span class='object_link'><a href="../../HasResources.html#create_resource-instance_method" title="HasResources#create_resource (method)">#create_resource</a></span>, <span class='object_link'><a href="../../HasResources.html#find_resource-instance_method" title="HasResources#find_resource (method)">#find_resource</a></span>, <span class='object_link'><a href="../../HasResources.html#find_resource_by_ref-instance_method" title="HasResources#find_resource_by_ref (method)">#find_resource_by_ref</a></span>, <span class='object_link'><a href="../../HasResources.html#included-class_method" title="HasResources.included (method)">included</a></span>, <span class='object_link'><a href="../../HasResources.html#resources-instance_method" title="HasResources#resources (method)">#resources</a></span>, <span class='object_link'><a href="../../HasResources.html#resources_grouped_by-instance_method" title="HasResources#resources_grouped_by (method)">#resources_grouped_by</a></span>, <span class='object_link'><a href="../../HasResources.html#resources_of_type-instance_method" title="HasResources#resources_of_type (method)">#resources_of_type</a></span>, <span class='object_link'><a href="../../HasResources.html#resources_of_type_grouped_by-instance_method" title="HasResources#resources_of_type_grouped_by (method)">#resources_of_type_grouped_by</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../../HasAttributes.html" title="HasAttributes (module)">HasAttributes</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../HasAttributes.html#%5B%5D-instance_method" title="HasAttributes#[] (method)">#[]</a></span>, <span class='object_link'><a href="../../HasAttributes.html#%5B%5D%3D-instance_method" title="HasAttributes#[]= (method)">#[]=</a></span>, <span class='object_link'><a href="../../HasAttributes.html#assign_attribute-instance_method" title="HasAttributes#assign_attribute (method)">#assign_attribute</a></span>, <span class='object_link'><a href="../../HasAttributes.html#assign_block-instance_method" title="HasAttributes#assign_block (method)">#assign_block</a></span>, <span class='object_link'><a href="../../HasAttributes.html#attribute_missing-instance_method" title="HasAttributes#attribute_missing (method)">#attribute_missing</a></span>, <span class='object_link'><a href="../../HasAttributes.html#attribute_procs-instance_method" title="HasAttributes#attribute_procs (method)">#attribute_procs</a></span>, <span class='object_link'><a href="../../HasAttributes.html#attributes-instance_method" title="HasAttributes#attributes (method)">#attributes</a></span>, <span class='object_link'><a href="../../HasAttributes.html#delete-instance_method" title="HasAttributes#delete (method)">#delete</a></span>, <span class='object_link'><a href="../../HasAttributes.html#eager_load_attributes-instance_method" title="HasAttributes#eager_load_attributes (method)">#eager_load_attributes</a></span>, <span class='object_link'><a href="../../HasAttributes.html#method_missing-instance_method" title="HasAttributes#method_missing (method)">#method_missing</a></span>, <span class='object_link'><a href="../../HasAttributes.html#reset_attributes-instance_method" title="HasAttributes#reset_attributes (method)">#reset_attributes</a></span>, <span class='object_link'><a href="../../HasAttributes.html#retrieve_attribute-instance_method" title="HasAttributes#retrieve_attribute (method)">#retrieve_attribute</a></span>, <span class='object_link'><a href="../../HasAttributes.html#terraform_attribute_ref-instance_method" title="HasAttributes#terraform_attribute_ref (method)">#terraform_attribute_ref</a></span>, <span class='object_link'><a href="../../HasAttributes.html#terraform_attributes-instance_method" title="HasAttributes#terraform_attributes (method)">#terraform_attributes</a></span>, <span class='object_link'><a href="../../HasAttributes.html#timeout-instance_method" title="HasAttributes#timeout (method)">#timeout</a></span></p>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    #<strong>initialize</strong>(name, parent, params)  &#x21d2; <tt><span class='object_link'><a href="" title="GeoEngineer::Templates::JsonRestApi (class)">JsonRestApi</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a new instance of JsonRestApi</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/templates/json_rest_api.rb', line 159</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_parent'>parent</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_parent'>parent</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+
+  <span class='comment'># parameters
+</span>  <span class='comment'># lambda:
+</span>  <span class='comment'>#   &lt;ref&gt;: lambda_resource
+</span>  <span class='comment'># methods:
+</span>  <span class='comment'>#   &lt;name&gt;:
+</span>  <span class='comment'>#     path:
+</span>  <span class='comment'>#     method: &lt;POST,PUT,GET...&gt;
+</span>  <span class='comment'>#     auth: &lt;NONE,CUSTOM,AWS_IAM&gt;
+</span>  <span class='comment'>#     api_key: &lt;false&gt;
+</span>  <span class='comment'>#     handler: &lt;lambda ref&gt;
+</span>  <span class='comment'>#
+</span>
+  <span class='comment'>### Rest API
+</span>  <span class='ivar'>@rest_api</span> <span class='op'>=</span> <span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>aws_api_gateway_rest_api</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@name</span><span class='embexpr_end'>}</span><span class='tstring_content'>_rest_api</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span>
+    <span class='id identifier rubyid_name'>name</span> <span class='id identifier rubyid_name'>name</span>
+    <span class='comment'># Depends on the lambda functions existing
+</span>    <span class='id identifier rubyid_depends_on'>depends_on</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:lambda</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:terraform_name</span><span class='rparen'>)</span>
+  <span class='rbrace'>}</span>
+
+  <span class='comment'># Resources and Responses
+</span>  <span class='id identifier rubyid_api_resources'>api_resources</span> <span class='op'>=</span> <span class='id identifier rubyid_create_rest_resources'>create_rest_resources</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_api_methods'>api_methods</span> <span class='op'>=</span> <span class='id identifier rubyid_create_rest_methods'>create_rest_methods</span><span class='lparen'>(</span><span class='id identifier rubyid_api_resources'>api_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_api_integrations'>api_integrations</span> <span class='op'>=</span> <span class='id identifier rubyid_create_rest_integrations'>create_rest_integrations</span><span class='lparen'>(</span><span class='id identifier rubyid_api_resources'>api_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+
+  <span class='comment'># RESPONSES
+</span>  <span class='id identifier rubyid_create_api_methods_responses'>create_api_methods_responses</span><span class='lparen'>(</span><span class='id identifier rubyid_api_resources'>api_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_api_methods'>api_methods</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_create_api_integrations_responses'>create_api_integrations_responses</span><span class='lparen'>(</span><span class='id identifier rubyid_api_resources'>api_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_api_integrations'>api_integrations</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+
+  <span class='comment'># TODO: delete uncodified resources
+</span><span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+<div id="method_missing_details" class="method_details_list">
+  <h2>Dynamic Method Handling</h2>
+  <p class="notice super">
+    This class handles dynamic methods through the <tt>method_missing</tt> method
+    
+      in the class <span class='object_link'><a href="../../HasAttributes.html#method_missing-instance_method" title="HasAttributes#method_missing (method)">HasAttributes</a></span>
+    
+  </p>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="rest_api-instance_method">
+  
+    #<strong>rest_api</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute rest_api</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/templates/json_rest_api.rb', line 8</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_rest_api'>rest_api</span>
+  <span class='ivar'>@rest_api</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="create_api_integrations_responses-instance_method">
+  
+    #<strong>create_api_integrations_responses</strong>(api_resources, api_integrations, params)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/templates/json_rest_api.rb', line 129</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_create_api_integrations_responses'>create_api_integrations_responses</span><span class='lparen'>(</span><span class='id identifier rubyid_api_resources'>api_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_api_integrations'>api_integrations</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_rest_api'>rest_api</span> <span class='op'>=</span> <span class='ivar'>@rest_api</span>
+  <span class='id identifier rubyid_api_integration_responses'>api_integration_responses</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_http_method_response_mappings'>http_method_response_mappings</span><span class='lparen'>(</span><span class='id identifier rubyid_api_resources'>api_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_api_resource'>api_resource</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_mapping'>mapping</span><span class='op'>|</span>
+    <span class='id identifier rubyid_http_method'>http_method</span> <span class='op'>=</span> <span class='id identifier rubyid_mapping'>mapping</span><span class='lbracket'>[</span><span class='symbol'>:method</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_status'>status</span> <span class='op'>=</span> <span class='id identifier rubyid_mapping'>mapping</span><span class='lbracket'>[</span><span class='symbol'>:status</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_selection_pattern'>selection_pattern</span> <span class='op'>=</span> <span class='id identifier rubyid_mapping'>mapping</span><span class='lbracket'>[</span><span class='symbol'>:selection_pattern</span><span class='rbracket'>]</span>
+
+    <span class='id identifier rubyid_api_integration_response'>api_integration_response</span> <span class='op'>=</span> <span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>aws_api_gateway_integration_response</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ir_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_api_resource'>api_resource</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='embexpr_end'>}</span><span class='tstring_content'>_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='rparen'>)</span> <span class='lbrace'>{</span>
+      <span class='id identifier rubyid__rest_api'>_rest_api</span> <span class='id identifier rubyid_rest_api'>rest_api</span>
+      <span class='id identifier rubyid__resource'>_resource</span> <span class='id identifier rubyid_api_resource'>api_resource</span>
+      <span class='id identifier rubyid_http_method'>http_method</span> <span class='id identifier rubyid_http_method'>http_method</span>
+      <span class='id identifier rubyid_status_code'>status_code</span> <span class='id identifier rubyid_status'>status</span>
+      <span class='id identifier rubyid_selection_pattern'>selection_pattern</span> <span class='id identifier rubyid_selection_pattern'>selection_pattern</span> <span class='kw'>if</span> <span class='id identifier rubyid_selection_pattern'>selection_pattern</span>
+      <span class='id identifier rubyid_depends_on'>depends_on</span> <span class='lbracket'>[</span><span class='id identifier rubyid_api_integrations'>api_integrations</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:terraform_name</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_depends_on'>depends_on</span> <span class='id identifier rubyid_api_integration_responses'>api_integration_responses</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:terraform_name</span><span class='rparen'>)</span> <span class='comment'># force order
+</span>    <span class='rbrace'>}</span>
+
+    <span class='id identifier rubyid_api_integration_responses'>api_integration_responses</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_api_integration_response'>api_integration_response</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_api_integration_responses'>api_integration_responses</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="create_api_methods_responses-instance_method">
+  
+    #<strong>create_api_methods_responses</strong>(api_resources, api_methods, params)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/templates/json_rest_api.rb', line 103</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_create_api_methods_responses'>create_api_methods_responses</span><span class='lparen'>(</span><span class='id identifier rubyid_api_resources'>api_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_api_methods'>api_methods</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_rest_api'>rest_api</span> <span class='op'>=</span> <span class='ivar'>@rest_api</span>
+  <span class='id identifier rubyid_api_method_responses'>api_method_responses</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_http_method_response_mappings'>http_method_response_mappings</span><span class='lparen'>(</span><span class='id identifier rubyid_api_resources'>api_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_api_resource'>api_resource</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_mapping'>mapping</span><span class='op'>|</span>
+    <span class='id identifier rubyid_http_method'>http_method</span> <span class='op'>=</span> <span class='id identifier rubyid_mapping'>mapping</span><span class='lbracket'>[</span><span class='symbol'>:method</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_status'>status</span> <span class='op'>=</span> <span class='id identifier rubyid_mapping'>mapping</span><span class='lbracket'>[</span><span class='symbol'>:status</span><span class='rbracket'>]</span>
+
+    <span class='id identifier rubyid_api_method_response'>api_method_response</span> <span class='op'>=</span> <span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>aws_api_gateway_method_response</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mr_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_api_resource'>api_resource</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='embexpr_end'>}</span><span class='tstring_content'>_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='rparen'>)</span> <span class='lbrace'>{</span>
+      <span class='id identifier rubyid__rest_api'>_rest_api</span> <span class='id identifier rubyid_rest_api'>rest_api</span>
+      <span class='id identifier rubyid__resource'>_resource</span> <span class='id identifier rubyid_api_resource'>api_resource</span>
+      <span class='id identifier rubyid_http_method'>http_method</span> <span class='id identifier rubyid_http_method'>http_method</span>
+      <span class='id identifier rubyid_status_code'>status_code</span> <span class='id identifier rubyid_status'>status</span>
+      <span class='id identifier rubyid_depends_on'>depends_on</span> <span class='lbracket'>[</span><span class='id identifier rubyid_api_methods'>api_methods</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:terraform_name</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_depends_on'>depends_on</span> <span class='id identifier rubyid_api_method_responses'>api_method_responses</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:terraform_name</span><span class='rparen'>)</span> <span class='comment'># force order
+</span>    <span class='rbrace'>}</span>
+
+    <span class='id identifier rubyid_api_method_responses'>api_method_responses</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_api_method_response'>api_method_response</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_api_method_responses'>api_method_responses</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="create_rest_integrations-instance_method">
+  
+    #<strong>create_rest_integrations</strong>(api_resources, params)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/templates/json_rest_api.rb', line 50</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_create_rest_integrations'>create_rest_integrations</span><span class='lparen'>(</span><span class='id identifier rubyid_api_resources'>api_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_rest_api'>rest_api</span> <span class='op'>=</span> <span class='ivar'>@rest_api</span>
+  <span class='id identifier rubyid_api_integrations'>api_integrations</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:methods</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='id identifier rubyid_method_params'>method_params</span><span class='op'>|</span>
+    <span class='id identifier rubyid_path'>path</span> <span class='op'>=</span> <span class='id identifier rubyid_method_params'>method_params</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_api_resource'>api_resource</span> <span class='op'>=</span> <span class='id identifier rubyid_api_resources'>api_resources</span><span class='lbracket'>[</span><span class='id identifier rubyid_path'>path</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_lambda_function'>lambda_function</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:lambda</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_method_params'>method_params</span><span class='lbracket'>[</span><span class='symbol'>:handler</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_http_method'>http_method</span> <span class='op'>=</span> <span class='id identifier rubyid_method_params'>method_params</span><span class='lbracket'>[</span><span class='symbol'>:method</span><span class='rbracket'>]</span>
+
+    <span class='id identifier rubyid_method_name'>method_name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@name</span><span class='embexpr_end'>}</span><span class='tstring_content'>_resource_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_path'>path</span><span class='embexpr_end'>}</span><span class='tstring_content'>_method_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_http_method'>http_method</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+
+    <span class='id identifier rubyid_api_gateway_arn'>api_gateway_arn</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>arn:aws:apigateway:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='period'>.</span><span class='id identifier rubyid_region'>region</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_invocation_arn'>invocation_arn</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>functions/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_lambda_function'>lambda_function</span><span class='period'>.</span><span class='id identifier rubyid_to_ref'>to_ref</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>arn</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>/invocations</span><span class='tstring_end'>&quot;</span></span>
+    <span class='comment'># INTEGRATION
+</span>    <span class='id identifier rubyid_api_integrations'>api_integrations</span><span class='lbracket'>[</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>aws_api_gateway_integration</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_method_name'>method_name</span><span class='embexpr_end'>}</span><span class='tstring_content'>_integration</span><span class='tstring_end'>&quot;</span></span>
+    <span class='rparen'>)</span> <span class='lbrace'>{</span>
+      <span class='id identifier rubyid__rest_api'>_rest_api</span> <span class='id identifier rubyid_rest_api'>rest_api</span>
+      <span class='id identifier rubyid__resource'>_resource</span> <span class='id identifier rubyid_api_resource'>api_resource</span>
+      <span class='id identifier rubyid_http_method'>http_method</span> <span class='id identifier rubyid_http_method'>http_method</span>
+      <span class='kw'>self</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>type</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>AWS</span><span class='tstring_end'>&quot;</span></span>
+      <span class='id identifier rubyid_integration_http_method'>integration_http_method</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>POST</span><span class='tstring_end'>&quot;</span></span> <span class='comment'># ALWAYS POST TO LAMBDAS
+</span>      <span class='id identifier rubyid_uri'>uri</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_api_gateway_arn'>api_gateway_arn</span><span class='embexpr_end'>}</span><span class='tstring_content'>:lambda:path/2015-03-31/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_invocation_arn'>invocation_arn</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_api_integrations'>api_integrations</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="create_rest_methods-instance_method">
+  
+    #<strong>create_rest_methods</strong>(api_resources, params)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/templates/json_rest_api.rb', line 27</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_create_rest_methods'>create_rest_methods</span><span class='lparen'>(</span><span class='id identifier rubyid_api_resources'>api_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_rest_api'>rest_api</span> <span class='op'>=</span> <span class='ivar'>@rest_api</span>
+  <span class='id identifier rubyid_api_methods'>api_methods</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:methods</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='id identifier rubyid_method_params'>method_params</span><span class='op'>|</span>
+    <span class='id identifier rubyid_path'>path</span> <span class='op'>=</span> <span class='id identifier rubyid_method_params'>method_params</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_api_resource'>api_resource</span> <span class='op'>=</span> <span class='id identifier rubyid_api_resources'>api_resources</span><span class='lbracket'>[</span><span class='id identifier rubyid_path'>path</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_http_method'>http_method</span> <span class='op'>=</span> <span class='id identifier rubyid_method_params'>method_params</span><span class='lbracket'>[</span><span class='symbol'>:method</span><span class='rbracket'>]</span>
+
+    <span class='id identifier rubyid_method_name'>method_name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@name</span><span class='embexpr_end'>}</span><span class='tstring_content'>_resource_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_path'>path</span><span class='embexpr_end'>}</span><span class='tstring_content'>_method_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_http_method'>http_method</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+
+    <span class='comment'># METHOD
+</span>    <span class='id identifier rubyid_api_methods'>api_methods</span><span class='lbracket'>[</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>aws_api_gateway_method</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span> <span class='lbrace'>{</span>
+      <span class='id identifier rubyid__rest_api'>_rest_api</span> <span class='id identifier rubyid_rest_api'>rest_api</span>
+      <span class='id identifier rubyid__resource'>_resource</span> <span class='id identifier rubyid_api_resource'>api_resource</span>
+      <span class='id identifier rubyid_http_method'>http_method</span> <span class='id identifier rubyid_http_method'>http_method</span>
+      <span class='id identifier rubyid_authorization'>authorization</span> <span class='id identifier rubyid_method_params'>method_params</span><span class='lbracket'>[</span><span class='symbol'>:auth</span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_api_key_required'>api_key_required</span> <span class='op'>!</span><span class='op'>!</span><span class='id identifier rubyid_method_params'>method_params</span><span class='lbracket'>[</span><span class='symbol'>:api_key</span><span class='rbracket'>]</span>
+    <span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_api_methods'>api_methods</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="create_rest_resources-instance_method">
+  
+    #<strong>create_rest_resources</strong>(params)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/templates/json_rest_api.rb', line 10</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_create_rest_resources'>create_rest_resources</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_rest_api'>rest_api</span> <span class='op'>=</span> <span class='ivar'>@rest_api</span>
+  <span class='id identifier rubyid_api_resources'>api_resources</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:methods</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='id identifier rubyid_method_params'>method_params</span><span class='op'>|</span>
+    <span class='id identifier rubyid_path'>path</span> <span class='op'>=</span> <span class='id identifier rubyid_method_params'>method_params</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span>
+    <span class='kw'>next</span> <span class='kw'>if</span> <span class='id identifier rubyid_api_resources'>api_resources</span><span class='lbracket'>[</span><span class='id identifier rubyid_path'>path</span><span class='rbracket'>]</span>
+
+    <span class='id identifier rubyid_api_resource'>api_resource</span> <span class='op'>=</span> <span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>aws_api_gateway_resource</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@name</span><span class='embexpr_end'>}</span><span class='tstring_content'>_resource_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_path'>path</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span>
+      <span class='id identifier rubyid__rest_api'>_rest_api</span> <span class='id identifier rubyid_rest_api'>rest_api</span>
+      <span class='id identifier rubyid_path_part'>path_part</span> <span class='id identifier rubyid_path'>path</span>
+    <span class='rbrace'>}</span>
+
+    <span class='id identifier rubyid_api_resources'>api_resources</span><span class='lbracket'>[</span><span class='id identifier rubyid_path'>path</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_api_resource'>api_resource</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_api_resources'>api_resources</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="http_method_response_mappings-instance_method">
+  
+    #<strong>http_method_response_mappings</strong>(api_resources, params)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/templates/json_rest_api.rb', line 79</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_http_method_response_mappings'>http_method_response_mappings</span><span class='lparen'>(</span><span class='id identifier rubyid_api_resources'>api_resources</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_https_methods'>https_methods</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:methods</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_m'>m</span><span class='op'>|</span> <span class='id identifier rubyid_m'>m</span><span class='lbracket'>[</span><span class='symbol'>:method</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span>
+
+  <span class='id identifier rubyid_response_mappings'>response_mappings</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_https_methods'>https_methods</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_m'>m</span><span class='op'>|</span>
+    <span class='id identifier rubyid_response_mappings'>response_mappings</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_m'>m</span><span class='embexpr_end'>}</span><span class='tstring_content'>_success</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+      <span class='label'>status:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>200</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+      <span class='label'>method:</span> <span class='id identifier rubyid_m'>m</span>
+    <span class='rbrace'>}</span>
+
+    <span class='id identifier rubyid_response_mappings'>response_mappings</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_m'>m</span><span class='embexpr_end'>}</span><span class='tstring_content'>_notfound</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+      <span class='label'>status:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>404</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+      <span class='label'>method:</span> <span class='id identifier rubyid_m'>m</span><span class='comma'>,</span>
+      <span class='label'>selection_pattern:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>.*NotFound.*</span><span class='tstring_end'>&quot;</span></span>
+    <span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_api_resources'>api_resources</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_api_resource'>api_resource</span><span class='op'>|</span>
+    <span class='id identifier rubyid_response_mappings'>response_mappings</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_mapping'>mapping</span><span class='op'>|</span>
+      <span class='kw'>yield</span> <span class='id identifier rubyid_api_resource'>api_resource</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_mapping'>mapping</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="template_resources-instance_method">
+  
+    #<strong>template_resources</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+194
+195
+196</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/templates/json_rest_api.rb', line 194</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_template_resources'>template_resources</span>
+  <span class='ivar'>@rest_api</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Thu May 18 10:24:33 2017 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.5 (ruby-2.4.1).
+</div>
+
+    </div>
+  </body>
+</html>

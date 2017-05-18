@@ -122,6 +122,12 @@ resource,</p>
 
   <h2>Constant Summary</h2>
   
+  <h3 class="inherited">Constants inherited
+     from <span class='object_link'><a href="../Resource.html" title="GeoEngineer::Resource (class)">GeoEngineer::Resource</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../Resource.html#DEFAULT_PROVIDER-constant" title="GeoEngineer::Resource::DEFAULT_PROVIDER (constant)">GeoEngineer::Resource::DEFAULT_PROVIDER</a></span></p>
+
+  
+  
   <h3 class="inherited">Constants included
      from <span class='object_link'><a href="../../HasValidations.html" title="HasValidations (module)">HasValidations</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="../../HasValidations.html#MAX_POLICY_LENGTH-constant" title="HasValidations::MAX_POLICY_LENGTH (constant)">HasValidations::MAX_POLICY_LENGTH</a></span></p>
@@ -168,7 +174,7 @@ resource,</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#_deep_symbolize_keys-class_method" title="_deep_symbolize_keys (class method)">.<strong>_deep_symbolize_keys</strong>(obj)  &#x21d2; Object </a>
+      <a href="#_fetch_functions-class_method" title="_fetch_functions (class method)">.<strong>_fetch_functions</strong>(provider)  &#x21d2; Object </a>
     
 
     
@@ -190,7 +196,7 @@ resource,</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#_fetch_functions-class_method" title="_fetch_functions (class method)">.<strong>_fetch_functions</strong>  &#x21d2; Object </a>
+      <a href="#_fetch_policy-class_method" title="_fetch_policy (class method)">.<strong>_fetch_policy</strong>(provider, function)  &#x21d2; Object </a>
     
 
     
@@ -212,29 +218,7 @@ resource,</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#_fetch_policy-class_method" title="_fetch_policy (class method)">.<strong>_fetch_policy</strong>(function)  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#_fetch_remote_resources-class_method" title="_fetch_remote_resources (class method)">.<strong>_fetch_remote_resources</strong>  &#x21d2; Object </a>
+      <a href="#_fetch_remote_resources-class_method" title="_fetch_remote_resources (class method)">.<strong>_fetch_remote_resources</strong>(provider)  &#x21d2; Object </a>
     
 
     
@@ -249,9 +233,9 @@ resource,</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Right now, this only fetches policies for the $LATEST version If we want to
-support fetching the permissions for all of the aliases as well, We&#39;ll
-need to add another call per function, bring total calls to 2N+1…</p>
+<p>Right now, this only fetches policies for the $LATEST version If you want
+to fetch the policy for a version other than $LATEST set
+`find_remote_as_individual?` to `true` for that resource.</p>
 </div></span>
   
 </li>
@@ -287,6 +271,28 @@ need to add another call per function, bring total calls to 2N+1…</p>
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#remote_resource_params-instance_method" title="#remote_resource_params (instance method)">#<strong>remote_resource_params</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -345,7 +351,7 @@ need to add another call per function, bring total calls to 2N+1…</p>
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../Resource.html" title="GeoEngineer::Resource (class)">GeoEngineer::Resource</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../Resource.html#_find_remote_resource-instance_method" title="GeoEngineer::Resource#_find_remote_resource (method)">#_find_remote_resource</a></span>, <span class='object_link'><a href="../Resource.html#_json_file-instance_method" title="GeoEngineer::Resource#_json_file (method)">#_json_file</a></span>, <span class='object_link'><a href="../Resource.html#_normalize_json-instance_method" title="GeoEngineer::Resource#_normalize_json (method)">#_normalize_json</a></span>, <span class='object_link'><a href="../Resource.html#build-class_method" title="GeoEngineer::Resource.build (method)">build</a></span>, <span class='object_link'><a href="../Resource.html#build_individual_remote_resource-instance_method" title="GeoEngineer::Resource#build_individual_remote_resource (method)">#build_individual_remote_resource</a></span>, <span class='object_link'><a href="../Resource.html#clear_remote_resource_cache-class_method" title="GeoEngineer::Resource.clear_remote_resource_cache (method)">clear_remote_resource_cache</a></span>, <span class='object_link'><a href="../Resource.html#fetch_remote_resources-class_method" title="GeoEngineer::Resource.fetch_remote_resources (method)">fetch_remote_resources</a></span>, <span class='object_link'><a href="../Resource.html#find_remote_as_individual%3F-instance_method" title="GeoEngineer::Resource#find_remote_as_individual? (method)">#find_remote_as_individual?</a></span>, <span class='object_link'><a href="../Resource.html#for_resource-instance_method" title="GeoEngineer::Resource#for_resource (method)">#for_resource</a></span>, <span class='object_link'><a href="../Resource.html#in_project-instance_method" title="GeoEngineer::Resource#in_project (method)">#in_project</a></span>, <span class='object_link'><a href="../Resource.html#initialize-instance_method" title="GeoEngineer::Resource#initialize (method)">#initialize</a></span>, <span class='object_link'><a href="../Resource.html#matched_remote_resource-instance_method" title="GeoEngineer::Resource#matched_remote_resource (method)">#matched_remote_resource</a></span>, <span class='object_link'><a href="../Resource.html#merge_project_tags-instance_method" title="GeoEngineer::Resource#merge_project_tags (method)">#merge_project_tags</a></span>, <span class='object_link'><a href="../Resource.html#new%3F-instance_method" title="GeoEngineer::Resource#new? (method)">#new?</a></span>, <span class='object_link'><a href="../Resource.html#remote_resource-instance_method" title="GeoEngineer::Resource#remote_resource (method)">#remote_resource</a></span>, <span class='object_link'><a href="../Resource.html#remote_resource_params-instance_method" title="GeoEngineer::Resource#remote_resource_params (method)">#remote_resource_params</a></span>, <span class='object_link'><a href="../Resource.html#reset-instance_method" title="GeoEngineer::Resource#reset (method)">#reset</a></span>, <span class='object_link'><a href="../Resource.html#setup_tags_if_needed-instance_method" title="GeoEngineer::Resource#setup_tags_if_needed (method)">#setup_tags_if_needed</a></span>, <span class='object_link'><a href="../Resource.html#short_id-instance_method" title="GeoEngineer::Resource#short_id (method)">#short_id</a></span>, <span class='object_link'><a href="../Resource.html#short_name-instance_method" title="GeoEngineer::Resource#short_name (method)">#short_name</a></span>, <span class='object_link'><a href="../Resource.html#short_type-instance_method" title="GeoEngineer::Resource#short_type (method)">#short_type</a></span>, <span class='object_link'><a href="../Resource.html#terraform_name-instance_method" title="GeoEngineer::Resource#terraform_name (method)">#terraform_name</a></span>, <span class='object_link'><a href="../Resource.html#to_id_or_ref-instance_method" title="GeoEngineer::Resource#to_id_or_ref (method)">#to_id_or_ref</a></span>, <span class='object_link'><a href="../Resource.html#to_ref-instance_method" title="GeoEngineer::Resource#to_ref (method)">#to_ref</a></span>, <span class='object_link'><a href="../Resource.html#to_s-instance_method" title="GeoEngineer::Resource#to_s (method)">#to_s</a></span>, <span class='object_link'><a href="../Resource.html#to_terraform-instance_method" title="GeoEngineer::Resource#to_terraform (method)">#to_terraform</a></span>, <span class='object_link'><a href="../Resource.html#to_terraform_json-instance_method" title="GeoEngineer::Resource#to_terraform_json (method)">#to_terraform_json</a></span>, <span class='object_link'><a href="../Resource.html#type_from_class_name-class_method" title="GeoEngineer::Resource.type_from_class_name (method)">type_from_class_name</a></span>, <span class='object_link'><a href="../Resource.html#validate_has_tag-instance_method" title="GeoEngineer::Resource#validate_has_tag (method)">#validate_has_tag</a></span>, <span class='object_link'><a href="../Resource.html#validate_required_subresource-instance_method" title="GeoEngineer::Resource#validate_required_subresource (method)">#validate_required_subresource</a></span>, <span class='object_link'><a href="../Resource.html#validate_subresource_required_attributes-instance_method" title="GeoEngineer::Resource#validate_subresource_required_attributes (method)">#validate_subresource_required_attributes</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../Resource.html#_deep_symbolize_keys-class_method" title="GeoEngineer::Resource._deep_symbolize_keys (method)">_deep_symbolize_keys</a></span>, <span class='object_link'><a href="../Resource.html#_find_remote_resource-instance_method" title="GeoEngineer::Resource#_find_remote_resource (method)">#_find_remote_resource</a></span>, <span class='object_link'><a href="../Resource.html#_ignore_remote_resource%3F-class_method" title="GeoEngineer::Resource._ignore_remote_resource? (method)">_ignore_remote_resource?</a></span>, <span class='object_link'><a href="../Resource.html#_json_file-instance_method" title="GeoEngineer::Resource#_json_file (method)">#_json_file</a></span>, <span class='object_link'><a href="../Resource.html#_normalize_json-instance_method" title="GeoEngineer::Resource#_normalize_json (method)">#_normalize_json</a></span>, <span class='object_link'><a href="../Resource.html#_resources_to_ignore-class_method" title="GeoEngineer::Resource._resources_to_ignore (method)">_resources_to_ignore</a></span>, <span class='object_link'><a href="../Resource.html#build-class_method" title="GeoEngineer::Resource.build (method)">build</a></span>, <span class='object_link'><a href="../Resource.html#build_individual_remote_resource-instance_method" title="GeoEngineer::Resource#build_individual_remote_resource (method)">#build_individual_remote_resource</a></span>, <span class='object_link'><a href="../Resource.html#clear_remote_resource_cache-class_method" title="GeoEngineer::Resource.clear_remote_resource_cache (method)">clear_remote_resource_cache</a></span>, <span class='object_link'><a href="../Resource.html#depends_on-instance_method" title="GeoEngineer::Resource#depends_on (method)">#depends_on</a></span>, <span class='object_link'><a href="../Resource.html#fetch_provider-instance_method" title="GeoEngineer::Resource#fetch_provider (method)">#fetch_provider</a></span>, <span class='object_link'><a href="../Resource.html#fetch_remote_resources-class_method" title="GeoEngineer::Resource.fetch_remote_resources (method)">fetch_remote_resources</a></span>, <span class='object_link'><a href="../Resource.html#find_remote_as_individual%3F-instance_method" title="GeoEngineer::Resource#find_remote_as_individual? (method)">#find_remote_as_individual?</a></span>, <span class='object_link'><a href="../Resource.html#for_resource-instance_method" title="GeoEngineer::Resource#for_resource (method)">#for_resource</a></span>, <span class='object_link'><a href="../Resource.html#in_project-instance_method" title="GeoEngineer::Resource#in_project (method)">#in_project</a></span>, <span class='object_link'><a href="../Resource.html#initialize-instance_method" title="GeoEngineer::Resource#initialize (method)">#initialize</a></span>, <span class='object_link'><a href="../Resource.html#matched_remote_resource-instance_method" title="GeoEngineer::Resource#matched_remote_resource (method)">#matched_remote_resource</a></span>, <span class='object_link'><a href="../Resource.html#merge_parent_tags-instance_method" title="GeoEngineer::Resource#merge_parent_tags (method)">#merge_parent_tags</a></span>, <span class='object_link'><a href="../Resource.html#merge_tags-instance_method" title="GeoEngineer::Resource#merge_tags (method)">#merge_tags</a></span>, <span class='object_link'><a href="../Resource.html#new%3F-instance_method" title="GeoEngineer::Resource#new? (method)">#new?</a></span>, <span class='object_link'><a href="../Resource.html#remote_resource-instance_method" title="GeoEngineer::Resource#remote_resource (method)">#remote_resource</a></span>, <span class='object_link'><a href="../Resource.html#reset-instance_method" title="GeoEngineer::Resource#reset (method)">#reset</a></span>, <span class='object_link'><a href="../Resource.html#setup_tags_if_needed-instance_method" title="GeoEngineer::Resource#setup_tags_if_needed (method)">#setup_tags_if_needed</a></span>, <span class='object_link'><a href="../Resource.html#short_id-instance_method" title="GeoEngineer::Resource#short_id (method)">#short_id</a></span>, <span class='object_link'><a href="../Resource.html#short_name-instance_method" title="GeoEngineer::Resource#short_name (method)">#short_name</a></span>, <span class='object_link'><a href="../Resource.html#short_type-instance_method" title="GeoEngineer::Resource#short_type (method)">#short_type</a></span>, <span class='object_link'><a href="../Resource.html#terraform_name-instance_method" title="GeoEngineer::Resource#terraform_name (method)">#terraform_name</a></span>, <span class='object_link'><a href="../Resource.html#to_id_or_ref-instance_method" title="GeoEngineer::Resource#to_id_or_ref (method)">#to_id_or_ref</a></span>, <span class='object_link'><a href="../Resource.html#to_ref-instance_method" title="GeoEngineer::Resource#to_ref (method)">#to_ref</a></span>, <span class='object_link'><a href="../Resource.html#to_s-instance_method" title="GeoEngineer::Resource#to_s (method)">#to_s</a></span>, <span class='object_link'><a href="../Resource.html#to_terraform-instance_method" title="GeoEngineer::Resource#to_terraform (method)">#to_terraform</a></span>, <span class='object_link'><a href="../Resource.html#to_terraform_json-instance_method" title="GeoEngineer::Resource#to_terraform_json (method)">#to_terraform_json</a></span>, <span class='object_link'><a href="../Resource.html#type_from_class_name-class_method" title="GeoEngineer::Resource.type_from_class_name (method)">type_from_class_name</a></span>, <span class='object_link'><a href="../Resource.html#validate_has_tag-instance_method" title="GeoEngineer::Resource#validate_has_tag (method)">#validate_has_tag</a></span>, <span class='object_link'><a href="../Resource.html#validate_required_subresource-instance_method" title="GeoEngineer::Resource#validate_required_subresource (method)">#validate_required_subresource</a></span>, <span class='object_link'><a href="../Resource.html#validate_subresource_required_attributes-instance_method" title="GeoEngineer::Resource#validate_subresource_required_attributes (method)">#validate_subresource_required_attributes</a></span></p>
 
   
   
@@ -427,34 +433,38 @@ need to add another call per function, bring total calls to 2N+1…</p>
       <pre class="lines">
 
 
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
 55
 56
 57
 58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68</pre>
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_lambda_permission.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_lambda_permission.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__create_permission'>_create_permission</span><span class='lparen'>(</span><span class='id identifier rubyid_function'>function</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_policy'>policy</span> <span class='op'>=</span> <span class='id identifier rubyid_function'>function</span><span class='lbracket'>[</span><span class='symbol'>:policy</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_policy'>policy</span><span class='lbracket'>[</span><span class='symbol'>:Statement</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_statement'>statement</span><span class='op'>|</span>
-    <span class='comment'># Note that the keys for a statement objection are all CamelCased
+    <span class='comment'># Note that the keys for a statement object are all CamelCased
 </span>    <span class='comment'># Whereas most other keys in this repo are snake_cased
 </span>    <span class='id identifier rubyid_statement'>statement</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span>
       <span class='lbrace'>{</span>
         <span class='label'>_terraform_id:</span> <span class='id identifier rubyid_statement'>statement</span><span class='lbracket'>[</span><span class='symbol'>:Sid</span><span class='rbracket'>]</span><span class='comma'>,</span>
         <span class='label'>function_name:</span> <span class='id identifier rubyid_function'>function</span><span class='lbracket'>[</span><span class='symbol'>:function_name</span><span class='rbracket'>]</span><span class='comma'>,</span>
-        <span class='label'>function_version:</span> <span class='id identifier rubyid_function'>function</span><span class='lbracket'>[</span><span class='symbol'>:version</span><span class='rbracket'>]</span>
+        <span class='label'>function_version:</span> <span class='id identifier rubyid_function'>function</span><span class='lbracket'>[</span><span class='symbol'>:version</span><span class='rbracket'>]</span><span class='comma'>,</span>
+        <span class='label'>qualifer:</span> <span class='id identifier rubyid_function'>function</span><span class='lbracket'>[</span><span class='symbol'>:qualifer</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>$LATEST</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+        <span class='label'>statement_id:</span> <span class='id identifier rubyid_statement'>statement</span><span class='lbracket'>[</span><span class='symbol'>:Sid</span><span class='rbracket'>]</span>
       <span class='rbrace'>}</span>
     <span class='rparen'>)</span>
   <span class='kw'>end</span>
@@ -465,55 +475,9 @@ need to add another call per function, bring total calls to 2N+1…</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="_deep_symbolize_keys-class_method">
-  
-    .<strong>_deep_symbolize_keys</strong>(obj)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_lambda_permission.rb', line 43</span>
-
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__deep_symbolize_keys'>_deep_symbolize_keys</span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Hash</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_each_with_object'>each_with_object</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='op'>|</span>
-      <span class='id identifier rubyid_hash'>hash</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid__deep_symbolize_keys'>_deep_symbolize_keys</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-    <span class='kw'>end</span>
-  <span class='kw'>elsif</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Array</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='op'>|</span> <span class='id identifier rubyid__deep_symbolize_keys'>_deep_symbolize_keys</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
-  <span class='kw'>else</span>
-    <span class='id identifier rubyid_obj'>obj</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="_fetch_functions-class_method">
   
-    .<strong>_fetch_functions</strong>  &#x21d2; <tt>Object</tt> 
+    .<strong>_fetch_functions</strong>(provider)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -535,9 +499,9 @@ need to add another call per function, bring total calls to 2N+1…</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_lambda_permission.rb', line 24</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__fetch_functions'>_fetch_functions</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__fetch_functions'>_fetch_functions</span><span class='lparen'>(</span><span class='id identifier rubyid_provider'>provider</span><span class='rparen'>)</span>
   <span class='const'>AwsClients</span>
-    <span class='period'>.</span><span class='id identifier rubyid_lambda'>lambda</span>
+    <span class='period'>.</span><span class='id identifier rubyid_lambda'>lambda</span><span class='lparen'>(</span><span class='id identifier rubyid_provider'>provider</span><span class='rparen'>)</span>
     <span class='period'>.</span><span class='id identifier rubyid_list_functions'>list_functions</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>functions</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
     <span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_h</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -549,7 +513,7 @@ need to add another call per function, bring total calls to 2N+1…</p>
       <div class="method_details ">
   <h3 class="signature " id="_fetch_policy-class_method">
   
-    .<strong>_fetch_policy</strong>(function)  &#x21d2; <tt>Object</tt> 
+    .<strong>_fetch_policy</strong>(provider, function)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -565,13 +529,15 @@ need to add another call per function, bring total calls to 2N+1…</p>
 32
 33
 34
-35</pre>
+35
+36</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_lambda_permission.rb', line 31</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__fetch_policy'>_fetch_policy</span><span class='lparen'>(</span><span class='id identifier rubyid_function'>function</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_policy'>policy</span> <span class='op'>=</span> <span class='const'>AwsClients</span><span class='period'>.</span><span class='id identifier rubyid_lambda'>lambda</span><span class='period'>.</span><span class='id identifier rubyid_get_policy'>get_policy</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>function_name:</span> <span class='id identifier rubyid_function'>function</span><span class='lbracket'>[</span><span class='symbol'>:function_name</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rparen'>)</span><span class='op'>&amp;.</span><span class='id identifier rubyid_policy'>policy</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__fetch_policy'>_fetch_policy</span><span class='lparen'>(</span><span class='id identifier rubyid_provider'>provider</span><span class='comma'>,</span> <span class='id identifier rubyid_function'>function</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_policy'>policy</span> <span class='op'>=</span> <span class='const'>AwsClients</span><span class='period'>.</span><span class='id identifier rubyid_lambda'>lambda</span><span class='lparen'>(</span><span class='id identifier rubyid_provider'>provider</span><span class='rparen'>)</span>
+                     <span class='period'>.</span><span class='id identifier rubyid_get_policy'>get_policy</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>function_name:</span> <span class='id identifier rubyid_function'>function</span><span class='lbracket'>[</span><span class='symbol'>:function_name</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rparen'>)</span><span class='op'>&amp;.</span><span class='id identifier rubyid_policy'>policy</span>
   <span class='id identifier rubyid_parsed'>parsed</span> <span class='op'>=</span> <span class='id identifier rubyid__parse_policy'>_parse_policy</span><span class='lparen'>(</span><span class='id identifier rubyid_policy'>policy</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_policy'>policy</span>
   <span class='id identifier rubyid_function'>function</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>policy:</span> <span class='id identifier rubyid_parsed'>parsed</span> <span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_parsed'>parsed</span>
 <span class='kw'>end</span></pre>
@@ -583,7 +549,7 @@ need to add another call per function, bring total calls to 2N+1…</p>
       <div class="method_details ">
   <h3 class="signature " id="_fetch_remote_resources-class_method">
   
-    .<strong>_fetch_remote_resources</strong>  &#x21d2; <tt>Object</tt> 
+    .<strong>_fetch_remote_resources</strong>(provider)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -592,11 +558,9 @@ need to add another call per function, bring total calls to 2N+1…</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Right now, this only fetches policies for the $LATEST version If we want to
-support fetching the permissions for all of the aliases as well, We&#39;ll
-need to add another call per function, bring total calls to 2N+1… Same deal
-if we need to support older versions… (excluding any extra calls for
-pagination). Less than ideal…</p>
+<p>Right now, this only fetches policies for the $LATEST version If you want
+to fetch the policy for a version other than $LATEST set
+`find_remote_as_individual?` to `true` for that resource</p>
 
 
   </div>
@@ -610,21 +574,21 @@ pagination). Less than ideal…</p>
       <pre class="lines">
 
 
-75
-76
-77
-78
-79
-80
-81
-82</pre>
+64
+65
+66
+67
+68
+69
+70
+71</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_lambda_permission.rb', line 75</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_lambda_permission.rb', line 64</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__fetch_remote_resources'>_fetch_remote_resources</span>
-  <span class='id identifier rubyid__fetch_functions'>_fetch_functions</span>
-    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_function'>function</span><span class='op'>|</span> <span class='id identifier rubyid__fetch_policy'>_fetch_policy</span><span class='lparen'>(</span><span class='id identifier rubyid_function'>function</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__fetch_remote_resources'>_fetch_remote_resources</span><span class='lparen'>(</span><span class='id identifier rubyid_provider'>provider</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid__fetch_functions'>_fetch_functions</span><span class='lparen'>(</span><span class='id identifier rubyid_provider'>provider</span><span class='rparen'>)</span>
+    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_function'>function</span><span class='op'>|</span> <span class='id identifier rubyid__fetch_policy'>_fetch_policy</span><span class='lparen'>(</span><span class='id identifier rubyid_provider'>provider</span><span class='comma'>,</span> <span class='id identifier rubyid_function'>function</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
     <span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span>
     <span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_function'>function</span><span class='op'>|</span> <span class='id identifier rubyid__create_permission'>_create_permission</span><span class='lparen'>(</span><span class='id identifier rubyid_function'>function</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
     <span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span>
@@ -650,14 +614,14 @@ pagination). Less than ideal…</p>
       <pre class="lines">
 
 
-37
 38
 39
 40
-41</pre>
+41
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_lambda_permission.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_lambda_permission.rb', line 38</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid__parse_policy'>_parse_policy</span><span class='lparen'>(</span><span class='id identifier rubyid_policy'>policy</span><span class='rparen'>)</span>
   <span class='id identifier rubyid__deep_symbolize_keys'>_deep_symbolize_keys</span><span class='lparen'>(</span><span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_policy'>policy</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -676,7 +640,65 @@ pagination). Less than ideal…</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="support_tags?-instance_method">
+  <h3 class="signature first" id="remote_resource_params-instance_method">
+  
+    #<strong>remote_resource_params</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/resources/aws_lambda_permission.rb', line 73</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_remote_resource_params'>remote_resource_params</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>function_name:</span> <span class='id identifier rubyid_function_name'>function_name</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:qualifier</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_qualifier'>qualifier</span> <span class='kw'>if</span> <span class='id identifier rubyid_qualifier'>qualifier</span>
+
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_policy'>policy</span> <span class='op'>=</span> <span class='id identifier rubyid__fetch_policy'>_fetch_policy</span><span class='lparen'>(</span><span class='id identifier rubyid_fetch_provider'>fetch_provider</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='symbol'>:policy</span><span class='rbracket'>]</span>
+    <span class='kw'>return</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='kw'>if</span> <span class='id identifier rubyid_policy'>policy</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='kw'>rescue</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>Lambda</span><span class='op'>::</span><span class='const'>Errors</span><span class='op'>::</span><span class='const'>ResourceNotFoundException</span>
+    <span class='kw'>return</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_permission'>permission</span> <span class='op'>=</span> <span class='id identifier rubyid__create_permission'>_create_permission</span><span class='lparen'>(</span><span class='id identifier rubyid_policy'>policy</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_statement'>statement</span><span class='op'>|</span>
+    <span class='id identifier rubyid_statement'>statement</span><span class='lbracket'>[</span><span class='symbol'>:_terraform_id</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='id identifier rubyid_statement_id'>statement_id</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_permission'>permission</span> <span class='op'>||</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="support_tags?-instance_method">
   
     #<strong>support_tags?</strong>  &#x21d2; <tt>Boolean</tt> 
   
@@ -772,9 +794,9 @@ pagination). Less than ideal…</p>
 </div>
 
       <div id="footer">
-  Generated on Wed Jan 25 13:58:43 2017 by
+  Generated on Thu May 18 10:24:35 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.5 (ruby-2.3.1).
+  0.9.5 (ruby-2.4.1).
 </div>
 
     </div>

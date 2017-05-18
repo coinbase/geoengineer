@@ -117,9 +117,99 @@
 <div class="tags">
   
 
+</div><div id="subclasses">
+  <h2>Direct Known Subclasses</h2>
+  <p class="children"><span class='object_link'><a href="Templates/JsonRestApi.html" title="GeoEngineer::Templates::JsonRestApi (class)">GeoEngineer::Templates::JsonRestApi</a></span></p>
 </div>
 
 
+
+
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#name-instance_method" title="#name (instance method)">#<strong>name</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute name.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parameters-instance_method" title="#parameters (instance method)">#<strong>parameters</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute parameters.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parent-instance_method" title="#parent (instance method)">#<strong>parent</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute parent.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
 
 
 
@@ -327,19 +417,25 @@ overridden to specify the order of the templates resources.</p>
       <pre class="lines">
 
 
-8
-9
 10
 11
 12
 13
-14</pre>
+14
+15
+16
+17
+18
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 10</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_parent'>parent</span><span class='comma'>,</span> <span class='id identifier rubyid_parameters'>parameters</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@name</span> <span class='op'>=</span> <span class='id identifier rubyid_name'>name</span>
+  <span class='ivar'>@parameters</span> <span class='op'>=</span> <span class='id identifier rubyid_parameters'>parameters</span>
+  <span class='ivar'>@parent</span> <span class='op'>=</span> <span class='id identifier rubyid_parent'>parent</span>
+
   <span class='kw'>case</span> <span class='id identifier rubyid_parent'>parent</span>
   <span class='kw'>when</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Project</span> <span class='kw'>then</span> <span class='id identifier rubyid_add_project_attributes'>add_project_attributes</span><span class='lparen'>(</span><span class='id identifier rubyid_parent'>parent</span><span class='rparen'>)</span>
   <span class='kw'>when</span> <span class='const'>GeoEngineer</span><span class='op'>::</span><span class='const'>Environment</span> <span class='kw'>then</span> <span class='id identifier rubyid_add_env_attributes'>add_env_attributes</span><span class='lparen'>(</span><span class='id identifier rubyid_parent'>parent</span><span class='rparen'>)</span>
@@ -362,6 +458,140 @@ overridden to specify the order of the templates resources.</p>
   
 </div>
 
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="name=-instance_method"></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="name-instance_method">
+  
+    #<strong>name</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute name</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 8</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_name'>name</span>
+  <span class='ivar'>@name</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="parameters=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="parameters-instance_method">
+  
+    #<strong>parameters</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute parameters</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 8</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_parameters'>parameters</span>
+  <span class='ivar'>@parameters</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="parent=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="parent-instance_method">
+  
+    #<strong>parent</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute parent</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 8</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_parent'>parent</span>
+  <span class='ivar'>@parent</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
@@ -382,12 +612,12 @@ overridden to specify the order of the templates resources.</p>
       <pre class="lines">
 
 
-22
-23
-24</pre>
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_env_attributes'>add_env_attributes</span><span class='lparen'>(</span><span class='id identifier rubyid_environment'>environment</span><span class='rparen'>)</span>
   <span class='ivar'>@environment</span> <span class='op'>=</span> <span class='id identifier rubyid_environment'>environment</span>
@@ -423,13 +653,13 @@ overridden to specify the order of the templates resources.</p>
       <pre class="lines">
 
 
-17
-18
-19
-20</pre>
+22
+23
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 22</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_project_attributes'>add_project_attributes</span><span class='lparen'>(</span><span class='id identifier rubyid_project'>project</span><span class='rparen'>)</span>
   <span class='ivar'>@project</span> <span class='op'>=</span> <span class='id identifier rubyid_project'>project</span>
@@ -455,12 +685,12 @@ overridden to specify the order of the templates resources.</p>
       <pre class="lines">
 
 
-35
-36
-37</pre>
+40
+41
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_all_resources'>all_resources</span>
   <span class='id identifier rubyid_resources'>resources</span>
@@ -485,17 +715,17 @@ overridden to specify the order of the templates resources.</p>
       <pre class="lines">
 
 
-26
-27
-28
-29
-30
 31
 32
-33</pre>
+33
+34
+35
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_find_resource'>find_resource</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -537,12 +767,12 @@ overridden to specify the order of the templates resources</p>
       <pre class="lines">
 
 
-41
-42
-43</pre>
+46
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/geoengineer/template.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_template_resources'>template_resources</span>
   <span class='id identifier rubyid_resources'>resources</span>
@@ -557,9 +787,9 @@ overridden to specify the order of the templates resources</p>
 </div>
 
       <div id="footer">
-  Generated on Wed Jan 25 13:58:39 2017 by
+  Generated on Thu May 18 10:24:32 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.5 (ruby-2.3.1).
+  0.9.5 (ruby-2.4.1).
 </div>
 
     </div>
