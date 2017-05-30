@@ -32,10 +32,6 @@ class GeoEngineer::Resources::AwsLambdaFunction < GeoEngineer::Resource
     tfstate
   end
 
-  def support_tags?
-    false
-  end
-
   def self._fetch_remote_resources(provider)
     AwsClients.lambda(provider).list_functions['functions'].map(&:to_h).map do |function|
       function.merge({ _terraform_id: function[:function_name] })
