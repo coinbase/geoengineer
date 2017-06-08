@@ -1,3 +1,3 @@
 module GeoEngineer
-  VERSION = '0.1.4'.freeze
+  VERSION = '0.1.5-prerelease'.freeze
 end
