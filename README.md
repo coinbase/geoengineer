@@ -61,6 +61,7 @@ environment("staging") {
   account_id  "1"
   subnet      "1"
   vpc_id      "1"
+  allow_destroy true ## Defaults to false.  Set to true to support `geo destroy ...`
 }
 
 # Create the first_project to be in the `staging` environment
