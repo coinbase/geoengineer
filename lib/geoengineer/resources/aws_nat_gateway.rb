@@ -18,12 +18,15 @@ class GeoEngineer::Resources::AwsNatGateway < GeoEngineer::Resource
       # AWS SDK has `nat_gateway_addresses` as an array, but you should only be able to
       # have exactly 1 elastic IP association. This logic should cover the bases...
       allocation = gateway[:nat_gateway_addresses].find { |addr| addr.key?(:allocation_id) }
+
       gateway.merge(
         {
           _terraform_id: gateway[:nat_gateway_id],
           _geo_id: "#{allocation[:allocation_id]}::#{gateway[:subnet_id]}"
         }
       )
+
+      gateway
     end
   end
 end
