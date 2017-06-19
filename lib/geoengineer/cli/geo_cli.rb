@@ -189,6 +189,7 @@ class GeoCLI
   def add_commands
     plan_cmd
     apply_cmd
+    destroy_cmd
     graph_cmd
     status_cmd
   end

@@ -30,6 +30,17 @@ module GeoCLI::TerraformCommands
     shell_exec(plan_commands.join(" && "), true)
   end
 
+  def terraform_plan_destroy
+    plan_destroy_commands = [
+      "cd #{@tmpdir}",
+      "terraform refresh",
+      "terraform plan -destroy --refresh=false -parallelism=#{terraform_parallelism}" \
+      " -state=#{@terraform_state_file} -out=#{@plan_file} #{@no_color}"
+    ]
+
+    shell_exec(plan_destroy_commands.join(" && "), true)
+  end
+
   def terraform_apply
     apply_commands = [
       "cd #{@tmpdir}",
@@ -37,6 +48,15 @@ module GeoCLI::TerraformCommands
       " #{@plan_file} #{@no_color}"
     ]
     shell_exec(apply_commands.join(" && "), true)
+  end
+
+  def terraform_destroy
+    destroy_commands = [
+      "cd #{@tmpdir}",
+      "terraform apply -parallelism=#{terraform_parallelism}" \
+      " #{@plan_file} #{@no_color}"
+    ]
+    shell_exec(destroy_commands.join(" && "), true)
   end
 
   def plan_cmd
@@ -62,6 +82,20 @@ module GeoCLI::TerraformCommands
         terraform_apply
       end
       c.action init_action(:apply, &action)
+    end
+  end
+
+  def destroy_cmd
+    command :destroy do |c|
+      c.syntax = 'geo destroy [<geo_files>]'
+      c.description = 'Destroy an execution plan'
+      action = lambda do |args, options|
+        create_terraform_files
+        return puts "Plan Broken" if terraform_plan_destroy.exitstatus.nonzero?
+        return puts "Rejecting Plan" unless yes?("Apply the above plan? [YES/NO]")
+        terraform_destroy
+      end
+      c.action init_action(:destroy, &action)
     end
   end
 end
