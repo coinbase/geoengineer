@@ -10,6 +10,10 @@ class GeoEngineer::Resources::AwsCustomerGateway < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
+  def gateway_type(val=nil)
+    val ? self["type"] = val : self["type"]
+  end
+
   def self._fetch_remote_resources(provider)
     AwsClients.ec2(provider)
               .describe_customer_gateways['customer_gateways']

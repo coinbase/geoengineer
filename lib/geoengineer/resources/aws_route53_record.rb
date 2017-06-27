@@ -13,7 +13,11 @@ class GeoEngineer::Resources::AwsRoute53Record < GeoEngineer::Resource
     end
   }
 
-  after :initialize, -> { _terraform_id -> { "#{zone_id}_#{name}_#{type}" } }
+  after :initialize, -> { _terraform_id -> { "#{zone_id}_#{name}_#{record_type}" } }
+
+  def record_type(val=nil)
+    val ? self["type"] = val : self["type"]
+  end
 
   def support_tags?
     false
