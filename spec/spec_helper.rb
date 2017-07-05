@@ -37,7 +37,7 @@ def mapping_tests(clazz, clazz_name)
 end
 
 def fetch_empty_should_work(clazz)
-  it 'should work with emtpy response' do
+  it 'should work with empty response' do
     remote_resources = clazz._fetch_remote_resources(nil)
     expect(remote_resources.length).to eq 0
   end

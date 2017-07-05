@@ -10,7 +10,7 @@ class GeoEngineer::Resources::AwsVpnConnection < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
-  def vpn_type(val=nil)
+  def vpn_type(val = nil)
     val ? self["type"] = val : self["type"]
   end
 

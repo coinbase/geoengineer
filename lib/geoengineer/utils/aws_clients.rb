@@ -178,4 +178,11 @@ class AwsClients
       Aws::KMS::Client
     )
   end
+
+  def self.waf(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::WAF::Client
+    )
+  end
 end
