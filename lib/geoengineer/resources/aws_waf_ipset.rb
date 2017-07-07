@@ -5,6 +5,7 @@
 ########################################################################
 class GeoEngineer::Resources::AwsWafIpset < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name]) }
+  validate :validate_correct_cidr_blocks
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { name } }
