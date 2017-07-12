@@ -7,14 +7,25 @@ class GeoEngineer::Resources::AwsRoute53Zone < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name]) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id -> { self.name } }
+  after :initialize, -> { _geo_id -> { "#{self.name}." } }
+
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'name' => name,
+      'vpc_id' => vpc_id
+    }
+    tfstate
+  end
 
   def self._fetch_remote_resources(provider)
     hosted_zones = AwsClients.route53(provider).list_hosted_zones.hosted_zones.map(&:to_h)
 
     hosted_zones.map do |zone|
+      zone[:id] = zone[:id].gsub(/^\/hostedzone\//, '')
       zone[:_terraform_id] = zone[:id]
       zone[:_geo_id]       = zone[:name]
+      zone[:zone_id] = zone[:id]
       zone
     end
   end
