@@ -3,3 +3,4 @@
 .yardoc
 tmp
 .*.sw*
+Gemfile.lock
