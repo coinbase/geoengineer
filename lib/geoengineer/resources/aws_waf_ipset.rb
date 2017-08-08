@@ -24,7 +24,7 @@ class GeoEngineer::Resources::AwsWafIpset < GeoEngineer::Resource
 
   def validate_correct_cidr_blocks
     errors = []
-    error = validate_cidr_block(self.ip_set_descriptors.value)
+    error = validate_cidr_block(self.ip_set_descriptors&.value)
     errors << error unless error.nil?
     errors
   end

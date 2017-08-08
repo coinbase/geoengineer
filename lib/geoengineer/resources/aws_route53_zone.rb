@@ -22,7 +22,7 @@ class GeoEngineer::Resources::AwsRoute53Zone < GeoEngineer::Resource
     hosted_zones = AwsClients.route53(provider).list_hosted_zones.hosted_zones.map(&:to_h)
 
     hosted_zones.map do |zone|
-      zone[:id] = zone[:id].gsub(/^\/hostedzone\//, '')
+      zone[:id] = zone[:id].gsub(%r{^/hostedzone/}, '')
       zone[:_terraform_id] = zone[:id]
       zone[:_geo_id]       = zone[:name]
       zone[:zone_id] = zone[:id]
