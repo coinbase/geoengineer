@@ -16,7 +16,7 @@ class GeoEngineer::Resources::AwsRoute53Record < GeoEngineer::Resource
   }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id -> { "#{zone_id}_#{self.name.downcase}_#{record_type}" } }
+  after :initialize, -> { _geo_id -> { "#{zone_id}_#{self.name&.downcase}_#{record_type}" } }
 
   def to_terraform_state
     tfstate = super
@@ -49,7 +49,7 @@ class GeoEngineer::Resources::AwsRoute53Record < GeoEngineer::Resource
   end
 
   def self._fetch_records_for_zone(provider, zone)
-    zone_id = zone[:id].gsub(/^\/hostedzone\//, '')
+    zone_id = zone[:id].gsub(%r{^/hostedzone/}, '')
     response = AwsClients.route53(provider).list_resource_record_sets({ hosted_zone_id: zone_id })
 
     records = []
@@ -70,13 +70,8 @@ class GeoEngineer::Resources::AwsRoute53Record < GeoEngineer::Resource
     name = record[:name].downcase.gsub(/\.$/, '').gsub(/^\\052/, '*')
     zone_name = zone[:name].gsub(/\.$/, '')
     if name !~ /#{zone_name}$/
-      if name.empty?
-        name = zone_name
-      else
-        name = "#{name}.#{zone_name}"
-      end
+      name = name.empty? ? zone_name : "#{name}.#{zone_name}"
     end
     name
   end
-
 end
