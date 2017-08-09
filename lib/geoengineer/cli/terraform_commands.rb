@@ -22,6 +22,7 @@ module GeoCLI::TerraformCommands
   def terraform_plan
     plan_commands = [
       "cd #{@tmpdir}",
+      "terraform init",
       "terraform refresh",
       "terraform plan --refresh=false -parallelism=#{terraform_parallelism}" \
       " -state=#{@terraform_state_file} -out=#{@plan_file} #{@no_color}"
