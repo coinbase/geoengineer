@@ -19,6 +19,7 @@ class GeoEngineer::Resources::AwsIamRole < GeoEngineer::Resource
 
     attributes = {}
     attributes['arn'] = arn if arn
+    attributes['force_detach_policies'] = force_detach_policies || 'false'
     attributes['assume_role_policy'] = _normalize_json(assume_role_policy) if assume_role_policy
 
     tfstate[:primary][:attributes] = attributes
