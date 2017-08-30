@@ -325,6 +325,60 @@ describe GeoEngineer::Resource do
     end
   end
 
+  describe '#duplicate' do
+    let!(:project) do
+      GeoEngineer::Project.new('org', 'project_name', nil) {
+        tags {
+          a  '1'
+        }
+      }
+    end
+    let!(:resource_class) do
+      class GeoEngineer::Resources::Derp < GeoEngineer::Resource
+        validate -> { validate_has_tag(:Name) }
+        after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
+        after :initialize, -> { _geo_id       -> { NullObject.maybe(tags)[:Name] } }
+        after :initialize, -> { _number       -> { NullObject.maybe(_geo_id)[-1] } }
+
+        def self._fetch_remote_resources(provider)
+          [
+            { _geo_id: "geo_id1", _terraform_id: "t1 baby!" },
+            { _geo_id: "geo_id2", _terraform_id: "t who?" }
+          ]
+        end
+      end
+    end
+
+    let(:subject) do
+      project.resource('derp', 'id') {
+        tags {
+          Name "geo_id1"
+        }
+      }
+    end
+
+    it 'copies over attributes and subresources' do
+      copy = subject.duplicate('duplicate')
+      # We haven't changed anything, so it should all match
+      expect(copy.type).to eq(subject.type)
+      expect(copy._geo_id).to eq(subject._geo_id)
+      expect(copy._terraform_id).to eq(subject._terraform_id)
+      expect(copy._number).to eq(subject._number)
+      expect(copy.tags["Name"]).to eq(subject.tags["Name"])
+    end
+
+    it 'handles procs appropriately' do
+      copy = subject.duplicate('duplicate')
+      copy.tags["Name"] = "geo_id2"
+
+      expect(copy.type).to eq(subject.type)
+      expect(copy._geo_id).to_not eq(subject._geo_id)
+      expect(copy._terraform_id).to_not eq(subject._terraform_id)
+      expect(copy._number).to_not eq(subject._number)
+      expect(copy._number).to eq("2")
+    end
+  end
+
   describe 'class method' do
     describe('#type_from_class_name') do
       it 'should return resource' do
