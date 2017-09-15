@@ -7,7 +7,7 @@ class GeoEngineer::Resources::AwsRouteTable < GeoEngineer::Resource
   validate -> { validate_required_attributes([:vpc_id]) }
   validate -> { validate_has_tag(:Name) }
   validate -> {
-    validate_subresource_required_attributes(:route, [:cider_block]) unless self.all_route.empty?
+    validate_subresource_required_attributes(:route, [:cidr_block]) unless self.all_route.empty?
   }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
