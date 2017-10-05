@@ -3,3 +3,5 @@ gemspec
 
 # Use .ruby-version file as canonical Ruby version
 ruby File.read(File.join(File.dirname(__FILE__), '.ruby-version')).chomp
+
+gem 'rubocop', '0.45.0'

@@ -336,7 +336,9 @@ describe GeoEngineer::Resource do
     let!(:resource_class) do
       class GeoEngineer::Resources::Derp < GeoEngineer::Resource
         validate -> { validate_has_tag(:Name) }
-        after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
+        after :initialize, -> {
+          _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id }
+        }
         after :initialize, -> { _geo_id       -> { NullObject.maybe(tags)[:Name] } }
         after :initialize, -> { _number       -> { NullObject.maybe(_geo_id)[-1] } }
 

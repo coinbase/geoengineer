@@ -118,13 +118,20 @@ class GeoEngineer::Resource
     parent = @project || @environment
     return unless parent
 
-    progenitor = self
+    duplicated = duplicate_resource(parent, self, new_id)
+    duplicated.reset
+    duplicated.instance_exec(duplicated, &block) if block_given?
+    duplicated.execute_lifecycle(:after, :initialize)
 
-    duplicated = parent.resource(progenitor.type, new_id) do
+    duplicated
+  end
+
+  def duplicate_resource(parent, progenitor, new_id)
+    parent.resource(progenitor.type, new_id) do
       # We want to set all attributes from the parent, EXCEPT _geo_id and _terraform_id
       # Which should be set according to the init logic
       progenitor.attributes.each do |key, value|
-        self[key] = value unless %w[_geo_id _terraform_id].include?(key)
+        self[key] = value unless %w(_geo_id _terraform_id).include?(key)
       end
 
       progenitor.subresources.each do |subresource|
@@ -136,12 +143,6 @@ class GeoEngineer::Resource
         self.subresources << duplicated_subresource
       end
     end
-
-    duplicated.reset
-    duplicated.instance_exec(duplicated, &block) if block_given?
-    duplicated.execute_lifecycle(:after, :initialize)
-
-    duplicated
   end
 
   def _json_file(attribute, path, binding_obj = nil)
