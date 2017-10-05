@@ -4,7 +4,7 @@
 # {https://www.terraform.io/docs/providers/aws/r/nat_gateway.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsNatGateway < GeoEngineer::Resource
-  validate -> { validate_required_attributes([:subnet_id, :allocation_id]) }
+  validate -> { validate_required_attributes(%i(subnet_id allocation_id)) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{allocation_id}::#{subnet_id}" } }
@@ -19,12 +19,8 @@ class GeoEngineer::Resources::AwsNatGateway < GeoEngineer::Resource
       # have exactly 1 elastic IP association. This logic should cover the bases...
       allocation = gateway[:nat_gateway_addresses].find { |addr| addr.key?(:allocation_id) }
 
-      gateway.merge(
-        {
-          _terraform_id: gateway[:nat_gateway_id],
-          _geo_id: "#{allocation[:allocation_id]}::#{gateway[:subnet_id]}"
-        }
-      )
+      gateway[:_terraform_id] = gateway[:nat_gateway_id]
+      gateway[:_geo_id] = "#{allocation[:allocation_id]}::#{gateway[:subnet_id]}"
 
       gateway
     end
