@@ -14,7 +14,8 @@ class GeoEngineer::Resources::AwsPlacementGroup < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    AwsClients.ec2(provider).describe_placement_groups['placement_groups'].map(&:to_h).map do |group|
+    pgs = AwsClients.ec2(provider).describe_placement_groups['placement_groups']
+    pgs.map(&:to_h).map do |group|
       group[:_terraform_id] = group[:group_name]
       group[:_geo_id] = group[:group_name]
       group[:name] = group[:group_name]
