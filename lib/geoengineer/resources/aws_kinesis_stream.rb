@@ -22,11 +22,28 @@ class GeoEngineer::Resources::AwsKinesisStream < GeoEngineer::Resource
   def self._all_streams(provider)
     streams = []
     AwsClients.kinesis(provider).list_streams[:stream_names].each do |stream_name|
-      AwsClients.kinesis.describe_stream({ stream_name: stream_name }).map(&:to_h).map do |stream|
-        streams << stream[:stream_description]
-      end
+      descriptions = AwsClients
+                     .kinesis
+                     .describe_stream({ stream_name: stream_name })
+                     .map(&:stream_description)
+                     .map(&:to_h)
+      streams << _merge_stream_descriptions(descriptions)
     end
     streams
+  end
+
+  # By default, if a stream has more than 100 shards, it will return multiple responses
+  # for a single stream, and you have to manually combine the descriptions
+  def self._merge_stream_descriptions(descriptions)
+    descriptions.each_with_object({}) do |description, stream|
+      stream.merge!(description) do |key, existing_value, new_value|
+        if key == :shards
+          existing_value.concat(new_value)
+        else
+          new_value
+        end
+      end
+    end
   end
 
   def self._fetch_remote_resources(provider)
