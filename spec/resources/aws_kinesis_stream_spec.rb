@@ -28,19 +28,34 @@ describe(GeoEngineer::Resources::AwsKinesisStream) do
     before do
       aws_client.stub_responses(
         :describe_stream,
-        {
-          stream_description:
+        [
           {
-            stream_name: "test",
-            stream_arn: "arn:aws:kinesis:us-east-1:1234567890:stream/test",
-            stream_status: "ACTIVE",
-            stream_creation_timestamp: Time.now,
-            shards: [],
-            has_more_shards: false,
-            retention_period_hours: 24,
-            enhanced_monitoring: []
+            stream_description:
+            {
+              stream_name: "test",
+              stream_arn: "arn:aws:kinesis:us-east-1:1234567890:stream/test",
+              stream_status: "ACTIVE",
+              stream_creation_timestamp: Time.now,
+              shards: [],
+              has_more_shards: true,
+              retention_period_hours: 24,
+              enhanced_monitoring: []
+            }
+          },
+          {
+            stream_description:
+            {
+              stream_name: "test",
+              stream_arn: "arn:aws:kinesis:us-east-1:1234567890:stream/test",
+              stream_status: "ACTIVE",
+              stream_creation_timestamp: Time.now,
+              shards: [],
+              has_more_shards: false,
+              retention_period_hours: 24,
+              enhanced_monitoring: []
+            }
           }
-        }
+        ]
       )
     end
 
