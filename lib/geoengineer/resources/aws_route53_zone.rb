@@ -13,7 +13,8 @@ class GeoEngineer::Resources::AwsRoute53Zone < GeoEngineer::Resource
     tfstate = super
     tfstate[:primary][:attributes] = {
       'name' => name,
-      'vpc_id' => vpc_id
+      'vpc_id' => vpc_id,
+      'force_destroy' => (force_destroy || 'false')
     }
     tfstate
   end
