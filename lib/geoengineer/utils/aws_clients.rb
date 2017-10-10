@@ -14,6 +14,7 @@ class AwsClients
   def self.client_params(provider = nil)
     client_params = { stub_responses: stubbed? }
     client_params[:region] = provider.region if provider
+    client_params[:retry_limit] = Integer(ENV['AWS_RETRY_LIMIT']) if ENV['AWS_RETRY_LIMIT']
     client_params
   end
 
