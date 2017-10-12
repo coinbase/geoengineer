@@ -16,6 +16,10 @@ class GeoEngineer::Resources::AwsAlbListener < GeoEngineer::Resource
     "alb_listener"
   end
 
+  def support_tags?
+    false
+  end
+
   def self._merge_attributes(listener)
     listener.merge(
       {
