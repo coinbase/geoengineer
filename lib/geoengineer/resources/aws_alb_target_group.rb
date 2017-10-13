@@ -18,14 +18,11 @@ class GeoEngineer::Resources::AwsAlbTargetGroup < GeoEngineer::Resource
 
   def self._merge_attributes(target_groups, tags)
     target_groups.map do |target_group|
-      target_group_tags = tags.find do |desc|
-        desc[:resource_arn] == target_group[:target_group_arn]
-      end
-
+      target_tags = tags.find { |desc| desc[:resource_arn] == target_group[:target_group_arn] }
       target_group.merge(
         {
           _terraform_id: target_group[:target_group_arn],
-          _geo_id: target_group_tags[:tags]&.find { |tag| tag[:key] == "Name" }.dig(:value)
+          _geo_id: (target_tags || {})[:tags]&.find { |tag| tag[:key] == "Name" }&.dig(:value)
         }
       )
     end
@@ -33,6 +30,8 @@ class GeoEngineer::Resources::AwsAlbTargetGroup < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     target_groups = AwsClients.alb(provider).describe_target_groups.target_groups
+    return [] if target_groups.empty?
+
     tags = AwsClients.alb(provider)
                      .describe_tags({ resource_arns: target_groups.map(&:target_group_arn) })
                      .tag_descriptions

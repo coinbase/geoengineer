@@ -4,13 +4,17 @@
 # {https://www.terraform.io/docs/providers/aws/r/alb_listener.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsAlbListener < GeoEngineer::Resource
-  validate -> { validate_required_attributes([:load_balancer_arn, :port, :default_action]) }
+  validate -> {
+    validate_required_attributes([:_load_balancer_name, :load_balancer_arn, :port, :default_action])
+  }
   validate -> {
     validate_subresource_required_attributes(:default_action, [:target_group_arn, :type])
   }
 
+  # Since we can't know the ARN until the ALB exists, it is not a good candidate for the
+  # _geo_id - instead we use the ALB name, which is also unique per region
+  after :initialize, -> { _geo_id       -> { "#{_load_balancer_name}::#{port}" } }
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id       -> { "#{load_balancer_arn}::#{port}" } }
 
   def short_type
     "alb_listener"
@@ -20,11 +24,13 @@ class GeoEngineer::Resources::AwsAlbListener < GeoEngineer::Resource
     false
   end
 
-  def self._merge_attributes(listener)
+  def self._merge_attributes(listener, alb)
     listener.merge(
       {
-        _geo_id: "#{listener[:load_balancer_arn]}::#{listener[:port]}",
-        _terraform_id: listener[:listener_arn]
+        _geo_id: "#{alb[:load_balancer_name]}::#{listener[:port]}",
+        _terraform_id: listener[:listener_arn],
+        load_balancer_arn: alb[:load_balancer_arn],
+        load_balancer_name: alb[:load_balancer_name]
       }
     )
   end
@@ -37,7 +43,7 @@ class GeoEngineer::Resources::AwsAlbListener < GeoEngineer::Resource
         .describe_listeners({ load_balancer_arn: alb[:load_balancer_arn] })
         .listeners
         .map(&:to_h)
-        .map { |listener| _merge_attributes(listener) }
+        .map { |listener| _merge_attributes(listener, alb) }
     end.flatten.compact
   end
 end

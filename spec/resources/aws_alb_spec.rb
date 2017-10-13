@@ -29,5 +29,12 @@ describe GeoEngineer::Resources::AwsAlb do
       remote_resources = GeoEngineer::Resources::AwsAlb._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 1
     end
+
+    it "should work if no ALB's exist" do
+      alb_client.stub_responses(:describe_load_balancers, { load_balancers: [] })
+
+      remote_resources = GeoEngineer::Resources::AwsAlb._fetch_remote_resources(nil)
+      expect(remote_resources.length).to eq 0
+    end
   end
 end

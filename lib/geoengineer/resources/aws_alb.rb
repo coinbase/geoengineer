@@ -29,6 +29,8 @@ class GeoEngineer::Resources::AwsAlb < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     albs = AwsClients.alb(provider).describe_load_balancers['load_balancers'].map(&:to_h)
+    return [] if albs.empty?
+
     tags = AwsClients.alb(provider)
                      .describe_tags({ resource_arns: albs.map { |alb| alb[:load_balancer_arn] } })
                      .tag_descriptions
