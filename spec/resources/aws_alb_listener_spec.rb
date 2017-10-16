@@ -12,7 +12,12 @@ describe GeoEngineer::Resources::AwsAlbListener do
       alb_client.stub_responses(
         :describe_load_balancers,
         {
-          load_balancers: [{ load_balancer_arn: "foo/bar-baz" }]
+          load_balancers: [
+            {
+              load_balancer_arn: "foo/bar-baz",
+              load_balancer_name: "foo-bar-baz"
+            }
+          ]
         }
       )
       alb_client.stub_responses(
