@@ -34,7 +34,10 @@ class GeoEngineer::Resources::AwsLambdaFunction < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     AwsClients.lambda(provider).list_functions['functions'].map(&:to_h).map do |function|
-      function.merge({ _terraform_id: function[:function_name] })
+      function.merge({
+                       _terraform_id: function[:function_name],
+                       _geo_id: function[:function_name]
+                     })
     end
   end
 end
