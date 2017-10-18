@@ -50,7 +50,7 @@ class GeoEngineer::Resources::AwsVpnConnectionRoute < GeoEngineer::Resource
   def self._generate_routes(connection)
     connection[:routes].map do |route|
       cidr = route[:destination_cidr_block]
-      connection_id = route[:vpn_connection_id]
+      connection_id = connection[:vpn_connection_id]
 
       id = build_connection_route_id(cidr, connection_id)
 
