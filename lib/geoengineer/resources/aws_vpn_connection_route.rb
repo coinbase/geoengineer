@@ -23,6 +23,17 @@ class GeoEngineer::Resources::AwsVpnConnectionRoute < GeoEngineer::Resource
     /^\${[a-zA-Z0-9\._-]+}$/.match(vpn_connection_id)
   end
 
+  def to_terraform_state
+    tfstate = super
+
+    tfstate[:primary][:attributes] = {
+      'destination_cidr_block' => destination_cidr_block,
+      'vpn_connection_id' => vpn_connection_id
+    }
+
+    tfstate
+  end
+
   def connection_route_id
     self.class.build_connection_route_id(
       destination_cidr_block,
