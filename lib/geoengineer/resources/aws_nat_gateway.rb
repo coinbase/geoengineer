@@ -5,22 +5,17 @@
 ########################################################################
 class GeoEngineer::Resources::AwsNatGateway < GeoEngineer::Resource
   validate -> { validate_required_attributes(%i(subnet_id allocation_id)) }
+  validate -> { validate_has_tag(:Name) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id -> { "#{allocation_id}::#{subnet_id}" } }
-
-  def support_tags?
-    false
-  end
+  after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
   def self._fetch_remote_resources(provider)
     AwsClients.ec2(provider).describe_nat_gateways['nat_gateways'].map(&:to_h).map do |gateway|
-      # AWS SDK has `nat_gateway_addresses` as an array, but you should only be able to
-      # have exactly 1 elastic IP association. This logic should cover the bases...
-      allocation = gateway[:nat_gateway_addresses].find { |addr| addr.key?(:allocation_id) }
+      name_tag = gateway[:tags].detect { |t| t[:key] == 'Name' }
 
       gateway[:_terraform_id] = gateway[:nat_gateway_id]
-      gateway[:_geo_id] = "#{allocation[:allocation_id]}::#{gateway[:subnet_id]}"
+      gateway[:_geo_id] = name_tag&.dig(:value)
 
       gateway
     end
