@@ -12,12 +12,14 @@ describe(GeoEngineer::Resources::AwsNatGateway) do
             {
               nat_gateway_id: 'name1',
               subnet_id: 's1',
-              nat_gateway_addresses: [{ allocation_id: 'a1' }]
+              nat_gateway_addresses: [{ allocation_id: 'a1' }],
+              tags: [{ key: 'Name', value: 'tag_name1' }]
             },
             {
               nat_gateway_id: 'name2',
               subnet_id: 's2',
-              nat_gateway_addresses: [{ allocation_id: 'a2' }]
+              nat_gateway_addresses: [{ allocation_id: 'a2' }],
+              tags: [{ key: 'Name', value: 'tag_name2' }]
             }
           ]
         }
