@@ -12,7 +12,7 @@ class GeoEngineer::Resources::AwsNatGateway < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     AwsClients.ec2(provider).describe_nat_gateways['nat_gateways'].map(&:to_h).map do |gateway|
-      name_tag = gateway[:tags].detect { |t| t[:key] == 'Name' }
+      name_tag = gateway[:tags]&.detect { |t| t[:key] == 'Name' }
 
       gateway[:_terraform_id] = gateway[:nat_gateway_id]
       gateway[:_geo_id] = name_tag&.dig(:value)
