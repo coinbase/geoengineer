@@ -193,4 +193,11 @@ class AwsClients
       Aws::EMR::Client
     )
   end
+
+  def self.efs(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::EFS::Client
+    )
+  end
 end
