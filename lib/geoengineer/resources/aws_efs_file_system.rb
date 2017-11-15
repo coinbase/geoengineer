@@ -8,16 +8,16 @@ class GeoEngineer::Resources::AwsEfsFileSystem < GeoEngineer::Resource
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
-  
+
   def self._fetch_remote_resources(provider)
     AwsClients.efs.describe_file_systems['file_systems'].map(&:to_h).map do |file_system|
-      tags = AwsClients.efs.describe_tags({file_system_id: file_system["file_system_id"]})['tags']
-      name_tag = tags.find { |t| t["key"] == "Name" }
-      name = name_tag["value"]
+      file_system_id = file_system[:file_system_id]
+      tags = AwsClients.efs.describe_tags({ file_system_id: file_system_id })[:tags]
+      file_system_name = tags.find { |t| t[:key] == "Name" }[:value]
       file_system.merge(
         {
-          _terraform_id: file_system["file_system_id"],
-          _geo_id: name
+          _terraform_id: file_system_id,
+          _geo_id: file_system_name
         }
       )
     end
