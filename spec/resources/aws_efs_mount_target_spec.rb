@@ -21,7 +21,7 @@ describe(GeoEngineer::Resources::AwsEfsMountTarget) do
       )
       efs.stub_responses(:describe_mount_targets, stub)
       remote_resources = GeoEngineer::Resources::AwsEfsMountTarget._fetch_remote_resources(nil)
-      expect(remote_resources.length).to eq 2 
+      expect(remote_resources.length).to eq 2
       expect(remote_resources.first[:mount_target_id]).to eq "fs-01234567"
     end
   end
