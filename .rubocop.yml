@@ -1,13 +1,16 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
   Exclude:
     - 'vendor/**/*'
     - 'examples/*'
     - 'geoengineer.gemspec'
     - 'lib/geoengineer/templates/*'
+
 Style/StringLiterals:
   Enabled: false
 
-Style/MethodCallParentheses:
+Style/MethodCallWithoutArgsParentheses:
   Enabled: false
 
 # Given that GeoEngineer is a DSL which encourages similarity to multiline blocks this is disabled
