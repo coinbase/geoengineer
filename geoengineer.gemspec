@@ -27,7 +27,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec", '~> 3.4'
   s.add_development_dependency "rake", '~> 10.4'
   s.add_development_dependency "yard", '~> 0.8'
-  s.add_development_dependency "rubocop", '~> 0.42'
   s.add_development_dependency "pry-byebug", '~> 3.4'
 
   s.add_dependency 'netaddr',           '~> 1.5'
