@@ -68,7 +68,7 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
         _rest_api rest_api
         _resource api_resource
         http_method http_method
-        self["type"] = "AWS"
+        self["type"] = "AWS_PROXY"
         integration_http_method "POST" # ALWAYS POST TO LAMBDAS
         uri "#{api_gateway_arn}:lambda:path/2015-03-31/#{invocation_arn}"
       }
