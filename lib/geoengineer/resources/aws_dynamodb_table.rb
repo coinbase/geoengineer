@@ -12,6 +12,18 @@ class GeoEngineer::Resources::AwsDynamodbTable < GeoEngineer::Resource
     false
   end
 
+  def to_terraform_state
+    tfstate = super
+    return tfstate unless self.ttl
+
+    tfstate[:primary][:attributes] = {
+      "ttl.#" => "1",
+      "ttl.1794544261.attribute_name": ttl.attribute_name.to_s,
+      "ttl.1794544261.enabled": ttl.enabled.to_s
+    }
+    tfstate
+  end
+
   def self._fetch_remote_resources(provider)
     AwsClients.dynamo(provider).list_tables['table_names'].map { |name|
       {
