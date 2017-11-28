@@ -22,8 +22,8 @@ module GeoCLI::TerraformCommands
   def terraform_plan
     plan_commands = [
       "cd #{@tmpdir}",
-      "terraform init",
-      "terraform refresh",
+      "terraform init #{@no_color}",
+      "terraform refresh #{@no_color}",
       "terraform plan --refresh=false -parallelism=#{terraform_parallelism}" \
       " -state=#{@terraform_state_file} -out=#{@plan_file} #{@no_color}"
     ]
@@ -34,7 +34,7 @@ module GeoCLI::TerraformCommands
   def terraform_plan_destroy
     plan_destroy_commands = [
       "cd #{@tmpdir}",
-      "terraform refresh",
+      "terraform refresh #{@no_color}",
       "terraform plan -destroy --refresh=false -parallelism=#{terraform_parallelism}" \
       " -state=#{@terraform_state_file} -out=#{@plan_file} #{@no_color}"
     ]
