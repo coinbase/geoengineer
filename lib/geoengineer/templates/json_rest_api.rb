@@ -47,7 +47,7 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
     api_methods
   end
 
-  def create_rest_integrations(api_resources, params)
+  def create_rest_integrations(api_resources, api_methods, params)
     rest_api = @rest_api
     api_integrations = {}
     params[:methods].each do |method_name, method_params|
@@ -71,32 +71,21 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
         self["type"] = "AWS_PROXY"
         integration_http_method "POST" # ALWAYS POST TO LAMBDAS
         uri "#{api_gateway_arn}:lambda:path/2015-03-31/#{invocation_arn}"
+        depends_on [api_methods.values].flatten.map(&:terraform_name)
       }
     end
     api_integrations
   end
 
   def http_method_response_mappings(api_resources, params)
-    https_methods = params[:methods].values.map { |m| m[:method] }.uniq
+    params[:methods].values.each do |meth|
+      path = meth[:path]
 
-    response_mappings = {}
-    https_methods.each do |m|
-      response_mappings["#{m}_success"] = {
-        status: "200",
-        method: m
-      }
+      api_resource = api_resources[path]
+      m = meth[:method]
 
-      response_mappings["#{m}_notfound"] = {
-        status: "404",
-        method: m,
-        selection_pattern: ".*NotFound.*"
-      }
-    end
-
-    api_resources.values.each do |api_resource|
-      response_mappings.each do |name, mapping|
-        yield api_resource, name, mapping
-      end
+      yield api_resource, "#{m}_success", { status: "200", method: m }
+      yield api_resource, "#{m}_notfound", { status: "404", method: m, selection_pattern: ".*NotFound.*"}
     end
   end
 
@@ -182,7 +171,7 @@ class GeoEngineer::Templates::JsonRestApi < GeoEngineer::Template
     api_resources = create_rest_resources(params)
 
     api_methods = create_rest_methods(api_resources, params)
-    api_integrations = create_rest_integrations(api_resources, params)
+    api_integrations = create_rest_integrations(api_resources, api_methods, params)
 
     # RESPONSES
     create_api_methods_responses(api_resources, api_methods, params)
