@@ -145,7 +145,7 @@ GeoEngineer command line tool `geo` can:
 
 ## Customizations
 
-A core benefit of GeoEngineer is the ability to customize the DSL to your needs using custom validations, templates and reusable methods on resources.
+GeoEngineer's DSL can be customized to your needs using validations, templates and reusable methods on resources.
 
 ### Validations
 
