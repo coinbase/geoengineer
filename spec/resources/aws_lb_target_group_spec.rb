@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe GeoEngineer::Resources::AwsAlbTargetGroup do
+describe GeoEngineer::Resources::AwsLbTargetGroup do
   let(:alb_client) { AwsClients.alb }
 
   common_resource_tests(described_class, described_class.type_from_class_name)
@@ -43,14 +43,14 @@ describe GeoEngineer::Resources::AwsAlbTargetGroup do
           ]
         }
       )
-      remote_resources = GeoEngineer::Resources::AwsAlbTargetGroup._fetch_remote_resources(nil)
+      remote_resources = GeoEngineer::Resources::AwsLbTargetGroup._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 2
     end
 
     it "should work if no ALB's exist" do
       alb_client.stub_responses(:describe_target_groups, { target_groups: [] })
 
-      remote_resources = GeoEngineer::Resources::AwsAlbTargetGroup._fetch_remote_resources(nil)
+      remote_resources = GeoEngineer::Resources::AwsLbTargetGroup._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 0
     end
   end

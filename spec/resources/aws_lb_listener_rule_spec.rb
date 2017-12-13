@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe GeoEngineer::Resources::AwsAlbListener do
+describe GeoEngineer::Resources::AwsLbListenerRule do
   let(:alb_client) { AwsClients.alb }
 
   common_resource_tests(described_class, described_class.type_from_class_name)
@@ -12,12 +12,7 @@ describe GeoEngineer::Resources::AwsAlbListener do
       alb_client.stub_responses(
         :describe_load_balancers,
         {
-          load_balancers: [
-            {
-              load_balancer_arn: "foo/bar-baz",
-              load_balancer_name: "foo-bar-baz"
-            }
-          ]
+          load_balancers: [{ load_balancer_arn: "foo/bar-baz" }]
         }
       )
       alb_client.stub_responses(
@@ -26,12 +21,24 @@ describe GeoEngineer::Resources::AwsAlbListener do
           listeners: [
             {
               load_balancer_arn: "foo/bar-baz",
+              listener_arn: "listener/foo/bar-baz",
               port: 443
             }
           ]
         }
       )
-      remote_resources = GeoEngineer::Resources::AwsAlbListener._fetch_remote_resources(nil)
+      alb_client.stub_responses(
+        :describe_rules,
+        {
+          rules: [
+            {
+              rule_arn: "rule/foo/bar-baz",
+              priority: "69"
+            }
+          ]
+        }
+      )
+      remote_resources = GeoEngineer::Resources::AwsLbListenerRule._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 1
     end
   end
