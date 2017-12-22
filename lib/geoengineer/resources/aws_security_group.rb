@@ -15,6 +15,7 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
   validate -> { validate_has_tag(:Name) }
 
   before :validation, -> { flatten_cidr_and_sg_blocks }
+  before :validation, -> { uniq_cidr_and_sg_blocks }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id       -> { NullObject.maybe(tags)[:Name] } }
@@ -23,6 +24,13 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
     (self.all_ingress + self.all_egress).each do |in_eg|
       in_eg.cidr_blocks      = in_eg.cidr_blocks.flatten     if in_eg.cidr_blocks
       in_eg.security_groups  = in_eg.security_groups.flatten if in_eg.security_groups
+    end
+  end
+
+  def uniq_cidr_and_sg_blocks
+    (self.all_ingress + self.all_egress).each do |in_eg|
+      in_eg.cidr_blocks      = in_eg.cidr_blocks.uniq     if in_eg.cidr_blocks
+      in_eg.security_groups  = in_eg.security_groups.uniq if in_eg.security_groups
     end
   end
 
