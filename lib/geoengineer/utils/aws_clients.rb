@@ -110,6 +110,13 @@ class AwsClients
     )
   end
 
+  def self.firehose(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::Firehose::Client
+    )
+  end
+
   def self.lambda(provider = nil)
     self.client_cache(
       provider,
