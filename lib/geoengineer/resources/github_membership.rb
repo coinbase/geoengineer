@@ -13,7 +13,7 @@ class GeoEngineer::Resources::GithubMembership < GeoEngineer::Resource
     # GitHub doesn't return the actual role of the member in the API, so we have
     # to make requests for each role to assign each set the appropriate role
     roles = %i[admin member]
-    Parallel.map(roles, in_threads: Parallel.processor_count) do |member_role|
+    Parallel.map(roles, { in_threads: Parallel.processor_count }) do |member_role|
       members = GithubClient.organization_members(provider.organization, { role: member_role })
 
       members.each do |member|

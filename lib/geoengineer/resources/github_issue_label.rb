@@ -12,7 +12,7 @@ class GeoEngineer::Resources::GithubIssueLabel < GeoEngineer::Resource
   def self._fetch_remote_resources(provider)
     repos = GithubClient.organization_repositories(provider.organization)
 
-    Parallel.map(repos, in_threads: Parallel.processor_count * 3) do |repo|
+    Parallel.map(repos, { in_threads: Parallel.processor_count * 3 }) do |repo|
       labels = GithubClient.labels(repo[:full_name])
       labels.each do |label|
         label[:_terraform_id] = "#{repo[:name]}:#{label[:name]}"

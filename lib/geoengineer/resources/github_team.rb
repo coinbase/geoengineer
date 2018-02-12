@@ -11,7 +11,7 @@ class GeoEngineer::Resources::GithubTeam < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     GithubClient.organization_teams(provider.organization)
-                 .each do |team|
+                .each do |team|
       team[:_terraform_id] = team[:id].to_s
       team[:_geo_id] = team[:name]
     end

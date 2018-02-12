@@ -14,24 +14,28 @@ class GeoEngineer::Resources::GithubTeamRepository < GeoEngineer::Resource
     # so we iterate over all teams and fetch their individual repo permissions.
     teams = GithubClient.organization_teams(provider.organization)
 
-    Parallel.map(teams, in_threads: Parallel.processor_count) do |team, team_role|
-      GithubClient.team_repositories(team[:id])
-                   .each do |team_repo|
-        team_repo[:_terraform_id] = "#{team[:id]}:#{team_repo[:name]}"
-        team_repo[:_geo_id] = team_repo[:_terraform_id]
-
-        team_repo[:team_id] = team[:id]
-        team_repo[:repository] = team_repo[:name]
-
-        team_repo[:permission] =
-          if team_repo[:permissions][:admin]
-            'admin'
-          elsif team_repo[:permissions][:push]
-            'push'
-          elsif team_repo[:permissions][:pull]
-            'pull'
-          end
-      end
+    Parallel.map(teams, { in_threads: Parallel.processor_count }) do |team, team_role|
+      repos_for_team(team[:id])
     end.flatten
+  end
+
+  def self.repos_for_team(team_id)
+    GithubClient.team_repositories(team_id)
+                .each do |team_repo|
+      team_repo[:_terraform_id] = "#{team_id}:#{team_repo[:name]}"
+      team_repo[:_geo_id] = team_repo[:_terraform_id]
+
+      team_repo[:team_id] = team_id
+      team_repo[:repository] = team_repo[:name]
+
+      team_repo[:permission] =
+        if team_repo[:permissions][:admin]
+          'admin'
+        elsif team_repo[:permissions][:push]
+          'push'
+        elsif team_repo[:permissions][:pull]
+          'pull'
+        end
+    end
   end
 end

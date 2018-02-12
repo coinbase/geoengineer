@@ -16,11 +16,11 @@ class GeoEngineer::Resources::GithubTeamMembership < GeoEngineer::Resource
     # to make calls with different filters to know which role the member has.
     teams = GithubClient.organization_teams(provider.organization)
     roles = %i[maintainer member]
-    jobs = teams.map { |team| roles.map { |team_role| [team[:id], team_role] } }.flatten(1)
+    jobs = teams.flat_map { |team| roles.map { |team_role| [team[:id], team_role] } }
 
-    Parallel.map(jobs, in_threads: Parallel.processor_count) do |team_id, team_role|
+    Parallel.map(jobs, { in_threads: Parallel.processor_count }) do |team_id, team_role|
       GithubClient.team_memberships(team_id, { role: team_role })
-                   .each do |team_membership|
+                  .each do |team_membership|
         team_membership[:_terraform_id] = "#{team_id}:#{team_membership[:login]}"
         team_membership[:_geo_id] = team_membership[:_terraform_id]
         team_membership[:username] = team_membership[:login]
