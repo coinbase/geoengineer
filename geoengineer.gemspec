@@ -34,4 +34,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'commander',         '~> 4.4'
   s.add_dependency 'colorize',          '~> 0.7'
   s.add_dependency 'parallel',          '~> 1.10'
+  s.add_dependency 'octokit',           '~> 4.8'
 end

@@ -18,6 +18,7 @@ end
 
 require 'aws-sdk'
 require 'json'
+require 'octokit'
 require 'ostruct'
 require 'uri'
 require 'securerandom'

@@ -18,8 +18,6 @@ class GeoEngineer::Environment
 
   attr_reader :name
 
-  validate -> { validate_required_attributes([:region, :account_id]) }
-
   # Validate resources have unique attributes
   validate -> {
     resources_of_type_grouped_by(&:terraform_name).map do |klass, grouped_resources|
@@ -51,7 +49,7 @@ class GeoEngineer::Environment
   # Validate all resources
   validate -> { all_resources.map(&:errors).flatten }
 
-  before :validation, -> { self.region ||= ENV['AWS_REGION'] }
+  before :validation, -> { self.region ||= ENV['AWS_REGION'] if ENV['AWS_REGION'] }
 
   def initialize(name, &block)
     @name = name
