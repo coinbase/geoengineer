@@ -159,6 +159,13 @@ class AwsClients
     )
   end
 
+  def self.states(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::States::Client
+    )
+  end
+
   def self.sns(provider = nil)
     self.client_cache(
       provider,
