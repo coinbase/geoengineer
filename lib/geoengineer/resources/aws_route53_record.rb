@@ -23,7 +23,8 @@ class GeoEngineer::Resources::AwsRoute53Record < GeoEngineer::Resource
     tfstate[:primary][:attributes] = {
       'id' => _terraform_id,
       'name' => name,
-      'type' => record_type
+      'type' => record_type,
+      'allow_overwrite' => 'true'
     }
     tfstate
   end
