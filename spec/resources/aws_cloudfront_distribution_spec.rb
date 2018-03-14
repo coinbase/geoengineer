@@ -4,15 +4,15 @@ describe GeoEngineer::Resources::AwsCloudfrontDistribution do
   let(:aws_client) { AwsClients.cloudfront }
 
   before do
-    response_stub = aws_client.stub_data(
-      :list_distributions,
-      {
-        distribution_list: {
-          items: []
-        }
-      }
-    )
-    aws_client.stub_responses(:list_distributions, response_stub)
+    # Cloudfront stubbing is broken with new api
+    allow(aws_client).to receive(:list_distributions)
+      .and_return({
+                    distribution_list: {
+                      items: [
+
+                      ]
+                    }
+                  })
   end
 
   common_resource_tests(described_class, described_class.type_from_class_name)
@@ -21,21 +21,19 @@ describe GeoEngineer::Resources::AwsCloudfrontDistribution do
     let(:dist_terraform_id) { 'myid' }
 
     before do
-      response_stub = aws_client.stub_data(
-        :list_distributions,
-        {
-          distribution_list: {
-            items: [
-              {
-                id: dist_terraform_id,
-                arn: 'arn:cloudfront:test',
-                comment: 'some-cloudfront-distribution'
-              }
-            ]
-          }
-        }
-      )
-      aws_client.stub_responses(:list_distributions, response_stub)
+      # Cloudfront stubbing is broken with new api
+      allow(aws_client).to receive(:list_distributions)
+        .and_return({
+                      distribution_list: {
+                        items: [
+                          {
+                            id: dist_terraform_id,
+                            arn: 'arn:cloudfront:test',
+                            comment: 'some-cloudfront-distribution'
+                          }
+                        ]
+                      }
+                    })
     end
 
     it 'creates array of hashes from AWS response' do

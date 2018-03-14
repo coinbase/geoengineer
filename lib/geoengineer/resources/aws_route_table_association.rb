@@ -13,7 +13,6 @@ class GeoEngineer::Resources::AwsRouteTableAssociation < GeoEngineer::Resource
     self.subnet_id = sn._terraform_id || sn.to_ref
   end
 
-
   def route_table(rt)
     self.route_table_id = rt._terraform_id || rt.to_ref
   end
