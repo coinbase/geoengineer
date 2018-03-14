@@ -9,6 +9,15 @@ class GeoEngineer::Resources::AwsRouteTableAssociation < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{subnet_id}::#{route_table_id}" } }
 
+  def subnet(sn)
+    self.subnet_id = sn._terraform_id || sn.to_ref
+  end
+
+
+  def route_table(rt)
+    self.route_table_id = rt._terraform_id || rt.to_ref
+  end
+
   def to_terraform_state
     tfstate = super
     tfstate[:primary][:attributes] = {
