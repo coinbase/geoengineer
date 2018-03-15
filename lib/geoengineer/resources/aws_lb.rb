@@ -12,6 +12,18 @@ class GeoEngineer::Resources::AwsLb < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id       -> { NullObject.maybe(tags)[:Name] } }
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'id' => _terraform_id,
+      'idle_timeout' => '60',
+      'enable_deletion_protection' => 'false',
+      'enable_http2' => 'true',
+      'enable_cross_zone_load_balancing' => 'false'
+    }
+    tfstate
+  end
+
   def short_type
     "lb"
   end
