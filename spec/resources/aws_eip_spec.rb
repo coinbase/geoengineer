@@ -10,9 +10,12 @@ describe GeoEngineer::Resources::AwsEip do
       aws_client.stub_responses(
         :describe_addresses, {
           addresses: [
-            { public_ip: '99.0.0.0', allocation_id: "eipalloc-xxxxxxxx" },
+            { public_ip: '99.0.0.0',
+              allocation_id: "eipalloc-xxxxxxxx",
+              tags: [{ key: "Name", value: "eipgeo" }] },
             { public_ip: '99.0.0.1', allocation_id: "eipalloc-xxxxxxxy" }
           ]
+
         }
       )
     end
@@ -23,7 +26,7 @@ describe GeoEngineer::Resources::AwsEip do
 
       test_eip = resources.first
       expect(test_eip[:_terraform_id]).to eql "eipalloc-xxxxxxxx"
-      expect(test_eip[:_geo_id]).to eql "99.0.0.0"
+      expect(test_eip[:_geo_id]).to eql "eipgeo"
     end
   end
 end

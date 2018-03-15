@@ -12,8 +12,8 @@ class GeoEngineer::Resources::AwsCloudfrontDistribution < GeoEngineer::Resource
   def self._fetch_remote_resources(provider)
     AwsClients.cloudfront(provider).list_distributions[:distribution_list][:items].map do |item|
       item.to_h.tap do |i|
-        i[:_terraform_id] = item.id
-        i[:_arn] = item.arn
+        i[:_terraform_id] = item[:id]
+        i[:_arn] = item[:arn]
         i[:_geo_id] = item[:comment]
       end
     end
