@@ -12,6 +12,15 @@ class GeoEngineer::Resources::AwsLbTargetGroup < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id       -> { NullObject.maybe(tags)[:Name] } }
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'id' => _terraform_id,
+      'deregistration_delay' => '300'
+    }
+    tfstate
+  end
+
   def short_type
     "lb_target_group"
   end
