@@ -1,5 +1,5 @@
 ########################################################################
-# AwsLambdaPermission is the +aws_lambda_function+ terrform resource,
+# AwsLambdaPermission is the +aws_lambda_permission+ terrform resource,
 #
 # {https://www.terraform.io/docs/providers/aws/r/lambda_permission.html Terraform Docs}
 ########################################################################
