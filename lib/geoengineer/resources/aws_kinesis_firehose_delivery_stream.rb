@@ -1,7 +1,7 @@
 ########################################################################
 # AwsKinesisFirehoseDeliveryStream is the +aws_kinesis_firehose_delivery_stream+ terrform resource,
 #
-# {https://www.terraform.io/docs/providers/aws/r/aws_kinesis_firehose_delivery_stream.html
+# {https://www.terraform.io/docs/providers/aws/r/kinesis_firehose_delivery_stream.html
 # Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsKinesisFirehoseDeliveryStream < GeoEngineer::Resource
