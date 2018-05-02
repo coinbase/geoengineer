@@ -61,6 +61,13 @@ class AwsClients
     )
   end
 
+  def self.cloudwatchlogs(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::CloudWatchLogs::Client
+    )
+  end
+
   def self.dynamo(provider = nil)
     self.client_cache(
       provider,
