@@ -35,12 +35,19 @@ class GeoEngineer::Resources::AwsIamRole < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    roles = AwsClients.iam(provider).list_roles['roles'].map(&:to_h)
-    roles.map do |r|
+    roles = _fetch_all_roles(true, [], AwsClients.iam(provider), nil)
+
+    roles.map(&:to_h).map do |r|
       r.merge({ name: r[:role_name],
                 _geo_id: r[:role_name],
                 _terraform_id: r[:role_name],
                 assume_role_policy: URI.decode(r[:assume_role_policy_document]) })
     end
+  end
+
+  def self._fetch_all_roles(continue, roles, client, marker)
+    return roles unless continue
+    role_resp = client.list_roles({ marker: marker })
+    _fetch_all_roles(role_resp.is_truncated, roles + role_resp['roles'], client, role_resp.marker)
   end
 end
