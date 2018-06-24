@@ -75,11 +75,12 @@ module GeoCLI::TerraformCommands
   def apply_cmd
     command :apply do |c|
       c.syntax = 'geo apply [<geo_files>]'
+      c.option '--yes', 'Ignores the sanity check'
       c.description = 'Apply an execution plan'
       action = lambda do |args, options|
         create_terraform_files
         return puts "Plan Broken" if terraform_plan.exitstatus.nonzero?
-        return puts "Rejecting Plan" unless yes?("Apply the above plan? [YES/NO]")
+        return puts "Rejecting Plan" unless options.yes || yes?("Apply the above plan? [YES/NO]")
         terraform_apply
       end
       c.action init_action(:apply, &action)
