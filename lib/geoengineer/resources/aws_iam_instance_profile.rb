@@ -16,7 +16,8 @@ class GeoEngineer::Resources::AwsIamInstanceProfile < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    profiles = AwsClients.iam(provider).list_instance_profiles['instance_profiles'].map(&:to_h)
+    profiles = _fetch_all_profiles(true, [], AwsClients.iam(provider), nil)
+
     profiles.map do |p|
       {
         name: p[:instance_profile_name],
@@ -24,5 +25,16 @@ class GeoEngineer::Resources::AwsIamInstanceProfile < GeoEngineer::Resource
         _terraform_id: p[:instance_profile_name]
       }
     end
+  end
+
+  def self._fetch_all_profiles(continue, profiles, client, marker)
+    return profiles unless continue
+    role_resp = client.list_instance_profiles({ marker: marker })
+    _fetch_all_profiles(
+      role_resp.is_truncated,
+      profiles + role_resp['instance_profiles'],
+      client,
+      role_resp.marker
+    )
   end
 end
