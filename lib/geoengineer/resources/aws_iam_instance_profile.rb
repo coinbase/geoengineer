@@ -30,6 +30,11 @@ class GeoEngineer::Resources::AwsIamInstanceProfile < GeoEngineer::Resource
   def self._fetch_all_profiles(continue, profiles, client, marker)
     return profiles unless continue
     role_resp = client.list_instance_profiles({ marker: marker })
-    _fetch_all_profiles(role_resp.is_truncated, profiles + role_resp['instance_profiles'], client, role_resp.marker)
+    _fetch_all_profiles(
+      role_resp.is_truncated,
+      profiles + role_resp['instance_profiles'],
+      client,
+      role_resp.marker
+    )
   end
 end
