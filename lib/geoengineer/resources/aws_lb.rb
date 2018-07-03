@@ -12,6 +12,9 @@ class GeoEngineer::Resources::AwsLb < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id       -> { NullObject.maybe(tags)[:Name] } }
 
+  # The ALB client only allows fetching the tags from 20 ALBs at once
+  MAXIMUM_FETCHABLE_ALBS = 20
+
   def to_terraform_state
     tfstate = super
     tfstate[:primary][:attributes] = {
@@ -40,14 +43,22 @@ class GeoEngineer::Resources::AwsLb < GeoEngineer::Resource
     end
   end
 
+  def self._fetch_alb_tags(client, albs)
+    arns = albs.map { |alb| alb[:load_balancer_arn] }
+    tags = client.describe_tags({ resource_arns: arns })
+    tags.tag_descriptions.map(&:to_h)
+  end
+
   def self._fetch_remote_resources(provider)
-    albs = AwsClients.alb(provider).describe_load_balancers['load_balancers'].map(&:to_h)
+    client = AwsClients.alb(provider)
+    albs = client.describe_load_balancers['load_balancers'].map(&:to_h)
     return [] if albs.empty?
 
-    tags = AwsClients.alb(provider)
-                     .describe_tags({ resource_arns: albs.map { |alb| alb[:load_balancer_arn] } })
-                     .tag_descriptions
-                     .map(&:to_h)
+    tags = []
+
+    albs.each_slice(MAXIMUM_FETCHABLE_ALBS) do |alb_slice|
+      tags += _fetch_alb_tags(client, alb_slice) || []
+    end
 
     _merge_attributes(albs, tags)
   end
