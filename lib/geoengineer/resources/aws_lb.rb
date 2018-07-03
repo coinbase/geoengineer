@@ -40,14 +40,23 @@ class GeoEngineer::Resources::AwsLb < GeoEngineer::Resource
     end
   end
 
+  def self._fetch_tags(albs, provider)
+    AwsClients.alb(provider)
+              .describe_tags({ resource_arns: albs.map { |alb| alb[:load_balancer_arn] } })
+              .tag_descriptions
+              .map(&:to_h)
+  end
+
   def self._fetch_remote_resources(provider)
     albs = AwsClients.alb(provider).describe_load_balancers['load_balancers'].map(&:to_h)
     return [] if albs.empty?
 
-    tags = AwsClients.alb(provider)
-                     .describe_tags({ resource_arns: albs.map { |alb| alb[:load_balancer_arn] } })
-                     .tag_descriptions
-                     .map(&:to_h)
+    tags = albs.each_slice(20)
+               .to_a
+               .map { |alb_chunk| _fetch_tags(alb_chunk, provider) }
+               .flatten
+
+    puts tags
 
     _merge_attributes(albs, tags)
   end
