@@ -10,6 +10,10 @@ class GeoEngineer::Resources::AwsKmsKey < GeoEngineer::Resource
   after :initialize, -> { _geo_id -> { description } }
   after :initialize, -> { _arn -> { NullObject.maybe(remote_resource)._arn } }
 
+  def _policy_file(path, binding_obj = nil)
+    _json_file(:policy, path, binding_obj)
+  end
+
   def self._fetch_remote_resources(provider)
     keys = AwsClients.kms(provider).list_keys[:keys].map do |i|
       AwsClients.kms(provider).describe_key({ key_id: i.key_id }).key_metadata.to_h

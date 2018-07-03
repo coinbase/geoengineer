@@ -21,6 +21,10 @@ class GeoEngineer::Resources::AwsS3Bucket < GeoEngineer::Resource
     end
   }
 
+  def _policy_file(path, binding_obj = nil)
+    _json_file(:policy, path, binding_obj)
+  end
+
   def validate_policy_json
     return unless policy
     JSON.parse(policy)
