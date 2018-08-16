@@ -89,7 +89,7 @@ class GeoEngineer::Templates::Step < GeoEngineer::Template
     })
 
     # Step Function Role
-    project.from_template('role_with_policies', step_role_name, {
+    project.from_template('role_with_policies', "#{step_role_name}_roles", {
       role_name: step_role_name,
       role_path: "/step/#{project.org}/#{project.name}/#{env.name}/",
       context: build_context(),
@@ -111,7 +111,7 @@ class GeoEngineer::Templates::Step < GeoEngineer::Template
     })
 
     # Lambda Role
-    project.from_template('role_with_policies', lambda_role_name, {
+    project.from_template('role_with_policies', "#{lambda_role_name}-lambda-roles", {
       role_name: lambda_role_name,
       service: "lambda.amazonaws.com",
       policies: {
@@ -214,7 +214,7 @@ class GeoEngineer::Templates::StepAssumed < GeoEngineer::Template
     lambda_role_name = self.lambda_role_name
 
     # Role Assumed by Lambda (deployed to all accounts)
-    project.from_template('role_with_policies', lambda_assumed_role_name, {
+    project.from_template('role_with_policies', "#{lambda_assumed_role_name}_roles", {
       role_name: lambda_assumed_role_name,
       policies: {
         "#{lambda_assumed_role_name}": policy_file
