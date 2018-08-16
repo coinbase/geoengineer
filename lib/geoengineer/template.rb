@@ -8,7 +8,6 @@ class GeoEngineer::Template
   class MissingRequiredParameters < StandardError; end
   class MalformedParameters < StandardError; end
   class EmptyParameters < StandardError; end
-  ALPHABET = ("a".."z").to_a
 
   attr_accessor :name, :parameters, :parent
 

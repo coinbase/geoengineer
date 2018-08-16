@@ -22,6 +22,8 @@ module HasTemplates
     clazz = find_template(type)
     template = clazz.new(name, self, parameters)
     template.instance_exec(*template.template_resources, &block) if block_given?
+    # Need to double check this for templates that create templates
+    throw "Template '#{name}' already defined" if templates[name]
     templates[name] = template
   end
 
