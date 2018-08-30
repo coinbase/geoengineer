@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'netaddr',           '~> 1.5'
   s.add_dependency 'aws-sdk',           '~> 3.0'
+  s.add_dependency 'cloudflair',        '~> 0.2'
   s.add_dependency 'commander',         '~> 4.4'
   s.add_dependency 'colorize',          '~> 0.7'
   s.add_dependency 'parallel',          '~> 1.10'

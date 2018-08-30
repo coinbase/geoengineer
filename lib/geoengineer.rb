@@ -17,6 +17,7 @@ module GeoEngineer::Templates
 end
 
 require 'aws-sdk'
+require 'cloudflair'
 require 'json'
 require 'octokit'
 require 'ostruct'
