@@ -221,4 +221,11 @@ class AwsClients
       Aws::EFS::Client
     )
   end
+
+  def self.codedeploy(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::CodeDeploy::Client
+    )
+  end
 end

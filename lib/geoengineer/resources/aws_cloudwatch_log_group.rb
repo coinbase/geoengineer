@@ -23,7 +23,6 @@ class GeoEngineer::Resources::AwsCloudwatchLogGroup < GeoEngineer::Resource
           _geo_id: log_group[:log_group_name]
         }
       )
-      log_group
     end
   end
 end
