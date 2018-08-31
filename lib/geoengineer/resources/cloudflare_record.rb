@@ -11,7 +11,7 @@ class GeoEngineer::Resources::CloudflareRecord < GeoEngineer::Resource
   after :initialize, -> { self['ttl'] ||= 1 }
 
   def self._fetch_remote_resources(provider)
-    records = CloudflareClient.records.map do |record|
+    records = CloudflareClient.connection(provider).dns_records.map do |record|
       record[:_terraform_id] = record.delete(:id)
       record[:_geo_id] = [record[:domain], record[:name], record[:type]].join('|')
       record
@@ -30,7 +30,8 @@ class GeoEngineer::Resources::CloudflareRecord < GeoEngineer::Resource
     tfstate[:primary][:attributes] = {
       domain: domain,
       name: name,
-      zone_id: CloudflareClient.zone_by_name(domain).id,
+      type: self['type'],
+      zone_id: CloudflareClient.connection(fetch_provider).zone_by_name(domain).id,
     }
 
     tfstate

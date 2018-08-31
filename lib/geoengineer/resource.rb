@@ -199,7 +199,7 @@ class GeoEngineer::Resource
   # There are two types of provider, the string given to a resource, and the object with attributes
   # this method takes the string on the resource and returns the object
   def fetch_provider
-    environment&.find_provider(provider)
+    environment&.find_provider(provider || type.split('_').first)
   end
 
   def self.fetch_remote_resources(provider)
