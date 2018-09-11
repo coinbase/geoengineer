@@ -8,6 +8,10 @@ class GeoEngineer::Resources::AwsIamSamlProvider < GeoEngineer::Resource
 
   after :initialize, -> { _terraform_id -> { name } }
 
+  def support_tags?
+    false
+  end
+
   def self._fetch_remote_resources(provider)
     AwsClients.iam(provider)
               .list_saml_providers
