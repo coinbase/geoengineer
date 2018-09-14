@@ -24,8 +24,8 @@ Lint/AmbiguousBlockAssociation:
 # Offense count: 2
 Lint/UriEscapeUnescape:
   Exclude:
-    - 'lib/geoengineer/resources/aws_iam_policy.rb'
-    - 'lib/geoengineer/resources/aws_iam_role.rb'
+    - 'lib/geoengineer/resources/aws/iam/aws_iam_policy.rb'
+    - 'lib/geoengineer/resources/aws/iam/aws_iam_role.rb'
 
 # Offense count: 107
 # Configuration parameters: CountComments, ExcludedMethods.
@@ -46,10 +46,6 @@ Style/InverseMethods:
   Exclude:
     - 'lib/geoengineer/cli/status_command.rb'
     - 'lib/geoengineer/environment.rb'
-    - 'lib/geoengineer/resources/aws_lb_cookie_stickiness_policy.rb'
-    - 'lib/geoengineer/resources/aws_network_acl_rule.rb'
-    - 'lib/geoengineer/resources/aws_vpn_connection_route.rb'
-    - 'lib/geoengineer/resources/aws_vpn_gateway_attachment.rb'
     - 'lib/geoengineer/utils/has_attributes.rb'
     - 'lib/geoengineer/utils/has_sub_resources.rb'
     - 'lib/geoengineer/utils/has_validations.rb'
@@ -69,10 +65,6 @@ Style/OrAssignment:
 Style/PercentLiteralDelimiters:
   Exclude:
     - 'lib/geoengineer/resource.rb'
-    - 'lib/geoengineer/resources/aws_emr_cluster.rb'
-    - 'lib/geoengineer/resources/aws_lambda_event_source_mapping.rb'
-    - 'lib/geoengineer/resources/aws_nat_gateway.rb'
-    - 'lib/geoengineer/resources/aws_vpc_dhcp_options.rb'
 
 # Offense count: 83
 # Cop supports --auto-correct.
