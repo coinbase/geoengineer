@@ -10,7 +10,9 @@ describe(GeoEngineer::Resources::AwsIamSamlProvider) do
     before do
       list_resp = double()
       saml_resp = double()
-      allow(saml_resp).to receive(:arn).and_return("arn::some:stuf:here:lol")
+      allow(saml_resp).to receive(:arn).and_return(
+        "arn:aws:iam::123456789012:saml-provider/ADFSProvider"
+      )
       allow(list_resp).to receive(:saml_provider_list).and_return([saml_resp])
       aws_client.stub_responses(:list_saml_providers, list_resp)
     end
