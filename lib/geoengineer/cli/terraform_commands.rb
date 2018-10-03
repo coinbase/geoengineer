@@ -66,7 +66,10 @@ module GeoCLI::TerraformCommands
       c.description = 'Generate and show an execution plan'
       action = lambda do |args, options|
         create_terraform_files
-        terraform_plan
+        exit_code = terraform_plan.exitstatus
+        if exit_code.nonzero?
+          exit exit_code
+        end
       end
       c.action init_action(:plan, &action)
     end
@@ -81,7 +84,10 @@ module GeoCLI::TerraformCommands
         create_terraform_files
         return puts "Plan Broken" if terraform_plan.exitstatus.nonzero?
         return puts "Rejecting Plan" unless options.yes || yes?("Apply the above plan? [YES/NO]")
-        terraform_apply
+        exit_code = terraform_apply.exitstatus
+        if exit_code.nonzero?
+          exit exit_status
+        end
       end
       c.action init_action(:apply, &action)
     end
