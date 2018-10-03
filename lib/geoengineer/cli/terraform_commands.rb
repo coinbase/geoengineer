@@ -101,7 +101,10 @@ module GeoCLI::TerraformCommands
         create_terraform_files
         return puts "Plan Broken" if terraform_plan_destroy.exitstatus.nonzero?
         return puts "Rejecting Plan" unless yes?("Apply the above plan? [YES/NO]")
-        terraform_destroy
+        exit_code = terraform_destroy.exitstatus
+        if exit_code.nonzero?
+          exit exit_status
+        end
       end
       c.action init_action(:destroy, &action)
     end
