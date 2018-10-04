@@ -145,22 +145,6 @@ class GeoEngineer::Resource
     end
   end
 
-  def _json_file(attribute, path, binding_obj = nil)
-    raise "file #{path} not found" unless File.file?(path)
-
-    raw = File.open(path, "rb").read
-    interpolated = ERB.new(raw).result(binding_obj).to_s
-
-    # normalize JSON to prevent terraform from e.g. newlines as legitimate changes
-    normalized = _normalize_json(interpolated)
-
-    send(attribute, normalized)
-  end
-
-  def _normalize_json(json)
-    JSON.parse(json).to_json
-  end
-
   # REMOTE METHODS
 
   # This method will fetch the remote resource that has the same _geo_id as the codified resource.

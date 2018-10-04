@@ -194,6 +194,13 @@ class AwsClients
     )
   end
 
+  def self.codebuild(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::CodeBuild::Client
+    )
+  end
+
   def self.kms(provider = nil)
     self.client_cache(
       provider,
