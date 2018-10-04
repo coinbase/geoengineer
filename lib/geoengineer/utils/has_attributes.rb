@@ -15,8 +15,8 @@ module HasAttributes
     retrieve_attribute(key.to_s)
   end
 
-  def []=(key, val)
-    assign_attribute(key.to_s, [val])
+  def []=(key, val = nil, &block)
+    assign_attribute(key.to_s, [val], &block)
   end
 
   def delete(key)
@@ -27,12 +27,17 @@ module HasAttributes
     throw "#{self.class.inspect} cannot handle block"
   end
 
-  def assign_attribute(name, args)
-    # this is a setter
+  def assign_attribute(name, args, &block)
     name = name[0...-1] if name.end_with?"="
-    val = args.length == 1 ? args[0] : args
-    attribute_procs[name] = val if val.is_a?(Proc)
-    attributes[name] = val
+    if block_given?
+      # send to block
+      assign_block(name, *args, &block)
+    else
+      # this is a setter
+      val = args.length == 1 ? args[0] : args
+      attribute_procs[name] = val if val.is_a?(Proc)
+      attributes[name] = val
+    end
   end
 
   def retrieve_attribute(name)
@@ -74,11 +79,8 @@ module HasAttributes
   #    this will allow for caching expensive calls and only calling if requested
   def method_missing(name, *args, &block)
     name = name.to_s
-    if block_given?
-      # A class can override a
-      assign_block(name, *args, &block)
-    elsif args.length >= 1
-      assign_attribute(name, args)
+    if args.length >= 1 || block_given?
+      assign_attribute(name, args, &block)
     elsif args.empty?
       retrieve_attribute(name)
     end
@@ -107,5 +109,30 @@ module HasAttributes
     else
       v
     end
+  end
+
+  def _file(attribute, path, binding_obj = nil)
+    raise "file #{path} not found" unless File.file?(path)
+
+    raw = File.open(path, "rb").read
+    interpolated = ERB.new(raw).result(binding_obj).to_s
+
+    send(attribute, interpolated)
+  end
+
+  def _json_file(attribute, path, binding_obj = nil)
+    raise "file #{path} not found" unless File.file?(path)
+
+    raw = File.open(path, "rb").read
+    interpolated = ERB.new(raw).result(binding_obj).to_s
+
+    # normalize JSON to prevent terraform from e.g. newlines as legitimate changes
+    normalized = _normalize_json(interpolated)
+
+    send(attribute, normalized)
+  end
+
+  def _normalize_json(json)
+    JSON.parse(json).to_json
   end
 end
