@@ -67,9 +67,7 @@ module GeoCLI::TerraformCommands
       action = lambda do |args, options|
         create_terraform_files
         exit_code = terraform_plan.exitstatus
-        if exit_code.nonzero?
-          exit exit_code
-        end
+        exit exit_status if exit_code.nonzero?
       end
       c.action init_action(:plan, &action)
     end
