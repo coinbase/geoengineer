@@ -44,7 +44,10 @@ Style/RedundantSelf:
 Style/RedundantSelf:
   Enabled: false
 
-Style/MethodMissing:
+Style/MethodMissingSuper:
+  Enabled: false
+
+Style/MissingRespondToMissing:
   Enabled: false
 
 Lint/UnusedBlockArgument:
