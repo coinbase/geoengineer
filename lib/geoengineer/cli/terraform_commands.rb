@@ -85,9 +85,7 @@ module GeoCLI::TerraformCommands
         return puts "Plan Broken" if terraform_plan.exitstatus.nonzero?
         return puts "Rejecting Plan" unless options.yes || yes?("Apply the above plan? [YES/NO]")
         exit_code = terraform_apply.exitstatus
-        if exit_code.nonzero?
-          exit exit_status
-        end
+        exit exit_status if exit_code.nonzero?
       end
       c.action init_action(:apply, &action)
     end
@@ -102,9 +100,7 @@ module GeoCLI::TerraformCommands
         return puts "Plan Broken" if terraform_plan_destroy.exitstatus.nonzero?
         return puts "Rejecting Plan" unless yes?("Apply the above plan? [YES/NO]")
         exit_code = terraform_destroy.exitstatus
-        if exit_code.nonzero?
-          exit exit_status
-        end
+        exit exit_status if exit_code.nonzero?
       end
       c.action init_action(:destroy, &action)
     end
