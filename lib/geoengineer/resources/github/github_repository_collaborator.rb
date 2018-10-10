@@ -18,7 +18,7 @@ class GeoEngineer::Resources::GithubRepositoryCollaborator < GeoEngineer::Resour
     end.flatten
   end
 
-  def self.collaborators_for_repo(repo) # rubocop:disable Metrics/AbcSize
+  def self.collaborators_for_repo(repo)
     GithubClient.repository_collaborators(repo[:full_name]).each do |collab|
       collab[:_terraform_id] = "#{collab[:repository]}:#{collab[:login]}"
       collab[:_geo_id] = collab[:_terraform_id]
