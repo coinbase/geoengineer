@@ -4,7 +4,6 @@
 # {https://www.terraform.io/docs/providers/aws/r/db_instance.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsRdsClusterInstance < GeoEngineer::Resource
-  validate -> { validate_required_attributes([:password, :username, :name]) if new? }
   validate -> { validate_required_attributes([:db_subnet_group_name]) unless publicly_accessible }
   validate -> { validate_required_attributes([:cluster_identifier, :instance_class, :engine]) }
 
