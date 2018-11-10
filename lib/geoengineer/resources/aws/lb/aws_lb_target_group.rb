@@ -18,7 +18,9 @@ class GeoEngineer::Resources::AwsLbTargetGroup < GeoEngineer::Resource
     tfstate = super
     tfstate[:primary][:attributes] = {
       'id' => _terraform_id,
-      'deregistration_delay' => '300'
+      'deregistration_delay' => '300',
+      'proxy_protocol_v2' => 'false',
+      'slow_start' => '0'
     }
     tfstate
   end
