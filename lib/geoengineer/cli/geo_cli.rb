@@ -21,6 +21,10 @@ def env
   GeoCLI.instance.environment
 end
 
+def gps
+  GeoCLI.instance.gps
+end
+
 def project(org, name, &block)
   GeoCLI.instance.environment.project(org, name, &block)
 end
@@ -49,6 +53,8 @@ class GeoCLI
     @plan_file            = "plan.terraform"
 
     files = [
+      "#{@tmpdir}/gps.yml",
+      "#{@tmpdir}/gps.expand.yml",
       "#{@tmpdir}/#{@terraform_state_file}.backup",
       "#{@tmpdir}/#{@terraform_file}",
       "#{@tmpdir}/#{@terraform_state_file}",
@@ -75,6 +81,22 @@ class GeoCLI
 
   def require_from_pwd(file)
     require "#{Dir.pwd}/#{file}"
+  end
+
+  def gps
+    return @gps if @gps
+    require_gps
+    @gps ||= GeoEngineer::GPS.parse_dir("#{Dir.pwd}/gps/")
+  end
+
+  def require_gps
+    dir = "#{Dir.pwd}/gps/"
+
+    # No directory
+    return nil unless Dir.exist?(dir)
+
+    # Additional GPS information
+    require "#{dir}/gps.rb" if File.exist? "#{dir}/gps.rb"
   end
 
   def require_environment(options)
@@ -107,6 +129,7 @@ class GeoCLI
   end
 
   def print_validation_errors(errs)
+    errs = errs.sort.compact.uniq
     puts errs.map { |s| "ERROR: #{s}".colorize(:red) }
     puts "Total Errors #{errs.length}"
   end
@@ -192,6 +215,7 @@ class GeoCLI
     destroy_cmd
     graph_cmd
     status_cmd
+    test_cmd
   end
 
   def run

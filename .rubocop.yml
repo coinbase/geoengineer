@@ -30,7 +30,11 @@ Metrics/LineLength:
 
 Metrics/MethodLength:
   CountComments: false  # count full line comments?
-  Max: 15 # from 10
+  Max: 20 # from 10
+
+# Offense count: 2
+Metrics/AbcSize:
+  Max: 20
 
 Style/Lambda:
   Enabled: false
@@ -54,8 +58,21 @@ Metrics/ClassLength:
   CountComments: false  # count full line comments?
   Max: 250
 
+Metrics/ModuleLength:
+  CountComments: false  # count full line comments?
+  Max: 250
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/DoubleNegation:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/MethodMissing:
+  Enabled: false
+
+Security/YAMLLoad:
   Enabled: false
