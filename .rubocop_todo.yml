@@ -40,6 +40,8 @@ Metrics/BlockLength:
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
   Max: 20
+  Exclude:
+    - 'lib/geoengineer/cli/terraform_commands.rb'
 
 # Offense count: 1
 # Configuration parameters: CountComments.
