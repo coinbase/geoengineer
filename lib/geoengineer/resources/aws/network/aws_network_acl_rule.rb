@@ -10,8 +10,9 @@ class GeoEngineer::Resources::AwsNetworkAclRule < GeoEngineer::Resource
     )
   }
 
+  after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> {
-    _terraform_id -> {
+    _geo_id -> {
       terraform_id_components = [
         "#{network_acl_id}-",
         "#{rule_number}-",
@@ -55,7 +56,8 @@ class GeoEngineer::Resources::AwsNetworkAclRule < GeoEngineer::Resource
         "#{rule[:egress]}-",
         "#{_number_for_protocol(rule[:protocol])}-"
       ]
-      rule.merge({ _terraform_id: "nacl-#{Crc32.hashcode(terraform_id_components.join)}" })
+      id = "nacl-#{Crc32.hashcode(terraform_id_components.join)}"
+      rule.merge({ _terraform_id: id, _geo_id: id })
     end
   end
 
