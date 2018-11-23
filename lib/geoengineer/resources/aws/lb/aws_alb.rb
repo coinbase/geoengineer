@@ -5,4 +5,5 @@
 ########################################################################
 require_relative "./aws_lb"
 class GeoEngineer::Resources::AwsAlb < GeoEngineer::Resources::AwsLb
+  after :initialize, -> { self.load_balancer_type = "application" }
 end

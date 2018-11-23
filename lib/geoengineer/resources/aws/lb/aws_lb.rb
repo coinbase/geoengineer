@@ -4,12 +4,12 @@
 # {https://www.terraform.io/docs/providers/aws/r/lb.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsLb < GeoEngineer::Resource
-  validate -> { validate_required_attributes([:subnets]) }
+  validate -> { validate_required_attributes([:name, :load_balancer_type , :subnets]) }
   validate -> { validate_subresource_required_attributes(:access_logs, [:bucket]) }
   validate -> { validate_subresource_required_attributes(:subnet_mapping, [:subnet_id]) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id       -> { name } }
+  after :initialize, -> { _geo_id       -> { "#{name}::#{load_balancer_type}" } }
 
   # The ALB client only allows fetching the tags from 20 ALBs at once
   MAXIMUM_FETCHABLE_ALBS = 20
@@ -34,7 +34,7 @@ class GeoEngineer::Resources::AwsLb < GeoEngineer::Resource
     client = AwsClients.alb(provider)
     client.describe_load_balancers['load_balancers'].map(&:to_h).map do |lb|
       lb[:_terraform_id] = lb[:load_balancer_arn]
-      lb[:_geo_id] = lb[:load_balancer_name]
+      lb[:_geo_id] = "#{lb[:load_balancer_name]}::#{lb[:type]}"
       lb
     end
   end
