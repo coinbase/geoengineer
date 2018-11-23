@@ -4,7 +4,7 @@
 # {https://www.terraform.io/docs/providers/aws/r/lb.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsLb < GeoEngineer::Resource
-  validate -> { validate_required_attributes([:name, :load_balancer_type , :subnets]) }
+  validate -> { validate_required_attributes([:name, :load_balancer_type, :subnets]) }
   validate -> { validate_subresource_required_attributes(:access_logs, [:bucket]) }
   validate -> { validate_subresource_required_attributes(:subnet_mapping, [:subnet_id]) }
 
