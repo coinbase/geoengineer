@@ -107,6 +107,7 @@ class GeoCLI
   end
 
   def print_validation_errors(errs)
+    errs = errs.sort.compact.uniq
     puts errs.map { |s| "ERROR: #{s}".colorize(:red) }
     puts "Total Errors #{errs.length}"
   end
@@ -192,6 +193,7 @@ class GeoCLI
     destroy_cmd
     graph_cmd
     status_cmd
+    test_cmd
   end
 
   def run

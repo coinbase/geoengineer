@@ -3,13 +3,17 @@
 # +plan+ and +apply+ for GeoEngineer
 ########################################################################
 module GeoCLI::TerraformCommands
-  def create_terraform_files
+  def create_terraform_files(with_state = true)
     # create terraform file
     File.open("#{@tmpdir}/#{@terraform_file}", 'w') { |file|
       file.write(JSON.pretty_generate(@environment.to_terraform_json()))
     }
 
     # create terrafrom state
+    write_state if with_state
+  end
+
+  def write_state
     File.open("#{@tmpdir}/#{@terraform_state_file}", 'w') { |file|
       file.write(JSON.pretty_generate(@environment.to_terraform_state()))
     }
@@ -28,7 +32,10 @@ module GeoCLI::TerraformCommands
       " -state=#{@terraform_state_file} -out=#{@plan_file} #{@no_color}"
     ]
 
-    shell_exec(plan_commands.join(" && "), true)
+    exit_code = shell_exec(plan_commands.join(" && "), true).exitstatus
+    return unless exit_code.nonzero?
+    puts "Plan Broken"
+    exit exit_code
   end
 
   def terraform_plan_destroy
@@ -60,14 +67,24 @@ module GeoCLI::TerraformCommands
     shell_exec(destroy_commands.join(" && "), true)
   end
 
+  def test_cmd
+    command :test do |c|
+      c.syntax = 'geo test [<geo_files>]'
+      c.description = 'Generates files while mocking AWS (useful for testing/debugging)'
+      action = lambda do |args, options|
+        create_terraform_files(false)
+      end
+      c.action ->(args, options) { AwsClients.stub! && init_action(:plan, &action).call(args, options) }
+    end
+  end
+
   def plan_cmd
     command :plan do |c|
       c.syntax = 'geo plan [<geo_files>]'
       c.description = 'Generate and show an execution plan'
       action = lambda do |args, options|
         create_terraform_files
-        exit_code = terraform_plan.exitstatus
-        exit exit_code if exit_code.nonzero?
+        terraform_plan
       end
       c.action init_action(:plan, &action)
     end
@@ -80,11 +97,7 @@ module GeoCLI::TerraformCommands
       c.description = 'Apply an execution plan'
       action = lambda do |args, options|
         create_terraform_files
-        exit_code = terraform_plan.exitstatus
-        if exit_code.nonzero?
-          puts "Plan Broken"
-          exit exit_code
-        end
+        terraform_plan
         unless options.yes || yes?("Apply the above plan? [YES/NO]")
           puts "Rejecting Plan"
           exit 1

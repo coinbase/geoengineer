@@ -66,12 +66,6 @@ Style/InverseMethods:
     - 'lib/geoengineer/utils/has_sub_resources.rb'
     - 'lib/geoengineer/utils/has_validations.rb'
 
-# Offense count: 2
-Style/MethodMissing:
-  Exclude:
-    - 'lib/geoengineer/utils/has_attributes.rb'
-    - 'lib/geoengineer/utils/null_object.rb'
-
 # Offense count: 5
 # Cop supports --auto-correct.
 Style/OrAssignment:
