@@ -166,15 +166,15 @@ end
 
 ### Geo Planning System (GPS)
 
-GeoEngineer describes resources in the "cloud" domain, not your domain. For example, security group ingress v.s. "service is allowed to be called by X", IAM policy v.s. "role allowed to do X". The friction between these two domains can make communication with others (e.g. developers) different.
+GeoEngineer describes resources in the **cloud** domain, not **your** application domain. For example, security group ingress is "cloud" way of defining "what can call your service". The friction between these two domains makes communication with others (e.g. developers) difficult.
 
 GPS is an abstraction that helps you describe your cloud in the language of your domain. GPS:
 
 1. **Uses Higher Level Vocabulary** to build configurations.
-1. **Explicit Configuration**: No tricks. What you see is what you get.
-1. **YAML and JSON Schema** YAML is user friendly configuration language. JSON schema provides strict validation to input. Both these technologies are used to provide useful and quick feedback.
-1. **Extensible Configuration** every domain is different. GPS is a high level tool to build your own extensions.
-1. **Backwards Compatible**: GPS is built to be usable with already defined GeoEngineer repositories.
+1. **Explicit Configurations** means no tricks; What you see is what you get.
+1. **YAML and JSON Schema** to strictly configure using known standards.
+1. **Extensible Configuration** lets GPS express any domain.
+1. **Backwards Compatible**: GPS is built to work with current GeoEngineer resources.
 
 GPS files look like `gps/org/first-project.yml`:
 
