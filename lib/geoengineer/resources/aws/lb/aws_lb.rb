@@ -8,6 +8,9 @@ class GeoEngineer::Resources::AwsLb < GeoEngineer::Resource
   validate -> { validate_subresource_required_attributes(:access_logs, [:bucket]) }
   validate -> { validate_subresource_required_attributes(:subnet_mapping, [:subnet_id]) }
 
+  # default to "application"
+  after :initialize, -> { self.load_balancer_type = "application" }
+
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id       -> { "#{name}::#{load_balancer_type}" } }
 
