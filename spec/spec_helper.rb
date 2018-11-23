@@ -8,6 +8,7 @@ Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
 AwsClients.stub!
 
 # Common Resource Class Tests
+# rubocop:disable Metrics/AbcSize
 def init_test(clazz_name)
   it "should initialize and error" do
     env = GeoEngineer::Environment.new("name")
