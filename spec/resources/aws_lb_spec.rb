@@ -44,7 +44,8 @@ describe GeoEngineer::Resources::AwsLb do
     it 'will work with > 20 ALBs' do
       arns = (1..21).map { |i| { load_balancer_arn: "foo/repo-#{i}" } }
       alb_client.stub_responses(:describe_load_balancers, { load_balancers: arns })
-
+      expect(GeoEngineer::Resources::AwsLb).to receive(:_fetch_alb_tags)
+        .twice.and_call_original
       remote_resources = GeoEngineer::Resources::AwsLb._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq 21
     end
