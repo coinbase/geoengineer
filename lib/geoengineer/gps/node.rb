@@ -4,6 +4,14 @@ require 'json-schema'
 class GeoEngineer::GPS::Node
   class NodeError < StandardError; end
 
+  def self.meta?
+    false
+  end
+
+  def meta?
+    false
+  end
+
   attr_reader :project, :environment, :configuration, :node_type, :node_name, :attributes
   attr_accessor :all_nodes
 
@@ -59,6 +67,7 @@ class GeoEngineer::GPS::Node
 
     # Must still conform to schema
     JSON::Validator.validate!(json_schema, attributes, { insert_defaults: true })
+    validate_attributes
   rescue JSON::Schema::ValidationError => e
     attrs = "\nwith attributes:\n#{JSON.pretty_generate(attributes)}"
     schema = "\nfor schema \n#{JSON.pretty_generate(json_schema)}"
@@ -138,6 +147,9 @@ class GeoEngineer::GPS::Node
 
   # Defaults fills out some fields that require code not just JSON SCHAME
   def defaults!; end
+
+  def validate_attributes
+  end
 
   ###
   # Query

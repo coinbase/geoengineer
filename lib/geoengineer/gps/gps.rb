@@ -13,6 +13,7 @@ class GeoEngineer::GPS
   class BadQueryError < StandardError; end
   class GPSProjetNotFound < StandardError; end
   class NodeTypeNotFound < StandardError; end
+  class MetaNodeError < StandardError; end
 
   ###
   # HASH METHODS
@@ -93,10 +94,20 @@ class GeoEngineer::GPS
 
   attr_reader :nodes
   def initialize(base_hash)
+    # Base Hash is the unedited input, useful for debugging
     @base_hash = base_hash
 
-    # Validate each node type
-    @nodes = build_nodes(base_hash)
+    # First Deep Dup to ensure seperate objects
+    # Dup to ensure string keys and to expeand
+    projects_hash = GeoEngineer::GPS.deep_dup(base_hash)
+
+    # expand meta nodes, this takes nodes and expands them
+    projects_hash = expand_meta_nodes(projects_hash)
+
+    # build the node instances and add them to all nodes
+    @nodes = build_nodes(projects_hash)
+
+    # validate all nodes
     @nodes.each(&:validate) # this will validate and expand based on their json schema
   end
 
@@ -124,22 +135,55 @@ class GeoEngineer::GPS
     expanded_hash
   end
 
-  def build_nodes(base_hash)
-    base_hash = GeoEngineer::GPS.deep_dup(base_hash)
-    all_nodes = []
-    # This is a lot of assumptions
+  def loop_projects_hash(projects_hash)
     # TODO validate the strucutre before this
-    base_hash.each_pair do |project, environments|
+    projects_hash.each_pair do |project, environments|
       environments.each_pair do |environment, configurations|
         configurations.each_pair do |configuration, nodes|
           nodes.each_pair do |node_type, node_names|
             node_names.each_pair do |node_name, attributes|
               node_type_class = find_node_class(node_type)
-              all_nodes << node_type_class.new(project, environment, configuration, node_name, attributes)
+              node = node_type_class.new(project, environment, configuration, node_name, attributes)
+              yield environments, configurations, nodes, node_names, node
             end
           end
         end
       end
+    end
+  end
+
+  def expand_meta_nodes(projects_hash)
+    # We dup the original hash because we cannot edit and loop over it at the same time
+    loop_projects_hash(GeoEngineer::GPS.deep_dup(projects_hash)) do |_,_, _, _, node|
+      next unless node.meta?
+      node.validate # ensures that the meta node has expanded and has correct attributes
+
+      # find the hash to edit
+      nodes = projects_hash.dig(node.project, node.environment, node.configuration)
+
+      # node_type => node_name => attrs
+      built_nodes = GeoEngineer::GPS.deep_dup(node.build_nodes) # dup to ensure string keys
+
+      built_nodes.each_pair do |built_node_type, built_node_names|
+        nodes[built_node_type] ||= {}
+        built_node_names.each_pair do |built_node_name, built_attributes|
+          # Error if the meta-node is overwriting an existing node
+          raise MetaNodeError, "\"#{node.name}\" overwrites node \"#{built_node_name}\"" if nodes[built_node_type].key?(built_node_name)
+          # append to the hash
+          nodes[built_node_type][built_node_name] = built_attributes
+        end
+      end
+    end
+
+    projects_hash
+  end
+
+  def build_nodes(projects_hash)
+    all_nodes = []
+    # This is a lot of assumptions
+
+    loop_projects_hash(projects_hash) do |_, _, _, _, node|
+      all_nodes << node
     end
 
     all_nodes
@@ -161,7 +205,7 @@ class GeoEngineer::GPS
     project_nodes = GeoEngineer::GPS.where(@nodes, "#{project_name}:#{environment_name}:*:*:*")
     project_nodes.each do |n|
       n.all_nodes = @nodes
-      n.create_resources(project)
+      n.create_resources(project) unless n.meta?
     end
 
     project_configurations(project_name, environment_name).each do |configuration|
