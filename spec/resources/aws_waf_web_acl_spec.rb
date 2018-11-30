@@ -18,7 +18,8 @@ describe(GeoEngineer::Resources::AwsWafWebAcl) do
               web_acl_id: 'name2',
               name: 'name2'
             }
-          ]
+          ],
+          next_marker: nil
         }
       )
       waf.stub_responses(:list_web_acls, stub)

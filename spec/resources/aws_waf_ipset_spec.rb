@@ -18,7 +18,8 @@ describe(GeoEngineer::Resources::AwsWafIpset) do
               ip_set_id: 'some_id2',
               name: 'some_name2'
             }
-          ]
+          ],
+          next_marker: nil
         }
       )
       waf.stub_responses(:list_ip_sets, stub)
