@@ -18,7 +18,8 @@ describe(GeoEngineer::Resources::AwsWafRule) do
               rule_id: 'name2',
               name: 'name2'
             }
-          ]
+          ],
+          next_marker: nil
         }
       )
       waf.stub_responses(:list_rules, stub)
