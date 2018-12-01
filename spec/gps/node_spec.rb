@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative './test_node'
+require_relative './test_nodes'
 
 describe GeoEngineer::GPS::Node do
   def build_test_node(name: "tn", attrs: {})

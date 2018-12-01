@@ -68,6 +68,8 @@ class GeoEngineer::GPS::Node
     # Must still conform to schema
     JSON::Validator.validate!(json_schema, attributes, { insert_defaults: true })
     validate_attributes
+    # If it makes it this far it is true
+    true
   rescue JSON::Schema::ValidationError => e
     attrs = "\nwith attributes:\n#{JSON.pretty_generate(attributes)}"
     schema = "\nfor schema \n#{JSON.pretty_generate(json_schema)}"
@@ -76,7 +78,7 @@ class GeoEngineer::GPS::Node
   end
 
   def node_id
-    [project, environment, configuration, node_type, node_name].compact.join("::")
+    [project, environment, configuration, node_type, node_name].compact.join(":")
   end
 
   # define_resource create three helper methods
@@ -148,13 +150,12 @@ class GeoEngineer::GPS::Node
   # Defaults fills out some fields that require code not just JSON SCHAME
   def defaults!; end
 
-  def validate_attributes
-  end
+  def validate_attributes; end
 
   ###
   # Query
   ###
-  def query_schema(node_type="[a-zA-Z0-9\\-_\\/\\*]*")
+  def query_schema(node_type = "[a-zA-Z0-9\\-_\\/\\*]*")
     qp = "[a-zA-Z0-9\\-_\\/\\*]*"
 
     {

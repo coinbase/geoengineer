@@ -136,7 +136,7 @@ class GeoEngineer::GPS
   end
 
   def loop_projects_hash(projects_hash)
-    # TODO validate the strucutre before this
+    # TODO: validate the strucutre before this
     projects_hash.each_pair do |project, environments|
       environments.each_pair do |environment, configurations|
         configurations.each_pair do |configuration, nodes|
@@ -154,7 +154,7 @@ class GeoEngineer::GPS
 
   def expand_meta_nodes(projects_hash)
     # We dup the original hash because we cannot edit and loop over it at the same time
-    loop_projects_hash(GeoEngineer::GPS.deep_dup(projects_hash)) do |_,_, _, _, node|
+    loop_projects_hash(GeoEngineer::GPS.deep_dup(projects_hash)) do |_, _, _, _, node|
       next unless node.meta?
       node.validate # ensures that the meta node has expanded and has correct attributes
 
@@ -168,7 +168,8 @@ class GeoEngineer::GPS
         nodes[built_node_type] ||= {}
         built_node_names.each_pair do |built_node_name, built_attributes|
           # Error if the meta-node is overwriting an existing node
-          raise MetaNodeError, "\"#{node.name}\" overwrites node \"#{built_node_name}\"" if nodes[built_node_type].key?(built_node_name)
+          already_built_error = "\"#{node.node_name}\" overwrites node \"#{built_node_name}\""
+          raise MetaNodeError, already_built_error if nodes[built_node_type].key?(built_node_name)
           # append to the hash
           nodes[built_node_type][built_node_name] = built_attributes
         end

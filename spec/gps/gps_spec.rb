@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative './test_node'
+require_relative './test_nodes'
 
 describe GeoEngineer::GPS do
   let(:n0) { GeoEngineer::GPS::Node.new("p0", "e1", "c1", "n1", {}) }
@@ -76,7 +76,16 @@ describe GeoEngineer::GPS do
       g = GeoEngineer::GPS.new({
                                  "p1" => { "e1" => { "c1" => { "test_node" => { "n1" => {} } } } }
                                })
-      expect(g.nodes.first.node_id).to eq "p1::e1::c1::test_node::n1"
+      expect(g.nodes.first.node_id).to eq "p1:e1:c1:test_node:n1"
+    end
+
+    it 'should expand meta_nodes' do
+      g = GeoEngineer::GPS.new({
+                                 "p1" => { "e1" => { "c1" => { "test_meta_node" => { "n1" => {} } } } }
+                               })
+      expect(g.nodes.length).to eq 2
+      expect(g.where("p1:e1:c1:test_meta_node:n1").length).to eq 1
+      expect(g.where("p1:e1:c1:test_node:n1").length).to eq 1
     end
   end
 
