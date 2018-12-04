@@ -69,24 +69,76 @@ class GeoEngineer::GPS
   # End of Serach Methods
   ###
 
+  def self.json_schema
+    node_names = {
+      "type":  "object",
+      "additionalProperties" => {
+        "type":  "object"
+      }
+    }
+
+    node_types = {
+      "type":  "object",
+      "additionalProperties" => node_names
+    }
+
+    configurations = {
+      "type":  "object",
+      "additionalProperties" => node_types
+    }
+
+    environments = {
+      "type":  "object",
+      "additionalProperties" => configurations,
+      "minProperties": 1
+    }
+
+    environments
+  end
+
+  # Load
+  def self.load_gps_file(gps_instance, gps_file)
+    raise "The file \"#{gps_file}\" does not exist" unless File.exist?(gps_file)
+
+    # partial file name is the
+    partial_file_name = gps_file.gsub(".gps.yml", ".rb")
+
+    if File.exist?(partial_file_name)
+      # if the partial file exists we load the file directly
+      # This will create the GPS resources
+      require "#{Dir.pwd}/#{partial_file_name}"
+    else
+      # otherwise initalize for the partial directly here
+      gps_instance.partial_of(partial_file_name)
+    end
+  end
+
+  def load_gps_file(gps_file)
+    GeoEngineer::GPS.load_gps_file(self, gps_file)
+  end
+
   # Parse
   def self.parse_dir(dir)
     base_hash = {}
 
+    extension = ".gps.yml"
+
     # Load, expand then merge all yml files
-    Dir["#{dir}**/*.yml"].each do |gps_file|
+    Dir["#{dir}**/*#{extension}"].each do |gps_file|
       # Merge Keys don't work with YAML.safe_load
       # since we are also loading Ruby safe_load is not needed
 
       gps_text = ERB.new(File.read(gps_file)).result(binding).to_s
       gps_hash = YAML.load(gps_text)
+      # remove all keys starting with `_` to remove paritals
+      gps_hash = remove_(gps_hash)
+      JSON::Validator.validate!(json_schema, gps_hash)
 
       # project name it the path + file
-      project_name = gps_file.sub(dir, "")[0...-4]
+      project_name = gps_file.sub(dir, "")[0...-extension.length]
 
-      # remove all keys starting with `_` to remove paritals
       # assign to the base_hash the
-      base_hash[project_name.to_s] = remove_(gps_hash)
+      base_hash[project_name.to_s] = gps_hash
     end
 
     GeoEngineer::GPS.new(base_hash)
@@ -190,8 +242,20 @@ class GeoEngineer::GPS
     all_nodes
   end
 
-  # returns AND builds the GeoEngineer Project
-  def project(org, name, environment, &block)
+  # This method takes the file name of the geoengineer project file
+  # it calculates the location of the gps file
+  def partial_of(file_name, &block)
+    org_name, project_name = file_name.gsub(".rb", "").split("/")[-2..-1]
+    full_name = "#{org_name}/#{project_name}"
+
+    @created_projects ||= {}
+    return if @created_projects[full_name] == true
+    @created_projects[full_name] = true
+
+    create_project(org_name, project_name, env, &block)
+  end
+
+  def create_project(org, name, environment, &block)
     project_name = "#{org}/#{name}"
     environment_name = environment.name
     project_environments = project_environments(project_name)

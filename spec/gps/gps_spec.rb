@@ -100,13 +100,13 @@ describe GeoEngineer::GPS do
     end
   end
 
-  describe '#project' do
+  describe '#create_project' do
     it 'creates node resources' do
       h = { "org/p1" => { "e1" => { "c1" => { "test_node" => { "n1" => { "name" => "asd" } } } } } }
       g = GeoEngineer::GPS.new(h)
 
       called = false
-      g.project("org", "p1", GeoEngineer::Environment.new("e1")) do |project, config, nodes|
+      g.create_project("org", "p1", GeoEngineer::Environment.new("e1")) do |project, config, nodes|
         called = true
         expect(config).to eq "c1"
         expect(project.full_name).to eq "org/p1"

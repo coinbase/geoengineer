@@ -81,18 +81,30 @@ class GeoEngineer::GPS::Node
     [project, environment, configuration, node_type, node_name].compact.join(":")
   end
 
+  def load_gps_file
+    gps.load_gps_file("projects/#{project}.gps.yml")
+  end
+
   # define_resource create three helper methods
   # 1. read method similar to attr_reader
   # 2. ref method which can be used
   # 3. create method which sets the resource with the correct ref
   def self.define_resource(type, name, id_lambda = nil)
+    load_gps_file = -> { load_gps_file() }
     id_lambda = -> { resource_id(name) } if id_lambda.nil?
     read_method = name.to_s
     ref_method = "#{name}_ref"
     create_method = "create_#{name}"
 
     define_method(read_method) do
+      instance_exec(&load_gps_file)
       instance_variable_get("@#{name}")
+    end
+
+    define_method(ref_method) do |attribute = "id"|
+      instance_exec(&load_gps_file)
+      id = instance_exec(&id_lambda)
+      "${#{type}.#{id}.#{attribute}}"
     end
 
     define_method(create_method) do |project|
@@ -100,11 +112,6 @@ class GeoEngineer::GPS::Node
       resource = project.resource(type, id) {}
       instance_variable_set("@#{name}", resource)
       resource
-    end
-
-    define_method(ref_method) do |attribute = "id"|
-      id = instance_exec(&id_lambda)
-      "${#{type}.#{id}.#{attribute}}"
     end
   end
 
