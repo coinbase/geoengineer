@@ -38,7 +38,7 @@ class GeoEngineer::GPS
   ###
 
   ###
-  # Serach Methods
+  # Search Methods
   ###
 
   # where returns multiple nodes
@@ -66,7 +66,7 @@ class GeoEngineer::GPS
   end
 
   ###
-  # End of Serach Methods
+  # End of Search Methods
   ###
 
   def self.json_schema
