@@ -29,8 +29,8 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
 
   def uniq_cidr_and_sg_blocks
     (self.all_ingress + self.all_egress).each do |in_eg|
-      in_eg.cidr_blocks      = in_eg.cidr_blocks.uniq     if in_eg.cidr_blocks
-      in_eg.security_groups  = in_eg.security_groups.uniq if in_eg.security_groups
+      in_eg.cidr_blocks      = in_eg.cidr_blocks.uniq.sort     if in_eg.cidr_blocks
+      in_eg.security_groups  = in_eg.security_groups.uniq.sort if in_eg.security_groups
     end
   end
 

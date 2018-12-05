@@ -21,6 +21,10 @@ def env
   GeoCLI.instance.environment
 end
 
+def gps
+  GeoCLI.instance.gps
+end
+
 def project(org, name, &block)
   GeoCLI.instance.environment.project(org, name, &block)
 end
@@ -49,6 +53,8 @@ class GeoCLI
     @plan_file            = "plan.terraform"
 
     files = [
+      "#{@tmpdir}/gps.yml",
+      "#{@tmpdir}/gps.expand.yml",
       "#{@tmpdir}/#{@terraform_state_file}.backup",
       "#{@tmpdir}/#{@terraform_file}",
       "#{@tmpdir}/#{@terraform_state_file}",
@@ -77,6 +83,22 @@ class GeoCLI
     require "#{Dir.pwd}/#{file}"
   end
 
+  def gps
+    return @gps if @gps
+    require_gps
+    @gps ||= GeoEngineer::GPS.parse_dir("#{Dir.pwd}/projects/")
+  end
+
+  def require_gps
+    dir = "#{Dir.pwd}/gps/"
+
+    # No directory
+    return nil unless Dir.exist?(dir)
+
+    # Additional GPS information
+    require "#{dir}/gps.rb" if File.exist? "#{dir}/gps.rb"
+  end
+
   def require_environment(options)
     @env_name = options.environment || ENV['GEO_ENV'] || 'staging'
     puts "Using environment '#{@env_name}'\n" if @verbose
@@ -89,21 +111,35 @@ class GeoCLI
 
   def require_all_projects
     Dir["#{Dir.pwd}/projects/**/*.rb"].each do |project_file|
-      puts "LOADING #{project_file}" if @verbose
-      require project_file
+      project_file = project_file.gsub("#{Dir.pwd}/", "")
+      require_project_file(project_file)
     end
+
+    Dir["#{Dir.pwd}/projects/**/*.gps.yml"].each do |gps_file|
+      gps_file = gps_file.gsub("#{Dir.pwd}/", "")
+      GeoEngineer::GPS.load_gps_file(gps, gps_file)
+    end
+  end
+
+  # this method accepts .rb files and .gps.yml files
+  def require_geo_files(files)
+    # load everything if empty
+    return require_all_projects if files.empty?
+
+    # first require .rb files
+    files.select { |file| file.end_with?(".rb") }
+         .each { |project_file| require_project_file(project_file) }
+
+    # next require .gps.yml files (if they were not required by)
+    files.select { |file| file.end_with?(".gps.yml") }
+         .each { |gps_file| GeoEngineer::GPS.load_gps_file(gps, gps_file) }
   end
 
   def require_project_file(project_file)
-    if !File.exist?(project_file) && !File.exist?("#{project_file}.rb")
+    unless File.exist?(project_file)
       throw "The file \"#{project_file}\" does not exist"
     end
-    require_from_pwd project_file
-  end
-
-  def require_geo_files(args)
-    return require_all_projects if args.empty?
-    args.each { |project_file| require_project_file(project_file) }
+    require_from_pwd(project_file)
   end
 
   def print_validation_errors(errs)

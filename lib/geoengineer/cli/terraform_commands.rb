@@ -4,6 +4,9 @@
 ########################################################################
 module GeoCLI::TerraformCommands
   def create_terraform_files(with_state = true)
+    # If GPS is included then write some files to help debug
+    write_gps if @gps
+
     # create terraform file
     File.open("#{@tmpdir}/#{@terraform_file}", 'w') { |file|
       file.write(JSON.pretty_generate(@environment.to_terraform_json()))
@@ -16,6 +19,16 @@ module GeoCLI::TerraformCommands
   def write_state
     File.open("#{@tmpdir}/#{@terraform_state_file}", 'w') { |file|
       file.write(JSON.pretty_generate(@environment.to_terraform_state()))
+    }
+  end
+
+  def write_gps
+    File.open("#{@tmpdir}/gps.yml", 'w') { |file|
+      file.write(gps.to_h.to_yaml)
+    }
+
+    File.open("#{@tmpdir}/gps.expand.yml", 'w') { |file|
+      file.write(gps.expanded_hash.to_yaml)
     }
   end
 

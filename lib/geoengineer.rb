@@ -16,6 +16,16 @@ end
 module GeoEngineer::Templates
 end
 
+########################################################################
+# GeoEngineer::GPS Geo Planning System
+########################################################################
+class GeoEngineer::GPS
+end
+
+# GPS Nodes module contains the node definitions
+module GeoEngineer::GPS::Nodes
+end
+
 require 'aws-sdk'
 require 'json'
 require 'octokit'
@@ -26,6 +36,8 @@ require 'securerandom'
 Dir["#{File.dirname(__FILE__)}/geoengineer/utils/**/*.rb"].each { |f| require f }
 
 Dir["#{File.dirname(__FILE__)}/geoengineer/*.rb"].each { |f| require f }
+
+Dir["#{File.dirname(__FILE__)}/geoengineer/gps/**/*.rb"].each { |f| require f }
 
 Dir["#{File.dirname(__FILE__)}/geoengineer/resources/**/*.rb"].each { |f| require f }
 

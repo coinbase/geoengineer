@@ -11,11 +11,10 @@ GeoEngineer's goals/requirements/features are:
 0. **DSL based on Terraform**: GeoEngineer uses [Terraform](https://github.com/hashicorp/terraform) to plan and execute changes, so the DSL to describe resources is similar to Terraform's. GeoEngineer's DSL also provides programming and object oriented features like inheritance, abstraction, branching and looping.
 1. **Development Workflow**: GeoEngineer is built to be used within existing development workflows, e.g. branching, creating pull requests, code reviewing and merging. To simplify these workflows, GeoEngineer dynamically generates Terraform state files using cloud APIs and opinionated tagging.
 2. **Extensible Validation**: Every team has their own standards when managing cloud resources e.g. naming patterns, tagging requirements, security rules. GeoEngineer resources can have custom validations added to ensure the resources conform to required standards.
-3. **Reusable Templates**: copy and pasting codified resources makes it difficult to understand and maintain infrastructure. By abstracting recommended patterns of reuse into **templates**, GeoEngineer aims to increase code reuse and decrease code copy/paste.
-4. **Describe Existing Resources**: Existing resources can be described with GeoEngineer without having to destroy and recreate them.
-5. **Principle of Least Astonishment**: show the exact plan before execution; do nothing without confirmation; do not allow a plan to be executed with failing validations; by default do not allow deletions; show warnings and hints to make code better.
-6. **One File per Project**: Managing dozens of projects with hundreds of files is difficult and error-prone, especially if a single project's resources are described across many files. Projects are easier to manage when they are each described in one file.
-7. **Dependencies**: resources have dependencies on other resources, projects have dependencies on other projects. Using Ruby's `require` file that describe resources can be included and referenced without having to hard-code any values.
+3. **Describe Existing Resources**: Existing resources can be described with GeoEngineer without having to destroy and recreate them.
+4. **Principle of Least Astonishment**: show the exact plan before execution; do nothing without confirmation; do not allow a plan to be executed with failing validations; by default do not allow deletions; show warnings and hints to make code better.
+5. **One File per Project**: Managing dozens of projects with hundreds of files is difficult and error-prone, especially if a single project's resources are described across many files. Projects are easier to manage when they are each described in one file.
+6. **Dependencies**: resources have dependencies on other resources, projects have dependencies on other projects. Using Ruby's `require` file that describe resources can be included and referenced without having to hard-code any values.
 
 ## Getting Started
 
@@ -145,7 +144,7 @@ GeoEngineer command line tool `geo` can:
 
 ## Customizations
 
-GeoEngineer's DSL can be customized to your needs using validations, templates and reusable methods on resources.
+GeoEngineer's DSL can be customized to your needs using validations, GPS and reusable methods on resources.
 
 ### Validations
 
@@ -165,63 +164,97 @@ class GeoEngineer::Resources::AwsElb < GeoEngineer::Resource
 end
 ```
 
-### Templates
+### Geo Planning System (GPS)
 
-Below is an example template that builds a Elastic Load Balancer and a security group for an array of listeners:
+GeoEngineer describes resources in the **cloud** domain, not **your** application domain. For example, security group ingress is "cloud" way of defining "what can call your service". The friction between these two domains makes communication with others (e.g. developers) difficult.
+
+GPS is an abstraction that helps you describe your cloud in the language of your domain. GPS:
+
+1. **Uses Higher Level Vocabulary** to build configurations.
+1. **Explicit Configurations** means no tricks; What you see is what you get.
+1. **YAML and JSON Schema** to strictly configure using known standards.
+1. **Extensible Configuration** lets GPS express any domain.
+1. **Backwards Compatible**: GPS is built to work with current GeoEngineer resources.
+
+GPS files look like `gps/org/first-project.yml`:
+
+```yml
+<environment>:
+  <configuration>:
+    <node_type>:
+      <node_name>:
+        <attributes>:
+```
+
+The filename is used to define the project. The `environment` and `configuration` are used to group nodes. Each configuration has multiple nodes, defined under their types. You can define your own node types that can allow multiple `attributes`.
+
+For example, the file `./gps/org/first-project.yml` describes a node `service` named `api` with configuration `staging` in the `development` environment:
+
+```yml
+development:
+  staging:
+    service:
+      api:
+        ports: "80:80"
+```
+
+The `service` node type is defined to take a string of ports and build an Load balancer:
 
 ```ruby
-class LoadBalancedInstance < Template
-  attr_reader :elb, :elb_sg
+# Load Balancer Node
+class GeoEngineer::GPS::Nodes::Service < GeoEngineer::GPS::Node
+  # explicity define the exposed resources from this node
+  define_resource "aws_elb", :elb
 
-  def initialize(name, project, parameters)
-    super(name, project, parameters)
-    # { listeners: [{ in: out: }]}
-    listeners = parameters[:listeners] || []
-
-    # Create the Security Groups
-    elb_sg = resource("aws_security_group", "#{name}_allow_http") {
-      name         "#{name}_elb_sg"
-      description  ""
-      vpc_id       env.vpc_id
-      for l in listeners
-        ingress {
-          from_port    l[:in]
-          to_port      l[:in]
-          protocol     "tcp"
-          cidr_blocks  ["0.0.0.0/0"]
+  # define the types of attributes using JSON schema
+  def json_schema
+    {
+      "type":  "object",
+      "additionalProperties" => false,
+      "properties":  {
+        "ports":  {
+          "type":  "string",
+          "default":  "80:80"
         }
-      end
-      tags { Name "#{name}_elb_sg" }
+      }
     }
-
-    # ELB
-    elb = resource("aws_elb", "main-web-app") {
-      name             "#{name}_elb"
-      security_groups  [elb_sg]
-      subnets          [env.subnet]
-      for l in listeners
-        listener {
-          instance_port     l[:out]
-          instance_protocol "http"
-          lb_port           l[:in]
-          lb_protocol       "http"
-        }
-      end
-    }
-
-    @elb    = elb
-    @elb_sg = elb_sg
   end
 
-  def template_resources
-    [@elb, @elb_sg]
+  # called by GPS when creating resources
+  def create_resources(project)
+    create_elb(project) # method created with `define_resource`
+    setup_elb
+  end
+
+  def setup_elb
+    # Set the values of the resource here
+    elb.ports = attributes["ports"]
   end
 end
+```
 
-# Instantiate the template for this project to forward two ports 80 and 8080
-project.from_template("load_balanced_instance", "main_app", {
-  listeners: [{in: 80, out: 3000 }, {in: 8080, out: 4000 }]
-})
+To integrate with a project use:
+
+```ruby
+project = gps.project("org", "first-project", env) do |nodes|
+  # query for api filling in the default env, config, project...
+  nodes.find(":::service:api")
+end
+
+# Find the service
+# query syntax is `<project>:<environment>:<config>:<type>:<name>`
+service = gps.find("org/first-project:development:staging:service:api")
+
+# method to get the GeoEngineer resource ELB
+service.elb
+
+# method to get the terraform reference to the resource
+service.elb_ref
+
+# return all service nodes
+gps.where("org/first-project:*:*:service:*").each do |node|
+  node.elb.tags { ... }
+end
 ```
 
 ### Methods
@@ -355,19 +388,12 @@ The core models in GeoEngineer are:
  +-----+-------+ 1  * +-------------+ 1  *  +-------------+
  | Project     +----->+ Resource    +------>+ SubResource |
  +-------------+      +-------------+       +-------------+
-       | 1                 ^ *
-       |                   |
-       v *                 |
- +-------------+           |
- | Template    +-----------+
- +-------------+ 1
 ```
 
 
 1. `Environment` contains many resources that may exist outside of a project, like VPCs or routing tables. Also every project defined to be in the environment, for example the `test_www` project is in `staging` but `monorail` is in `staging` and `production` environments.
 2. `Project` contains many resources and services grouped together into a name.
-3. `Template` has a `type` and `name`, and a group of resources that are defined in a pattern, e.g. every Load Balancer requires a unique security group that allows traffic in. It is a simple abstraction that can dramatically simplify and standardize cloud resources.
-4. `Resource` and `SubResource` are based off of how terraform models cloud resources. A `Resource` instance can have many `SubResource` instances, but a `SubResource` instance belongs to only one `Resource` instance, e.g. a load balancer resource may have a `health_check` sub-resource to only allow specific incoming ports.
+3. `Resource` and `SubResource` are based off of how terraform models cloud resources. A `Resource` instance can have many `SubResource` instances, but a `SubResource` instance belongs to only one `Resource` instance, e.g. a load balancer resource may have a `health_check` sub-resource to only allow specific incoming ports.
 
 All these models can have arbitrary attributes assigned to them either by directly assigning on the instance, or through passing a block to the constructor. For example:
 
@@ -433,37 +459,11 @@ This projects organization is `org`, its name `project_name` and will be provisi
 
 The method `project` will automatically add the project to the instantiated environment object **only if** that environment's name is in the list of environments, otherwise it is ignored.
 
-### Templates
-
-A template is used to create a group of resources in a recommended pattern. For example, an HTTP service could create a load balancer, a load balancer security group, and a ec2 security group.
-
-```ruby
-template_instance = project.from_template('template_type', 'name', parameter: 'helloworld') { |resource, resource_sg|
-
-  # set attribute
-  attribute "custom attribute"
-
-  # Customize the values
-  resource.cutomize_value = "Customize"
-  resource.override_value = "Override"
-
-  # Overrider a subresource value
-  resource.subresource.override_sr_value = "first value"
-  resource.all_subresource[1].override_sr_value = "new value"
-}
-
-template_instance.resource_sg # access the created resources outside the block
-```
-
-This template will create a resource `resource` and a resource security group `resource_sg` with the option `hello` set to value `'world'`. The resources can then be customized and have their values overridden.
-
-Each template should be documented with the created resources and how to modify them.
-
 ### Resources and SubResources
 
 Resources are defined to be similar to the [terraform resource](https://www.terraform.io/docs/configuration/resources.html) configuration. The main difference is to not use `=` as this will create a local ruby variable and not assign the value.
 
-A `Resource` can be created with and `environment`, `project` or `template` object (this will add that resource to that object):
+A `Resource` can be created with and `environment` or `project` object (this will add that resource to that object):
 
 ```ruby
 environment.resource('type', 'identifier') {
@@ -474,10 +474,6 @@ environment.resource('type', 'identifier') {
 }
 
 project.resource('type', 'identifier') {
-  # ...
-}
-
-template.resource('type', 'identifier') {
   # ...
 }
 ```
