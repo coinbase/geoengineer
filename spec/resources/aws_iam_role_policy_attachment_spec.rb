@@ -1,7 +1,8 @@
 require_relative '../spec_helper'
 
-describe GeoEngineer::Resources::AwsIamPolicyAttachment do
+describe GeoEngineer::Resources::AwsIamRolePolicyAttachment do
   let(:aws_client) { AwsClients.iam }
+  common_resource_tests(described_class, described_class.type_from_class_name, false)
 
   let(:iam_policy) do
     GeoEngineer::Resources::AwsIamPolicy.new('aws_iam_policy', 'fake_policy') {
@@ -17,8 +18,6 @@ describe GeoEngineer::Resources::AwsIamPolicyAttachment do
         _policy policy
       }
   end
-
-  common_resource_tests(described_class, described_class.type_from_class_name, false)
 
   describe '#remote_resource' do
     before do
@@ -49,28 +48,6 @@ describe GeoEngineer::Resources::AwsIamPolicyAttachment do
           ]
         }
       )
-    end
-
-    context 'with a policy' do
-      context 'when the policy does not have a remote resource' do
-        before { expect(iam_policy_attachment).to receive(:remote_resource).and_return(nil) }
-
-        it 'should not have a remote resource' do
-          expect(iam_policy_attachment.remote_resource).to be_nil
-        end
-      end
-
-      it 'should create a hash from the response' do
-        remote_resource = iam_policy_attachment.remote_resource_params
-
-        expect(remote_resource[:name]).to eql 'Fake-Aws-Policy'
-        expect(remote_resource[:_terraform_id]).to eql 'arn:aws:iam::aws:policy/xyv/FakeAwsARN'
-        expect(remote_resource[:_geo_id]).to eql 'Fake-Aws-Policy'
-
-        expect(remote_resource[:users].length).to eql(2)
-        expect(remote_resource[:groups].length).to eql(1)
-        expect(remote_resource[:groups].length).to eql(1)
-      end
     end
   end
 end
