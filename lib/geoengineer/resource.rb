@@ -226,6 +226,7 @@ class GeoEngineer::Resource
   end
 
   def self.build(resource_hash)
+    return nil unless resource_hash
     GeoEngineer::Resource.new(type_from_class_name, resource_hash['_geo_id']) {
       resource_hash.each { |k, v| self[k] = v }
     }
