@@ -68,6 +68,13 @@ class AwsClients
     )
   end
 
+  def self.directconnect(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::DirectConnect::Client
+    )
+  end
+
   def self.dynamo(provider = nil)
     self.client_cache(
       provider,
