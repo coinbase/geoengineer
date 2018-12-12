@@ -11,6 +11,8 @@ class GeoEngineer::Resources::AwsIamRolePolicyAttachment < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{role}:#{_policy&.name}" } }
 
+  @role_cache = {}
+
   def support_tags?
     false
   end
@@ -30,17 +32,19 @@ class GeoEngineer::Resources::AwsIamRolePolicyAttachment < GeoEngineer::Resource
     tfstate
   end
 
-  def fetch_entities(policy_arn, marker = nil, roles = [])
-    params = { policy_arn: policy_arn }
-    params[:marker] = marker unless marker.nil?
+  def fetch_entities(policy_arn)
+    return @role_cache[policy_arn] if self.class.role_cache.key?(policy_arn)
 
-    response = AwsClients.iam(provider).list_entities_for_policy(params)
+    roles = []
 
-    if response.is_truncated
-      fetch_entities(policy_arn, response.marker, roles + response.policy_roles)
-    else
-      roles + response.policy_roles
+    response = AwsClients.iam(provider).list_entities_for_policy({ policy_arn: policy_arn })
+    roles += response.policy_roles
+    while response.next_page?
+      response = response.next_page
+      roles += response.policy_roles
     end
+
+    @role_cache[policy_arn] = roles
   end
 
   def remote_resource_params
