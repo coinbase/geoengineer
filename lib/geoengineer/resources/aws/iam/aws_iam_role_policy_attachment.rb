@@ -30,18 +30,31 @@ class GeoEngineer::Resources::AwsIamRolePolicyAttachment < GeoEngineer::Resource
     tfstate
   end
 
+  def fetch_entities(policy_arn, marker = nil, roles = [])
+    params = { policy_arn: policy_arn }
+    params[:marker] = marker unless marker.nil?
+
+    response = AwsClients.iam(provider).list_entities_for_policy(params)
+
+    if response.is_truncated
+      fetch_entities(policy_arn, response.marker, roles + response.policy_roles)
+    else
+      roles + response.policy_roles
+    end
+  end
+
   def remote_resource_params
     return {} unless _policy
     return {} unless _policy.remote_resource
 
     arn = _policy.remote_resource._terraform_id
-    entities = AwsClients.iam(provider).list_entities_for_policy({ policy_arn: arn })
+    attached_roles = fetch_entities(arn)
 
-    build_remote_resource_params(arn, entities)
+    build_remote_resource_params(arn, attached_roles)
   end
 
   def build_remote_resource_params(arn, entities)
-    role_names = entities[:policy_roles].map(&:role_name)
+    role_names = entities.map(&:role_name)
     return nil unless role_names.include?(self.role)
 
     {
