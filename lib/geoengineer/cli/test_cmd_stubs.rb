@@ -1,3 +1,4 @@
+# Stubs for `geo test` command
 module GeoCLI::TestCmdStubs
   def self.stub!
     puts "Stubbing Commands"
