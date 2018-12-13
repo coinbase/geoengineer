@@ -87,7 +87,7 @@ module GeoCLI::TerraformCommands
       action = lambda do |args, options|
         create_terraform_files(false)
       end
-      c.action ->(args, options) { AwsClients.stub! && init_action(:plan, &action).call(args, options) }
+      c.action ->(args, options) { GeoCLI::TestCmdStubs.stub! && init_action(:plan, &action).call(args, options) }
     end
   end
 
