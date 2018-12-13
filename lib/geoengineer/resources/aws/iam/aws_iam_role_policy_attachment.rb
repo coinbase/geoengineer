@@ -35,7 +35,6 @@ class GeoEngineer::Resources::AwsIamRolePolicyAttachment < GeoEngineer::Resource
     @@role_cache ||= {}
     return @@role_cache[policy_arn] if @@role_cache.key?(policy_arn)
 
-    puts "FETCHING FOR #{policy_arn}"
     roles = []
 
     response = AwsClients.iam(provider).list_entities_for_policy({ policy_arn: policy_arn })
