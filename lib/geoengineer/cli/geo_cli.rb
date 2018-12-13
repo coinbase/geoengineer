@@ -11,6 +11,7 @@ class GeoCLI
 end
 
 require_relative './status_command'
+require_relative './test_cmd_stubs'
 require_relative './terraform_commands'
 
 def environment(name, &block)
