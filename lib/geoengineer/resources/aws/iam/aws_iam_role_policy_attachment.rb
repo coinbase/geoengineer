@@ -30,6 +30,7 @@ class GeoEngineer::Resources::AwsIamRolePolicyAttachment < GeoEngineer::Resource
     tfstate
   end
 
+  # rubocop:disable Style/ClassVars
   def fetch_entities(policy_arn)
     @@role_cache ||= {}
     return @@role_cache[policy_arn] if @@role_cache.key?(policy_arn)
