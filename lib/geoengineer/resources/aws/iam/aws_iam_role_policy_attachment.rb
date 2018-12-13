@@ -11,8 +11,6 @@ class GeoEngineer::Resources::AwsIamRolePolicyAttachment < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{role}:#{_policy&.name}" } }
 
-  @role_cache = {}
-
   def support_tags?
     false
   end
@@ -32,8 +30,10 @@ class GeoEngineer::Resources::AwsIamRolePolicyAttachment < GeoEngineer::Resource
     tfstate
   end
 
+  # rubocop:disable Style/ClassVars
   def fetch_entities(policy_arn)
-    return @role_cache[policy_arn] if self.class.role_cache.key?(policy_arn)
+    @@role_cache ||= {}
+    return @@role_cache[policy_arn] if @@role_cache.key?(policy_arn)
 
     roles = []
 
@@ -44,7 +44,8 @@ class GeoEngineer::Resources::AwsIamRolePolicyAttachment < GeoEngineer::Resource
       roles += response.policy_roles
     end
 
-    @role_cache[policy_arn] = roles
+    @@role_cache[policy_arn] = roles
+    roles
   end
 
   def remote_resource_params
