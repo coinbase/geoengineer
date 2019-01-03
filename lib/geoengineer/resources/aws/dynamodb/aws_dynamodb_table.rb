@@ -4,7 +4,7 @@
 # {https://www.terraform.io/docs/providers/aws/r/aws_dynamodb_table.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsDynamodbTable < GeoEngineer::Resource
-  validate -> { validate_required_attributes([:name, :read_capacity, :write_capacity, :hash_key]) }
+  validate -> { validate_required_attributes([:name, :hash_key]) }
 
   after :initialize, -> { _terraform_id -> { name } }
 
