@@ -5,7 +5,7 @@ jobs:
       - image: circleci/ruby:2.4.1
     steps:
       - checkout
-      - run: gem install bundler
+      - run: gem install bundler --conservative
       - run: bundle install
       - run: bundle exec rspec
 
