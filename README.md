@@ -8,6 +8,7 @@ GeoEngineer provides a Ruby DSL and command line tool (`geo`) to *codify*  then 
 
 GeoEngineer's goals/requirements/features are:
 
+
 0. **DSL based on Terraform**: GeoEngineer uses [Terraform](https://github.com/hashicorp/terraform) to plan and execute changes, so the DSL to describe resources is similar to Terraform's. GeoEngineer's DSL also provides programming and object oriented features like inheritance, abstraction, branching and looping.
 1. **Development Workflow**: GeoEngineer is built to be used within existing development workflows, e.g. branching, creating pull requests, code reviewing and merging. To simplify these workflows, GeoEngineer dynamically generates Terraform state files using cloud APIs and opinionated tagging.
 2. **Extensible Validation**: Every team has their own standards when managing cloud resources e.g. naming patterns, tagging requirements, security rules. GeoEngineer resources can have custom validations added to ensure the resources conform to required standards.
