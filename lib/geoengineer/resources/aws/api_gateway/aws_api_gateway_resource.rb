@@ -1,7 +1,7 @@
 require_relative "./helpers"
 
 ########################################################################
-# AwsCloudTrail is the +api_gatewat_rest_api+ terrform resource,
+# AwsApiGatewayResource is the +api_gateway_rest_api+ terrform resource,
 #
 # {https://www.terraform.io/docs/providers/aws/r/api_gateway_resource.html}
 ########################################################################
@@ -14,9 +14,10 @@ class GeoEngineer::Resources::AwsApiGatewayResource < GeoEngineer::Resource
   after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
   after :initialize, -> { _rest_api.api_resources[self.type][self.id] = self }
 
-  # Parent is a resource (the default being the root resource of the rest_api '/')
-  # At the moment we only support rest_api being the root resource
-  after :initialize, -> { self.parent_id = _rest_api.to_ref("root_resource_id") }
+  # Users get the root resource ('/') as parent by default, but can optionally set
+  # it to another resource. This allows for hierarchically organizing API gateway
+  # routes by simply setting `parent_id other_resource.to_ref` in your plan.
+  after :initialize, -> { self.parent_id ||= _rest_api.to_ref("root_resource_id") }
 
   after :initialize, -> { depends_on [_rest_api.terraform_name] }
 
