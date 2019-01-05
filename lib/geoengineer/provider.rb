@@ -6,6 +6,7 @@
 class GeoEngineer::Provider
   attr_reader :id
   include HasAttributes
+  include HasSubResources
 
   def initialize(id, &block)
     @id = id
@@ -28,11 +29,17 @@ class GeoEngineer::Provider
       "  #{k.to_s.inspect} = #{v.inspect}"
     }
 
+    sb.concat subresources.map(&:to_terraform)
     sb << " }"
     sb.join("\n")
   end
 
   def to_terraform_json
-    { id.to_s => terraform_attributes }
+    json = terraform_attributes
+    subresources.map(&:to_terraform_json).each do |k, v|
+      json[k] ||= []
+      json[k] << v
+    end
+    { id.to_s => json }
   end
 end
