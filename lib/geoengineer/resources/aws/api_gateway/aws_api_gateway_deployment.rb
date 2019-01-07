@@ -15,7 +15,7 @@ class GeoEngineer::Resources::AwsApiGatewayDeployment < GeoEngineer::Resource
   after :initialize, -> {
     if self._rest_api
       self.rest_api_id = _rest_api.to_ref
-      _rest_api.api_resources[self.type][self.id] = self
+      _rest_api.api_resources[self._type][self.id] = self
       depends_on [_rest_api].map(&:terraform_name)
     end
   }

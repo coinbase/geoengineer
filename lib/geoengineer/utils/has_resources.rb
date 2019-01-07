@@ -28,7 +28,7 @@ module HasResources
   end
 
   def find_resource(type, id)
-    all_resources.select { |r| r.type == type && r.id == id }.first
+    all_resources.select { |r| r._type == type && r.id == id }.first
   end
 
   def find_resource_by_ref(ref)
@@ -50,7 +50,7 @@ module HasResources
 
   # Returns: { type1: { value1: [ ] }, type2: { value2: [ ] } }
   def resources_of_type_grouped_by(&block)
-    grouped = resources_grouped_by(all_resources, &:type)
+    grouped = resources_grouped_by(all_resources, &:_type)
 
     grouped_arr = grouped.map do |type, grouped_resources|
       [type, resources_grouped_by(grouped_resources, &block)]
@@ -60,7 +60,7 @@ module HasResources
   end
 
   def resources_of_type(type)
-    all_resources.select { |r| r.type == type }
+    all_resources.select { |r| r._type == type }
   end
 
   # Factory to create resource and attach

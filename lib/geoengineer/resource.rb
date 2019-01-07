@@ -17,14 +17,14 @@ class GeoEngineer::Resource
 
   attr_accessor :environment, :project, :template
 
-  attr_reader :type, :id
+  attr_reader :_type, :id
 
   before :validation, :merge_parent_tags
 
   validate -> { validate_required_attributes([:_geo_id]) }
 
   def initialize(type, id, &block)
-    @type = type
+    @_type = type
     @id = id
 
     # Remembering parents, grand parents ...
@@ -60,7 +60,7 @@ class GeoEngineer::Resource
 
   ## Terraform methods
   def to_terraform
-    sb = ["resource #{@type.inspect} #{@id.inspect} { "]
+    sb = ["resource #{@_type.inspect} #{@id.inspect} { "]
 
     sb.concat terraform_attributes.map { |k, v|
       "  #{k.to_s.inspect} = #{v.inspect}"
@@ -82,7 +82,7 @@ class GeoEngineer::Resource
 
   def to_terraform_state
     {
-      type: @type,
+      type: @_type,
       primary: {
         id: _terraform_id
       }
@@ -90,7 +90,7 @@ class GeoEngineer::Resource
   end
 
   def terraform_name
-    "#{type}.#{id}"
+    "#{_type}.#{id}"
   end
 
   # Override to_s
@@ -127,7 +127,7 @@ class GeoEngineer::Resource
   end
 
   def duplicate_resource(parent, progenitor, new_id)
-    parent.resource(progenitor.type, new_id) do
+    parent.resource(progenitor._type, new_id) do
       # We want to set all attributes from the parent, EXCEPT _geo_id and _terraform_id
       # Which should be set according to the init logic
       progenitor.attributes.each do |key, value|
@@ -135,7 +135,7 @@ class GeoEngineer::Resource
       end
 
       progenitor.subresources.each do |subresource|
-        duplicated_subresource = GeoEngineer::SubResource.new(self, subresource.type) do
+        duplicated_subresource = GeoEngineer::SubResource.new(self, subresource._type) do
           subresource.attributes.each do |key, value|
             self[key] = value
           end
@@ -157,7 +157,7 @@ class GeoEngineer::Resource
     return GeoEngineer::Resource.build(remote_resource_params) if find_remote_as_individual?
 
     matches = matched_remote_resource
-    throw "ERROR:\"#{type}.#{id}\" has #{matches.length} remote resources" if matches.length > 1
+    throw "ERROR:\"#{_type}.#{id}\" has #{matches.length} remote resources" if matches.length > 1
 
     matches.first
   end
@@ -238,7 +238,7 @@ class GeoEngineer::Resource
 
   # VIEW METHODS
   def short_type
-    type
+    _type
   end
 
   # strip project information if project
@@ -257,7 +257,7 @@ class GeoEngineer::Resource
   end
 
   def for_resource
-    "for resource \"#{type}.#{id}\" #{in_project}"
+    "for resource \"#{_type}.#{id}\" #{in_project}"
   end
 
   def setup_tags_if_needed

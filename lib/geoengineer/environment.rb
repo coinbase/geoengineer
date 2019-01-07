@@ -162,8 +162,8 @@ class GeoEngineer::Environment
 
   def json_resources
     all_resources.each_with_object({}) do |r, c|
-      c[r.type] ||= {}
-      c[r.type][r.id] = r.to_terraform_json
+      c[r._type] ||= {}
+      c[r._type][r.id] = r.to_terraform_json
       c
     end
   end
@@ -172,7 +172,7 @@ class GeoEngineer::Environment
     reses = all_resources.select(&:_terraform_id) # _terraform_id must not be nil
 
     reses = Parallel.map(reses, { in_threads: Parallel.processor_count }) do |r|
-      { "#{r.type}.#{r.id}" => r.to_terraform_state() }
+      { "#{r._type}.#{r.id}" => r.to_terraform_state() }
     end.reduce({}, :merge)
 
     {
