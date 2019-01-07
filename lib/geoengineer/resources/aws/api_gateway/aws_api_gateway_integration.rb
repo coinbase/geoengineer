@@ -9,12 +9,17 @@ class GeoEngineer::Resources::AwsApiGatewayIntegration < GeoEngineer::Resource
   include GeoEngineer::ApiGatewayHelpers
 
   validate -> {
-    validate_required_attributes([
-                                   :rest_api_id,
-                                   :resource_id,
-                                   :http_method,
-                                   :type
-                                 ])
+    validate_required_attributes(
+      [
+        :rest_api_id,
+        :resource_id,
+        :http_method,
+        # We use the name `integration_type` for the `type` field because
+        # naming it `type` would conflict with the GeoEngineer::Resource
+        # read-only attribute also called `type`.
+        :integration_type
+      ]
+    )
   }
 
   after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
@@ -29,6 +34,19 @@ class GeoEngineer::Resources::AwsApiGatewayIntegration < GeoEngineer::Resource
                                } }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
+
+  # Override this method so we can ensure the "type" field does get set
+  # correctly before data is sent to geoengineer.
+  def terraform_attributes
+    result = super
+
+    # Add the expected "type" attribute
+    result['type'] = result['integration_type']
+    # Remove the unexpected "integration_type" attribute
+    result.delete('integration_type')
+
+    result
+  end
 
   def to_terraform_state
     tfstate = super
