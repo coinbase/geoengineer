@@ -16,7 +16,7 @@ module HasSubResources
       name = name[4..-1]
       all = true
     end
-    srl = subresources.select { |s| s.type == name.to_s }
+    srl = subresources.select { |s| s._type == name.to_s }
 
     if srl.empty?
       return [] if all
@@ -38,6 +38,6 @@ module HasSubResources
   end
 
   def delete_all_subresources(type)
-    @_subresources = subresources.select { |s| s.type != type.to_s }
+    @_subresources = subresources.select { |s| s._type != type.to_s }
   end
 end

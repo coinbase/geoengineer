@@ -9,11 +9,11 @@ class GeoEngineer::SubResource
   include HasAttributes
   include HasSubResources
 
-  attr_reader :type
+  attr_reader :_type
 
   def initialize(resource, type, &block)
     @resource = resource
-    @type = type.to_s
+    @_type = type.to_s
     instance_exec(self, &block) if block_given?
   end
 
@@ -23,7 +23,7 @@ class GeoEngineer::SubResource
 
   ## Terraform methods
   def to_terraform
-    sb = ["  #{@type} { "]
+    sb = ["  #{@_type} { "]
 
     sb.concat terraform_attributes.map { |k, v|
       "  #{k.to_s.inspect} = #{v.inspect}"
@@ -40,6 +40,6 @@ class GeoEngineer::SubResource
       json[k] ||= []
       json[k] << v
     end
-    [@type, json]
+    [@_type, json]
   end
 end
