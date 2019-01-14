@@ -6,11 +6,11 @@
 class GeoEngineer::Resources::AwsS3BucketNotification < GeoEngineer::Resource
   validate -> { validate_required_attributes([:bucket]) }
 
-  after :initialize, -> { _terraform_id -> { _bucket.bucket } }
+  after :initialize, -> { _terraform_id -> { bucket || _bucket.bucket } }
 
   # Setting _bucket
-  after :initialize, -> { self.bucket = _bucket.bucket }
-  after :initialize, -> { depends_on [_bucket.terraform_name] }
+  after :initialize, -> { self.bucket = bucket || _bucket.bucket }
+  after :initialize, -> { depends_on [_bucket.terraform_name] if _bucket }
 
   validate -> {
     validate_subresource_required_attributes(:lambda_function, [:lambda_function_arn, :events])
