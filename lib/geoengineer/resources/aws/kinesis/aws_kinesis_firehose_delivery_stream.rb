@@ -81,11 +81,11 @@ class GeoEngineer::Resources::AwsKinesisFirehoseDeliveryStream < GeoEngineer::Re
   end
 
   def update_kinesis_source(tfstate)
-    tfstate[:primary][:attributes]["kinesis_source_configuration.#"] = "1"
-    tfstate[:primary][:attributes]["kinesis_source_configuration.0.kinesis_stream_arn"] =
-      self.kinesis_source_configuration.kinesis_stream_arn
-    tfstate[:primary][:attributes]["kinesis_source_configuration.0.role_arn"] =
-      self.kinesis_source_configuration.role_arn
+    # tfstate[:primary][:attributes]["kinesis_source_configuration.#"] = "1"
+    # tfstate[:primary][:attributes]["kinesis_source_configuration.0.kinesis_stream_arn"] =
+    #   self.kinesis_source_configuration.kinesis_stream_arn
+    # tfstate[:primary][:attributes]["kinesis_source_configuration.0.role_arn"] =
+    #   self.kinesis_source_configuration.role_arn
 
     tfstate
   end
