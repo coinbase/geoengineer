@@ -58,6 +58,10 @@ class GeoEngineer::Resources::AwsApiGatewayRestApi < GeoEngineer::Resource
     NullObject.maybe(remote_resource).root_resource_id
   end
 
+  def _policy_file(path)
+    policy _json_file(:policy, path)
+  end
+
   def to_terraform_state
     tfstate = super
     tfstate[:primary][:attributes] = {
