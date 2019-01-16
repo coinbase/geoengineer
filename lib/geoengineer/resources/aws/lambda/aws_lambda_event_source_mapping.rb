@@ -5,7 +5,7 @@
 ########################################################################
 class GeoEngineer::Resources::AwsLambdaEventSourceMapping < GeoEngineer::Resource
   validate -> {
-    validate_required_attributes([:event_source_arn, :function_name, :starting_position])
+    validate_required_attributes([:event_source_arn, :function_name])
   }
   validate -> {
     if self.starting_position && !%w[TRIM_HORIZON LATEST].include?(self.starting_position)
