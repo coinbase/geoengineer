@@ -28,6 +28,7 @@ class GeoEngineer::Resources::AwsApiGatewayRestApi < GeoEngineer::Resource
       "aws_api_gateway_integration_response" => {},
       "aws_api_gateway_method" => {},
       "aws_api_gateway_method_response" => {},
+      "aws_api_gateway_method_settings" => {},
       "aws_api_gateway_model" => {},
       "aws_api_gateway_resource" => {}
     }
