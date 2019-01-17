@@ -23,7 +23,7 @@ class GeoEngineer::Resources::AwsApiGatewayMethodSettings < GeoEngineer::Resourc
   after :initialize, -> { _rest_api.api_resources[self._type][self.id] = self }
 
   after :initialize, -> {
-    self.stage_name = _stage.to_ref
+    self.stage_name = _stage.stage_name if _stage
     if _resource && _method
       self.method_path = "#{_resource.path_part}/#{_method.http_method}"
     end
