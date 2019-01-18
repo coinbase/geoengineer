@@ -242,4 +242,11 @@ class AwsClients
       Aws::CodeDeploy::Client
     )
   end
+
+  def self.organizations(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::Organizations::Client
+    )
+  end
 end
