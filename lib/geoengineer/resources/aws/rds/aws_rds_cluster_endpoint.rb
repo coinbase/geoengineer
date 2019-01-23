@@ -14,15 +14,8 @@ class GeoEngineer::Resources::AwsRdsClusterEndpoint < GeoEngineer::Resource
     )
   }
 
-  after :initialize, -> { _terraform_id -> { cluster_identifier } }
-
-  def to_terraform_state
-    tfstate = super
-    tfstate[:primary][:attributes] = {
-      'cluster_identifier' => _terraform_id
-    }
-    tfstate
-  end
+  after :initialize, -> { _terraform_id -> { cluster_endpoint_identifier } }
+  after :initialize, -> { _geo_id -> { cluster_endpoint_identifier } }
 
   def short_type
     'rds_cluster_endpoint'
@@ -34,8 +27,8 @@ class GeoEngineer::Resources::AwsRdsClusterEndpoint < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     AwsClients.rds(provider).describe_db_cluster_endpoints['db_cluster_endpoints'].map(&:to_h).map do |endpoint|
-      endpoint[:_terraform_id] = endpoint[:db_cluster_identifier]
-      endpoint[:_geo_id] = endpoint[:db_cluster_identifier]
+      endpoint[:_terraform_id] = endpoint[:db_cluster_endpoint_identifier]
+      endpoint[:_geo_id] = endpoint[:cluster_endpoint_identifier]
       endpoint[:cluster_identifier] = endpoint[:db_cluster_identifier]
       endpoint
     end

@@ -10,8 +10,8 @@ describe GeoEngineer::Resources::AwsRdsClusterEndpoint do
         :describe_db_cluster_endpoints,
         {
           db_cluster_endpoints: [
-            { db_cluster_identifier: 'name1' },
-            { db_cluster_identifier: 'name2' }
+            { db_cluster_endpoint_identifier: 'name1' },
+            { db_cluster_endpoint_identifier: 'name2' }
           ]
         }
       )
