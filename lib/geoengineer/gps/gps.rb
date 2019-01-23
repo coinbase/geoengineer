@@ -1,5 +1,4 @@
 require 'yaml'
-require 'pry'
 ###
 # GPS Geo Planning System
 # This module is designed as a higher abstration above the "resources" level
