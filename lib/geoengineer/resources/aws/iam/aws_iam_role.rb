@@ -30,10 +30,6 @@ class GeoEngineer::Resources::AwsIamRole < GeoEngineer::Resource
     _json_file(:assume_role_policy, path, binding_obj)
   end
 
-  def support_tags?
-    false
-  end
-
   def self._fetch_remote_resources(provider)
     roles = _fetch_all_roles(true, [], AwsClients.iam(provider), nil)
 
