@@ -24,4 +24,13 @@ class GeoEngineer::Resources::AwsSesConfigurationSet < GeoEngineer::Resource
   def support_tags?
     false
   end
+
+  def self._fetch_remote_resources(provider)
+    AwsClients.ses(provider).list_configuration_sets[:configuration_sets].map(&:to_h).map do |config|
+      {
+        _terraform_id: config[:name],
+        _geo_id: config[:name]
+      }
+    end
+  end
 end
