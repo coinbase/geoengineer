@@ -6,12 +6,7 @@
 class GeoEngineer::Resources::AwsSesEventDestination < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name, :configuration_set_name, :matching_types]) }
 
-  after :initialize, -> {
-    _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id }
-  }
-  after :initialize, -> {
-    _geo_id -> { name.to_s }
-  }
+  after :initialize, -> { _terraform_id -> { name } }
 
   def to_terraform_state
     tfstate = super
@@ -31,6 +26,3 @@ class GeoEngineer::Resources::AwsSesEventDestination < GeoEngineer::Resource
     false
   end
 end
-
-
-
