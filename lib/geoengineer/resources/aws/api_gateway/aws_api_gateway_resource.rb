@@ -21,7 +21,7 @@ class GeoEngineer::Resources::AwsApiGatewayResource < GeoEngineer::Resource
 
   after :initialize, -> { depends_on [_rest_api.terraform_name] }
 
-  after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{path_part}" } }
+  after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{parent_id}::#{path_part}" } }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _id -> { _terraform_id } }
