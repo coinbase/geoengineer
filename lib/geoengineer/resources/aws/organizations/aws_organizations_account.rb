@@ -16,7 +16,7 @@ class GeoEngineer::Resources::AwsOrganizationsAccount < GeoEngineer::Resource
     # on creation and not persisted.
     self.lifecycle {} unless self.lifecycle
     self.lifecycle.ignore_changes ||= []
-    self.lifecycle.ignore_changes |= ["role_name"]
+    self.lifecycle.ignore_changes |= ["role_name", "iam_user_access_to_billing"]
   }
 
   def support_tags?

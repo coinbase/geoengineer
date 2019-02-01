@@ -59,7 +59,7 @@ module HasValidations
 
   def validate_policy_length(policy)
     return unless policy.to_s.length >= MAX_POLICY_LENGTH
-    "Policy is too large - must be less than #{MAX_POLICY_LENGTH} characters"
+    "Policy #{name} is too large - currently #{policy.to_s.length}, max length is #{MAX_POLICY_LENGTH}"
   end
 
   # Validates that at least one of the specified attributes is present
