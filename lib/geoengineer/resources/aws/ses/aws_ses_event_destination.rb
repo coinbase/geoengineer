@@ -6,23 +6,41 @@
 class GeoEngineer::Resources::AwsSesEventDestination < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name, :configuration_set_name, :matching_types]) }
 
-  after :initialize, -> { _terraform_id -> { name } }
+  validate -> { validate_subresource_required_attributes(:cloudwatch_destination,
+                                                         [:default_value, :dimension_name, :value_source]) }
 
-  def to_terraform_state
-    tfstate = super
-    tfstate[:primary][:attributes] = {
-      'name' => name,
-      'configuration_set_name' => configuration_set_name,
-      'enabled' => (enabled || 'false'),
-      'matching_types' => matching_types,
-      'cloudwatch_destination' => cloudwatch_destination,
-      'kinesis_destination' => kinesis_destination,
-      'sns_destination' => sns_destination
-    }
-    tfstate
-  end
+  validate -> { validate_subresource_required_attributes(:kinesis_destination,
+                                                         [:stream_arn, :role_arn]) }
+
+  validate -> { validate_subresource_required_attributes(:sns_destination,
+                                                         [:topic_arn]) }
+
+  after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
+  after :initialize, -> { _geo_id -> { name } }
 
   def support_tags?
     false
+  end
+
+  def self._fetch_remote_resources(provider)
+    client = AwsClients.ses(provider)
+
+    config_sets = client.list_configuration_sets[:configuration_sets].map(&:to_h).map do |config|
+      client.describe_configuration_set({
+        configuration_set_name: config[:name],
+        configuration_set_attribute_names: ["eventDestinations"]
+      })
+    end
+
+    destinations = config_sets.map do |config_set|
+      config_set[:event_destinations]
+    end.compact.flatten
+
+    destinations.map(&:to_h).map do |d|
+      d.merge({
+        _geo_id: d[:name],
+        _terraform_id: d[:name]
+      })
+    end
   end
 end
