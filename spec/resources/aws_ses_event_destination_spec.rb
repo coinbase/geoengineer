@@ -25,7 +25,7 @@ describe(GeoEngineer::Resources::AwsSesEventDestination) do
         {
           configuration_set:
           {
-            name: 'my-config-set',
+            name: 'my-config-set'
           },
           event_destinations: [
             {
@@ -39,7 +39,6 @@ describe(GeoEngineer::Resources::AwsSesEventDestination) do
           ]
         }
       )
-
     end
 
     it 'should create a list of event destinations from the AWS SDK' do
