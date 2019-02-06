@@ -24,6 +24,43 @@ class GeoEngineer::Resources::AwsSesEventDestination < GeoEngineer::Resource
     false
   end
 
+  # The terraform resource does not support importing, so need to be sure
+  # to retrieve the full state here because of this.
+  def to_terraform_state
+    tfstate = super
+
+    tfstate[:primary][:attributes] = {
+      'name' => name,
+      'configuration_set_name' => configuration_set_name,
+      'enabled' => enabled.to_s
+    }
+
+    tfstate[:primary][:attributes]['matching_types.#'] = (matching_types&.size || 0).to_s
+    Array(matching_types).each_with_index do |t, idx|
+      tfstate[:primary][:attributes]["matching_types.#{idx}"] = t
+    end
+
+    if sns_destination
+      tfstate[:primary][:attributes]['sns_destination.#'] = '1'
+      tfstate[:primary][:attributes]['sns_destination.1.topic_arn'] = sns_destination.topic_arn
+    end
+
+    if cloudwatch_destination
+      tfstate[:primary][:attributes]['cloudwatch_destination.#'] = '1'
+      tfstate[:primary][:attributes]['cloudwatch_destination.1.default_value'] = cloudwatch_destination.default_value
+      tfstate[:primary][:attributes]['cloudwatch_destination.1.dimension_name'] = cloudwatch_destination.dimension_name
+      tfstate[:primary][:attributes]['cloudwatch_destination.1.value_source'] = cloudwatch_destination.value_source
+    end
+
+    if kinesis_destination
+      tfstate[:primary][:attributes]['kinesis_destination.#'] = '1'
+      tfstate[:primary][:attributes]['kinesis_destination.1.stream_arn'] = kinesis_destination.stream_arn
+      tfstate[:primary][:attributes]['kinesis_destination.1.role_arn'] = kinesis_destination.role_arn
+    end
+
+    tfstate
+  end
+
   def self._fetch_remote_resources(provider)
     client = AwsClients.ses(provider)
 

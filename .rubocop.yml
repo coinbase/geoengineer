@@ -31,10 +31,16 @@ Metrics/LineLength:
 Metrics/MethodLength:
   CountComments: false  # count full line comments?
   Max: 20 # from 10
+  # Rubocop auto-gen was not correctly identifying this.
+  Exclude:
+    - 'lib/geoengineer/resources/aws/ses/aws_ses_event_destination.rb'
 
 # Offense count: 2
 Metrics/AbcSize:
   Max: 20
+  # Rubocop auto-gen was not correctly identifying this.
+  Exclude:
+    - 'lib/geoengineer/resources/aws/ses/aws_ses_event_destination.rb'
 
 Style/Lambda:
   Enabled: false
