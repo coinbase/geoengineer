@@ -17,11 +17,30 @@ class GeoEngineer::Resources::AwsApiGatewayResource < GeoEngineer::Resource
   # Users get the root resource ('/') as parent by default, but can optionally set
   # it to another resource. This allows for hierarchically organizing API gateway
   # routes by simply setting `parent_id other_resource.to_ref` in your plan.
-  after :initialize, -> { self.parent_id ||= _rest_api.to_ref("root_resource_id") }
+  after :initialize, -> do
+    self.parent_id =
+      if _parent
+        _parent.to_ref
+      else
+        _rest_api.to_ref("root_resource_id")
+      end
+  end
 
   after :initialize, -> { depends_on [_rest_api.terraform_name] }
 
-  after :initialize, -> { _geo_id -> { "#{_rest_api._geo_id}::#{parent_id}::#{path_part}" } }
+  after :initialize, -> { depends_on [_parent.terraform_name] if _parent }
+
+  # The geo id for each resource is the geo id of its parent concatenated with the path_part of this
+  # resource. If a resource has no parent, then fall back to the geo id of the root API gateway.
+  after :initialize, -> {
+    _geo_id -> {
+      if _parent
+        "#{_parent._geo_id}::#{path_part}"
+      else
+        "#{_rest_api._geo_id}::#{path_part}"
+      end
+    }
+  }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _id -> { _terraform_id } }
