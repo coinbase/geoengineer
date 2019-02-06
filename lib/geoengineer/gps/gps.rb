@@ -13,6 +13,7 @@ class GeoEngineer::GPS
   class GPSProjetNotFound < StandardError; end
   class NodeTypeNotFound < StandardError; end
   class MetaNodeError < StandardError; end
+  class LoadError < StandardError; end
 
   ###
   # HASH METHODS
@@ -124,20 +125,24 @@ class GeoEngineer::GPS
 
     # Load, expand then merge all yml files
     Dir["#{dir}**/*#{extension}"].each do |gps_file|
-      # Merge Keys don't work with YAML.safe_load
-      # since we are also loading Ruby safe_load is not needed
+      begin
+        # Merge Keys don't work with YAML.safe_load
+        # since we are also loading Ruby safe_load is not needed
 
-      gps_text = ERB.new(File.read(gps_file)).result(binding).to_s
-      gps_hash = YAML.load(gps_text)
-      # remove all keys starting with `_` to remove paritals
-      gps_hash = remove_(gps_hash)
-      JSON::Validator.validate!(json_schema, gps_hash)
+        gps_text = ERB.new(File.read(gps_file)).result(binding).to_s
+        gps_hash = YAML.load(gps_text)
+        # remove all keys starting with `_` to remove paritals
+        gps_hash = remove_(gps_hash)
+        JSON::Validator.validate!(json_schema, gps_hash)
 
-      # project name it the path + file
-      project_name = gps_file.sub(dir, "")[0...-extension.length]
+        # project name it the path + file
+        project_name = gps_file.sub(dir, "")[0...-extension.length]
 
-      # assign to the base_hash the
-      base_hash[project_name.to_s] = gps_hash
+        # assign to the base_hash the
+        base_hash[project_name.to_s] = gps_hash
+      rescue => e
+        raise LoadError, "Could not load #{gps_file}: #{e.message}"
+      end
     end
 
     GeoEngineer::GPS.new(base_hash)
