@@ -51,8 +51,11 @@ module GeoEngineer::ApiGatewayHelpers
                                         rest_api_id: rr[:_terraform_id]
                                       })['items'].map(&:to_h).map do |res|
         next nil unless res[:path_part] # default resource has no path_part
+
+        # The geo id is the full path of the resource, anchored at the root API gateway, with slashes
+        # replaced with a double colon delimiter.
         res[:_terraform_id] = res[:id]
-        res[:_geo_id]       = "#{rr[:_geo_id]}::#{res[:path_part]}"
+        res[:_geo_id]       = "#{rr[:_geo_id]}#{res[:path].gsub('/', '::')}"
         res
       end.compact
     end
