@@ -1,6 +1,5 @@
 require 'rspec'
 require_relative '../lib/geoengineer'
-require 'pry'
 
 Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
 

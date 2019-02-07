@@ -87,6 +87,16 @@ describe GeoEngineer::GPS do
       expect(g.where("p1:e1:c1:test_meta_node:n1").length).to eq 1
       expect(g.where("p1:e1:c1:test_node:n1").length).to eq 1
     end
+
+    it 'should expand meta nodes which build meta nodes' do
+      g = GeoEngineer::GPS.new({
+                                 "p1" => { "e1" => { "c1" => { "test_meta_meta_node" => { "n1" => {} } } } }
+                               })
+      expect(g.nodes.length).to eq 3
+      expect(g.where("p1:e1:c1:test_meta_meta_node:*").length).to eq 1
+      expect(g.where("p1:e1:c1:test_meta_node:*").length).to eq 1
+      expect(g.where("p1:e1:c1:test_node:*").length).to eq 1
+    end
   end
 
   describe '#expanded_hash' do
