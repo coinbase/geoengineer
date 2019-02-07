@@ -12,8 +12,8 @@ class GeoEngineer::GPS::Node
     false
   end
 
-  attr_reader :project, :environment, :configuration, :node_type, :node_name, :attributes
-  attr_accessor :all_nodes
+  attr_reader :project, :environment, :configuration, :node_name, :attributes
+  attr_accessor :all_nodes, :node_type
 
   def initialize(project, environment, configuration, node_name, attributes)
     @node_type = build_node_type

@@ -204,6 +204,17 @@ class GeoEngineer::GPS
   end
 
   def expand_meta_nodes(projects_hash)
+    # Bit of a hack just execute expand thre times to support meta-meta-meta nodes
+    ret, = expand_meta_node_layer(
+      *expand_meta_node_layer(
+        *expand_meta_node_layer(projects_hash, [])
+      )
+    )
+    ret
+  end
+
+  def expand_meta_node_layer(projects_hash, previously_built_nodes)
+    all_built_nodes = []
     # We dup the original hash because we cannot edit and loop over it at the same time
     loop_projects_hash(GeoEngineer::GPS.deep_dup(projects_hash)) do |_, _, _, _, node|
       next unless node.meta?
@@ -212,22 +223,31 @@ class GeoEngineer::GPS
       # find the hash to edit
       nodes = projects_hash.dig(node.project, node.environment, node.configuration)
 
-      # node_type => node_name => attrs
-      built_nodes = GeoEngineer::GPS.deep_dup(node.build_nodes) # dup to ensure string keys
-
-      built_nodes.each_pair do |built_node_type, built_node_names|
-        nodes[built_node_type] ||= {}
+      GeoEngineer::GPS.deep_dup(node.build_nodes).each_pair do |built_node_type, built_node_names|
         built_node_names.each_pair do |built_node_name, built_attributes|
-          # Error if the meta-node is overwriting an existing node
-          already_built_error = "\"#{node.node_name}\" overwrites node \"#{built_node_name}\""
-          raise MetaNodeError, already_built_error if nodes[built_node_type].key?(built_node_name)
-          # append to the hash
-          nodes[built_node_type][built_node_name] = built_attributes
+          built_node = Node.new(node.project, node.environment, node.configuration, built_node_name, built_attributes)
+          built_node.node_type = built_node_type
+
+          add_built_node(nodes, node, built_node, all_built_nodes, previously_built_nodes)
         end
       end
     end
 
-    projects_hash
+    [projects_hash, (all_built_nodes + previously_built_nodes)]
+  end
+
+  def add_built_node(nodes, node, built_node, all_built_nodes, previously_built_nodes)
+    return if previously_built_nodes.include?(built_node.node_id)
+    nodes[built_node.node_type] ||= {}
+
+    # Error if the meta-node is overwriting an existing node and not a previously built node
+    already_built_error = "\"#{node.node_name}\" overwrites node \"#{built_node.node_name}\""
+    should_error = nodes[built_node.node_type].key?(built_node.node_name)
+    raise MetaNodeError, already_built_error if should_error
+
+    # append to the hash
+    nodes[built_node.node_type][built_node.node_name] = built_node.attributes
+    all_built_nodes << built_node.node_id
   end
 
   def build_nodes(projects_hash)
