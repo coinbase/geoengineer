@@ -203,12 +203,15 @@ class GeoEngineer::GPS
   end
 
   def expand_meta_node(node)
+    node.validate # ensures that the meta node has expanded and has correct attributes
     children_nodes = GeoEngineer::GPS.deep_dup(node.build_nodes)
+
     children_nodes.reduce(children_nodes.clone) do |expanded, (node_type, node_names)|
       node_names.reduce(expanded.clone) do |inner_expanded, (node_name, attributes)|
         node_type_class = find_node_class(node_type)
         node = node_type_class.new(node.project, node.environment, node.configuration, node_name, attributes)
         next inner_expanded unless node.meta?
+
         deep_merge(inner_expanded, expand_meta_node(node))
       end
     end
@@ -218,7 +221,6 @@ class GeoEngineer::GPS
     # We dup the original hash because we cannot edit and loop over it at the same time
     loop_projects_hash(GeoEngineer::GPS.deep_dup(projects_hash)) do |node|
       next unless node.meta?
-      node.validate # ensures that the meta node has expanded and has correct attributes
 
       # find the hash to edit
       nodes = projects_hash.dig(node.project, node.environment, node.configuration)
@@ -241,18 +243,14 @@ class GeoEngineer::GPS
     projects_hash
   end
 
-  def deep_merge(a, b)
-    if a.is_a?(Hash) || b.is_a?(Hash)
-      a ||= {}
-      b ||= {}
-      b.each_with_object(a) do |(key, value), obj|
-        obj[key] = deep_merge(obj[key], value)
+  # This merges a set of deeply nested hashes
+  def deep_merge(a = {}, b = {})
+    a.merge(b) do |key, value_a, value_b|
+      if value_a.is_a?(Hash) || value_b.is_a?(Hash)
+        deep_merge(value_a, value_b)
+      else
+        value_b
       end
-      a
-    elsif a.is_a?(Array)
-      a.concat(b).flatten.compact.uniq
-    else
-      b
     end
   end
 
