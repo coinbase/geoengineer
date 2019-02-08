@@ -15,6 +15,8 @@ class GeoEngineer::GPS
   class MetaNodeError < StandardError; end
   class LoadError < StandardError; end
 
+  GPS_FILE_EXTENSTION = ".gps.yml".freeze
+
   ###
   # HASH METHODS
   ###
@@ -118,29 +120,24 @@ class GeoEngineer::GPS
   end
 
   # Parse
+  # rubocop:disable Metrics/AbcSize
   def self.parse_dir(dir)
-    base_hash = {}
-
-    extension = ".gps.yml"
-
     # Load, expand then merge all yml files
-    Dir["#{dir}**/*#{extension}"].each do |gps_file|
+    base_hash = Dir["#{dir}**/*#{GPS_FILE_EXTENSTION}"].reduce({}) do |projects, gps_file|
       begin
         # Merge Keys don't work with YAML.safe_load
         # since we are also loading Ruby safe_load is not needed
-
         gps_text = ERB.new(File.read(gps_file)).result(binding).to_s
         gps_hash = YAML.load(gps_text)
         # remove all keys starting with `_` to remove paritals
         gps_hash = remove_(gps_hash)
         JSON::Validator.validate!(json_schema, gps_hash)
 
-        # project name it the path + file
-        project_name = gps_file.sub(dir, "")[0...-extension.length]
+        # project name is the path + file
+        project_name = gps_file.sub(dir, "")[0...-GPS_FILE_EXTENSTION.length]
 
-        # assign to the base_hash the
-        base_hash[project_name.to_s] = gps_hash
-      rescue => e
+        projects.merge({ project_name.to_s => gps_hash })
+      rescue StandardError => e
         raise LoadError, "Could not load #{gps_file}: #{e.message}"
       end
     end
