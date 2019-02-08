@@ -196,8 +196,7 @@ class GeoEngineer::GPS
           nodes.each_pair do |node_type, node_names|
             node_names.each_pair do |node_name, attributes|
               node_type_class = find_node_class(node_type)
-              node = node_type_class.new(project, environment, configuration, node_name, attributes)
-              yield environments, configurations, nodes, node_names, node
+              yield node_type_class.new(project, environment, configuration, node_name, attributes)
             end
           end
         end
@@ -205,58 +204,63 @@ class GeoEngineer::GPS
     end
   end
 
-  def expand_meta_nodes(projects_hash)
-    # Bit of a hack just execute expand thre times to support meta-meta-meta nodes
-    ret, = expand_meta_node_layer(
-      *expand_meta_node_layer(
-        *expand_meta_node_layer(projects_hash, [])
-      )
-    )
-    ret
+  def expand_meta_node(node)
+    node.validate # ensures that the meta node has expanded and has correct attributes
+    children_nodes = GeoEngineer::GPS.deep_dup(node.build_nodes)
+
+    children_nodes.reduce(children_nodes.clone) do |expanded, (node_type, node_names)|
+      node_names.reduce(expanded.clone) do |inner_expanded, (node_name, attributes)|
+        node_type_class = find_node_class(node_type)
+        node = node_type_class.new(node.project, node.environment, node.configuration, node_name, attributes)
+        next inner_expanded unless node.meta?
+
+        deep_merge(inner_expanded, expand_meta_node(node))
+      end
+    end
   end
 
-  def expand_meta_node_layer(projects_hash, previously_built_nodes)
-    all_built_nodes = []
+  def expand_meta_nodes(projects_hash)
     # We dup the original hash because we cannot edit and loop over it at the same time
-    loop_projects_hash(GeoEngineer::GPS.deep_dup(projects_hash)) do |_, _, _, _, node|
+    loop_projects_hash(GeoEngineer::GPS.deep_dup(projects_hash)) do |node|
       next unless node.meta?
-      node.validate # ensures that the meta node has expanded and has correct attributes
 
       # find the hash to edit
       nodes = projects_hash.dig(node.project, node.environment, node.configuration)
 
-      GeoEngineer::GPS.deep_dup(node.build_nodes).each_pair do |built_node_type, built_node_names|
-        built_node_names.each_pair do |built_node_name, built_attributes|
-          built_node = Node.new(node.project, node.environment, node.configuration, built_node_name, built_attributes)
-          built_node.node_type = built_node_type
+      # node_type => node_name => attrs
+      built_nodes = expand_meta_node(node)
 
-          add_built_node(nodes, node, built_node, all_built_nodes, previously_built_nodes)
+      built_nodes.each_pair do |built_node_type, built_node_names|
+        nodes[built_node_type] ||= {}
+        built_node_names.each_pair do |built_node_name, built_attributes|
+          # Error if the meta-node is overwriting an existing node
+          already_built_error = "\"#{node.node_name}\" overwrites node \"#{built_node_name}\""
+          raise MetaNodeError, already_built_error if nodes[built_node_type].key?(built_node_name)
+          # append to the hash
+          nodes[built_node_type][built_node_name] = built_attributes
         end
       end
     end
 
-    [projects_hash, (all_built_nodes + previously_built_nodes)]
+    projects_hash
   end
 
-  def add_built_node(nodes, node, built_node, all_built_nodes, previously_built_nodes)
-    return if previously_built_nodes.include?(built_node.node_id)
-    nodes[built_node.node_type] ||= {}
-
-    # Error if the meta-node is overwriting an existing node and not a previously built node
-    already_built_error = "\"#{node.node_name}\" overwrites node \"#{built_node.node_name}\""
-    should_error = nodes[built_node.node_type].key?(built_node.node_name)
-    raise MetaNodeError, already_built_error if should_error
-
-    # append to the hash
-    nodes[built_node.node_type][built_node.node_name] = built_node.attributes
-    all_built_nodes << built_node.node_id
+  # This merges a set of deeply nested hashes
+  def deep_merge(a = {}, b = {})
+    a.merge(b) do |key, value_a, value_b|
+      if value_a.is_a?(Hash) || value_b.is_a?(Hash)
+        deep_merge(value_a, value_b)
+      else
+        value_b
+      end
+    end
   end
 
   def build_nodes(projects_hash)
     all_nodes = []
     # This is a lot of assumptions
 
-    loop_projects_hash(projects_hash) do |_, _, _, _, node|
+    loop_projects_hash(projects_hash) do |node|
       all_nodes << node
     end
 
