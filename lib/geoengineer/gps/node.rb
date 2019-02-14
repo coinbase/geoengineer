@@ -183,6 +183,10 @@ class GeoEngineer::GPS::Node
     GeoEngineer::GPS.find(all_nodes, build_query(query))
   end
 
+  def dereference(reference)
+    GeoEngineer::GPS.dereference(all_nodes, build_reference(reference))
+  end
+
   # the query can come in with defaults and be filled in
   def build_query(query)
     project, _, configuration, node_type, node_name = query.split(":")
@@ -197,5 +201,10 @@ class GeoEngineer::GPS::Node
     node_name = @node_name         if node_name.to_s == ""
 
     "#{project}:#{@environment}:#{configuration}:#{node_type}:#{node_name}"
+  end
+
+  def build_reference(reference)
+    query, ref = reference.split("#")
+    [build_query(query), ref].compact.join("#")
   end
 end

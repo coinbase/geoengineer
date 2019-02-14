@@ -13,6 +13,9 @@ class GeoEngineer::GPS::Nodes::TestNode < GeoEngineer::GPS::Node
     }
   end
 
+  # This node doesn't actually have a file associated
+  def load_gps_file; end
+
   def create_resources(project)
     create_elb(project)
   end

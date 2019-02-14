@@ -67,6 +67,102 @@ describe GeoEngineer::GPS do
     end
   end
 
+  describe 'REFERENCE_SYNTAX' do
+    let(:nonvalid_references) do
+      [
+        "arn:aws:s3:::app-access-logs",                     # An actual ARN
+        "arn:aws:for:bar:baz",                              # Something that looks like an ARN
+        "::::",                                             # no name or type
+        "project:environment:configuration::name",          # No type
+        "project:environment:configuration:*:*",            # * for type
+        "project:environment:configuration:type:",          # No name
+        "foobarbaz",                                        # Random non matching string
+        "valid:valid:valid:valid:valid#",                   # # with no resource
+        "valid:valid:valid:valid:valid#valid.",             # . with no attribute
+        "valid:valid:valid:valid:valid#.valid",             # no resource
+        "valid:valid:valid:valid:valid#valid.valid.invalid" # Nested attribute
+      ]
+    end
+
+    let(:valid_references) do
+      [
+        ":::type:name",
+        "project:environment:configuration:type:*",
+        "*:*:*:type:*",
+        "valid:valid:valid:valid:valid",
+        "valid:valid:valid:valid:valid#valid",
+        "valid:valid:valid:valid:valid#valid.valid"
+      ]
+    end
+
+    it 'enforces the reference syntax' do
+      nonvalid_references.each do |ref|
+        expect(ref =~ GeoEngineer::GPS::REFERENCE_SYNTAX).to be_nil
+      end
+
+      valid_references.each do |ref|
+        expect(ref =~ GeoEngineer::GPS::REFERENCE_SYNTAX).to eq(0)
+      end
+    end
+
+    it 'sets named capture group to nil if not found' do
+      components = "valid:valid:valid:valid:valid".match(GeoEngineer::GPS::REFERENCE_SYNTAX)
+      expect(components["resource"]).to be_nil
+      expect(components["attribute"]).to be_nil
+
+      components = "valid:valid:valid:valid:valid#valid".match(GeoEngineer::GPS::REFERENCE_SYNTAX)
+      expect(components["resource"]).to_not be_nil
+      expect(components["attribute"]).to be_nil
+    end
+  end
+
+  describe 'dereference' do
+    let(:n1) { GeoEngineer::GPS::Nodes::TestNode.new("p1", "e1", "c1", "n1", {}) }
+    let(:n2) { GeoEngineer::GPS::Nodes::TestNode.new("p2", "e1", "c1", "n1", {}) }
+    let(:n3) { GeoEngineer::GPS::Nodes::TestNode.new("p2", "e2", "c2", "n1", {}) }
+    let(:n4) { GeoEngineer::GPS::Nodes::TestNode.new("p2", "e2", "c2", "n2", {}) }
+    let(:nodes) { [n1, n2, n3, n4] }
+
+    it 'returns the provided string if it does not match the reference syntax' do
+      expect(GeoEngineer::GPS.dereference(nodes, "foobarbaz")).to eq("foobarbaz")
+    end
+
+    it 'returns the matching node(s) if no resource is specified' do
+      expect(GeoEngineer::GPS.dereference(nodes, "*:*:*:test_node:*")).to eq(nodes)
+      expect(GeoEngineer::GPS.dereference(nodes, "p1:*:*:test_node:*")).to eq([n1])
+      expect(GeoEngineer::GPS.dereference(nodes, "p2:*:*:test_node:*")).to eq([n2, n3, n4])
+      expect(GeoEngineer::GPS.dereference(nodes, "p2:e2:c2:test_node:n2")).to eq(n4)
+    end
+
+    it 'returns the designated resource ref' do
+      expect(GeoEngineer::GPS.dereference(nodes, "*:*:*:test_node:*#elb")).to eq(nodes.map(&:elb_ref))
+      expect(GeoEngineer::GPS.dereference(nodes, "p1:*:*:test_node:*#elb")).to eq([n1.elb_ref])
+      expect(GeoEngineer::GPS.dereference(nodes, "p2:*:*:test_node:*#elb")).to eq([n2, n3, n4].map(&:elb_ref))
+      expect(GeoEngineer::GPS.dereference(nodes, "p2:e2:c2:test_node:n2#elb")).to eq(n4.elb_ref)
+    end
+
+    it 'returns the designated resource attribute ref' do
+      expect(GeoEngineer::GPS.dereference(nodes, "*:*:*:test_node:*#elb.arn"))
+        .to eq(nodes.map { |n| n.elb_ref("arn") })
+      expect(GeoEngineer::GPS.dereference(nodes, "p1:*:*:test_node:*#elb.arn"))
+        .to eq([n1.elb_ref("arn")])
+      expect(GeoEngineer::GPS.dereference(nodes, "p2:*:*:test_node:*#elb.arn"))
+        .to eq([n2, n3, n4].map { |n| n.elb_ref("arn") })
+      expect(GeoEngineer::GPS.dereference(nodes, "p2:e2:c2:test_node:n2#elb.arn"))
+        .to eq(n4.elb_ref("arn"))
+    end
+
+    it 'errors if no matching nodes are found' do
+      expect { GeoEngineer::GPS.dereference(nodes, "p3:*:*:test_node:*#elb.arn") }
+        .to raise_error(GeoEngineer::GPS::NotFoundError)
+    end
+
+    it 'errors if the resource does not exist' do
+      expect { GeoEngineer::GPS.dereference(nodes, "p2:*:*:test_node:*#security_group.arn") }
+        .to raise_error(GeoEngineer::GPS::BadReferenceError)
+    end
+  end
+
   describe '#initialize' do
     it 'works with no input' do
       GeoEngineer::GPS.new({})
