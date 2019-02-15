@@ -131,14 +131,14 @@ describe GeoEngineer::GPS do
       expect(GeoEngineer::GPS.dereference(nodes, "*:*:*:test_node:*")).to eq(nodes)
       expect(GeoEngineer::GPS.dereference(nodes, "p1:*:*:test_node:*")).to eq([n1])
       expect(GeoEngineer::GPS.dereference(nodes, "p2:*:*:test_node:*")).to eq([n2, n3, n4])
-      expect(GeoEngineer::GPS.dereference(nodes, "p2:e2:c2:test_node:n2")).to eq(n4)
+      expect(GeoEngineer::GPS.dereference(nodes, "p2:e2:c2:test_node:n2")).to eq([n4])
     end
 
     it 'returns the designated resource ref' do
       expect(GeoEngineer::GPS.dereference(nodes, "*:*:*:test_node:*#elb")).to eq(nodes.map(&:elb_ref))
       expect(GeoEngineer::GPS.dereference(nodes, "p1:*:*:test_node:*#elb")).to eq([n1.elb_ref])
       expect(GeoEngineer::GPS.dereference(nodes, "p2:*:*:test_node:*#elb")).to eq([n2, n3, n4].map(&:elb_ref))
-      expect(GeoEngineer::GPS.dereference(nodes, "p2:e2:c2:test_node:n2#elb")).to eq(n4.elb_ref)
+      expect(GeoEngineer::GPS.dereference(nodes, "p2:e2:c2:test_node:n2#elb")).to eq([n4.elb_ref])
     end
 
     it 'returns the designated resource attribute ref' do
@@ -149,7 +149,7 @@ describe GeoEngineer::GPS do
       expect(GeoEngineer::GPS.dereference(nodes, "p2:*:*:test_node:*#elb.arn"))
         .to eq([n2, n3, n4].map { |n| n.elb_ref("arn") })
       expect(GeoEngineer::GPS.dereference(nodes, "p2:e2:c2:test_node:n2#elb.arn"))
-        .to eq(n4.elb_ref("arn"))
+        .to eq([n4.elb_ref("arn")])
     end
 
     it 'errors if no matching nodes are found' do

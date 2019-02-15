@@ -82,27 +82,25 @@ class GeoEngineer::GPS
     nodes.select { |n| n.match(project, environment, config, node_type, node_name) }
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity
   def self.dereference(nodes, reference)
     components = reference.match(REFERENCE_SYNTAX)
     return reference unless components
 
-    nodes = where(nodes, query_from_reference(reference))
+    query = query_from_reference(reference)
+    nodes = where(nodes, query)
     raise NotFoundError, "for reference: #{reference}" if nodes.empty?
 
-    dereferenced = nodes.map do |node|
+    nodes.map do |node|
       next node unless components["resource"]
-      node.send("#{components['resource']}_ref", components["attribute"] || 'id')
+      method_name = "#{components['resource']}_ref"
+      attribute = components["attribute"] || 'id'
+
+      unless node.respond_to?(method_name)
+        raise BadReferenceError, "#{query} does not have resource: #{components['resource']}"
+      end
+
+      node.send(method_name, attribute)
     end
-
-    # If the user provided a wildcard query, they expect an array, otherwise they expect an object
-    wildcard_query?(reference) ? dereferenced : dereferenced.first
-  rescue NoMethodError
-    raise BadReferenceError, "for reference #{reference}, unknown resource: #{components['resource']}"
-  end
-
-  def self.wildcard_query?(query)
-    query.include?("*")
   end
 
   def self.query_from_reference(reference)
