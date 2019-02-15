@@ -62,11 +62,11 @@ Style/WordArray:
 
 Metrics/ClassLength:
   CountComments: false  # count full line comments?
-  Max: 250
+  Max: 300
 
 Metrics/ModuleLength:
   CountComments: false  # count full line comments?
-  Max: 250
+  Max: 300
 
 Style/FrozenStringLiteralComment:
   Enabled: false

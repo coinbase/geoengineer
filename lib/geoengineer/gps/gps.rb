@@ -10,12 +10,27 @@ class GeoEngineer::GPS
   class NotFoundError < StandardError; end
   class NotUniqueError < StandardError; end
   class BadQueryError < StandardError; end
+  class BadReferenceError < StandardError; end
   class GPSProjetNotFound < StandardError; end
   class NodeTypeNotFound < StandardError; end
   class MetaNodeError < StandardError; end
   class LoadError < StandardError; end
 
   GPS_FILE_EXTENSTION = ".gps.yml".freeze
+
+  REFERENCE_SYNTAX = %r{
+    ^(?!arn:aws:)                           # Make sure we do not match AWS ARN's
+    (?<project>[a-zA-Z0-9\\-_/*]*):         # Match the project name (optional)
+    (?<environment>[a-zA-Z0-9\\-_*]*):      # Match the environment (optional)
+    (?<configuration>[a-zA-Z0-9\\-_*]*):    # Match the configuration (optional)
+    (?<node_type>[a-zA-Z0-9\\-_]+):         # Match the node_type (required), does not support `*`
+    (?<node_name>[a-zA-Z0-9\\-_/*.]+)       # Match the node_name (required)
+    (                                       # The #<resource>.<attribute> is optional
+      [#](?<resource>[a-zA-Z0-9_]+)         # Match the node resource (optional)
+      ([.](?<attribute>[a-zA-Z0-9_]+))?     # Match the resource attribute, requires resource (optional)
+    )?
+    $
+  }x
 
   ###
   # HASH METHODS
@@ -65,6 +80,38 @@ class GeoEngineer::GPS
   def self.search(nodes, query)
     project, environment, config, node_type, node_name = split_query(query)
     nodes.select { |n| n.match(project, environment, config, node_type, node_name) }
+  end
+
+  def self.dereference(nodes, reference)
+    components = reference.match(REFERENCE_SYNTAX)
+    return reference unless components
+
+    query = query_from_reference(reference)
+    nodes = where(nodes, query)
+    raise NotFoundError, "for reference: #{reference}" if nodes.empty?
+
+    nodes.map do |node|
+      next node unless components["resource"]
+      method_name = "#{components['resource']}_ref"
+      attribute = components["attribute"] || 'id'
+
+      unless node.respond_to?(method_name)
+        raise BadReferenceError, "#{query} does not have resource: #{components['resource']}"
+      end
+
+      node.send(method_name, attribute)
+    end
+  end
+
+  def self.query_from_reference(reference)
+    components = reference.match(REFERENCE_SYNTAX)
+    [
+      components["project"],
+      components["environment"],
+      components["configuration"],
+      components["node_type"],
+      components["node_name"]
+    ].join(":")
   end
 
   ###
@@ -170,6 +217,10 @@ class GeoEngineer::GPS
 
   def where(query)
     GeoEngineer::GPS.where(@nodes, query)
+  end
+
+  def dereference(reference)
+    GeoEngineer::GPS.dereference(@nodes, reference)
   end
 
   def to_h
