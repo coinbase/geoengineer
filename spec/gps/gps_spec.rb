@@ -89,6 +89,8 @@ describe GeoEngineer::GPS do
         ":::type:name",
         "project:environment:configuration:type:*",
         "*:*:*:type:*",
+        ":::node_type:node-name#resource_name.attribute_name",
+        "org/project:env:config:node_type:node-name.blah#resource_name.attribute_name",
         "valid:valid:valid:valid:valid",
         "valid:valid:valid:valid:valid#valid",
         "valid:valid:valid:valid:valid#valid.valid"
