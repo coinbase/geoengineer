@@ -13,6 +13,7 @@ end
 require_relative './status_command'
 require_relative './test_cmd_stubs'
 require_relative './terraform_commands'
+require_relative './gps_commands'
 
 def environment(name, &block)
   GeoCLI.instance.create_environment(name, &block)
@@ -36,6 +37,7 @@ class GeoCLI
   include Singleton
   include StatusCommand
   include TerraformCommands
+  include GPSCommands
   include HasLifecycle
 
   attr_accessor :environment, :env_name
@@ -231,6 +233,7 @@ class GeoCLI
     graph_cmd
     status_cmd
     test_cmd
+    query_cmd
   end
 
   def run

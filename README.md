@@ -139,6 +139,7 @@ GeoEngineer command line tool `geo` can:
 2. **Execute the plan** with `geo apply -e staging first_project.rb`
 3. **Create a graph** with `geo graph -e staging --quiet first_project.rb | dot -Tpng > graph.png && open graph.png`
 4. **Status of Codeified Resources** with `geo status first_project.rb -e staging`
+5. **Query GPS Resource Graph** with `geo query "*:*:*:*:*"`
 
 *There are more examples in the `examples` folder.*
 
