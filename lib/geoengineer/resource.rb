@@ -203,6 +203,18 @@ class GeoEngineer::Resource
     throw "NOT IMPLEMENTED ERROR for #{name}"
   end
 
+  def self._paginate(response, attribute)
+    resources = []
+
+    resources += response[attribute]
+    while response.next_page?
+      response = response.next_page
+      resources += response[attribute]
+    end
+
+    resources
+  end
+
   # This method allows you to specify certain remote resources that for whatever reason,
   # cannot or should not be codified. It expects a list of `_geo_ids`, and can be overriden
   # in child classes.
