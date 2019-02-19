@@ -12,7 +12,7 @@ class GeoEngineer::GPS::Node
     false
   end
 
-  attr_reader :project, :environment, :configuration, :node_name, :attributes
+  attr_reader :project, :environment, :configuration, :node_name, :attributes, :initial_attributes
   attr_accessor :all_nodes, :node_type
 
   def initialize(project, environment, configuration, node_name, attributes)
@@ -21,6 +21,7 @@ class GeoEngineer::GPS::Node
     @environment = environment
     @configuration = configuration
     @node_name = node_name
+    @initial_attributes = GeoEngineer::GPS.deep_dup(attributes)
     @attributes = attributes
   end
 
