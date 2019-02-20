@@ -106,5 +106,25 @@ module GeoEngineer::ApiGatewayHelpers
     rescue Aws::APIGateway::Errors::NotFoundException
       return nil
     end
+
+    # Models
+    def _fetch_remote_rest_api_models(provider, rest_api)
+      resources = _client(provider).get_models(
+        { rest_api_id: rest_api[:_terraform_id] }
+      )['items']
+      resources.map(&:to_h).map do |mod|
+        mod[:_terraform_id] = mod[:id]
+        mod[:_geo_id]       = "#{rest_api[:_geo_id]}::#{mod[:name]}"
+        mod
+      end.compact
+    end
+
+    def _remote_rest_api_models(provider)
+      _fetch_remote_rest_apis(provider).map do |rr|
+        _fetch_remote_rest_api_models(provider, rr) do |model|
+          yield rr, model
+        end
+      end
+    end
   end
 end
