@@ -32,6 +32,14 @@ class GeoEngineer::GPS
     $
   }x
 
+  class << self
+    attr_reader :singleton
+  end
+
+  class << self
+    attr_writer :singleton
+  end
+
   ###
   # HASH METHODS
   ###
@@ -167,7 +175,6 @@ class GeoEngineer::GPS
   end
 
   # Parse
-  # rubocop:disable Metrics/AbcSize
   def self.parse_dir(dir)
     # Load, expand then merge all yml files
     base_hash = Dir["#{dir}**/*#{GPS_FILE_EXTENSTION}"].reduce({}) do |projects, gps_file|

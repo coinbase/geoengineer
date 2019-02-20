@@ -88,6 +88,8 @@ class GeoCLI
     return @gps if @gps
     require_gps
     @gps ||= GeoEngineer::GPS.parse_dir("#{Dir.pwd}/projects/")
+    GeoEngineer::GPS.singleton = @gps
+    @gps
   end
 
   def require_gps

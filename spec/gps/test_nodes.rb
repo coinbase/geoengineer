@@ -1,5 +1,9 @@
 class GeoEngineer::GPS::Nodes::TestNode < GeoEngineer::GPS::Node
   define_resource "aws_elb", :elb
+  define_resource "aws_elb", :elb_custom, ->(prefix, project, environment, configuration, node_name) {
+    "#{prefix}@#{project}_#{environment}_#{configuration}_#{node_type}_#{node_name}"
+  }
+
   def json_schema
     {
       "type":  "object",
@@ -12,9 +16,6 @@ class GeoEngineer::GPS::Nodes::TestNode < GeoEngineer::GPS::Node
       }
     }
   end
-
-  # This node doesn't actually have a file associated
-  def load_gps_file; end
 
   def create_resources(project)
     create_elb(project)

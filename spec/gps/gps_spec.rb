@@ -9,6 +9,10 @@ describe GeoEngineer::GPS do
   let(:n4) { GeoEngineer::GPS::Node.new("p1", "e2", "c2", "n2", {}) }
   let(:nodes) { [n0, n1, n2, n3, n4] }
 
+  before do
+    allow(GeoEngineer::GPS::Nodes::TestNode).to receive(:load_gps_file).and_return true
+  end
+
   describe "class methods" do
     describe '#remove_' do
       it 'removes keys from a hash that start with _' do

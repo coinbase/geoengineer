@@ -41,7 +41,11 @@ class GeoEngineer::GPS::Node
 
   # from ActiveSupport
   def build_node_type
-    class_name = self.class.name.split('::').last
+    self.class.node_type
+  end
+
+  def self.node_type
+    class_name = self.name.split('::').last
     class_name.gsub(/::/, '/')
               .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
               .gsub(/([a-z\d])([A-Z])/, '\1_\2')
@@ -82,7 +86,11 @@ class GeoEngineer::GPS::Node
   end
 
   def load_gps_file
-    gps.load_gps_file("projects/#{project}.gps.yml")
+    self.class.load_gps_file(project)
+  end
+
+  def self.load_gps_file(project)
+    GeoEngineer::GPS.load_gps_file(GeoEngineer::GPS.singleton, "projects/#{project}.gps.yml")
   end
 
   # define_resource create three helper methods
@@ -90,40 +98,71 @@ class GeoEngineer::GPS::Node
   # 2. ref method which can be used
   # 3. create method which sets the resource with the correct ref
   def self.define_resource(type, name, id_lambda = nil)
-    load_gps_file = -> { load_gps_file() }
-    id_lambda = -> { resource_id(name) } if id_lambda.nil?
-    read_method = name.to_s
-    ref_method = "#{name}_ref"
-    create_method = "create_#{name}"
-
-    define_method(read_method) do
-      instance_exec(&load_gps_file)
-      instance_variable_get("@#{name}")
+    if id_lambda.nil?
+      id_lambda = ->(prefix, project, environment, configuration, node_name) do
+        resource_id(prefix, project, environment, configuration, node_name)
+      end
     end
 
+    self.define_ref_methods(type, name, id_lambda)
+    self.define_read_methods(type, name, id_lambda)
+
+    # Create Method
+    create_method = "create_#{name}"
+    define_method(create_method) do |project_obj|
+      id = self.class.class_exec(name, project, environment, configuration, node_name, &id_lambda)
+      resource = project_obj.resource(type, id) {}
+      instance_variable_set("@#{name}", resource)
+      resource
+    end
+  end
+
+  def self.define_read_methods(type, name, id_lambda)
+    read_method = name.to_s
+    load_gps_file = ->(project) { load_gps_file(project) }
+
+    define_method(read_method) do
+      self.class.class_exec(project, &load_gps_file)
+      instance_variable_get("@#{name}")
+    end
+  end
+
+  def self.define_ref_methods(type, name, id_lambda)
+    ref_method = "#{name}_ref"
+    load_gps_file = ->(project) { load_gps_file(project) }
+
     define_method(ref_method) do |attribute = "id"|
-      instance_exec(&load_gps_file)
-      id = instance_exec(&id_lambda)
+      id = self.class.class_exec(name, project, environment, configuration, node_name, &id_lambda)
+      self.class.class_exec(project, &load_gps_file)
       "${#{type}.#{id}.#{attribute}}"
     end
 
-    define_method(create_method) do |project|
-      id = instance_exec(&id_lambda)
-      resource = project.resource(type, id) {}
-      instance_variable_set("@#{name}", resource)
-      resource
+    # We also add this as a class method so we can create references without a node instance
+    define_singleton_method(ref_method) do |project, environment, configuration, node_name, attribute = "id"|
+      id = instance_exec(name, project, environment, configuration, node_name, &id_lambda)
+      instance_exec(project, &load_gps_file)
+      "${#{type}.#{id}.#{attribute}}"
     end
   end
 
   # If the config is the same an environment we can truncate some values
   # production_production is superflous in ids and such
   def default_config?
+    self.class.default_config?(self.configuration, self.environment)
+  end
+
+  def self.default_config?(configuration, environment)
     configuration == environment
   end
 
   # A unique id for resources for this node
   def resource_id(prefix)
-    if default_config?
+    self.class.resource_id(prefix, project, environment, configuration, node_name)
+  end
+
+  # A unique id for resources for this node
+  def self.resource_id(prefix, project, environment, configuration, node_name)
+    if default_config?(configuration, environment)
       [prefix, project, node_type, node_name]
     else
       [prefix, project, configuration, node_type, node_name]

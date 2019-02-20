@@ -8,9 +8,13 @@ describe GeoEngineer::GPS::Node do
 
   let(:test_node) { build_test_node }
 
-  describe '#build_node_type' do
+  describe '#build_node_type && #node_type' do
     it 'returns the node type based on class name' do
       expect(test_node.build_node_type).to eq "test_node"
+    end
+
+    it 'returns the node type based on class name' do
+      expect(GeoEngineer::GPS::Nodes::TestNode.node_type).to eq "test_node"
     end
   end
 
@@ -33,16 +37,40 @@ describe GeoEngineer::GPS::Node do
   end
 
   describe '#define_resource' do
-    it 'can create the resources' do
-      expect(test_node).to respond_to(:create_elb)
+    before do
+      allow(GeoEngineer::GPS::Nodes::TestNode).to receive(:load_gps_file).and_return true
     end
 
-    it 'can get the geo resource' do
+    it 'can create and fetch the resources' do
+      expect(test_node).to respond_to(:create_elb)
       expect(test_node).to respond_to(:elb)
+      expect(test_node.elb).to eq nil
+      test_node.create_elb(GeoEngineer::Project.new("org", "pname", nil))
+
+      expect(test_node.elb._type).to eq "aws_elb"
+      expect(test_node.elb.id).to eq "elb_p1_c1_test_node_tn"
     end
 
     it 'can get a reference to the resource' do
       expect(test_node).to respond_to(:elb_ref)
+      expect(test_node.elb_ref).to eq "${aws_elb.elb_p1_c1_test_node_tn.id}"
+      expect(test_node.elb_ref("arn")).to eq "${aws_elb.elb_p1_c1_test_node_tn.arn}"
+    end
+
+    it 'class method returns reference to the resource' do
+      expect(GeoEngineer::GPS::Nodes::TestNode).to respond_to(:elb_ref)
+      expect(GeoEngineer::GPS::Nodes::TestNode.elb_ref("p1", "e1", "c1", "tn"))
+        .to eq "${aws_elb.elb_p1_c1_test_node_tn.id}"
+      expect(GeoEngineer::GPS::Nodes::TestNode.elb_ref("p1", "dev", "dev", "tn"))
+        .to eq "${aws_elb.elb_p1_test_node_tn.id}"
+      expect(GeoEngineer::GPS::Nodes::TestNode.elb_ref("p1", "dev", "dev", "tn", "arn"))
+        .to eq "${aws_elb.elb_p1_test_node_tn.arn}"
+    end
+
+    it 'custom references work' do
+      expect(test_node.elb_custom_ref).to eq "${aws_elb.elb_custom@p1_e1_c1_test_node_tn.id}"
+      expect(GeoEngineer::GPS::Nodes::TestNode.elb_custom_ref("p1", "e1", "c1", "tn"))
+        .to eq "${aws_elb.elb_custom@p1_e1_c1_test_node_tn.id}"
     end
   end
 
