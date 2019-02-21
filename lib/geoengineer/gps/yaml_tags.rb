@@ -1,6 +1,4 @@
 
-# !Ref dereferences value
-# e.g. ::::asd#asd.arn will return the terraform value ${type.id.arn}
 class Tag
   attr_reader :constants, :environment
   attr_reader :node, :type, :value, :block

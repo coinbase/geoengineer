@@ -7,10 +7,6 @@ require 'yaml'
 # GPS is not a complete solution
 ###
 class GeoEngineer::GPS
-  class NotFoundError < StandardError; end
-  class NotUniqueError < StandardError; end
-  class BadQueryError < StandardError; end
-  class BadReferenceError < StandardError; end
   class GPSProjetNotFound < StandardError; end
   class NodeTypeNotFound < StandardError; end
   class MetaNodeError < StandardError; end
@@ -18,6 +14,7 @@ class GeoEngineer::GPS
 
   GPS_FILE_EXTENSTION = ".gps.yml".freeze
 
+<<<<<<< HEAD
   ###
   # Search Methods
   ###
@@ -50,6 +47,8 @@ class GeoEngineer::GPS
   # End of Search Methods
   ###
 
+=======
+>>>>>>> graham/extract-query-logic
   def self.json_schema
     node_names = {
       "type":  "object",
@@ -168,14 +167,25 @@ class GeoEngineer::GPS
     @_nodes
   end
 
+  def finder
+    @finder ||= GeoEngineer::GPS::Finder.new(nodes)
+  end
+
   def find(query)
-    GeoEngineer::GPS.find(nodes, query)
+    finder.find(nodes, query)
   end
 
   def where(query)
-    GeoEngineer::GPS.where(nodes, query)
+    finder.where(query)
   end
 
+<<<<<<< HEAD
+=======
+  def dereference(reference)
+    finder.dereference(reference)
+  end
+
+>>>>>>> graham/extract-query-logic
   def to_h
     HashUtils.json_dup(@base_hash)
   end
@@ -273,7 +283,7 @@ class GeoEngineer::GPS
     end
 
     # create all resources for projet
-    project_nodes = GeoEngineer::GPS.where(nodes, "#{project_name}:#{environment_name}:*:*:*")
+    project_nodes = where("#{project_name}:#{environment_name}:*:*:*")
     project_nodes.each do |n|
       n.create_resources(project) unless n.meta?
     end

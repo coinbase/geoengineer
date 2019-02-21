@@ -172,39 +172,29 @@ class GeoEngineer::GPS::Node
     }
   end
 
+  def finder
+    @finder ||= GeoEngineer::GPS::Finder.new(all_nodes, {
+                                               project: @project,
+                                               environment: @environment,
+                                               configuration: @configuration,
+                                               node_type: @node_type,
+                                               node_name: @node_name
+                                             })
+  end
+
   def where_all(queries)
     queries.map { |q| where(q) }.flatten.uniq
   end
 
   def where(query)
-    GeoEngineer::GPS.where(all_nodes, build_query(query))
+    finder.where(query)
   end
 
   def find(query)
-    GeoEngineer::GPS.find(all_nodes, build_query(query))
-  end
-
-  def deref
-    GeoEngineer::GPS::Deref.new(all_nodes, constants)
+    finder.find(query)
   end
 
   def dereference(reference)
-    deref.dereference(build_reference(reference))
-  end
-
-  # the query can come in with defaults and be filled in
-  def build_query(query)
-    project, _, configuration, node_type, node_name = query.split(":")
-
-    # Any empty/nil value is defaulted to nodes value
-    # e.g/ :::service:main is a reference to the service main in the same project/env/config.
-    project = @project             if project.to_s == ""
-    # can ONLY query within the same environment
-
-    configuration = @configuration if configuration.to_s == ""
-    node_type = @node_type         if node_type.to_s == ""
-    node_name = @node_name         if node_name.to_s == ""
-
-    "#{project}:#{@environment}:#{configuration}:#{node_type}:#{node_name}"
+    finder.dereference(reference)
   end
 end

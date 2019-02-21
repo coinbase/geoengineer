@@ -26,9 +26,6 @@ class GeoEngineer::GPS::Constants
     end
   end
 
-  def deref
-    GeoEngineer::GPS::Deref.new(nil, constants)
-  end
 
   def each_for_environment(environment_name)
     constants_hash[environment_name.to_s]
