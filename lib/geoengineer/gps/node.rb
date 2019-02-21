@@ -21,7 +21,7 @@ class GeoEngineer::GPS::Node
     @environment = environment
     @configuration = configuration
     @node_name = node_name
-    @initial_attributes = GeoEngineer::GPS.deep_dup(attributes)
+    @initial_attributes = HashUtils.deep_dup(attributes)
     @attributes = attributes
   end
 
