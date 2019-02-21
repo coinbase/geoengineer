@@ -10,22 +10,6 @@ describe GeoEngineer::GPS do
   let(:nodes) { [n0, n1, n2, n3, n4] }
 
   describe "class methods" do
-    describe '#remove_' do
-      it 'removes keys from a hash that start with _' do
-        expect(GeoEngineer::GPS.remove_({ "_asd" => :value })).to eq({})
-      end
-    end
-
-    describe 'deep_dup' do
-      it 'returns a hash that is deep duped' do
-        a = {}
-        b = { "a" => a }
-        x = GeoEngineer::GPS.deep_dup(b)
-        expect(x.object_id).to_not eq b.object_id
-        expect(x["a"]).to_not eq a.object_id
-      end
-    end
-
     describe 'where' do
       it 'returns nodes from project' do
         expect(GeoEngineer::GPS.where(nodes, "p0:*:*:*:*")).to eq [n0]

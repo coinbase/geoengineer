@@ -33,54 +33,6 @@ class GeoEngineer::GPS
   }x
 
   ###
-  # HASH METHODS
-  ###
-
-  # remove_ removes all keys starting with `_`
-  def self.remove_(hash)
-    hash = hash.dup
-    hash.each_pair do |key, value|
-      hash.delete(key) && next if key.to_s.start_with?("_")
-      hash[key] = remove_(value) if value.is_a?(Hash)
-    end
-    hash
-  end
-
-  def self.json_dup(object)
-    JSON.parse(object.to_json)
-  end
-
-  def self.deep_dup(object)
-    case object
-    when Hash
-      object.each_with_object({}) do |(key, value), hash|
-        hash[deep_dup(key)] = deep_dup(value)
-      end
-    when Array
-      object.map { |it| deep_dup(it) }
-    when Symbol
-      object.to_s
-    else
-      object.dup
-    end
-  end
-
-  # This merges a set of deeply nested hashes
-  def self.deep_merge(a = {}, b = {})
-    a.merge(b) do |key, value_a, value_b|
-      if value_a.is_a?(Hash) || value_b.is_a?(Hash)
-        deep_merge(value_a, value_b)
-      else
-        value_b
-      end
-    end
-  end
-
-  ###
-  # END OF HASH METHODS
-  ###
-
-  ###
   # Search Methods
   ###
 
@@ -203,7 +155,7 @@ class GeoEngineer::GPS
         gps_text = ERB.new(File.read(gps_file)).result(binding).to_s
         gps_hash = YAML.load(gps_text)
         # remove all keys starting with `_` to remove paritals
-        gps_hash = remove_(gps_hash)
+        gps_hash = HashUtils.remove_(gps_hash)
         JSON::Validator.validate!(json_schema, gps_hash)
 
         # project name is the path + file
@@ -224,7 +176,7 @@ class GeoEngineer::GPS
     @base_hash = base_hash
 
     # expand meta nodes, this takes nodes and expands them
-    @projects_hash = expand_meta_nodes(GeoEngineer::GPS.deep_dup(base_hash))
+    @projects_hash = expand_meta_nodes(HashUtils.deep_dup(base_hash))
   end
 
   def nodes
@@ -253,7 +205,7 @@ class GeoEngineer::GPS
   end
 
   def to_h
-    GeoEngineer::GPS.json_dup(@base_hash)
+    HashUtils.json_dup(@base_hash)
   end
 
   def expanded_hash
@@ -265,11 +217,10 @@ class GeoEngineer::GPS
       nt = conf[n.node_type] ||= {}
       nt[n.node_name] ||= n.attributes
     end
-    GeoEngineer::GPS.json_dup(expanded_hash)
+    HashUtils.json_dup(expanded_hash)
   end
 
   def loop_projects_hash(projects_hash)
-    # TODO: validate the strucutre before this
     projects_hash.each_pair do |project, environments|
       environments.each_pair do |environment, configurations|
         configurations.each_pair do |configuration, nodes|
@@ -286,7 +237,7 @@ class GeoEngineer::GPS
 
   def expand_meta_node(node)
     node.validate # ensures that the meta node has expanded and has correct attributes
-    children_nodes = GeoEngineer::GPS.deep_dup(node.build_nodes)
+    children_nodes = HashUtils.deep_dup(node.build_nodes)
 
     children_nodes.reduce(children_nodes.clone) do |expanded, (node_type, node_names)|
       node_names.reduce(expanded.clone) do |inner_expanded, (node_name, attributes)|
@@ -294,14 +245,14 @@ class GeoEngineer::GPS
         node = node_type_class.new(node.project, node.environment, node.configuration, node_name, attributes)
         next inner_expanded unless node.meta?
 
-        GeoEngineer::GPS.deep_merge(inner_expanded, expand_meta_node(node))
+        HashUtils.deep_merge(inner_expanded, expand_meta_node(node))
       end
     end
   end
 
   def expand_meta_nodes(projects_hash)
     # We dup the original hash because we cannot edit and loop over it at the same time
-    loop_projects_hash(GeoEngineer::GPS.deep_dup(projects_hash)) do |node|
+    loop_projects_hash(HashUtils.deep_dup(projects_hash)) do |node|
       next unless node.meta?
 
       # find the hash to edit
