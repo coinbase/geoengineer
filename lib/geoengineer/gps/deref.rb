@@ -1,5 +1,5 @@
-# Deref is a class that contains the dereferning logic
-class GeoEngineer::GPS::Deref
+# Deref is a service class that contains all querying logic
+class GeoEngineer::GPS::Query
   NODE_REFERENCE_SYNTAX = %r{
     ^(?!arn:aws:)                           # Make sure we do not match AWS ARN's
     (?<project>[a-zA-Z0-9\-_/*]*):         # Match the project name (optional)
@@ -14,6 +14,13 @@ class GeoEngineer::GPS::Deref
     $
   }
 
+  CONSTANT_REFERENCE_SYNTAX = %r{
+    constants:
+    (<environment>[a-zA-Z0-9\-_]+):       # Match the node_type (required), does not support `*`
+    (<node_type>[a-zA-Z0-9\-_]+):         # Match the node_type (required), does not support `*`
+    $
+  }
+
   attr_reader :nodes, :constants
   def initialize(nodes, constants)
     @nodes = nodes
@@ -23,8 +30,15 @@ class GeoEngineer::GPS::Deref
   # dereference takes a node or constant reference and returns the value described as a list
   def dereference(reference)
     components = reference.match(NODE_REFERENCE_SYNTAX)
-    return reference unless components
+    return dereference_node(reference, components) if components
 
+    components = reference.match(CONSTANT_REFERENCE_SYNTAX)
+    return dereference_constant(reference, components) if components
+
+    reference
+  end
+
+  def dereference_node(reference, components)
     query = query_from_reference(reference)
     nodes = GeoEngineer::GPS.where(nodes, query)
     raise NotFoundError, "for reference: #{reference}" if nodes.empty?
@@ -40,6 +54,10 @@ class GeoEngineer::GPS::Deref
 
       node.send(method_name, attribute)
     end
+  end
+
+  def dereference_constant(reference, components)
+    constants.constants_hash[components]
   end
 
   # dereference! returns exactly one value to a reference and errors if none exist

@@ -2,7 +2,7 @@
 # !Ref dereferences value
 # e.g. ::::asd#asd.arn will return the terraform value ${type.id.arn}
 class Tag
-  attr_reader :nodes, :constants
+  attr_reader :constants, :environment
   attr_reader :node, :type, :value, :block
 
   def initialize(type, value, &block)
@@ -45,34 +45,11 @@ end
 # Ref takes a query as input and replaces it with the value
 YAML.add_domain_type("", "Ref") do |type, reference|
   Tag.new(type, reference) do |value|
-    puts 'reference'
-    puts reference
-    puts reference.class
-    puts "CONSTANTS #{!!@constants}"
-    puts "NDOES #{!!self.nodes}"
-    reference.to_json
-
-    # # value is a refernce
-    # components = reference.match(GeoEngineer::GPS::REFERENCE_SYNTAX)
-    # unless components
-    #   raise GeoEngineer::GPS::BadReferenceError, "'#{reference}' in #{node.node_id}"
-    # end
-
-    # # setup defaults for the values
-    # project = Tag.empty_str(components["project"]) || node.project
-    # environment = Tag.empty_str(components["environment"]) || node.environment
-    # configuration = Tag.empty_str(components["configuration"]) || node.configuration
-    # node_type = components["node_type"]
-    # node_name = Tag.empty_str(components["node_name"]) || node.node_name
-    # attribute = Tag.empty_str(components["attribute"]) || 'id'
-
-    # clazz = GeoEngineer::GPS.find_node_class(components["node_type"])
-    # method_name = "#{components['resource']}_ref"
-    # unless clazz.respond_to?(method_name)
-    #   raise GeoEngineer::GPS::BadReferenceError, "#{reference} does not have resource: #{components['resource']}"
-    # end
-
-    # clazz.send(method_name, project, environment, configuration, node_name, attribute)
+    if self.node
+      self.node.dereference!(reference).to_json
+    else
+      self.constants.dereference!(reference, @environment).to_json
+    end
   end
 end
 

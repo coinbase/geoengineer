@@ -16,10 +16,18 @@ class GeoEngineer::GPS::Constants
       constants_hash[key] = value.merge(@defaults_hash)
     end
 
-    HashUtils.map_values(@constants_hash) do |a|
-      a.constants = self if a.respond_to?(:constants=)
-      a
+    # attach constants and environment to TTags
+    @constants_hash.each_pair do |environment, vals|
+      HashUtils.map_values(vals) do |a|
+        a.constants = self if a.respond_to?(:constants=)
+        a.environment = environment if a.respond_to?(:environment=)
+        a
+      end
     end
+  end
+
+  def deref
+    GeoEngineer::GPS::Deref.new(nil, constants)
   end
 
   def each_for_environment(environment_name)
@@ -28,5 +36,14 @@ class GeoEngineer::GPS::Constants
 
   def to_h
     HashUtils.json_dup(constants_hash)
+  end
+
+  def dereference!(reference, local_environment = nil)
+    prefix, environment, name = reference.split(":")
+    environment = local_environment if environment.to_s == ""
+
+    reference = [prefix, environment, name].join(":")
+
+    deref.dereference(reference)
   end
 end
