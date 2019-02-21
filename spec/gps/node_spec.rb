@@ -85,11 +85,11 @@ describe GeoEngineer::GPS::Node do
 
       expect {
         t1.find("*:*:*:test_node:*")
-      }.to raise_error(GeoEngineer::GPS::NotUniqueError)
+      }.to raise_error(GeoEngineer::GPS::Finder::NotUniqueError)
 
       expect {
         t1.find("*:*:*:test_node:3")
-      }.to raise_error(GeoEngineer::GPS::NotFoundError)
+      }.to raise_error(GeoEngineer::GPS::Finder::NotFoundError)
     end
   end
 end

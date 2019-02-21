@@ -7,23 +7,19 @@ class GeoEngineer::GPS::NodesContext
     @nodes = nodes
   end
 
+  def finder
+    @finder ||= GeoEngineer::GPS::Finder.new(@nodes, {
+                                               project: @project,
+                                               environment: @environment,
+                                               configuration: @configuration
+                                             })
+  end
+
   def where(query)
-    GeoEngineer::GPS.where(@nodes, build_query(query))
+    finder.where(query)
   end
 
   def find(query)
-    GeoEngineer::GPS.find(@nodes, build_query(query))
-  end
-
-  # the query can come in with defaults and be filled in
-  def build_query(query)
-    project, environment, configuration, node_type, node_name = query.split(":")
-
-    # defaults
-    project = @project if project.empty?
-    environment = @environment if environment.empty?
-    configuration = @configuration if configuration.empty?
-
-    "#{project}:#{environment}:#{configuration}:#{node_type}:#{node_name}"
+    finder.find(query)
   end
 end

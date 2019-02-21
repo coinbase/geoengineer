@@ -7,94 +7,12 @@ require 'yaml'
 # GPS is not a complete solution
 ###
 class GeoEngineer::GPS
-  class NotFoundError < StandardError; end
-  class NotUniqueError < StandardError; end
-  class BadQueryError < StandardError; end
-  class BadReferenceError < StandardError; end
   class GPSProjetNotFound < StandardError; end
   class NodeTypeNotFound < StandardError; end
   class MetaNodeError < StandardError; end
   class LoadError < StandardError; end
 
   GPS_FILE_EXTENSTION = ".gps.yml".freeze
-
-  REFERENCE_SYNTAX = %r{
-    ^(?!arn:aws:)                           # Make sure we do not match AWS ARN's
-    (?<project>[a-zA-Z0-9\-_/*]*):         # Match the project name (optional)
-    (?<environment>[a-zA-Z0-9\-_*]*):      # Match the environment (optional)
-    (?<configuration>[a-zA-Z0-9\-_*]*):    # Match the configuration (optional)
-    (?<node_type>[a-zA-Z0-9\-_]+):         # Match the node_type (required), does not support `*`
-    (?<node_name>[a-zA-Z0-9\-_/*.]+)       # Match the node_name (required)
-    (                                       # The #<resource>.<attribute> is optional
-      [#](?<resource>[a-zA-Z0-9_]+)         # Match the node resource (optional)
-      ([.](?<attribute>[a-zA-Z0-9_]+))?     # Match the resource attribute, requires resource (optional)
-    )?
-    $
-  }x
-
-  ###
-  # Search Methods
-  ###
-
-  # where returns multiple nodes
-  def self.where(nodes, query = "*:*:*:*:*")
-    search(nodes, query)
-  end
-
-  # find a node from nodes
-  def self.find(nodes, query = "*:*:*:*:*")
-    query_nodes = search(nodes, query)
-    raise NotFoundError, "for query #{query}" if query_nodes.empty?
-    raise NotUniqueError, "for query #{query}" if query_nodes.length > 1
-    query_nodes.first
-  end
-
-  def self.split_query(query)
-    query_parts = query.split(":")
-    raise BadQueryError, "for query #{query}" if query_parts.length != 5
-    query_parts
-  end
-
-  def self.search(nodes, query)
-    project, environment, config, node_type, node_name = split_query(query)
-    nodes.select { |n| n.match(project, environment, config, node_type, node_name) }
-  end
-
-  def self.dereference(nodes, reference)
-    components = reference.match(REFERENCE_SYNTAX)
-    return reference unless components
-
-    query = query_from_reference(reference)
-    nodes = where(nodes, query)
-    raise NotFoundError, "for reference: #{reference}" if nodes.empty?
-
-    nodes.map do |node|
-      next node unless components["resource"]
-      method_name = "#{components['resource']}_ref"
-      attribute = components["attribute"] || 'id'
-
-      unless node.respond_to?(method_name)
-        raise BadReferenceError, "#{query} does not have resource: #{components['resource']}"
-      end
-
-      node.send(method_name, attribute)
-    end
-  end
-
-  def self.query_from_reference(reference)
-    components = reference.match(REFERENCE_SYNTAX)
-    [
-      components["project"],
-      components["environment"],
-      components["configuration"],
-      components["node_type"],
-      components["node_name"]
-    ].join(":")
-  end
-
-  ###
-  # End of Search Methods
-  ###
 
   def self.json_schema
     node_names = {
@@ -192,16 +110,20 @@ class GeoEngineer::GPS
     @_nodes
   end
 
+  def finder
+    @finder ||= GeoEngineer::GPS::Finder.new(nodes)
+  end
+
   def find(query)
-    GeoEngineer::GPS.find(nodes, query)
+    finder.find(nodes, query)
   end
 
   def where(query)
-    GeoEngineer::GPS.where(nodes, query)
+    finder.where(query)
   end
 
   def dereference(reference)
-    GeoEngineer::GPS.dereference(nodes, reference)
+    finder.dereference(reference)
   end
 
   def to_h
@@ -301,7 +223,7 @@ class GeoEngineer::GPS
     end
 
     # create all resources for projet
-    project_nodes = GeoEngineer::GPS.where(nodes, "#{project_name}:#{environment_name}:*:*:*")
+    project_nodes = where("#{project_name}:#{environment_name}:*:*:*")
     project_nodes.each do |n|
       n.all_nodes = nodes
       n.create_resources(project) unless n.meta?
