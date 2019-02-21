@@ -60,38 +60,6 @@ class GeoEngineer::GPS
     nodes.select { |n| n.match(project, environment, config, node_type, node_name) }
   end
 
-  def self.dereference(nodes, reference)
-    components = reference.match(REFERENCE_SYNTAX)
-    return reference unless components
-
-    query = query_from_reference(reference)
-    nodes = where(nodes, query)
-    raise NotFoundError, "for reference: #{reference}" if nodes.empty?
-
-    nodes.map do |node|
-      next node unless components["resource"]
-      method_name = "#{components['resource']}_ref"
-      attribute = components["attribute"] || 'id'
-
-      unless node.respond_to?(method_name)
-        raise BadReferenceError, "#{query} does not have resource: #{components['resource']}"
-      end
-
-      node.send(method_name, attribute)
-    end
-  end
-
-  def self.query_from_reference(reference)
-    components = reference.match(REFERENCE_SYNTAX)
-    [
-      components["project"],
-      components["environment"],
-      components["configuration"],
-      components["node_type"],
-      components["node_name"]
-    ].join(":")
-  end
-
   ###
   # End of Search Methods
   ###
@@ -146,9 +114,9 @@ class GeoEngineer::GPS
 
   # Parse
   # rubocop:disable Metrics/AbcSize
-  def self.parse_dir(dir)
+  def self.parse_dir(dir, schema = nil)
     # Load, expand then merge all yml files
-    base_hash = Dir["#{dir}**/*#{GPS_FILE_EXTENSTION}"].reduce({}) do |projects, gps_file|
+    base_hash = Dir["#{dir}**/*#{GPS_FILE_EXTENSTION}"].reduce({}) do |new_hash, gps_file|
       begin
         # Merge Keys don't work with YAML.safe_load
         # since we are also loading Ruby safe_load is not needed
@@ -156,24 +124,33 @@ class GeoEngineer::GPS
         gps_hash = YAML.load(gps_text)
         # remove all keys starting with `_` to remove paritals
         gps_hash = HashUtils.remove_(gps_hash)
-        JSON::Validator.validate!(json_schema, gps_hash)
 
-        # project name is the path + file
-        project_name = gps_file.sub(dir, "")[0...-GPS_FILE_EXTENSTION.length]
+        JSON::Validator.validate!(schema, gps_hash) if schema
 
-        projects.merge({ project_name.to_s => gps_hash })
+        # base name is the path + file
+        base_name = gps_file.sub(dir, "")[0...-GPS_FILE_EXTENSTION.length]
+
+        new_hash.merge({ base_name.to_s => gps_hash })
       rescue StandardError => e
         raise LoadError, "Could not load #{gps_file}: #{e.message}"
       end
     end
-
-    GeoEngineer::GPS.new(base_hash)
+    base_hash
   end
 
-  attr_reader :base_hash
-  def initialize(base_hash)
+  def self.load_projects(dir, constants)
+    GeoEngineer::GPS.new(parse_dir(dir, json_schema), constants)
+  end
+
+  def self.load_constants(dir)
+    GeoEngineer::GPS::Constants.new(parse_dir(dir))
+  end
+
+  attr_reader :base_hash, :constants
+  def initialize(base_hash, constants)
     # Base Hash is the unedited input, useful for debugging
     @base_hash = base_hash
+    @constants = constants
 
     # expand meta nodes, this takes nodes and expands them
     @projects_hash = expand_meta_nodes(HashUtils.deep_dup(base_hash))
@@ -187,6 +164,19 @@ class GeoEngineer::GPS
       @_nodes << node
     end
 
+    # add pre-context
+    @_nodes.each do |node|
+      n.all_nodes = @_nodes
+      n.constants = @constants
+
+      # Tags require nodes and contexts to deref
+      HashUtils.map_values(node.attributes) do |a|
+        a.nodes = @_nodes if a.respond_to?(:nodes=)
+        a.constants = @constants if a.respond_to?(:constants=)
+        a
+      end
+    end
+
     # validate all nodes
     @_nodes.each(&:validate) # this will validate all nodes
     @_nodes
@@ -198,10 +188,6 @@ class GeoEngineer::GPS
 
   def where(query)
     GeoEngineer::GPS.where(nodes, query)
-  end
-
-  def dereference(reference)
-    GeoEngineer::GPS.dereference(nodes, reference)
   end
 
   def to_h
@@ -303,7 +289,6 @@ class GeoEngineer::GPS
     # create all resources for projet
     project_nodes = GeoEngineer::GPS.where(nodes, "#{project_name}:#{environment_name}:*:*:*")
     project_nodes.each do |n|
-      n.all_nodes = nodes
       n.create_resources(project) unless n.meta?
     end
 

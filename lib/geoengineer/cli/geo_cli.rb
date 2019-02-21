@@ -58,6 +58,7 @@ class GeoCLI
     files = [
       "#{@tmpdir}/gps.yml",
       "#{@tmpdir}/gps.expand.yml",
+      "#{@tmpdir}/gps.constants.yml",
       "#{@tmpdir}/#{@terraform_state_file}.backup",
       "#{@tmpdir}/#{@terraform_file}",
       "#{@tmpdir}/#{@terraform_state_file}",
@@ -89,7 +90,8 @@ class GeoCLI
   def gps
     return @gps if @gps
     require_gps
-    @gps ||= GeoEngineer::GPS.parse_dir("#{Dir.pwd}/projects/")
+    constants = GeoEngineer::GPS.load_constants("#{Dir.pwd}/environments/")
+    @gps ||= GeoEngineer::GPS.load_projects("#{Dir.pwd}/projects/", constants)
   end
 
   def require_gps
