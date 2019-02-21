@@ -10,20 +10,20 @@ class GeoEngineer::GPS::Finder
     (?<project>[a-zA-Z0-9\-_/*]*):         # Match the project name (optional)
     (?<environment>[a-zA-Z0-9\-_*]*):      # Match the environment (optional)
     (?<configuration>[a-zA-Z0-9\-_*]*):    # Match the configuration (optional)
-    (?<node_type>[a-zA-Z0-9\-_*]+):         # Match the node_type (required), does not support `*`
-    (?<node_name>[a-zA-Z0-9\-_/*.]*)       # Match the node_name (required)
+    (?<node_type>[a-zA-Z0-9\-_*]+):        # Match the node_type (required)
+    (?<node_name>[a-zA-Z0-9\-_/*.]*)       # Match the node_name (optional)
     $
   }x
 
   NODE_REFERENCE_SYNTAX = %r{
-    ^(?!arn:aws:)                           # Make sure we do not match AWS ARN's
+    ^(?!arn:aws:)                          # Make sure we do not match AWS ARN's
     (?<project>[a-zA-Z0-9\-_/*]*):         # Match the project name (optional)
     (?<environment>[a-zA-Z0-9\-_*]*):      # Match the environment (optional)
     (?<configuration>[a-zA-Z0-9\-_*]*):    # Match the configuration (optional)
     (?<node_type>[a-zA-Z0-9\-_]+):         # Match the node_type (required), does not support `*`
     (?<node_name>[a-zA-Z0-9\-_/*.]+)       # Match the node_name (required)
-    [#](?<resource>[a-zA-Z0-9_]+)         # Match the node resource (optional)
-    ([.](?<attribute>[a-zA-Z0-9_]+))?     # Match the resource attribute, requires resource (optional)
+    [#](?<resource>[a-zA-Z0-9_]+)          # Match the node resource (required)
+    ([.](?<attribute>[a-zA-Z0-9_]+))?      # Match the resource attribute, requires resource (optional)
     $
   }x
 
