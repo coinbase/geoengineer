@@ -95,7 +95,9 @@ module GeoCLI::TerraformCommands
     command :plan do |c|
       c.syntax = 'geo plan [<geo_files>]'
       c.description = 'Generate and show an execution plan'
+      c.option '--allow-destroy', 'Run the plan with allow_destroy = true, useful for debugging'
       action = lambda do |args, options|
+        env.allow_destroy(true) if options.allow_destroy
         create_terraform_files
         terraform_plan
       end
