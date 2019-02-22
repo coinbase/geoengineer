@@ -83,6 +83,15 @@ YAML.add_domain_type("", "Ref") do |type, reference|
   end
 end
 
+YAML.add_domain_type("", "Refs") do |type, reference|
+  # If a string starts with `:` in ruby it treats it as a symbol
+  # to make references we add back a `:` to the string
+  reference = ":#{reference.to_s}" if reference.is_a?(Symbol)
+  GeoEngineer::GPS::YamlTag.new(type, reference) do |value|
+    finder.dereference(reference).to_json
+  end
+end
+
 YAML.add_domain_type("", "Flatten") do |type, reference|
   raise "!Flatten must be on an Array" unless reference.is_a?(Array)
   GeoEngineer::GPS::YamlTag.new(type, reference) do |value|

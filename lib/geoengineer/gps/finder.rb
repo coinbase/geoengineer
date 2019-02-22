@@ -106,8 +106,8 @@ class GeoEngineer::GPS::Finder
       unless node.respond_to?(method_name)
         raise BadReferenceError, "#{reference} does not have resource: #{components['resource']}"
       end
+      node.send(method_name, attribute)
     end
-    node.send(method_name, attribute)
   end
 
   def constants_dereference(reference, components)
