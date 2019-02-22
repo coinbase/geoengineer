@@ -18,6 +18,15 @@ class GeoEngineer::Resources::AwsApiGatewayModel < GeoEngineer::Resource
     false
   end
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'name' => name,
+      'rest_api_id' => rest_api_id
+    }
+    tfstate
+  end
+
   def self._fetch_remote_resources(provider)
     _remote_rest_api_models(provider) { |_, model| model }.flatten.compact
   end
