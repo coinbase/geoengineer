@@ -75,6 +75,9 @@ end
 
 # Ref takes a query as input and replaces it with the value
 YAML.add_domain_type("", "Ref") do |type, reference|
+  # If a string starts with `:` in ruby it treats it as a symbol
+  # to make references we add back a `:` to the string
+  reference = ":#{reference.to_s}" if reference.is_a?(Symbol)
   GeoEngineer::GPS::YamlTag.new(type, reference) do |value|
     finder.dereference!(reference).to_json
   end

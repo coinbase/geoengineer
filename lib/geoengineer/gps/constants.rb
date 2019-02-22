@@ -1,15 +1,13 @@
 # Constants contains the needed information to
 class GeoEngineer::GPS::Constants
-  attr_reader :base_hash, :constants_hash
+  attr_reader :constants_hash
 
   def initialize(base_hash)
-    @base_hash = base_hash
-
     # _defaults is copied into each environment
-    @defaults_hash = @base_hash["_defaults"]
+    @defaults_hash = base_hash["_defaults"]
 
     # remove all _'s
-    @constants_hash = HashUtils.remove_(@base_hash)
+    @constants_hash = HashUtils.remove_(base_hash)
 
     # the local environment overrides the values
     @constants_hash.each_pair do |environment, vals|
