@@ -115,7 +115,7 @@ class GeoEngineer::GPS
   end
 
   def find(query)
-    finder.find(nodes, query)
+    finder.find(query)
   end
 
   def where(query)
