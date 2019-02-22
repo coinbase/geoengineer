@@ -58,6 +58,10 @@ class GeoEngineer::GPS::Node
     project.split("/")[1]
   end
 
+  def convert_attributes
+    @attributes = HashUtils.json_dup(@attributes)
+  end
+
   def validate
     # First we inject all the defaults
     # This errors because if an object is invalid it will not insert_defaults
@@ -173,7 +177,7 @@ class GeoEngineer::GPS::Node
   end
 
   def finder
-    @finder ||= GeoEngineer::GPS::Finder.new(all_nodes, {
+    @finder ||= GeoEngineer::GPS::Finder.new(all_nodes, constants, {
                                                project: @project,
                                                environment: @environment,
                                                configuration: @configuration,

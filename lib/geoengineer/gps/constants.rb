@@ -6,15 +6,18 @@ class GeoEngineer::GPS::Constants
     @base_hash = base_hash
 
     # _defaults is copied into each environment
-    @defaults_hash = HashUtils.deep_dup(@base_hash["_defaults"])
+    @defaults_hash = @base_hash["_defaults"]
 
     # remove all _'s
     @constants_hash = HashUtils.remove_(@base_hash)
 
     # the local environment overrides the values
-    @constants_hash.each_pair do |key, value|
-      constants_hash[key] = value.merge(@defaults_hash)
+    @constants_hash.each_pair do |environment, vals|
+      @constants_hash[environment] = @defaults_hash.merge(vals)
     end
+
+    # Force different Tag objects
+    @constants_hash = HashUtils.deep_dup(@constants_hash)
 
     # attach constants and environment to TTags
     @constants_hash.each_pair do |environment, vals|
@@ -26,21 +29,19 @@ class GeoEngineer::GPS::Constants
     end
   end
 
+  def constants_json
+    @constants_json ||= HashUtils.json_dup(constants_hash)
+  end
 
-  def each_for_environment(environment_name)
-    constants_hash[environment_name.to_s]
+  def for_environment(environment_name)
+    constants_json[environment_name.to_s]
+  end
+
+  def dereference(environment, attribute)
+    @constants_hash.dig(environment, attribute)
   end
 
   def to_h
     HashUtils.json_dup(constants_hash)
-  end
-
-  def dereference!(reference, local_environment = nil)
-    prefix, environment, name = reference.split(":")
-    environment = local_environment if environment.to_s == ""
-
-    reference = [prefix, environment, name].join(":")
-
-    deref.dereference(reference)
   end
 end

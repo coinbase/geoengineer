@@ -5,6 +5,7 @@ class GeoEngineer::GPS::Finder
   class BadQueryError < StandardError; end
   class BadReferenceError < StandardError; end
 
+
   NODE_QUERY_SYNTAX = %r{
     ^
     (?<project>[a-zA-Z0-9\-_/*]*):         # Match the project name (optional)
@@ -12,6 +13,14 @@ class GeoEngineer::GPS::Finder
     (?<configuration>[a-zA-Z0-9\-_*]*):    # Match the configuration (optional)
     (?<node_type>[a-zA-Z0-9\-_*]+):        # Match the node_type (required)
     (?<node_name>[a-zA-Z0-9\-_/*.]*)       # Match the node_name (optional)
+    $
+  }x
+
+  CONSTANT_REFERENCE_SYNTAX = %r{
+    ^
+    constant:                             # Hard coding the
+    (?<environment>[a-zA-Z0-9\-_*]*):      # Match the environment (optional)
+    (?<attribute>[a-zA-Z0-9\-_/*.]+)       # Match the node_name (required)
     $
   }x
 
@@ -27,11 +36,13 @@ class GeoEngineer::GPS::Finder
     $
   }x
 
-  attr_reader :nodes
+  attr_reader :nodes, :constants
   attr_reader :project, :environment, :configuration, :node_type, :node_name
 
-  def initialize(nodes, context = {})
+  def initialize(nodes, constants, context = {})
     @nodes = nodes
+    @constants = constants
+
     # extract the context
     @project = context[:project]
     @environment = context[:environment]
@@ -62,10 +73,24 @@ class GeoEngineer::GPS::Finder
     query_nodes.first
   end
 
-  def dereference(reference)
-    components = reference.match(NODE_REFERENCE_SYNTAX)
-    raise BadReferenceError, "for reference: #{reference}" unless components
+  def dereference!(reference)
+    refs = dereference(reference)
+    raise NotFoundError, "for reference #{reference}" if refs.empty?
+    raise NotUniqueError, "for reference #{reference}" if refs.length > 1
+    refs.first
+  end
 
+  def dereference(reference)
+    nodes_components = reference.match(NODE_REFERENCE_SYNTAX)
+    constants_components = reference.match(CONSTANT_REFERENCE_SYNTAX)
+
+    return node_dereference(reference, nodes_components) if nodes_components
+    return constants_dereference(reference, constants_components) if constants_components
+
+    raise BadReferenceError, "for reference: #{reference}"
+  end
+
+  def node_dereference(reference, components)
     nodes = search_nodes(
       components["project"],
       components["environment"],
@@ -82,9 +107,20 @@ class GeoEngineer::GPS::Finder
       unless node.respond_to?(method_name)
         raise BadReferenceError, "#{reference} does not have resource: #{components['resource']}"
       end
-
-      node.send(method_name, attribute)
     end
+    node.send(method_name, attribute)
+  end
+
+  def constants_dereference(reference, components)
+    environment = components["environment"]
+    environment = @environment if environment.empty?
+
+    attribute = components["attribute"]
+    con = constants.dereference(environment, attribute)
+    require 'pry'
+    binding.pry if con.nil?
+    raise BadReferenceError, "#{reference} not found" if con.nil?
+    [con] # required return of array
   end
 
   def search_nodes(project, environment, configuration, node_type, node_name)

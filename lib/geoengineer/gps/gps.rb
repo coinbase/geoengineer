@@ -14,41 +14,6 @@ class GeoEngineer::GPS
 
   GPS_FILE_EXTENSTION = ".gps.yml".freeze
 
-<<<<<<< HEAD
-  ###
-  # Search Methods
-  ###
-
-  # where returns multiple nodes
-  def self.where(nodes, query = "*:*:*:*:*")
-    search(nodes, query)
-  end
-
-  # find a node from nodes
-  def self.find(nodes, query = "*:*:*:*:*")
-    query_nodes = search(nodes, query)
-    raise NotFoundError, "for query #{query}" if query_nodes.empty?
-    raise NotUniqueError, "for query #{query}" if query_nodes.length > 1
-    query_nodes.first
-  end
-
-  def self.split_query(query)
-    query_parts = query.split(":")
-    raise BadQueryError, "for query #{query}" if query_parts.length != 5
-    query_parts
-  end
-
-  def self.search(nodes, query)
-    project, environment, config, node_type, node_name = split_query(query)
-    nodes.select { |n| n.match(project, environment, config, node_type, node_name) }
-  end
-
-  ###
-  # End of Search Methods
-  ###
-
-=======
->>>>>>> graham/extract-query-logic
   def self.json_schema
     node_names = {
       "type":  "object",
@@ -109,7 +74,6 @@ class GeoEngineer::GPS
         gps_hash = YAML.load(gps_text)
         # remove all keys starting with `_` to remove paritals
         gps_hash = HashUtils.remove_(gps_hash)
-
         JSON::Validator.validate!(schema, gps_hash) if schema
 
         # base name is the path + file
@@ -151,16 +115,19 @@ class GeoEngineer::GPS
 
     # add pre-context
     @_nodes.each do |node|
-      n.all_nodes = @_nodes
-      n.constants = @constants
+      node.all_nodes = @_nodes
+      node.constants = @constants
 
       # Tags require nodes and contexts to deref
       HashUtils.map_values(node.attributes) do |a|
+        a.node = node if a.respond_to?(:node=)
         a.nodes = @_nodes if a.respond_to?(:nodes=)
         a.constants = @constants if a.respond_to?(:constants=)
         a
       end
     end
+
+    @_nodes.each(&:convert_attributes)
 
     # validate all nodes
     @_nodes.each(&:validate) # this will validate all nodes
@@ -168,7 +135,7 @@ class GeoEngineer::GPS
   end
 
   def finder
-    @finder ||= GeoEngineer::GPS::Finder.new(nodes)
+    @finder ||= GeoEngineer::GPS::Finder.new(nodes, constants)
   end
 
   def find(query)
@@ -179,13 +146,10 @@ class GeoEngineer::GPS
     finder.where(query)
   end
 
-<<<<<<< HEAD
-=======
   def dereference(reference)
     finder.dereference(reference)
   end
 
->>>>>>> graham/extract-query-logic
   def to_h
     HashUtils.json_dup(@base_hash)
   end
@@ -290,7 +254,7 @@ class GeoEngineer::GPS
 
     project_configurations(project_name, environment_name).each do |configuration|
       # yeild to the given block nodes per-config
-      nw = GeoEngineer::GPS::NodesContext.new(project_name, environment_name, configuration, nodes)
+      nw = GeoEngineer::GPS::NodesContext.new(project_name, environment_name, configuration, nodes, constants)
       yield(project, configuration, nw) if block_given? && project_nodes.any?
     end
 

@@ -101,13 +101,13 @@ describe GeoEngineer::GPS::Finder do
       ]
 
       nonvalid_references.each do |ref|
-        it "enforces the reference syntax for #{ref}" do
+        it "be invalid for #{ref}" do
           expect(ref =~ GeoEngineer::GPS::Finder::NODE_REFERENCE_SYNTAX).to be_nil
         end
       end
 
       valid_references.each do |ref|
-        it "enforces the reference syntax for #{ref}" do
+        it "be valid for #{ref}" do
           expect(ref =~ GeoEngineer::GPS::Finder::NODE_REFERENCE_SYNTAX).to eq(0)
         end
       end
@@ -117,6 +117,31 @@ describe GeoEngineer::GPS::Finder do
       components = "valid:valid:valid:valid:valid#valid".match(GeoEngineer::GPS::Finder::NODE_REFERENCE_SYNTAX)
       expect(components["resource"]).to_not be_nil
       expect(components["attribute"]).to be_nil
+    end
+  end
+
+  describe 'CONSTANT_REFERENCE_SYNTAX' do
+    describe 'enforces the reference syntax' do
+      nonvalid_references = [
+        "constants:::",
+        ":::type:name"
+      ]
+
+      valid_references = [
+        "constant:development:private_api"
+      ]
+
+      nonvalid_references.each do |ref|
+        it "be invalid for #{ref}" do
+          expect(ref =~ GeoEngineer::GPS::Finder::CONSTANT_REFERENCE_SYNTAX).to be_nil
+        end
+      end
+
+      valid_references.each do |ref|
+        it "be valid for #{ref}" do
+          expect(ref =~ GeoEngineer::GPS::Finder::CONSTANT_REFERENCE_SYNTAX).to eq(0)
+        end
+      end
     end
   end
 
