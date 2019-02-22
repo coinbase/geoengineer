@@ -114,20 +114,7 @@ class GeoEngineer::GPS
     end
 
     # add pre-context
-    @_nodes.each do |node|
-      node.all_nodes = @_nodes
-      node.constants = @constants
-
-      # Tags require nodes and contexts to deref
-      HashUtils.map_values(node.attributes) do |a|
-        a.node = node if a.respond_to?(:node=)
-        a.nodes = @_nodes if a.respond_to?(:nodes=)
-        a.constants = @constants if a.respond_to?(:constants=)
-        a
-      end
-    end
-
-    @_nodes.each(&:convert_attributes)
+    @_nodes.each { |node| node.set_values(@_nodes, @constants) }
 
     # validate all nodes
     @_nodes.each(&:validate) # this will validate all nodes
@@ -151,7 +138,7 @@ class GeoEngineer::GPS
   end
 
   def to_h
-    HashUtils.json_dup(@base_hash)
+    @base_hash
   end
 
   def expanded_hash

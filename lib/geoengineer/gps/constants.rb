@@ -21,11 +21,7 @@ class GeoEngineer::GPS::Constants
 
     # attach constants and environment to TTags
     @constants_hash.each_pair do |environment, vals|
-      HashUtils.map_values(vals) do |a|
-        a.constants = self if a.respond_to?(:constants=)
-        a.environment = environment if a.respond_to?(:environment=)
-        a
-      end
+      GeoEngineer::GPS::YamlTag.add_tag_values(vals, constants: self, environment: environment)
     end
   end
 

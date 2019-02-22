@@ -21,7 +21,6 @@ class GeoEngineer::GPS::Node
     @environment = environment
     @configuration = configuration
     @node_name = node_name
-    @initial_attributes = HashUtils.deep_dup(attributes)
     @attributes = attributes
   end
 
@@ -58,8 +57,13 @@ class GeoEngineer::GPS::Node
     project.split("/")[1]
   end
 
-  def convert_attributes
-    @attributes = HashUtils.json_dup(@attributes)
+  def set_values(nodes, constants)
+    self.all_nodes = nodes
+    self.constants = constants
+    GeoEngineer::GPS::YamlTag.add_tag_values(self.attributes, node: self, nodes: nodes, constants: constants)
+
+    @attributes = HashUtils.json_dup(attributes)
+    @initial_attributes = HashUtils.deep_dup(attributes)
   end
 
   def validate
