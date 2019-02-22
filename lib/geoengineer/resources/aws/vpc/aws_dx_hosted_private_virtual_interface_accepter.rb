@@ -1,10 +1,10 @@
 ########################################################################
-# AwsDxHostedPrivateVirtualInterfaceAcceptor is the +aws_dx_hosted_private_virtual_interface_accepter+ terrform
+# AwsDxHostedPrivateVirtualInterfaceAccepter is the +aws_dx_hosted_private_virtual_interface_accepter+ terrform
 # resource.
 #
 # {https://www.terraform.io/docs/providers/aws/r/dx_hosted_private_virtual_interface_accepter.html Terraform Docs}
 ########################################################################
-class GeoEngineer::Resources::AwsDxHostedPrivateVirtualInterfaceAcceptor < GeoEngineer::Resource
+class GeoEngineer::Resources::AwsDxHostedPrivateVirtualInterfaceAccepter < GeoEngineer::Resource
   validate -> { validate_required_attributes([:virtual_interface_id]) }
   validate -> { validate_has_tag(:Name) }
 
