@@ -63,7 +63,6 @@ class GeoEngineer::GPS
   end
 
   # Parse
-  # rubocop:disable Metrics/AbcSize
   def self.parse_dir(dir, schema = nil)
     # Load, expand then merge all yml files
     base_hash = Dir["#{dir}**/*#{GPS_FILE_EXTENSTION}"].reduce({}) do |new_hash, gps_file|

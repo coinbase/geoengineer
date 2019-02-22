@@ -60,7 +60,7 @@ class GeoEngineer::GPS::Node
   def set_values(nodes, constants)
     self.all_nodes = nodes
     self.constants = constants
-    GeoEngineer::GPS::YamlTag.add_tag_values(self.attributes, node: self, nodes: nodes, constants: constants)
+    GeoEngineer::GPS::YamlTag.add_tag_values(self.attributes, { node: self, nodes: nodes, constants: constants })
 
     @attributes = HashUtils.json_dup(attributes)
     @initial_attributes = HashUtils.deep_dup(attributes)

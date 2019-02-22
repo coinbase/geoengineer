@@ -16,7 +16,7 @@ class HashUtils
   def self.map_values(value, &block)
     case value
     when Hash
-      value.each_pair { |k,v| value[k] = map_values(v, &block) }
+      value.each_pair { |k, v| value[k] = map_values(v, &block) }
     when Array
       value.map { |v| map_values(v, &block) }
     else

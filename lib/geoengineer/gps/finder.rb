@@ -5,7 +5,6 @@ class GeoEngineer::GPS::Finder
   class BadQueryError < StandardError; end
   class BadReferenceError < StandardError; end
 
-
   NODE_QUERY_SYNTAX = %r{
     ^
     (?<project>[a-zA-Z0-9\-_/*]*):         # Match the project name (optional)
