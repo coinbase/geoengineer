@@ -45,6 +45,17 @@ describe GeoEngineer::GPS do
     end
   end
 
+  describe '#find' do
+    it 'proxies the request to the finder' do
+      h = { "org/p1" => { "e1" => { "c1" => { "test_node" => { "n1" => { "name" => "asd" } } } } } }
+      gps = GeoEngineer::GPS.new(h)
+
+      expect do
+        gps.find("p1:e1:*:*:*")
+      end.to raise_error(GeoEngineer::GPS::Finder::NotFoundError)
+    end
+  end
+
   describe '#create_project' do
     it 'creates node resources' do
       h = { "org/p1" => { "e1" => { "c1" => { "test_node" => { "n1" => { "name" => "asd" } } } } } }
