@@ -24,7 +24,16 @@ class GeoEngineer::Resources::AwsOrganizationsAccount < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    AwsClients.organizations(provider).list_accounts.accounts.map(&:to_h).map do |ac|
+    accounts = []
+
+    response = AwsClients.organizations(provider).list_accounts
+    accounts += response.accounts
+    while response.next_page?
+      response = response.next_page
+      accounts += response.accounts
+    end
+
+    accounts.map(&:to_h).map do |ac|
       {
         _terraform_id: ac[:id],
         _geo_id: ac[:name],
