@@ -42,3 +42,6 @@ Dir["#{File.dirname(__FILE__)}/geoengineer/gps/**/*.rb"].each { |f| require f }
 Dir["#{File.dirname(__FILE__)}/geoengineer/resources/**/*.rb"].each { |f| require f }
 
 Dir["#{File.dirname(__FILE__)}/geoengineer/templates/**/*.rb"].each { |f| require f }
+
+# Require only the GeoCLI
+require "#{File.dirname(__FILE__)}/geoengineer/cli/geo_cli.rb"

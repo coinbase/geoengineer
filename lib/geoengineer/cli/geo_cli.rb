@@ -15,22 +15,6 @@ require_relative './test_cmd_stubs'
 require_relative './terraform_commands'
 require_relative './gps_commands'
 
-def environment(name, &block)
-  GeoCLI.instance.create_environment(name, &block)
-end
-
-def env
-  GeoCLI.instance.environment
-end
-
-def gps
-  GeoCLI.instance.gps
-end
-
-def project(org, name, &block)
-  GeoCLI.instance.environment.project(org, name, &block)
-end
-
 # GeoCLI context
 class GeoCLI
   include Commander::Methods
@@ -102,8 +86,8 @@ class GeoCLI
     require "#{dir}/gps.rb" if File.exist? "#{dir}/gps.rb"
   end
 
-  def require_environment(options)
-    @env_name = options.environment || ENV['GEO_ENV'] || 'staging'
+  def require_environment(options = nil)
+    @env_name = options&.environment || ENV['GEO_ENV'] || 'staging'
     puts "Using environment '#{@env_name}'\n" if @verbose
     begin
       require_from_pwd "environments/#{@env_name}"
