@@ -126,5 +126,24 @@ module GeoEngineer::ApiGatewayHelpers
         end
       end
     end
+
+    # Request Validators
+    def _fetch_remote_rest_api_request_validators(provider, rest_api)
+      resources = _client(provider).get_request_validators(
+        { rest_api_id: rest_api[:_terraform_id] }
+      )['items']
+      resources.map(&:to_h).map do |rv|
+        rv[:_terraform_id] = rv[:id]
+        rv[:_geo_id]       = "#{rest_api[:_geo_id]}::#{rv[:name]}"
+      end
+    end
+
+    def _remote_rest_api_request_validators(provider)
+      _fetch_remote_rest_apis(provider).map do |rr|
+        _fetch_remote_rest_api_request_validators(provider, rr) do |rv|
+          yield rr, rv
+        end
+      end
+    end
   end
 end
