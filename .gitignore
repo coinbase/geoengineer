@@ -4,3 +4,8 @@
 tmp
 .*.sw*
 Gemfile.lock
+
+# Emacs
+*~
+\#*\#
+.\#*
