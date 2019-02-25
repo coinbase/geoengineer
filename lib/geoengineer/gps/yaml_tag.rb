@@ -1,3 +1,4 @@
+require 'yaml'
 
 # YamlTag allows use of Tags in GPS
 class GeoEngineer::GPS::YamlTag
