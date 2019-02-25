@@ -116,7 +116,7 @@ class GeoEngineer::GPS::Finder
 
     attribute = components["attribute"]
     con = constants.dereference(environment, attribute)
-    raise BadReferenceError, "#{reference} not found" if con.nil?
+    raise NotFoundError, "#{reference} not found" if con.nil?
     [con] # required return of array
   end
 

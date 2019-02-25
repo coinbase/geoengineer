@@ -4,20 +4,20 @@ require_relative './test_nodes'
 describe GeoEngineer::GPS do
   describe '#initialize' do
     it 'works with no input' do
-      GeoEngineer::GPS.new({})
+      GeoEngineer::GPS.new({}, {})
     end
 
     it 'should init and build nodes' do
       g = GeoEngineer::GPS.new({
                                  "p1" => { "e1" => { "c1" => { "test_node" => { "n1" => {} } } } }
-                               })
+                               }, {})
       expect(g.nodes.first.node_id).to eq "p1:e1:c1:test_node:n1"
     end
 
     it 'should expand meta_nodes' do
       g = GeoEngineer::GPS.new({
                                  "p1" => { "e1" => { "c1" => { "test_meta_node" => { "n1" => {} } } } }
-                               })
+                               }, {})
       expect(g.nodes.length).to eq 2
       expect(g.where("p1:e1:c1:test_meta_node:n1").length).to eq 1
       expect(g.where("p1:e1:c1:test_node:n1").length).to eq 1
@@ -26,7 +26,7 @@ describe GeoEngineer::GPS do
     it 'should expand meta nodes which build meta nodes' do
       g = GeoEngineer::GPS.new({
                                  "p1" => { "e1" => { "c1" => { "test_meta_meta_node" => { "n1" => {} } } } }
-                               })
+                               }, {})
       expect(g.nodes.length).to eq 3
       expect(g.where("p1:e1:c1:test_meta_meta_node:*").length).to eq 1
       expect(g.where("p1:e1:c1:test_meta_node:*").length).to eq 1
@@ -37,7 +37,7 @@ describe GeoEngineer::GPS do
   describe '#expanded_hash' do
     it 'builds a hash of all nodes' do
       h = { "p1" => { "e1" => { "c1" => { "test_node" => { "n1" => {} } } } } }
-      g = GeoEngineer::GPS.new(h)
+      g = GeoEngineer::GPS.new(h, {})
 
       # includes default values
       eh = { "p1" => { "e1" => { "c1" => { "test_node" => { "n1" => { "name" => "default" } } } } } }
@@ -48,7 +48,7 @@ describe GeoEngineer::GPS do
   describe '#create_project' do
     it 'creates node resources' do
       h = { "org/p1" => { "e1" => { "c1" => { "test_node" => { "n1" => { "name" => "asd" } } } } } }
-      g = GeoEngineer::GPS.new(h)
+      g = GeoEngineer::GPS.new(h, {})
 
       called = false
       g.create_project("org", "p1", GeoEngineer::Environment.new("e1")) do |project, config, nodes|

@@ -9,7 +9,7 @@ describe GeoEngineer::GPS::Finder do
   let(:n4) { GeoEngineer::GPS::Node.new("p1", "e2", "c2", "n2", {}) }
   let(:nodes) { [n0, n1, n2, n3, n4] }
 
-  let(:finder) { described_class.new(nodes) }
+  let(:finder) { described_class.new(nodes, nil) }
 
   describe 'where' do
     it 'returns nodes from project' do
@@ -53,22 +53,22 @@ describe GeoEngineer::GPS::Finder do
 
   describe "with context" do
     it 'replaces project' do
-      finder = described_class.new(nodes, { project: "p0" })
+      finder = described_class.new(nodes, nil, { project: "p0" })
       expect(finder.where(":*:*:*:*")).to eq [n0]
     end
 
     it 'replaces environment' do
-      finder = described_class.new(nodes, { environment: "e1" })
+      finder = described_class.new(nodes, nil, { environment: "e1" })
       expect(finder.where("*::*:*:*")).to eq [n0, n1]
     end
 
     it 'replaces configuration' do
-      finder = described_class.new(nodes, { configuration: "c2" })
+      finder = described_class.new(nodes, nil, { configuration: "c2" })
       expect(finder.where("*:*::*:*")).to eq [n3, n4]
     end
 
     it 'replaces node_name' do
-      finder = described_class.new(nodes, { node_name: "n2" })
+      finder = described_class.new(nodes, nil, { node_name: "n2" })
       expect(finder.where("*:*:*:*:")).to eq [n4]
     end
   end
@@ -145,40 +145,64 @@ describe GeoEngineer::GPS::Finder do
     end
   end
 
-  describe 'dereference' do
+  describe 'searching' do
     let(:n1) { GeoEngineer::GPS::Nodes::TestNode.new("p1", "e1", "c1", "n1", {}) }
     let(:n2) { GeoEngineer::GPS::Nodes::TestNode.new("p2", "e1", "c1", "n1", {}) }
     let(:n3) { GeoEngineer::GPS::Nodes::TestNode.new("p2", "e2", "c2", "n1", {}) }
     let(:n4) { GeoEngineer::GPS::Nodes::TestNode.new("p2", "e2", "c2", "n2", {}) }
     let(:nodes) { [n1, n2, n3, n4] }
-    let(:finder) { described_class.new(nodes) }
+    let(:constants) {
+      GeoEngineer::GPS::Constants.new({
+                                        "e1": { "override": "no" }, "_global": { "test": "hello", "override": "yes" }
+                                      }) }
 
-    it 'returns the designated resource ref' do
-      expect(finder.dereference("*:*:*:test_node:*#elb")).to eq(nodes.map(&:elb_ref))
-      expect(finder.dereference("p1:*:*:test_node:*#elb")).to eq([n1.elb_ref])
-      expect(finder.dereference("p2:*:*:test_node:*#elb")).to eq([n2, n3, n4].map(&:elb_ref))
-      expect(finder.dereference("p2:e2:c2:test_node:n2#elb")).to eq([n4.elb_ref])
+    let(:finder) { described_class.new(nodes, constants) }
+
+    context 'dereference' do
+      it 'returns the designated resource ref' do
+        expect(finder.dereference("*:*:*:test_node:*#elb")).to eq(nodes.map(&:elb_ref))
+        expect(finder.dereference("p1:*:*:test_node:*#elb")).to eq([n1.elb_ref])
+        expect(finder.dereference("p2:*:*:test_node:*#elb")).to eq([n2, n3, n4].map(&:elb_ref))
+        expect(finder.dereference("p2:e2:c2:test_node:n2#elb")).to eq([n4.elb_ref])
+      end
+
+      it 'returns correct constants' do
+        expect(finder.dereference("constant:e1:test")).to eq(["hello"])
+        expect(finder.dereference("constant:e1:override")).to eq(["no"])
+      end
+
+      it 'returns the designated resource attribute ref' do
+        expect(finder.dereference("*:*:*:test_node:*#elb.arn"))
+          .to eq(nodes.map { |n| n.elb_ref("arn") })
+        expect(finder.dereference("p1:*:*:test_node:*#elb.arn"))
+          .to eq([n1.elb_ref("arn")])
+        expect(finder.dereference("p2:*:*:test_node:*#elb.arn"))
+          .to eq([n2, n3, n4].map { |n| n.elb_ref("arn") })
+        expect(finder.dereference("p2:e2:c2:test_node:n2#elb.arn"))
+          .to eq([n4.elb_ref("arn")])
+      end
+
+      it 'errors if no matching nodes are found' do
+        expect { finder.dereference("p3:*:*:test_node:*#elb.arn") }
+          .to raise_error(GeoEngineer::GPS::Finder::NotFoundError)
+      end
+
+      it 'errors if the resource does not exist' do
+        expect { finder.dereference("p2:*:*:test_node:*#security_group.arn") }
+          .to raise_error(GeoEngineer::GPS::Finder::BadReferenceError)
+      end
     end
 
-    it 'returns the designated resource attribute ref' do
-      expect(finder.dereference("*:*:*:test_node:*#elb.arn"))
-        .to eq(nodes.map { |n| n.elb_ref("arn") })
-      expect(finder.dereference("p1:*:*:test_node:*#elb.arn"))
-        .to eq([n1.elb_ref("arn")])
-      expect(finder.dereference("p2:*:*:test_node:*#elb.arn"))
-        .to eq([n2, n3, n4].map { |n| n.elb_ref("arn") })
-      expect(finder.dereference("p2:e2:c2:test_node:n2#elb.arn"))
-        .to eq([n4.elb_ref("arn")])
-    end
+    describe 'dereference!' do
+      it 'raises error if nothing found' do
+        expect { finder.dereference!("constant:e1:nope") }
+          .to raise_error(GeoEngineer::GPS::Finder::NotFoundError)
+      end
 
-    it 'errors if no matching nodes are found' do
-      expect { finder.dereference("p3:*:*:test_node:*#elb.arn") }
-        .to raise_error(GeoEngineer::GPS::Finder::NotFoundError)
-    end
-
-    it 'errors if the resource does not exist' do
-      expect { finder.dereference("p2:*:*:test_node:*#security_group.arn") }
-        .to raise_error(GeoEngineer::GPS::Finder::BadReferenceError)
+      it 'raises error if more than one thing found' do
+        expect { finder.dereference!("p2:*:*:test_node:*#elb") }
+          .to raise_error(GeoEngineer::GPS::Finder::NotUniqueError)
+      end
     end
   end
 end
