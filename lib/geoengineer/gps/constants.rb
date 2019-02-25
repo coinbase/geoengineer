@@ -1,4 +1,4 @@
-# Constants contains the needed information to
+# Constants contains a hash that can store sharable values
 class GeoEngineer::GPS::Constants
   attr_reader :constants
 
