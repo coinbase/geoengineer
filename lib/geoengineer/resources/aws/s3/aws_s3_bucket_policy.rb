@@ -46,7 +46,7 @@ class GeoEngineer::Resources::AwsS3BucketPolicy < GeoEngineer::Resource
       .s3(provider)
       .get_bucket_policy({ bucket: bucket.name.to_s })
       .to_h
-      .merge({ _terraform_id: "#{bucket.name}" })
+      .merge({ _terraform_id: bucket.name })
   rescue Aws::S3::Errors::NoSuchBucketPolicy
     nil
   end
