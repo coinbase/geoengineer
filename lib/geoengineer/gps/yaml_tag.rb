@@ -23,7 +23,7 @@ class GeoEngineer::GPS::YamlTag
   end
 
   def context=(context)
-    raise "Cannot change Tag Context from #{@context} to #{context}" if @context
+    raise "Cannot change Tag Context from #{@context} to #{context}" if @context && @context != context
     GeoEngineer::GPS::YamlTag.add_tag_context(@value, { context: context }) # Recursive for Tags in Tags
     @context = context
   end

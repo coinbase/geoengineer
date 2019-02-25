@@ -99,24 +99,24 @@ class GeoEngineer::GPS
     # Base Hash is the unedited input, useful for debugging
     @base_hash = base_hash
     @constants = constants
-
-    # expand meta nodes, this takes nodes and expands them
-    @projects_hash = expand_meta_nodes(HashUtils.deep_dup(base_hash))
   end
 
   def nodes
     return @_nodes if @_nodes
 
     @_nodes = []
-    loop_projects_hash(@projects_hash) do |node|
+    loop_projects_hash(@base_hash) do |node|
       @_nodes << node
     end
 
     # add pre-context
     @_nodes.each { |node| node.set_values(@_nodes, @constants) }
 
-    # validate all nodes
-    @_nodes.each(&:validate) # this will validate all nodes
+    @_nodes.each(&:validate) # validate all nodes
+
+    @_nodes = expand_meta_nodes(@_nodes, @_nodes) # this validates as it expands
+
+    @_nodes.each { |node| node.set_values(@_nodes, @constants) }
     @_nodes
   end
 
@@ -152,60 +152,54 @@ class GeoEngineer::GPS
     HashUtils.json_dup(expanded_hash)
   end
 
-  def loop_projects_hash(projects_hash)
+  def loop_projects_hash(projects_hash, &block)
     projects_hash.each_pair do |project, environments|
       environments.each_pair do |environment, configurations|
         configurations.each_pair do |configuration, nodes|
-          nodes.each_pair do |node_type, node_names|
-            node_names.each_pair do |node_name, attributes|
-              node_type_class = find_node_class(node_type)
-              yield node_type_class.new(project, environment, configuration, node_name, attributes)
-            end
-          end
+          loop_nodes(project, environment, configuration, nodes, &block)
         end
       end
     end
   end
 
-  def expand_meta_node(node)
-    node.validate # ensures that the meta node has expanded and has correct attributes
-    children_nodes = HashUtils.deep_dup(node.build_nodes)
-
-    children_nodes.reduce(children_nodes.clone) do |expanded, (node_type, node_names)|
-      node_names.reduce(expanded.clone) do |inner_expanded, (node_name, attributes)|
-        node_type_class = find_node_class(node_type)
-        node = node_type_class.new(node.project, node.environment, node.configuration, node_name, attributes)
-        next inner_expanded unless node.meta?
-
-        HashUtils.deep_merge(inner_expanded, expand_meta_node(node))
+  def loop_nodes(project, environment, configuration, nodes)
+    nodes.each_pair do |node_type, node_names|
+      node_names.each_pair do |node_name, attributes|
+        node_type_class = find_node_class(node_type.to_s)
+        yield node_type_class.new(project, environment, configuration, node_name, HashUtils.deep_dup(attributes))
       end
     end
   end
 
-  def expand_meta_nodes(projects_hash)
-    # We dup the original hash because we cannot edit and loop over it at the same time
-    loop_projects_hash(HashUtils.deep_dup(projects_hash)) do |node|
+  def expand_meta_node(node, all_nodes)
+    expanded_nodes = []
+    bn = node.build_nodes
+    loop_nodes(node.project, node.environment, node.configuration, bn) do |new_node|
+      new_node.set_values(all_nodes, @constants)
+      new_node.validate
+      expanded_nodes << new_node
+    end
+
+    # recurse through to further expand
+    expand_meta_nodes(expanded_nodes, all_nodes)
+  end
+
+  def expand_meta_nodes(nodes, all_nodes)
+    # dup the list to create new list
+    expanded_nodes = nodes.dup
+    nodes.each do |node|
       next unless node.meta?
 
-      # find the hash to edit
-      nodes = projects_hash.dig(node.project, node.environment, node.configuration)
-
-      # node_type => node_name => attrs
-      built_nodes = expand_meta_node(node)
-
-      built_nodes.each_pair do |built_node_type, built_node_names|
-        nodes[built_node_type] ||= {}
-        built_node_names.each_pair do |built_node_name, built_attributes|
-          # Error if the meta-node is overwriting an existing node
-          already_built_error = "\"#{node.node_name}\" overwrites node \"#{built_node_name}\""
-          raise MetaNodeError, already_built_error if nodes[built_node_type].key?(built_node_name)
-          # append to the hash
-          nodes[built_node_type][built_node_name] = built_attributes
-        end
+      built_nodes = expand_meta_node(node, all_nodes)
+      built_nodes.each do |bnode|
+        # Error if the meta-node is overwriting an existing node
+        already_built_error = "\"#{node.node_name}\" overwrites node \"#{bnode.node_name}\""
+        raise MetaNodeError, already_built_error if expanded_nodes.map(&:node_id).include? bnode.node_id
+        expanded_nodes << bnode
       end
     end
 
-    projects_hash
+    expanded_nodes
   end
 
   # This method takes the file name of the geoengineer project file
