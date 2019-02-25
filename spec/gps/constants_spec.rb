@@ -7,6 +7,17 @@ describe GeoEngineer::GPS::Constants do
     expect(c.dereference("e", "name")).to eq "e"
   end
 
+  context 'for_environment' do
+    it 'returns all including _global but overrides' do
+      c = GeoEngineer::GPS::Constants.new({
+                                            "e": { "override": "no" },
+                                            "_global": { "override": "yes", "test": "hello" }
+                                          })
+      expect(c.for_environment("e")["override"]).to eq "no"
+      expect(c.for_environment("e")["test"]).to eq "hello"
+    end
+  end
+
   context 'dereference' do
     it 'looks in _global env' do
       c = GeoEngineer::GPS::Constants.new({ "e": {}, "_global": { "test": "hello" } })

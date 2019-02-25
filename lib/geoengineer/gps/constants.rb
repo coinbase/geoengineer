@@ -20,7 +20,7 @@ class GeoEngineer::GPS::Constants
   end
 
   def for_environment(environment_name)
-    constants[environment_name.to_s]
+    (constants["_global"] || {}).merge(constants[environment_name.to_s])
   end
 
   def dereference(environment, attribute)
