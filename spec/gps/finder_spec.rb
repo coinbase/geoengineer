@@ -182,9 +182,8 @@ describe GeoEngineer::GPS::Finder do
           .to eq([n4.elb_ref("arn")])
       end
 
-      it 'errors if no matching nodes are found' do
-        expect { finder.dereference("p3:*:*:test_node:*#elb.arn") }
-          .to raise_error(GeoEngineer::GPS::Finder::NotFoundError)
+      it 'returns an empty array if no matching nodes are found' do
+        expect(finder.dereference("p3:*:*:test_node:*#elb.arn")).to eq([])
       end
 
       it 'errors if the resource does not exist' do
