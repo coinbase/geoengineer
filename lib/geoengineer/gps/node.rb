@@ -22,6 +22,7 @@ class GeoEngineer::GPS::Node
     @configuration = configuration
     @node_name = node_name
     @attributes = attributes
+    @depends_on = []
   end
 
   def match(project, environment, config, node_type, node_name)
@@ -66,6 +67,13 @@ class GeoEngineer::GPS::Node
                                                 configuration: configuration
                                               } })
 
+
+
+    @depends_on += HashUtils.map_values(attributes) do |a|
+      next [] unless a.respond_to?(:references)
+      a.references
+    end.flatten.uniq
+
     @attributes = HashUtils.json_dup(attributes)
     @initial_attributes = HashUtils.deep_dup(attributes)
   end
@@ -95,6 +103,7 @@ class GeoEngineer::GPS::Node
   end
 
   def load_gps_file
+    @depends_on.each { |node| node.load_gps_file() }
     gps.load_gps_file("projects/#{project}.gps.yml")
   end
 
@@ -114,8 +123,8 @@ class GeoEngineer::GPS::Node
       instance_variable_get("@#{name}")
     end
 
-    define_method(ref_method) do |attribute = "id"|
-      instance_exec(&load_gps_file)
+    define_method(ref_method) do |attribute = "id", auto_load = true|
+      instance_exec(&load_gps_file) if auto_load
       id = instance_exec(&id_lambda)
       "${#{type}.#{id}.#{attribute}}"
     end
