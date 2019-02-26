@@ -30,6 +30,10 @@ module GeoCLI::TerraformCommands
     File.open("#{@tmpdir}/gps.expand.yml", 'w') { |file|
       file.write(gps.expanded_hash.to_yaml)
     }
+
+    File.open("#{@tmpdir}/gps.constants.yml", 'w') { |file|
+      file.write(gps.constants.to_h.to_yaml)
+    }
   end
 
   def terraform_parallelism

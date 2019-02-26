@@ -13,7 +13,7 @@ class GeoEngineer::GPS::Node
   end
 
   attr_reader :project, :environment, :configuration, :node_name, :attributes, :initial_attributes
-  attr_accessor :all_nodes, :node_type
+  attr_accessor :all_nodes, :node_type, :constants
 
   def initialize(project, environment, configuration, node_name, attributes)
     @node_type = build_node_type
@@ -21,7 +21,6 @@ class GeoEngineer::GPS::Node
     @environment = environment
     @configuration = configuration
     @node_name = node_name
-    @initial_attributes = HashUtils.deep_dup(attributes)
     @attributes = attributes
   end
 
@@ -56,6 +55,19 @@ class GeoEngineer::GPS::Node
 
   def project_name
     project.split("/")[1]
+  end
+
+  def set_values(nodes, constants)
+    self.all_nodes = nodes
+    self.constants = constants
+    GeoEngineer::GPS::YamlTag.add_tag_context(self.attributes, { nodes: nodes, constants: constants, context: {
+                                                project: project,
+                                                environment: environment,
+                                                configuration: configuration
+                                              } })
+
+    @attributes = HashUtils.json_dup(attributes)
+    @initial_attributes = HashUtils.deep_dup(attributes)
   end
 
   def validate
@@ -173,7 +185,7 @@ class GeoEngineer::GPS::Node
   end
 
   def finder
-    @finder ||= GeoEngineer::GPS::Finder.new(all_nodes, {
+    @finder ||= GeoEngineer::GPS::Finder.new(all_nodes, constants, {
                                                project: @project,
                                                environment: @environment,
                                                configuration: @configuration,

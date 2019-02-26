@@ -13,6 +13,17 @@ class HashUtils
     JSON.parse(object.to_json)
   end
 
+  def self.map_values(value, &block)
+    case value
+    when Hash
+      value.each_pair { |k, v| value[k] = map_values(v, &block) }
+    when Array
+      value.map { |v| map_values(v, &block) }
+    else
+      yield value
+    end
+  end
+
   def self.deep_dup(object)
     case object
     when Hash

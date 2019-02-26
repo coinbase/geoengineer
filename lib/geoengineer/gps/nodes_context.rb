@@ -1,14 +1,15 @@
 # NodesContext is a node collection wrapper that provides context to queries
 class GeoEngineer::GPS::NodesContext
-  def initialize(project, environment, configuration, nodes)
+  def initialize(project, environment, configuration, nodes, constants)
     @project = project
     @environment = environment
     @configuration = configuration
     @nodes = nodes
+    @constants = constants
   end
 
   def finder
-    @finder ||= GeoEngineer::GPS::Finder.new(@nodes, {
+    @finder ||= GeoEngineer::GPS::Finder.new(@nodes, @constants, {
                                                project: @project,
                                                environment: @environment,
                                                configuration: @configuration
