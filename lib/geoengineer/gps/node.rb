@@ -67,8 +67,6 @@ class GeoEngineer::GPS::Node
                                                 configuration: configuration
                                               } })
 
-
-
     @depends_on += HashUtils.map_values(attributes) do |a|
       next [] unless a.respond_to?(:references)
       a.references
@@ -103,7 +101,7 @@ class GeoEngineer::GPS::Node
   end
 
   def load_gps_file
-    @depends_on.each { |node| node.load_gps_file() }
+    @depends_on.each(&:load_gps_file)
     gps.load_gps_file("projects/#{project}.gps.yml")
   end
 

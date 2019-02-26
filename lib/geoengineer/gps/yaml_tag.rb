@@ -37,10 +37,6 @@ class GeoEngineer::GPS::YamlTag
     @nodes = nodes
   end
 
-  def to_json(options = nil)
-    raise NotImplementedError
-  end
-
   def self.empty_str(str)
     return nil if str == ""
     str
@@ -55,39 +51,56 @@ class GeoEngineer::GPS::YamlTag
     new_value = HashUtils.deep_dup(value)
     self.class.new(type, new_value)
   end
+
+  # Override Methods
+  def to_json(options = nil)
+    raise NotImplementedError
+  end
+
+  def references
+    raise NotImplementedError
+  end
 end
 
-class GeoEngineer::GPS::YamlTag:Ref < GeoEngineer::GPS::YamlTag
-  def to_json
+# !ref class
+class GeoEngineer::GPS::YamlTag::Ref < GeoEngineer::GPS::YamlTag
+  def to_json(options = nil)
     # do not automatically load the nodes referenced
-    finder.dereference!(value, auto_load: false).to_json
+    finder.dereference!(value, { auto_load: false }).to_json
   end
 
   def references
-    finder.node_references(value)
+    components = value.match(NODE_REFERENCE_SYNTAX)
+    return [] unless components
+    finder.search_node_components(components)
   end
 end
 
-class GeoEngineer::GPS::YamlTag:Refs < GeoEngineer::GPS::YamlTag
-  def to_json
-    finder.dereference(value, auto_load: false).to_json
+# !refs class
+class GeoEngineer::GPS::YamlTag::Refs < GeoEngineer::GPS::YamlTag
+  def to_json(options = nil)
+    finder.dereference(value, { auto_load: false }).to_json
   end
 
   def references
-    finder.node_references(value)
+    components = value.match(NODE_REFERENCE_SYNTAX)
+    return [] unless components
+    finder.search_node_components(components)
   end
 end
 
-class GeoEngineer::GPS::YamlTag:Flatten < GeoEngineer::GPS::YamlTag
-  def to_json
+# !flatten class
+class GeoEngineer::GPS::YamlTag::Flatten < GeoEngineer::GPS::YamlTag
+  def to_json(options = nil)
     # to_json -> ruby (for embedded tags) -> flatten -> json
     HashUtils.json_dup(value).flatten.to_json
   end
 
   def references
     HashUtils.map_values(values) do |a|
-      next a unless a.is_a? GeoEngineer::GPS::YamlTag
-    end
+      next [] unless a.is_a? GeoEngineer::GPS::YamlTag
+      a.references()
+    end.flatten
   end
 end
 
