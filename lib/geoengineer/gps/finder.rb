@@ -98,7 +98,7 @@ class GeoEngineer::GPS::Finder
       components["node_name"]
     )
 
-    raise NotFoundError, "for reference: #{reference}" if nodes.empty?
+    return [] if nodes.empty?
     method_name = "#{components['resource']}_ref"
     attribute = components["attribute"] || 'id'
 

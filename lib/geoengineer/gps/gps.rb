@@ -95,7 +95,7 @@ class GeoEngineer::GPS
   end
 
   attr_reader :base_hash, :constants
-  def initialize(base_hash, constants)
+  def initialize(base_hash = {}, constants = {})
     # Base Hash is the unedited input, useful for debugging
     @base_hash = base_hash
     @constants = constants
@@ -117,6 +117,7 @@ class GeoEngineer::GPS
     @_nodes = expand_meta_nodes(@_nodes, @_nodes) # this validates as it expands
 
     @_nodes.each { |node| node.set_values(@_nodes, @constants) }
+
     @_nodes
   end
 
@@ -166,7 +167,13 @@ class GeoEngineer::GPS
     nodes.each_pair do |node_type, node_names|
       node_names.each_pair do |node_name, attributes|
         node_type_class = find_node_class(node_type.to_s)
-        yield node_type_class.new(project, environment, configuration, node_name, HashUtils.deep_dup(attributes))
+        yield node_type_class.new(
+          project.to_s,
+          environment.to_s,
+          configuration.to_s,
+          node_name.to_s,
+          HashUtils.deep_dup(attributes)
+        )
       end
     end
   end
