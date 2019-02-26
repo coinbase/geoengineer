@@ -9,4 +9,3 @@ ruby File.read(File.join(File.dirname(__FILE__), '.ruby-version')).chomp
 # that include geoengineer in their gemfile to use the same version of RuboCop
 # we use for development.
 gem 'rubocop', '0.51.0'
-gem 'tty-pager'
