@@ -95,7 +95,7 @@ class GeoEngineer::GPS
   end
 
   attr_reader :base_hash, :constants
-  def initialize(base_hash, constants)
+  def initialize(base_hash = {}, constants = {})
     # Base Hash is the unedited input, useful for debugging
     @base_hash = base_hash
     @constants = constants
