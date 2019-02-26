@@ -24,6 +24,10 @@ class AwsClients
     @client_cache[key] ||= client.new(client_params(provider))
   end
 
+  def self.clear_cache!
+    @client_cache = {}
+  end
+
   # Clients
 
   def self.alb(provider = nil)
