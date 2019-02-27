@@ -88,6 +88,9 @@ class GeoEngineer::GPS::Node
       a
     end
 
+    # remove self from reference
+    refs -= [self]
+
     # TODO: try get references from terraform_ids -> node
     refs.flatten.uniq
   end
