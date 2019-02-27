@@ -95,4 +95,43 @@ describe GeoEngineer::GPS::YamlTag do
       end
     end
   end
+
+  context 'to_yaml' do
+    it 'serializes to itself' do
+      yaml = <<~HEREDOC
+        ---
+        test: !flatten
+        - !ref constant:e:here
+        - - !ref constant:e:here
+        - !ref constant:e:here
+      HEREDOC
+      expect(YAML.load(yaml).to_yaml).to eq(yaml)
+    end
+  end
+
+  context '==' do
+    it 'returns true if the values are the same' do
+      tag1 = GeoEngineer::GPS::YamlTag.new("tag::ref", "foobarbaz")
+      tag2 = GeoEngineer::GPS::YamlTag.new("tag::ref", "foobarbaz")
+      expect(tag1).to eq(tag2)
+    end
+  end
+
+  context '<=>' do
+    it 'sorts based on tag value' do
+      unsorted = [
+        GeoEngineer::GPS::YamlTag.new("tag::ref", 1),
+        GeoEngineer::GPS::YamlTag.new("tag::ref", 3),
+        GeoEngineer::GPS::YamlTag.new("tag::ref", 2)
+      ]
+
+      sorted = [
+        GeoEngineer::GPS::YamlTag.new("tag::ref", 1),
+        GeoEngineer::GPS::YamlTag.new("tag::ref", 2),
+        GeoEngineer::GPS::YamlTag.new("tag::ref", 3)
+      ]
+
+      expect(unsorted.sort).to eq(sorted)
+    end
+  end
 end
