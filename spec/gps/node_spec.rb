@@ -2,11 +2,24 @@ require_relative '../spec_helper'
 require_relative './test_nodes'
 
 describe GeoEngineer::GPS::Node do
+  let(:n0) { GeoEngineer::GPS::Nodes::TestNode.new("p", "e", "c", "n", {}) }
+  let(:nodes) { [n0] }
+  let(:constants) { GeoEngineer::GPS::Constants.new({ "e": { "here": "hello" } }) }
+
   def build_test_node(name: "tn", attrs: {})
     GeoEngineer::GPS::Nodes::TestNode.new("p1", "e1", "c1", name, attrs)
   end
 
   let(:test_node) { build_test_node }
+
+  describe '#depends_on' do
+    it 'equals nodes references in yaml_tags' do
+      attrs = YAML.load('test: !ref p:e:c:test_node:n#elb.arn')
+      n = build_test_node({ attrs: attrs })
+      n.set_values(nodes, constants)
+      expect(n.depends_on).to eq [n0]
+    end
+  end
 
   describe '#build_node_type' do
     it 'returns the node type based on class name' do

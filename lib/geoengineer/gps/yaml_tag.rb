@@ -33,7 +33,7 @@ class GeoEngineer::GPS::YamlTag
   end
 
   def nodes=(nodes)
-    GeoEngineer::GPS::YamlTag.add_tag_context(@nodes, { nodes: nodes }) # Recursive for Tags in Tags
+    GeoEngineer::GPS::YamlTag.add_tag_context(@value, { nodes: nodes }) # Recursive for Tags in Tags
     @nodes = nodes
   end
 
@@ -70,7 +70,7 @@ class GeoEngineer::GPS::YamlTag::Ref < GeoEngineer::GPS::YamlTag
   end
 
   def references
-    components = value.match(NODE_REFERENCE_SYNTAX)
+    components = value.match(GeoEngineer::GPS::Finder::NODE_REFERENCE_SYNTAX)
     return [] unless components
     finder.search_node_components(components)
   end
@@ -83,7 +83,7 @@ class GeoEngineer::GPS::YamlTag::Refs < GeoEngineer::GPS::YamlTag
   end
 
   def references
-    components = value.match(NODE_REFERENCE_SYNTAX)
+    components = value.match(GeoEngineer::GPS::Finder::NODE_REFERENCE_SYNTAX)
     return [] unless components
     finder.search_node_components(components)
   end
@@ -97,10 +97,12 @@ class GeoEngineer::GPS::YamlTag::Flatten < GeoEngineer::GPS::YamlTag
   end
 
   def references
-    HashUtils.map_values(values) do |a|
-      next [] unless a.is_a? GeoEngineer::GPS::YamlTag
-      a.references()
-    end.flatten
+    refs = []
+    value.each do |a|
+      next unless a.is_a? GeoEngineer::GPS::YamlTag
+      refs += a.references()
+    end
+    refs.flatten.uniq
   end
 end
 
