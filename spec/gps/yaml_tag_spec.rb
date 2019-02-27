@@ -23,6 +23,14 @@ describe GeoEngineer::GPS::YamlTag do
       expect(HashUtils.json_dup(yaml)["test"]).to eq "${aws_elb.elb_p_c_test_node_n.arn}"
     end
 
+    context 'references' do
+      it 'returns a list of referenced nodes' do
+        yaml = YAML.load('test: !ref p:e:c:test_node:n#elb')
+        GeoEngineer::GPS::YamlTag.add_tag_context(yaml, { nodes: nodes, constants: constants })
+        expect(yaml["test"].references).to eq [n0]
+      end
+    end
+
     context 'context' do
       it 'replaces project' do
         yaml = YAML.load('test: !ref :e:c:test_node:n#elb.arn')
@@ -75,6 +83,16 @@ describe GeoEngineer::GPS::YamlTag do
       ")
       GeoEngineer::GPS::YamlTag.add_tag_context(yaml, { constants: constants })
       expect(HashUtils.json_dup(yaml)["test"]).to eq ["hello", "hello", "hello"]
+    end
+
+    context 'references' do
+      it 'returns a list of referenced nodes' do
+        yaml = YAML.load("test: !flatten
+          - !ref p:e:c:test_node:n#elb
+        ")
+        GeoEngineer::GPS::YamlTag.add_tag_context(yaml, { nodes: nodes, constants: constants })
+        expect(yaml["test"].references).to eq [n0]
+      end
     end
   end
 end

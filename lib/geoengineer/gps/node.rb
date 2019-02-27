@@ -12,7 +12,9 @@ class GeoEngineer::GPS::Node
     false
   end
 
-  attr_reader :project, :environment, :configuration, :node_name, :attributes, :initial_attributes
+  attr_reader :project, :environment, :configuration, :node_name, :attributes
+  attr_reader :initial_attributes, :depends_on
+
   attr_accessor :all_nodes, :node_type, :constants
 
   def initialize(project, environment, configuration, node_name, attributes)
@@ -22,6 +24,9 @@ class GeoEngineer::GPS::Node
     @configuration = configuration
     @node_name = node_name
     @attributes = attributes
+
+    # depends_on is a list of nodes that are to be loaded if this node is loaded
+    @depends_on = []
   end
 
   def match(project, environment, config, node_type, node_name)
@@ -66,8 +71,28 @@ class GeoEngineer::GPS::Node
                                                 configuration: configuration
                                               } })
 
+    @depends_on += references
+    @depends_on = @depends_on.flatten.uniq
+
     @attributes = HashUtils.json_dup(attributes)
     @initial_attributes = HashUtils.deep_dup(attributes)
+  end
+
+  def references
+    refs = []
+
+    # calculate references from YAML tags
+    HashUtils.map_values(attributes) do |a|
+      next a unless a.respond_to?(:references)
+      refs += a.references
+      a
+    end
+
+    # remove self from reference
+    refs -= [self]
+
+    # TODO: try get references from terraform_ids -> node
+    refs.flatten.uniq
   end
 
   def validate
@@ -95,6 +120,8 @@ class GeoEngineer::GPS::Node
   end
 
   def load_gps_file
+    # TODO: stop circular referencing
+    depends_on.each(&:load_gps_file)
     gps.load_gps_file("projects/#{project}.gps.yml")
   end
 
@@ -114,8 +141,8 @@ class GeoEngineer::GPS::Node
       instance_variable_get("@#{name}")
     end
 
-    define_method(ref_method) do |attribute = "id"|
-      instance_exec(&load_gps_file)
+    define_method(ref_method) do |attribute = "id", auto_load = true|
+      instance_exec(&load_gps_file) if auto_load
       id = instance_exec(&id_lambda)
       "${#{type}.#{id}.#{attribute}}"
     end

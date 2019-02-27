@@ -3,7 +3,7 @@ require 'yaml'
 # YamlTag allows use of Tags in GPS
 class GeoEngineer::GPS::YamlTag
   attr_reader :nodes, :constants, :context
-  attr_reader :type, :value, :block
+  attr_reader :type, :value
 
   def self.add_tag_context(values, nodes: nil, constants: nil, context: nil)
     HashUtils.map_values(values) do |a|
@@ -16,10 +16,9 @@ class GeoEngineer::GPS::YamlTag
     end
   end
 
-  def initialize(type, value, &block)
+  def initialize(type, value)
     @type = type
     @value = value
-    @block = block
   end
 
   def context=(context)
@@ -34,12 +33,8 @@ class GeoEngineer::GPS::YamlTag
   end
 
   def nodes=(nodes)
-    GeoEngineer::GPS::YamlTag.add_tag_context(@nodes, { nodes: nodes }) # Recursive for Tags in Tags
+    GeoEngineer::GPS::YamlTag.add_tag_context(@value, { nodes: nodes }) # Recursive for Tags in Tags
     @nodes = nodes
-  end
-
-  def to_json(options = nil)
-    instance_exec(value, &block)
   end
 
   def self.empty_str(str)
@@ -54,7 +49,60 @@ class GeoEngineer::GPS::YamlTag
   # Force the dup
   def dup
     new_value = HashUtils.deep_dup(value)
-    GeoEngineer::GPS::YamlTag.new(type, new_value, &block)
+    self.class.new(type, new_value)
+  end
+
+  # Override Methods
+  def to_json(options = nil)
+    raise NotImplementedError
+  end
+
+  def references
+    raise NotImplementedError
+  end
+end
+
+# !ref class
+class GeoEngineer::GPS::YamlTag::Ref < GeoEngineer::GPS::YamlTag
+  def to_json(options = nil)
+    # do not automatically load the nodes referenced
+    finder.dereference!(value, { auto_load: false }).to_json
+  end
+
+  def references
+    components = value.match(GeoEngineer::GPS::Finder::NODE_REFERENCE_SYNTAX)
+    return [] unless components
+    finder.search_node_components(components)
+  end
+end
+
+# !refs class
+class GeoEngineer::GPS::YamlTag::Refs < GeoEngineer::GPS::YamlTag
+  def to_json(options = nil)
+    finder.dereference(value, { auto_load: false }).to_json
+  end
+
+  def references
+    components = value.match(GeoEngineer::GPS::Finder::NODE_REFERENCE_SYNTAX)
+    return [] unless components
+    finder.search_node_components(components)
+  end
+end
+
+# !flatten class
+class GeoEngineer::GPS::YamlTag::Flatten < GeoEngineer::GPS::YamlTag
+  def to_json(options = nil)
+    # to_json -> ruby (for embedded tags) -> flatten -> json
+    HashUtils.json_dup(value).flatten.to_json
+  end
+
+  def references
+    refs = []
+    value.each do |a|
+      next unless a.is_a? GeoEngineer::GPS::YamlTag
+      refs += a.references()
+    end
+    refs.flatten.uniq
   end
 end
 
@@ -63,24 +111,17 @@ YAML.add_domain_type("", "ref") do |type, reference|
   # If a string starts with `:` in ruby it treats it as a symbol
   # to make references we add back a `:` to the string
   reference = ":#{reference}" if reference.is_a?(Symbol)
-  GeoEngineer::GPS::YamlTag.new(type, reference) do |value|
-    finder.dereference!(reference).to_json
-  end
+  GeoEngineer::GPS::YamlTag::Ref.new(type, reference)
 end
 
 YAML.add_domain_type("", "refs") do |type, reference|
   # If a string starts with `:` in ruby it treats it as a symbol
   # to make references we add back a `:` to the string
   reference = ":#{reference}" if reference.is_a?(Symbol)
-  GeoEngineer::GPS::YamlTag.new(type, reference) do |value|
-    finder.dereference(reference).to_json
-  end
+  GeoEngineer::GPS::YamlTag::Refs.new(type, reference)
 end
 
-YAML.add_domain_type("", "flatten") do |type, reference|
-  raise "!Flatten must be on an Array" unless reference.is_a?(Array)
-  GeoEngineer::GPS::YamlTag.new(type, reference) do |value|
-    # to_json -> ruby (for embedded tags) -> flatten -> json
-    HashUtils.json_dup(value).flatten.to_json
-  end
+YAML.add_domain_type("", "flatten") do |type, list|
+  raise "!flatten must be on an Array" unless list.is_a?(Array)
+  GeoEngineer::GPS::YamlTag::Flatten.new(type, list)
 end
