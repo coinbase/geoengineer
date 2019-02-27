@@ -57,6 +57,10 @@ class GeoEngineer::GPS::YamlTag
     raise NotImplementedError
   end
 
+  def to_yaml
+    "!#{type.split("::")[1]} #{value}"
+  end
+
   def references
     raise NotImplementedError
   end
@@ -94,6 +98,12 @@ class GeoEngineer::GPS::YamlTag::Flatten < GeoEngineer::GPS::YamlTag
   def to_json(options = nil)
     # to_json -> ruby (for embedded tags) -> flatten -> json
     HashUtils.json_dup(value).flatten.to_json
+  end
+
+  def to_yaml
+    value.map { |v| v.is_a?(GeoEngineer::GPS::YamlTag) ? v.to_yaml : v }.to_json
+
+    "#{type.split("::")[1]} #{value}"
   end
 
   def references
