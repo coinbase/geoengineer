@@ -2,6 +2,8 @@ require 'yaml'
 
 # YamlTag allows use of Tags in GPS
 class GeoEngineer::GPS::YamlTag
+  include Comparable
+
   attr_reader :nodes, :constants, :context
   attr_reader :type, :value
 
@@ -57,8 +59,23 @@ class GeoEngineer::GPS::YamlTag
     raise NotImplementedError
   end
 
-  def to_yaml
-    "!#{type.split("::")[1]} #{value}"
+  def tag_name
+    "!#{type.split('::')[1]}"
+  end
+
+  def encode_with(coder)
+    coder.tag = tag_name
+    coder.scalar = value
+    coder
+  end
+
+  def ==(other)
+    value == other.value
+  end
+
+  def <=>(other)
+    return 0 if self == other
+    self.value > other.value ? 1 : -1
   end
 
   def references
@@ -100,10 +117,19 @@ class GeoEngineer::GPS::YamlTag::Flatten < GeoEngineer::GPS::YamlTag
     HashUtils.json_dup(value).flatten.to_json
   end
 
-  def to_yaml
-    value.map { |v| v.is_a?(GeoEngineer::GPS::YamlTag) ? v.to_yaml : v }.to_json
+  def encode_with(coder)
+    coder.tag = tag_name
+    coder.seq = value
+    coder
+  end
 
-    "#{type.split("::")[1]} #{value}"
+  def ==(other)
+    self.to_yaml == other.to_yaml
+  end
+
+  def <=>(other)
+    return 0 if value.size == other.value.size
+    value.size > other.value.size ? 1 : -1
   end
 
   def references
