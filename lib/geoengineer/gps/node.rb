@@ -24,6 +24,7 @@ class GeoEngineer::GPS::Node
     @configuration = configuration
     @node_name = node_name
     @attributes = attributes
+    @initial_attributes = HashUtils.deep_dup(attributes)
 
     # depends_on is a list of nodes that are to be loaded if this node is loaded
     @depends_on = []
