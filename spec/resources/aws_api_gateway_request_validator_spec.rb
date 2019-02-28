@@ -26,6 +26,12 @@ describe GeoEngineer::Resources::AwsApiGatewayRequestValidator do
 
       validators = GeoEngineer::Resources::AwsApiGatewayRequestValidator._fetch_remote_resources(nil)
       expect(validators.size).to eq(2)
+
+      # Verify that we get out what we're expecting
+      expected_validator1 = validator1
+      expected_validator1[:_geo_id] = 'TestAPI::v1'
+      expected_validator1[:_terraform_id] = validator1[:id]
+      expect(validators.first).to eq(expected_validator1)
     end
   end
 end
