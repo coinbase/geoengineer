@@ -83,6 +83,32 @@ class GeoEngineer::GPS::YamlTag
   end
 end
 
+# !sub class
+class GeoEngineer::GPS::YamlTag::Sub < GeoEngineer::GPS::YamlTag
+  def all_queries
+    value.scan(/{{(.*?)}}/).flatten.uniq
+  end
+
+  def to_json(options = nil)
+    result_value = value.dup
+    all_queries.each do |query|
+      result = finder.dereference!(query, { auto_load: false })
+      result_value.gsub!("{{#{query}}}", result)
+    end
+    result_value.to_json
+  end
+
+  def references
+    all_refs = []
+    all_queries.each do |query|
+      components = query.match(GeoEngineer::GPS::Finder::NODE_REFERENCE_SYNTAX)
+      next unless components
+      all_refs += finder.search_node_components(components)
+    end
+    all_refs.flatten
+  end
+end
+
 # !ref class
 class GeoEngineer::GPS::YamlTag::Ref < GeoEngineer::GPS::YamlTag
   def to_json(options = nil)
@@ -140,6 +166,14 @@ class GeoEngineer::GPS::YamlTag::Flatten < GeoEngineer::GPS::YamlTag
     end
     refs.flatten.uniq
   end
+end
+
+# sub takes a string as input that contains queries in {{}} and replaces with their value
+YAML.add_domain_type("", "sub") do |type, str|
+  # If a string starts with `:` in ruby it treats it as a symbol
+  # to make references we add back a `:` to the string
+  str = ":#{str}" if str.is_a?(Symbol)
+  GeoEngineer::GPS::YamlTag::Sub.new(type, str)
 end
 
 # Ref takes a query as input and replaces it with the value
