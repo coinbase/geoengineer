@@ -156,5 +156,21 @@ describe GeoEngineer::GPS::YamlTag do
 
       expect(unsorted.sort).to eq(sorted)
     end
+
+    it 'works with mixed types' do
+      unsorted = [
+        GeoEngineer::GPS::YamlTag.new("tag::ref", "1"),
+        "3",
+        GeoEngineer::GPS::YamlTag.new("tag::sub", "2{{constant::num}}")
+      ]
+
+      sorted = [
+        GeoEngineer::GPS::YamlTag.new("tag::ref", "1"),
+        GeoEngineer::GPS::YamlTag.new("tag::sub", "2{{constant::num}}"),
+        "3"
+      ]
+
+      expect(unsorted.sort).to eq(sorted)
+    end
   end
 end

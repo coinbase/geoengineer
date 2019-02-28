@@ -70,12 +70,16 @@ class GeoEngineer::GPS::YamlTag
   end
 
   def ==(other)
-    value == other.value
+    to_s == other.to_s
   end
 
   def <=>(other)
     return 0 if self == other
-    self.value > other.value ? 1 : -1
+    self.to_s > other.to_s ? 1 : -1
+  end
+
+  def to_s
+    value
   end
 
   def references
@@ -152,6 +156,7 @@ class GeoEngineer::GPS::YamlTag::Flatten < GeoEngineer::GPS::YamlTag
   end
 
   def <=>(other)
+    return 0 unless other.is_a?(self.class) || other.is_a?(Array)
     return 0 if value.size == other.value.size
     value.size > other.value.size ? 1 : -1
   end
