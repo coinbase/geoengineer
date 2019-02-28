@@ -122,6 +122,7 @@ describe GeoEngineer::GPS::YamlTag do
     it 'serializes to itself' do
       yaml = <<~HEREDOC
         ---
+        sub_test: !sub prefix-{{constant:e:here}}-postfix
         test: !flatten
         - !ref constant:e:here
         - - !ref constant:e:here

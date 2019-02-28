@@ -99,13 +99,11 @@ class GeoEngineer::GPS::YamlTag::Sub < GeoEngineer::GPS::YamlTag
   end
 
   def references
-    all_refs = []
-    all_queries.each do |query|
+    all_queries.map do |query|
       components = query.match(GeoEngineer::GPS::Finder::NODE_REFERENCE_SYNTAX)
       next unless components
-      all_refs += finder.search_node_components(components)
-    end
-    all_refs.flatten
+      finder.search_node_components(components)
+    end.flatten.compact
   end
 end
 
