@@ -1,3 +1,5 @@
+require 'tty-pager'
+
 ########################################################################
 # GPSCommands provides command line GPS related tooling
 # +query+ for GPS nodes
