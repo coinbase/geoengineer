@@ -6,6 +6,28 @@ describe GeoEngineer::GPS::YamlTag do
   let(:nodes) { [n0] }
   let(:constants) { GeoEngineer::GPS::Constants.new({ "e": { "here": "hello" } }) }
 
+  context '!sub' do
+    it 'replaces constant' do
+      yaml = YAML.load('test: !sub prefix-{{constant:e:here}}-postfix')
+      GeoEngineer::GPS::YamlTag.add_tag_context(yaml, { nodes: nodes, constants: constants })
+      expect(HashUtils.json_dup(yaml)["test"]).to eq "prefix-hello-postfix"
+    end
+
+    it 'replaces constants' do
+      yaml = YAML.load('test: !sub prefix-{{constant:e:here}}-midfix-{{constant:e:here}}-postfix')
+      GeoEngineer::GPS::YamlTag.add_tag_context(yaml, { nodes: nodes, constants: constants })
+      expect(HashUtils.json_dup(yaml)["test"]).to eq "prefix-hello-midfix-hello-postfix"
+    end
+
+    context 'references' do
+      it 'returns a list of referenced nodes' do
+        yaml = YAML.load('test: !sub prefix-{{p:e:c:test_node:n#elb}}-postfix')
+        GeoEngineer::GPS::YamlTag.add_tag_context(yaml, { nodes: nodes, constants: constants })
+        expect(yaml["test"].references).to eq [n0]
+      end
+    end
+  end
+
   context '!ref' do
     it 'replaces constant' do
       yaml = YAML.load('test: !ref constant:e:here')
@@ -100,6 +122,7 @@ describe GeoEngineer::GPS::YamlTag do
     it 'serializes to itself' do
       yaml = <<~HEREDOC
         ---
+        sub_test: !sub prefix-{{constant:e:here}}-postfix
         test: !flatten
         - !ref constant:e:here
         - - !ref constant:e:here
