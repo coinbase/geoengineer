@@ -135,6 +135,7 @@ module GeoEngineer::ApiGatewayHelpers
       resources.map(&:to_h).map do |rv|
         rv[:_terraform_id] = rv[:id]
         rv[:_geo_id]       = "#{rest_api[:_geo_id]}::#{rv[:name]}"
+        rv
       end
     end
 
