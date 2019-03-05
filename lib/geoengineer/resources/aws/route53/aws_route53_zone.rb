@@ -10,14 +10,14 @@ class GeoEngineer::Resources::AwsRoute53Zone < GeoEngineer::Resource
   after :initialize, -> { _geo_id -> { "#{self._public_or_private}-#{self.name}." } }
 
   def _public_or_private
-    self.vpc_id.nil? ? 'public' : self.vpc_id
+    self.vpc&.vpc_id.nil? ? 'public' : self.vpc.vpc_id
   end
 
   def to_terraform_state
     tfstate = super
     tfstate[:primary][:attributes] = {
       'name' => name,
-      'vpc_id' => vpc_id,
+      'vpc_id' => vpc&.vpc_id,
       'force_destroy' => (force_destroy || 'false')
     }
     tfstate
