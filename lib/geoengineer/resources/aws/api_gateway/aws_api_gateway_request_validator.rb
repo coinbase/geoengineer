@@ -22,7 +22,7 @@ class GeoEngineer::Resources::AwsApiGatewayRequestValidator < GeoEngineer::Resou
     tfstate = super
     tfstate[:primary][:attributes] = {
       'name' => name,
-      'rest_api_id' => rest_api_id
+      'rest_api_id' => _rest_api._terraform_id
     }
     tfstate
   end
