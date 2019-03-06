@@ -76,7 +76,6 @@ class GeoEngineer::GPS::Node
     @depends_on = @depends_on.flatten.uniq
 
     @attributes = HashUtils.json_dup(attributes)
-    @initial_attributes = HashUtils.deep_dup(attributes)
   end
 
   def references
