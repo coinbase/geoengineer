@@ -146,5 +146,25 @@ module GeoEngineer::ApiGatewayHelpers
         end
       end
     end
+
+    # Gateway Responses
+    def _fetch_remote_rest_api_gateway_responses(provider, rest_api)
+      resources = _client(provider).get_gateway_responses(
+        { rest_api_id: rest_api[:_terraform_id] }
+      )['items']
+      resources.map(&:to_h).map do |gr|
+        gr[:_terraform_id] = gr[:id]
+        gr[:_geo_id]       = "#{rest_api[:_geo_id]}::#{gr[:response_type]}"
+        gr
+      end
+    end
+
+    def _remote_rest_api_gateway_responses(provider)
+      _fetch_remote_rest_apis(provider).map do |rr|
+        _fetch_remote_rest_api_gateway_responses(provider, rr) do |gr|
+          yield rr, gr
+        end
+      end
+    end
   end
 end
