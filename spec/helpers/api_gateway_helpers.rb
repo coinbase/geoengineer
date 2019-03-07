@@ -32,6 +32,13 @@ def create_api_gateway_request_validator(name)
   }
 end
 
+def create_api_gateway_gateway_response(response_type, status_code: 400)
+  {
+    response_type: response_type,
+    status_code: status_code.to_s
+  }
+end
+
 # Creates an API Gateway and adds some initial route resources to it.
 #
 # @param api_gateway [Aws::APIGateway::Client] API gateway client to which
