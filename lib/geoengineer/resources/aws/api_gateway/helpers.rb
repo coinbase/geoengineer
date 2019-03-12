@@ -169,7 +169,7 @@ module GeoEngineer::ApiGatewayHelpers
 
     def _fetch_remote_rest_api_authorizers(provider, rest_api)
       resources = _client(provider).get_authorizers(
-          { rest_api_id: rest_api[:_terraform_id] }
+        { rest_api_id: rest_api[:_terraform_id] }
       )['items']
       resources.map(&:to_h).map do |ga|
         ga[:_terraform_id] = ga[:id]
