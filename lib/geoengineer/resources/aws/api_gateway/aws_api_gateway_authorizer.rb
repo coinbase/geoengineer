@@ -11,10 +11,24 @@ class GeoEngineer::Resources::AwsApiGatewayAuthorizer < GeoEngineer::Resource
 
   validate -> { validate_required_attributes([:authorizer_uri, :name, :rest_api_id]) }
 
+  after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { name } }
 
   def support_tags?
     false
+  end
+
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {
+      'name' => name,
+      'rest_api_id' => _rest_api._terraform_id
+    }
+    tfstate
+  end
+
+  def self._fetch_remote_resources(provider)
+    _remote_rest_api_gateway_authorizers(provider) { |_, rv| rv }.flatten.compact
   end
 end
