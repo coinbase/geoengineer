@@ -166,5 +166,24 @@ module GeoEngineer::ApiGatewayHelpers
         end
       end
     end
+
+    def _fetch_remote_rest_api_authorizers(provider, rest_api)
+      resources = _client(provider).get_authorizers(
+          { rest_api_id: rest_api[:_terraform_id] }
+      )['items']
+      resources.map(&:to_h).map do |ga|
+        ga[:_terraform_id] = ga[:id]
+        ga[:_geo_id]       = "#{rest_api[:_geo_id]}::#{ga[:name]}"
+        ga
+      end
+    end
+
+    def _remote_rest_api_gateway_authorizers(provider)
+      _fetch_remote_rest_apis(provider).map do |rr|
+        _fetch_remote_rest_api_authorizers(provider, rr) do |ga|
+          yield rr, ga
+        end
+      end
+    end
   end
 end

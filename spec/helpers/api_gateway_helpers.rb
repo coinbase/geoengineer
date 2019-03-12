@@ -67,3 +67,10 @@ def create_api_with_resources(api_gateway)
     )
   )
 end
+
+def create_api_gateway_authorizer(name)
+  {
+    id: SecureRandom.hex,
+    name: name
+  }
+end
