@@ -10,22 +10,22 @@ class GeoEngineer::Resources::AwsApiGatewayMethod < GeoEngineer::Resource
 
   validate -> {
     required_variables =
-        if ['CUSTOM', 'COGNITO_USER_POOL'].include?(:authorization)
-          [
-            :rest_api_id,
-            :resource_id,
-            :http_method,
-            :authorization,
-            :authorizer
-          ]
-        else
-          [
-            :rest_api_id,
-            :resource_id,
-            :http_method,
-            :authorization
-          ]
-          end
+      if ['CUSTOM', 'COGNITO_USER_POOL'].include?(:authorization)
+        [
+          :rest_api_id,
+          :resource_id,
+          :http_method,
+          :authorization,
+          :authorizer
+        ]
+      else
+        [
+          :rest_api_id,
+          :resource_id,
+          :http_method,
+          :authorization
+        ]
+      end
     validate_required_attributes(required_variables)
   }
 
@@ -50,18 +50,18 @@ class GeoEngineer::Resources::AwsApiGatewayMethod < GeoEngineer::Resource
     tfstate[:primary][:attributes] =
       if self.authorizer
         {
-            "rest_api_id" => _rest_api._terraform_id,
-            "resource_id" => _resource._terraform_id,
-            "http_method" => http_method,
-            "authorization" => authorization,
-            "authorizer_id" => authorizer.terraform_id
+          "rest_api_id" => _rest_api._terraform_id,
+          "resource_id" => _resource._terraform_id,
+          "http_method" => http_method,
+          "authorization" => authorization,
+          "authorizer_id" => authorizer.terraform_id
         }
       else
         {
-            "rest_api_id" => _rest_api._terraform_id,
-            "resource_id" => _resource._terraform_id,
-            "http_method" => http_method,
-            "authorization" => authorization
+          "rest_api_id" => _rest_api._terraform_id,
+          "resource_id" => _resource._terraform_id,
+          "http_method" => http_method,
+          "authorization" => authorization
         }
       end
     tfstate
