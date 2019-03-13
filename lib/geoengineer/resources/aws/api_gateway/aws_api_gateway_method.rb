@@ -16,7 +16,7 @@ class GeoEngineer::Resources::AwsApiGatewayMethod < GeoEngineer::Resource
           :resource_id,
           :http_method,
           :authorization,
-          :authorizer
+          :authorizer_id
         ]
       else
         [
@@ -33,7 +33,7 @@ class GeoEngineer::Resources::AwsApiGatewayMethod < GeoEngineer::Resource
   after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
   after :initialize, -> { _rest_api.api_resources[self._type][self.id] = self }
 
-  after :initialize, -> { self.authorizer = authorizer if authorizer }
+  after :initialize, -> { self.authorizer_id = _authorizer.to_ref if _authorizer }
 
   after :initialize, -> { self.resource_id = _resource.to_ref }
   after :initialize, -> { depends_on [_rest_api, _resource].map(&:terraform_name) }
@@ -48,13 +48,13 @@ class GeoEngineer::Resources::AwsApiGatewayMethod < GeoEngineer::Resource
   def to_terraform_state
     tfstate = super
     tfstate[:primary][:attributes] =
-      if self.authorizer
+      if self.authorizer_id
         {
           "rest_api_id" => _rest_api._terraform_id,
           "resource_id" => _resource._terraform_id,
           "http_method" => http_method,
           "authorization" => authorization,
-          "authorizer_id" => authorizer.terraform_id
+          "authorizer_id" => _authorizer.terraform_id
         }
       else
         {
