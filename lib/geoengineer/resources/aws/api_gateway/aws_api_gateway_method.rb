@@ -48,7 +48,7 @@ class GeoEngineer::Resources::AwsApiGatewayMethod < GeoEngineer::Resource
   def to_terraform_state
     tfstate = super
     tfstate[:primary][:attributes] =
-      if self.authorizer_id
+      if self.authorizer_id && ['CUSTOM', 'COGNITO_USER_POOL'].include?(authorization)
         {
           "rest_api_id" => _rest_api._terraform_id,
           "resource_id" => _resource._terraform_id,
