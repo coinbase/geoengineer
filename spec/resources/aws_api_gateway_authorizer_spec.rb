@@ -52,7 +52,7 @@ describe GeoEngineer::Resources::AwsApiGatewayAuthorizer do
       expect(terraform_auth[:primary][:attributes].key?("authorizer_uri")).to be_truthy
     end
 
-    it 'does not include an authorizer_uri key if the type is incorrectly specified' do
+    it 'does not include an authorizer_uri key if not specified' do
       test_api = GeoEngineer::Resources::AwsApiGatewayRestApi.new("aws_api_gateway_rest_api", "test_api") {
         name "test"
       }

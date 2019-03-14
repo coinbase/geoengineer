@@ -22,7 +22,7 @@ class GeoEngineer::Resources::AwsApiGatewayAuthorizer < GeoEngineer::Resource
   def to_terraform_state
     tfstate = super
     tfstate[:primary][:attributes] =
-      if authorizer_uri && ['TOKEN', 'REQUEST'].include?(type)
+      if authorizer_uri
         {
           'name' => name,
           'rest_api_id' => _rest_api._terraform_id,
