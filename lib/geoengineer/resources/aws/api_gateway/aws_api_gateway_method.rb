@@ -8,18 +8,16 @@ require_relative "./helpers"
 class GeoEngineer::Resources::AwsApiGatewayMethod < GeoEngineer::Resource
   include GeoEngineer::ApiGatewayHelpers
 
-  validate -> {
-    validate_required_attributes([
-                                   :rest_api_id,
-                                   :resource_id,
-                                   :http_method,
-                                   :authorization
-                                 ])
-  }
+  validate -> { validate_required_attributes([:rest_api_id, :resource_id, :http_method, :authorization]) }
+  validate -> do
+    validate_required_attributes([:authorizer_id]) if ['CUSTOM', 'COGNITO_USER_POOLS'].include?(:authorization)
+  end
 
   # Must pass the rest_api as _rest_api resource for additional information
   after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
   after :initialize, -> { _rest_api.api_resources[self._type][self.id] = self }
+
+  after :initialize, -> { self.authorizer_id = _authorizer.to_ref if _authorizer }
 
   after :initialize, -> { self.resource_id = _resource.to_ref }
   after :initialize, -> { depends_on [_rest_api, _resource].map(&:terraform_name) }
@@ -33,12 +31,23 @@ class GeoEngineer::Resources::AwsApiGatewayMethod < GeoEngineer::Resource
 
   def to_terraform_state
     tfstate = super
-    tfstate[:primary][:attributes] = {
-      "rest_api_id" => _rest_api._terraform_id,
-      "resource_id" => _resource._terraform_id,
-      "http_method" => http_method,
-      "authorization" => authorization
-    }
+    tfstate[:primary][:attributes] =
+      if self.authorizer_id && ['CUSTOM', 'COGNITO_USER_POOLS'].include?(authorization)
+        {
+          "rest_api_id" => _rest_api._terraform_id,
+          "resource_id" => _resource._terraform_id,
+          "http_method" => http_method,
+          "authorization" => authorization,
+          "authorizer_id" => _authorizer.terraform_id
+        }
+      else
+        {
+          "rest_api_id" => _rest_api._terraform_id,
+          "resource_id" => _resource._terraform_id,
+          "http_method" => http_method,
+          "authorization" => authorization
+        }
+      end
     tfstate
   end
 
