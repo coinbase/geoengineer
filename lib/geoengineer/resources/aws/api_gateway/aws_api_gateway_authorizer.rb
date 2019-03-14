@@ -25,13 +25,13 @@ class GeoEngineer::Resources::AwsApiGatewayAuthorizer < GeoEngineer::Resource
     if authorizer_uri
       {
         'name' => name,
-        'rest_api_id' => _rest_api._terraform_id
+        'rest_api_id' => _rest_api._terraform_id,
+        'authorizer_uri' => authorizer_uri
       }
     else
       {
         'name' => name,
-        'rest_api_id' => _rest_api._terraform_id,
-        'auhtorizer_uri' => authorizer_uri,
+        'rest_api_id' => _rest_api._terraform_id
       }
     end
 
