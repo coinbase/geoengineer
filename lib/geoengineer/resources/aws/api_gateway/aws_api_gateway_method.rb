@@ -8,26 +8,10 @@ require_relative "./helpers"
 class GeoEngineer::Resources::AwsApiGatewayMethod < GeoEngineer::Resource
   include GeoEngineer::ApiGatewayHelpers
 
-  validate -> {
-    required_variables =
-      if ['CUSTOM', 'COGNITO_USER_POOL'].include?(:authorization)
-        [
-          :rest_api_id,
-          :resource_id,
-          :http_method,
-          :authorization,
-          :authorizer_id
-        ]
-      else
-        [
-          :rest_api_id,
-          :resource_id,
-          :http_method,
-          :authorization
-        ]
-      end
-    validate_required_attributes(required_variables)
-  }
+  validate -> { validate_required_attributes([:rest_api_id, :resource_id, :http_method, :authorization]) }
+  validate -> do
+    validate_required_attributes([:authorizer_id]) if ['CUSTOM', 'COGNITO_USER_POOLS'].include?(:authorization)
+  end
 
   # Must pass the rest_api as _rest_api resource for additional information
   after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
@@ -48,7 +32,7 @@ class GeoEngineer::Resources::AwsApiGatewayMethod < GeoEngineer::Resource
   def to_terraform_state
     tfstate = super
     tfstate[:primary][:attributes] =
-      if self.authorizer_id && ['CUSTOM', 'COGNITO_USER_POOL'].include?(authorization)
+      if self.authorizer_id && ['CUSTOM', 'COGNITO_USER_POOLS'].include?(authorization)
         {
           "rest_api_id" => _rest_api._terraform_id,
           "resource_id" => _resource._terraform_id,
