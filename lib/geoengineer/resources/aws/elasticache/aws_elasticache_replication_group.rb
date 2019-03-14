@@ -31,7 +31,7 @@ class GeoEngineer::Resources::AwsElasticacheReplicationGroup < GeoEngineer::Reso
     attributes['tags.%'] = tags.attributes.keys.count.to_s
 
     tags.attributes.each do |(key, value)|
-      attributes["tags.#{key}"] = value
+      attributes["tags.#{key}"] = value.to_s
     end
 
     tfstate[:primary][:attributes] = attributes
