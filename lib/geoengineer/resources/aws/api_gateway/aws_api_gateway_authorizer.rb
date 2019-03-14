@@ -8,8 +8,8 @@ require_relative "./helpers"
 # TODO: not fully implemented
 class GeoEngineer::Resources::AwsApiGatewayAuthorizer < GeoEngineer::Resource
   include GeoEngineer::ApiGatewayHelpers
-
-  validate -> { validate_required_attributes([:name, :rest_api_id]) }
+  validate -> { validate_required_attributes([:name, :rest_api_id, :type]) }
+  validate -> { validate_required_attributes([:authorizer_uri]) if ['TOKEN', 'REQUEST'].include?(type) }
 
   after :initialize, -> { self.rest_api_id = _rest_api.to_ref }
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
@@ -22,18 +22,20 @@ class GeoEngineer::Resources::AwsApiGatewayAuthorizer < GeoEngineer::Resource
   def to_terraform_state
     tfstate = super
     tfstate[:primary][:attributes] =
-    if authorizer_uri
-      {
-        'name' => name,
-        'rest_api_id' => _rest_api._terraform_id,
-        'authorizer_uri' => authorizer_uri
-      }
-    else
-      {
-        'name' => name,
-        'rest_api_id' => _rest_api._terraform_id
-      }
-    end
+      if authorizer_uri && ['TOKEN', 'REQUEST'].include?(type)
+        {
+          'name' => name,
+          'rest_api_id' => _rest_api._terraform_id,
+          'type' => type,
+          'authorizer_uri' => authorizer_uri
+        }
+      else
+        {
+          'name' => name,
+          'rest_api_id' => _rest_api._terraform_id,
+          'type' => type
+        }
+      end
 
     tfstate
   end

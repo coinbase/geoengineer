@@ -36,7 +36,7 @@ describe GeoEngineer::Resources::AwsApiGatewayAuthorizer do
   end
 
   describe '#to_terraform_state' do
-    it 'includes an authorizer_id key to terraform state if it is correctly specified' do
+    it 'includes an authorizer_uri key to terraform state if it is correctly specified' do
       test_api = GeoEngineer::Resources::AwsApiGatewayRestApi.new("aws_api_gateway_rest_api", "test_api") {
         name "test"
       }
@@ -44,6 +44,7 @@ describe GeoEngineer::Resources::AwsApiGatewayAuthorizer do
       test_authorizer = GeoEngineer::Resources::AwsApiGatewayAuthorizer.new("aws_api_gateway_authorizer", "test_auth") {
         name              "test_authorizer"
         _rest_api         test_api
+        type              "REQUEST"
         authorizer_uri    "https://test_url.com"
       }
 
@@ -51,7 +52,7 @@ describe GeoEngineer::Resources::AwsApiGatewayAuthorizer do
       expect(terraform_auth[:primary][:attributes].key?("authorizer_uri")).to be_truthy
     end
 
-    it 'does not include an authorizer_id key if the authorizer is incorrectly specified' do
+    it 'does not include an authorizer_uri key if the type is incorrectly specified' do
       test_api = GeoEngineer::Resources::AwsApiGatewayRestApi.new("aws_api_gateway_rest_api", "test_api") {
         name "test"
       }
@@ -59,6 +60,7 @@ describe GeoEngineer::Resources::AwsApiGatewayAuthorizer do
       test_authorizer = GeoEngineer::Resources::AwsApiGatewayAuthorizer.new("aws_api_gateway_authorizer", "test_auth") {
         name              "test_authorizer"
         _rest_api         test_api
+        type              "COGNITO_USER_POOLS"
       }
 
       terraform_auth = test_authorizer.to_terraform_state
