@@ -28,6 +28,11 @@ class GeoEngineer::Resources::AwsElasticacheReplicationGroup < GeoEngineer::Reso
       attributes["availability_zones.#{i}"] = az
     end
     attributes['availability_zones.#'] = availability_zones.count.to_s
+    attributes['tags.%'] = tags.attributes.keys.count.to_s
+
+    tags.attributes.each do |(key, value)|
+      attributes["tags.#{key}"] = value
+    end
 
     tfstate[:primary][:attributes] = attributes
     tfstate
