@@ -20,6 +20,8 @@ Style/BlockDelimiters:
 Style/ClassAndModuleChildren:
   Enabled: false
 
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
 
 Lint/UnusedMethodArgument:
   Enabled: false
@@ -51,9 +53,6 @@ Style/BracesAroundHashParameters:
 Style/RedundantSelf:
   Enabled: false
 
-Style/RedundantSelf:
-  Enabled: false
-
 Lint/UnusedBlockArgument:
   Enabled: false
 
@@ -77,7 +76,10 @@ Style/DoubleNegation:
 Style/SymbolArray:
   Enabled: false
 
-Style/MethodMissing:
+Style/MethodMissingSuper:
+  Enabled: false
+
+Style/MissingRespondToMissing:
   Enabled: false
 
 Security/YAMLLoad:

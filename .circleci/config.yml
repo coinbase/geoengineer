@@ -8,9 +8,18 @@ jobs:
       - run: gem install bundler
       - run: bundle install
       - run: bundle exec rspec
+  rubocop:
+    docker:
+      - image: circleci/ruby:2.5.5
+    steps:
+      - checkout
+      - run: gem install bundler
+      - run: bundle install
+      - run: bundle exec rubocop
 
 workflows:
   version: 2
   build:
     jobs:
       - tests
+      - rubocop
