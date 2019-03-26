@@ -2,10 +2,10 @@ version: 2
 jobs:
   tests:
     docker:
-      - image: circleci/ruby:2.4.1
+      - image: circleci/ruby:2.5.5
     steps:
       - checkout
-      - run: gem install bundler --conservative --version '~> 1.17'
+      - run: gem install bundler
       - run: bundle install
       - run: bundle exec rspec
 
