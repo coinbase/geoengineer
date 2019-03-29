@@ -18,7 +18,8 @@ describe GeoEngineer::Resources::AwsIamRole do
               path: "/",
               role_id: "XXXXXXXXXXXXXXXXXXXXY",
               create_date: Time.parse("2016-12-13 01:00:06 UTC"),
-              assume_role_policy_document: ""
+              assume_role_policy_document: "",
+              max_session_duration: 3600
             },
             {
               role_name: 'Another-IAM-role',
@@ -26,7 +27,8 @@ describe GeoEngineer::Resources::AwsIamRole do
               path: "/",
               role_id: "XXXXXXXXXXXXXXXXXXXXY",
               create_date: Time.parse("2016-12-13 01:00:06 UTC"),
-              assume_role_policy_document: ""
+              assume_role_policy_document: "",
+              max_session_duration: 3600
             }
           ]
         }

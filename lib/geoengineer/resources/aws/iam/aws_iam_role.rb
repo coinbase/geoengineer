@@ -37,7 +37,8 @@ class GeoEngineer::Resources::AwsIamRole < GeoEngineer::Resource
       r.merge({ name: r[:role_name],
                 _geo_id: r[:role_name],
                 _terraform_id: r[:role_name],
-                assume_role_policy: URI.decode(r[:assume_role_policy_document]) })
+                assume_role_policy: URI.decode(r[:assume_role_policy_document]),
+                max_session_duration: r[:max_session_duration] })
     end
   end
 
