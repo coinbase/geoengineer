@@ -8,6 +8,12 @@ class GeoEngineer::Resources::AwsElasticacheSubnetGroup < GeoEngineer::Resource
 
   after :initialize, -> { _terraform_id -> { name } }
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = { "name" => name }
+    tfstate
+  end
+
   def support_tags?
     false
   end
