@@ -35,3 +35,4 @@ describe(GeoEngineer::Resources::AwsVpcEndpointService) do
     end
   end
 end
+# rubocop:enable Metrics/LineLength
