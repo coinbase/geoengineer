@@ -38,6 +38,7 @@ class GeoEngineer::Resources::AwsLb < GeoEngineer::Resource
     client.describe_load_balancers['load_balancers'].map(&:to_h).map do |lb|
       lb[:_terraform_id] = lb[:load_balancer_arn]
       lb[:_geo_id] = "#{lb[:load_balancer_name]}::#{lb[:type]}"
+      lb[:_arn] = lb[:load_balancer_arn]
       lb
     end
   end
