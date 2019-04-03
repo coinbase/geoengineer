@@ -1,5 +1,5 @@
 ########################################################################
-# AwsLbSslNegotiationPolicy is the +aws_load_balancer_listener_policy+ terrform resource,
+# AwsLoadBalancerListenerPolicy is the +aws_load_balancer_listener_policy+ terrform resource,
 #
 # {https://www.terraform.io/docs/providers/aws/r/load_balancer_listener_policy.html Terraform Docs}
 ########################################################################
@@ -15,13 +15,21 @@ class GeoEngineer::Resources::AwsLoadBalancerListenerPolicy < GeoEngineer::Resou
     false
   end
 
+  def to_terraform_state
+    tfstate = super
+    tfstate[:primary][:attributes] = {load_balancer_port: load_balancer_port.to_s}
+    tfstate
+  end
+
   def self._merge_attributes(listener_desc, elb)
     listener = listener_desc[:listener]
+    puts "listener #{listener} load_balancer_port #{listener[:load_balancer_port]}"
     listener.merge(
         {
             _geo_id: "#{elb[:load_balancer_name]}::#{listener[:load_balancer_port]}",
             _terraform_id: "#{elb[:load_balancer_name]}:#{listener[:load_balancer_port]}",
             load_balancer_name: elb[:load_balancer_name],
+            load_balancer_port: listener[:load_balancer_port],
             policy_names: listener_desc[:policy_names]
         }
     )
