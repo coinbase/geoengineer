@@ -57,6 +57,7 @@ class GeoEngineer::Environment
     @providers = []
     self.send("#{name}?=", true) # e.g. staging?
     instance_exec(self, &block) if block_given?
+    execute_lifecycle(:after, :initialize)
   end
 
   def project(org, name, &block)
