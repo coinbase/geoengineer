@@ -26,8 +26,4 @@ class GeoEngineer::Resources::AwsKmsKey < GeoEngineer::Resource
       k
     end
   end
-
-  def support_tags?
-    false
-  end
 end
