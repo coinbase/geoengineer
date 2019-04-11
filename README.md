@@ -28,26 +28,12 @@ Instructions to install Ruby can be found [here](https://www.ruby-lang.org/en/do
 
 ### Install GeoEngineer
 
-Secure install (this will validate the geoengineer gem):
+Build the gem locally and then refer to it with `geo` on the command line.
 
-```
-gem cert --add <(curl -Ls https://raw.githubusercontent.com/coinbase/geoengineer/master/certs/geoengineer-gem.pem)
-gem install geoengineer --trust-policy MediumSecurity
-```
-
-*Note: HighSecurity will not work because aws-sdk and other gems are not signed*
-
-Or just install normally:
-
-```
-gem install geoengineer
-```
-
-Test it is installed correctly with:
-
-```
-geo --help
-```
+    bundle install
+    gem build geoengineer.gemspec
+    gem install geoengineer-version.gem
+    geo --help
 
 ### First GeoEngineer Project
 
@@ -199,7 +185,7 @@ development:
         ports: "80:80"
 ```
 
-The `service` node type is defined to take a string of ports and build an Load balancer:
+The `service` node type is defined to take a string of ports and build a Load balancer:
 
 ```ruby
 # Load Balancer Node
