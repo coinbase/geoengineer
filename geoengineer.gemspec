@@ -13,9 +13,6 @@ Gem::Specification.new do |s|
   s.email       = ['graham.jenson@coinbase.com']
   s.license     = 'Apache-2.0'
 
-  s.cert_chain  = ['certs/geoengineer-gem.pem']
-  s.signing_key = File.expand_path("~/.ssh/geoengineer-gem-private-key.pem") if $0 =~ /gem\z/
-
   s.files       = Dir.glob('lib/**/*.rb')
   s.files       << "README.md"
   s.files       << "LICENSE"
