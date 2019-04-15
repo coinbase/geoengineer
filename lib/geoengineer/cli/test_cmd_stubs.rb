@@ -12,5 +12,32 @@ module GeoCLI::TestCmdStubs
         has_more_streams: false
       }
     )
+
+    AwsClients.cloudfront.stub_responses(
+      :list_cloud_front_origin_access_identities,
+      {
+        cloud_front_origin_access_identity_list: {
+          items: [],
+          marker: "marker",
+          max_items: 100,
+          is_truncated: false,
+          quantity: 0
+        }
+      }
+    )
+
+    AwsClients.cloudfront.stub_responses(
+      :list_distributions,
+      {
+        distribution_list:
+        {
+          items: [],
+          marker: "marker",
+          max_items: 100,
+          is_truncated: false,
+          quantity: 0
+        }
+      }
+    )
   end
 end
