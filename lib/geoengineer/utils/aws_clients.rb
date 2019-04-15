@@ -19,6 +19,8 @@ class AwsClients
   end
 
   def self.client_cache(provider, client)
+    provider = nil if stubbed? # we ignore all providers if we are stubbing
+
     @client_cache ||= {}
     key = "#{client.name}_" + (provider&.terraform_id || GeoEngineer::Resource::DEFAULT_PROVIDER)
     @client_cache[key] ||= client.new(client_params(provider))
