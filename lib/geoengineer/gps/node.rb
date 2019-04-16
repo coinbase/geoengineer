@@ -178,6 +178,8 @@ class GeoEngineer::GPS::Node
 
     # normalized output
     JSON.parse(interpolated)
+  rescue StandardError => e
+    raise ["ERB error for file #{path}", e.message].join(": ")
   end
 
   ###
