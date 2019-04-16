@@ -233,11 +233,8 @@ class GeoEngineer::GPS
       environments project_environments
     end
 
-    # create all resources for projet
     project_nodes = where("#{project_name}:#{environment_name}:*:*:*")
-    project_nodes.each do |n|
-      n.create_resources(project) unless n.meta?
-    end
+    create_all_resource_for_project(project, project_nodes)
 
     project_configurations(project_name, environment_name).each do |configuration|
       # yeild to the given block nodes per-config
@@ -246,6 +243,17 @@ class GeoEngineer::GPS
     end
 
     project
+  end
+
+  def create_all_resource_for_project(project, project_nodes)
+    project_nodes.each do |n|
+      begin
+        n.create_resources(project) unless n.meta?
+      rescue StandardError => e
+        # adding context to error
+        raise [n.node_id, e.message].join(": ")
+      end
+    end
   end
 
   def project?(project)
