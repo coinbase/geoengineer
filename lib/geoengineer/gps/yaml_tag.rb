@@ -97,8 +97,17 @@ class GeoEngineer::GPS::YamlTag::Sub < GeoEngineer::GPS::YamlTag
     result_value = value.dup
     all_queries.each do |query|
       result = finder.dereference!(query, { auto_load: false })
+
+      # Process result differently per type
+      case result
+      when Array
+        result = result.to_json
+      when Hash
+        result = result.to_json
+      end
       result_value.gsub!(/{{\s*#{query}\s*}}/, result)
     end
+
     result_value.to_json
   end
 
