@@ -23,10 +23,15 @@ class GeoEngineer::GPS::Constants
     (constants["_global"] || {}).merge(constants[environment_name.to_s])
   end
 
+  # look up in environment then look in the _global
   def dereference(environment, attribute)
-    # look up in environment then look in the _global
-    constants.dig(environment, attribute) ||
-      constants.dig("_global", attribute)
+    from_current_env = constants.dig(environment, attribute)
+    return from_current_env unless from_current_env.nil?
+
+    from_global_env = constants.dig("_global", attribute)
+    return from_global_env unless from_global_env.nil?
+
+    nil
   end
 
   def to_h
