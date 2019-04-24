@@ -19,7 +19,7 @@ class GeoEngineer::GPS::Finder
     ^
     constant:                             # Hard coding the
     (?<environment>[a-zA-Z0-9\-_*]*):      # Match the environment (optional)
-    (?<attribute>[a-zA-Z0-9\-_/*.]+)       # Match the node_name (required)
+    (?<attribute>[a-zA-Z0-9\-_/?*.]+)       # Match the node_name (required)
     $
   }x
 

@@ -28,6 +28,12 @@ describe GeoEngineer::GPS::Constants do
       c = GeoEngineer::GPS::Constants.new({ "e": { "test": "no" }, "_global": { "test": "hello" } })
       expect(c.dereference("e", "test")).to eq "no"
     end
+
+    it 'works with falsey values' do
+      c = GeoEngineer::GPS::Constants.new({ "e": { "truthy?": true, "falsey?": false } })
+      expect(c.dereference("e", "truthy?")).to eq true
+      expect(c.dereference("e", "falsey?")).to eq false
+    end
   end
 
   context 'yamltags' do
