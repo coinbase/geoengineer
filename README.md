@@ -22,9 +22,13 @@ GeoEngineer's goals/requirements/features are:
 
 Instructions to install Terraform can be found [here](https://www.terraform.io/downloads.html).
 
+    brew install terraform
+
 ### Install Ruby
 
 Instructions to install Ruby can be found [here](https://www.ruby-lang.org/en/documentation/installation/).
+
+    rbenv install `cat .ruby-version`
 
 ### Install GeoEngineer
 
@@ -34,6 +38,13 @@ Build the gem locally and then refer to it with `geo` on the command line.
     gem build geoengineer.gemspec
     gem install geoengineer-version.gem
     geo --help
+
+### Running GeoEngineer
+
+Install and configure [`assume-role`](https://github.com/coinbase/assume-role).
+
+    assume-role <account-id> <role>
+    ./geo --help
 
 ### First GeoEngineer Project
 
