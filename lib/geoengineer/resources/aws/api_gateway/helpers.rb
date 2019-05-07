@@ -3,6 +3,11 @@
 #
 ########################################################################
 module GeoEngineer::ApiGatewayHelpers
+  def self._domain_name_cache
+    @_domain_name_cache ||= {}
+    @_domain_name_cache
+  end
+
   def self._rest_api_cache
     @_rest_api_cache ||= {}
     @_rest_api_cache
@@ -22,6 +27,20 @@ module GeoEngineer::ApiGatewayHelpers
     # Helper Client
     def _client(provider)
       AwsClients.api_gateway(provider)
+    end
+
+    # Domain Name
+    def _fetch_remote_domain_names(provider)
+      cache = GeoEngineer::ApiGatewayHelpers._domain_name_cache
+      return cache[provider] if cache[provider]
+
+      ret = _client(provider).get_domain_names.map(&:items).flatten.map(&:to_h).map do |rr|
+        rr[:_terraform_id]    = rr[:domain_name]
+        rr[:_geo_id]          = rr[:domain_name]
+        rr
+      end.compact
+      cache[provider] = ret
+      ret
     end
 
     # Rest API
