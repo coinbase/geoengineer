@@ -197,9 +197,13 @@ class GeoEngineer::Environment
   end
 
   def uncodified_resources(type)
+    local_resources_geo_ids = self.resources_of_type(type).map(&:_geo_id).to_set
+
     # unmanaged resources have a remote resource without local_resource
     clazz = self.class.get_resource_class_from_type(type)
-    res = clazz.fetch_remote_resources(nil).select { |r| r.local_resource.nil? }
+    res = clazz.fetch_remote_resources(nil).select do |r|
+      r._type == type && !local_resources_geo_ids.include?(r._geo_id)
+    end
     res.sort_by(&:terraform_name)
   end
 end

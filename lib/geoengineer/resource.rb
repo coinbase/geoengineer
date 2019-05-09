@@ -43,7 +43,6 @@ class GeoEngineer::Resource
     return @_remote if @_remote_searched
     @_remote = _find_remote_resource
     @_remote_searched = true
-    @_remote&.local_resource = self
     @_remote
   end
 
