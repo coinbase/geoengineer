@@ -195,7 +195,7 @@ class GeoEngineer::Resource
     return @_rr_cache[provider_id] if @_rr_cache[provider_id]
     @_rr_cache[provider_id] = _fetch_remote_resources(provider)
                               .reject { |resource| _ignore_remote_resource?(resource) }
-                              .map { |resource| GeoEngineer::Resource.build(resource) }
+                              .map { |resource| build(resource) }
   end
 
   # This method must be implemented for each resource type
