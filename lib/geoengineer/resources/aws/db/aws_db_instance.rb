@@ -41,6 +41,7 @@ class GeoEngineer::Resources::AwsDbInstance < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     dbs = _paginate(AwsClients.rds(provider).describe_db_instances, 'db_instances')
+          .reject { |db| db.engine&.match?(/aurora/i) }
 
     dbs.map(&:to_h).map do |rds|
       rds[:_terraform_id] = rds[:db_instance_identifier]
