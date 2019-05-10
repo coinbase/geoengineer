@@ -3,6 +3,11 @@
 #
 ########################################################################
 module GeoEngineer::ApiGatewayHelpers
+  def self._base_path_mapping_cache
+    @_base_path_mapping_cache ||= {}
+    @_base_path_mapping_cache
+  end
+
   def self._domain_name_cache
     @_domain_name_cache ||= {}
     @_domain_name_cache
@@ -27,6 +32,24 @@ module GeoEngineer::ApiGatewayHelpers
     # Helper Client
     def _client(provider)
       AwsClients.api_gateway(provider)
+    end
+
+    # Base Path Mapping
+    def _fetch_remote_base_path_mappings(provider)
+      cache = GeoEngineer::ApiGatewayHelpers._base_path_mapping_cache
+      return cache[provider] if cache[provider]
+
+      ret = _client(provider).get_domain_names.map(&:items).flatten.map do |d|
+        _client(provider).get_base_path_mappings(domain_name: d.domain_name).map(&:items).flatten.map(&:to_h).map do |rr|
+          rr[:stage_name]       = rr[:stage]
+          rr[:api_id]           = rr[:rest_api_id]
+          rr[:_terraform_id]    = "#{d.domain_name}/#{rr[:base_path]}"
+          rr[:_geo_id]          = "#{rr[:rest_api_id]}::#{rr[:stage]}::#{rr[:base_path]}"
+          rr
+        end
+      end.compact.flatten
+      cache[provider] = ret
+      ret
     end
 
     # Domain Name
