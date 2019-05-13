@@ -78,6 +78,10 @@ class GeoEngineer::GPS::Node
     @depends_on = @depends_on.flatten.uniq
 
     @attributes = HashUtils.json_dup(attributes)
+  rescue StandardError => e
+    # adding context to error
+    raise [self.node_id, e.message].join(": ")
+
   end
 
   def references
