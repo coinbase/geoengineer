@@ -81,7 +81,6 @@ class GeoEngineer::GPS::Node
   rescue StandardError => e
     # adding context to error
     raise [self.node_id, e.message].join(": ")
-
   end
 
   def references
