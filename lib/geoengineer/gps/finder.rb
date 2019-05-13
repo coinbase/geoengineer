@@ -23,12 +23,12 @@ class GeoEngineer::GPS::Finder
     $
   }x
 
-  CONTEXT_REFERENCE_SYNTAX = /
+  CONTEXT_REFERENCE_SYNTAX = %r{
     ^
     context:
     (?<value>(project|environment|configuration|node_type|node_name)) # Match the context value (required)
     $
-  /x
+  }x
 
   NODE_REFERENCE_SYNTAX = %r{
     ^(?!arn:aws:)                          # Make sure we do not match AWS ARN's

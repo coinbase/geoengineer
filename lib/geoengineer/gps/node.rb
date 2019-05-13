@@ -69,7 +69,9 @@ class GeoEngineer::GPS::Node
     GeoEngineer::GPS::YamlTag.add_tag_context(self.attributes, { nodes: nodes, constants: constants, context: {
                                                 project: project,
                                                 environment: environment,
-                                                configuration: configuration
+                                                configuration: configuration,
+                                                node_type: node_type,
+                                                node_name: node_name
                                               } })
 
     @depends_on += references
