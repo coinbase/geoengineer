@@ -145,6 +145,37 @@ describe GeoEngineer::GPS::Finder do
     end
   end
 
+  describe 'CONTEXT_REFERENCE_SYNTAX' do
+    describe 'enforces the reference syntax' do
+      nonvalid_references = [
+        "context::",
+        ":project",
+        "context:",
+        "context:project:"
+      ]
+
+      valid_references = [
+        "context:project",
+        "context:environment",
+        "context:configuration",
+        "context:node_type",
+        "context:node_name"
+      ]
+
+      nonvalid_references.each do |ref|
+        it "be invalid for #{ref}" do
+          expect(ref =~ GeoEngineer::GPS::Finder::CONTEXT_REFERENCE_SYNTAX).to be_nil
+        end
+      end
+
+      valid_references.each do |ref|
+        it "be valid for #{ref}" do
+          expect(ref =~ GeoEngineer::GPS::Finder::CONTEXT_REFERENCE_SYNTAX).to eq(0)
+        end
+      end
+    end
+  end
+
   describe 'searching' do
     let(:n1) { GeoEngineer::GPS::Nodes::TestNode.new("p1", "e1", "c1", "n1", {}) }
     let(:n2) { GeoEngineer::GPS::Nodes::TestNode.new("p2", "e1", "c1", "n1", {}) }
@@ -155,8 +186,8 @@ describe GeoEngineer::GPS::Finder do
       GeoEngineer::GPS::Constants.new({
                                         "e1": { "override": "no" }, "_global": { "test": "hello", "override": "yes" }
                                       }) }
-
-    let(:finder) { described_class.new(nodes, constants) }
+    let(:context) { { project: "p1", environment: "e1", configuration: "c1", node_type: "test_node" } }
+    let(:finder) { described_class.new(nodes, constants, context) }
 
     context 'dereference' do
       it 'returns the designated resource ref' do
@@ -166,9 +197,20 @@ describe GeoEngineer::GPS::Finder do
         expect(finder.dereference("p2:e2:c2:test_node:n2#elb")).to eq([n4.elb_ref])
       end
 
+      it 'returns the designated relative resource ref' do
+        expect(finder.dereference(":::test_node:*#elb")).to eq([n1.elb_ref])
+      end
+
       it 'returns correct constants' do
         expect(finder.dereference("constant:e1:test")).to eq(["hello"])
         expect(finder.dereference("constant:e1:override")).to eq(["no"])
+      end
+
+      it 'returns the correct context' do
+        expect(finder.dereference("context:project")).to eq(["p1"])
+        expect(finder.dereference("context:environment")).to eq(["e1"])
+        expect(finder.dereference("context:configuration")).to eq(["c1"])
+        expect(finder.dereference("context:node_type")).to eq(["test_node"])
       end
 
       it 'returns the designated resource attribute ref' do
@@ -188,6 +230,14 @@ describe GeoEngineer::GPS::Finder do
 
       it 'errors if the resource does not exist' do
         expect { finder.dereference("p2:*:*:test_node:*#security_group.arn") }
+          .to raise_error(GeoEngineer::GPS::Finder::BadReferenceError)
+      end
+
+      it 'errors if the context is unavailable or incorrect' do
+        expect { finder.dereference("context:node_name") }
+          .to raise_error(GeoEngineer::GPS::Finder::NotFoundError)
+
+        expect { finder.dereference("context:asd") }
           .to raise_error(GeoEngineer::GPS::Finder::BadReferenceError)
       end
     end

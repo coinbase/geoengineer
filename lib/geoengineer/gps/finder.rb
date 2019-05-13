@@ -23,6 +23,13 @@ class GeoEngineer::GPS::Finder
     $
   }x
 
+  CONTEXT_REFERENCE_SYNTAX = %r{
+    ^
+    context:
+    (?<value>(project|environment|configuration|node_type|node_name)) # Match the context value (required)
+    $
+  }x
+
   NODE_REFERENCE_SYNTAX = %r{
     ^(?!arn:aws:)                          # Make sure we do not match AWS ARN's
     (?<project>[a-zA-Z0-9\-_/*]*):         # Match the project name (optional)
@@ -43,6 +50,7 @@ class GeoEngineer::GPS::Finder
     @constants = constants
 
     # extract the context
+    @context = context
     @project = context[:project]
     @environment = context[:environment]
     @configuration = context[:configuration]
@@ -76,9 +84,11 @@ class GeoEngineer::GPS::Finder
   def dereference(reference, auto_load: true)
     nodes_components = reference.match(NODE_REFERENCE_SYNTAX)
     constants_components = reference.match(CONSTANT_REFERENCE_SYNTAX)
+    context_components = reference.match(CONTEXT_REFERENCE_SYNTAX)
 
     return node_dereference(reference, nodes_components, { auto_load: auto_load }) if nodes_components
     return constants_dereference(reference, constants_components) if constants_components
+    return context_dereference(reference, context_components) if context_components
 
     raise BadReferenceError, "for reference: #{reference}"
   end
@@ -106,6 +116,13 @@ class GeoEngineer::GPS::Finder
     con = constants.dereference(environment, attribute)
     raise NotFoundError, "#{reference} not found" if con.nil?
     [con] # required return of array
+  end
+
+  def context_dereference(reference, components)
+    value = components["value"]
+    con = @context[value.to_sym]
+    raise NotFoundError, "#{reference} not found" if con.nil? || con.empty?
+    [con]
   end
 
   def search_node_components(components)

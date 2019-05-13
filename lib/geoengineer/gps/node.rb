@@ -69,13 +69,18 @@ class GeoEngineer::GPS::Node
     GeoEngineer::GPS::YamlTag.add_tag_context(self.attributes, { nodes: nodes, constants: constants, context: {
                                                 project: project,
                                                 environment: environment,
-                                                configuration: configuration
+                                                configuration: configuration,
+                                                node_type: node_type,
+                                                node_name: node_name
                                               } })
 
     @depends_on += references
     @depends_on = @depends_on.flatten.uniq
 
     @attributes = HashUtils.json_dup(attributes)
+  rescue StandardError => e
+    # adding context to error
+    raise [self.node_id, e.message].join(": ")
   end
 
   def references
