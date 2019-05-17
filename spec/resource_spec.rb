@@ -118,18 +118,18 @@ describe GeoEngineer::Resource do
     it 'lets you ignore certain resources' do
       class GeoEngineer::IgnorableResources < GeoEngineer::Resource
         def self._fetch_remote_resources(provider)
-          [{ _geo_id: "geoid1" }, { _geo_id: "geoid2" }]
+          [{ _geo_id: "geoid1" }, { _geo_id: "geoid2" }, { _geo_id: "anotherid" }, { _geo_id: "otherid" }]
         end
 
         def self._resources_to_ignore
-          ["geoid1"]
+          ["otherid", /^geoid/]
         end
       end
 
       resources = GeoEngineer::IgnorableResources
                   .fetch_remote_resources(GeoEngineer::Provider.new('aws'))
       expect(resources.length).to eq 1
-      expect(resources[0]._geo_id).to eq "geoid2"
+      expect(resources[0]._geo_id).to eq "anotherid"
     end
   end
 
