@@ -224,7 +224,15 @@ class GeoEngineer::Resource
   end
 
   def self._ignore_remote_resource?(resource)
-    _resources_to_ignore.include?(_deep_symbolize_keys(resource)[:_geo_id])
+    geo_id = _deep_symbolize_keys(resource)[:_geo_id]
+    _resources_to_ignore.any? do |string_or_regex|
+      case string_or_regex
+      when Regexp
+        geo_id.match?(string_or_regex)
+      else
+        string_or_regex == geo_id
+      end
+    end
   end
 
   def self._deep_symbolize_keys(obj)
