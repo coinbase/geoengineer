@@ -45,9 +45,8 @@ class GeoEngineer::Resources::AwsKinesisFirehoseDeliveryStream < GeoEngineer::Re
 
       streams += resp.delivery_stream_names
       has_more = resp.has_more_delivery_streams
-      if resp.delivery_stream_names != []
-        options[:exclusive_start_delivery_stream_name] = resp.delivery_stream_names[-1]
-      end
+      next unless resp.delivery_stream_names != []
+      options[:exclusive_start_delivery_stream_name] = resp.delivery_stream_names[-1]
     end
     streams
   end
