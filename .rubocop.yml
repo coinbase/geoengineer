@@ -28,7 +28,7 @@ Lint/UnusedMethodArgument:
 
 # Increase these a bit
 Metrics/LineLength:
-  Max: 120 # from 80
+  Max: 130 # from 80
 
 Metrics/MethodLength:
   CountComments: false  # count full line comments?
@@ -43,6 +43,7 @@ Metrics/AbcSize:
   # Rubocop auto-gen was not correctly identifying this.
   Exclude:
     - 'lib/geoengineer/resources/aws/ses/aws_ses_event_destination.rb'
+    - 'lib/geoengineer/resources/aws/api_gateway/helpers.rb'
 
 Style/Lambda:
   Enabled: false

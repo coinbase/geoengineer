@@ -40,7 +40,7 @@ module GeoEngineer::ApiGatewayHelpers
       return cache[provider] if cache[provider]
 
       ret = _client(provider).get_domain_names.map(&:items).flatten.map do |d|
-        _client(provider).get_base_path_mappings(domain_name: d.domain_name).map(&:items).flatten.map(&:to_h).map do |rr|
+        _client(provider).get_base_path_mappings({ domain_name: d.domain_name }).map(&:items).flatten.map(&:to_h).map do |rr|
           rr[:stage_name]       = rr[:stage]
           rr[:api_id]           = rr[:rest_api_id]
           rr[:_terraform_id]    = "#{d.domain_name}/#{rr[:base_path]}"
