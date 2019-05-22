@@ -81,6 +81,13 @@ class AwsClients
     )
   end
 
+  def self.dax(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::DAX::Client
+    )
+  end
+
   def self.dynamo(provider = nil)
     self.client_cache(
       provider,
