@@ -13,7 +13,7 @@ class GeoEngineer::Resources::AwsKinesisFirehoseDeliveryStream < GeoEngineer::Re
   }
 
   def support_tags?
-    false
+    true
   end
 
   def short_type
@@ -36,20 +36,9 @@ class GeoEngineer::Resources::AwsKinesisFirehoseDeliveryStream < GeoEngineer::Re
   end
 
   def self._all_delivery_stream_names(provider)
-    options = { limit: 100 }
-    has_more = true
-    streams = []
-    while has_more
-      resp = AwsClients.firehose(provider)
-                       .list_delivery_streams(options)
-
-      streams += resp.delivery_stream_names
-      has_more = resp.has_more_delivery_streams
-      if resp.delivery_stream_names != []
-        options[:exclusive_start_delivery_stream_name] = resp.delivery_stream_names[-1]
-      end
-    end
-    streams
+    AwsClients.firehose(provider)
+              .list_delivery_streams(options)
+              .delivery_stream_names
   end
 
   def self._all_delivery_streams(provider, names)
