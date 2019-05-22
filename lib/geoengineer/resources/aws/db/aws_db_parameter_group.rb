@@ -16,7 +16,6 @@ class GeoEngineer::Resources::AwsDbParameterGroup < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     pgs = _paginate(AwsClients.rds(provider).describe_db_parameter_groups, 'db_parameter_groups')
-          .reject { |db| db.db_parameter_group_family&.match?(/aurora/i) }
 
     pgs.map(&:to_h).map do |pg|
       pg[:_terraform_id] = pg[:db_parameter_group_name]
