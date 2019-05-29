@@ -76,6 +76,8 @@ class GeoEngineer::Resource
       json[k] ||= []
       json[k] << v
     end
+
+    json["tags"] = json["tags"].reduce({}, :merge) if json["tags"] # tags not a list
     json
   end
 
