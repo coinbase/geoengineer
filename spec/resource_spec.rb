@@ -59,7 +59,7 @@ describe GeoEngineer::Resource do
       tfjson = res.to_terraform_json
 
       expect(tfjson['blue']).to eq 'TRUE'
-      expect(tfjson['tags'][0]['not_blue']).to eq 'FALSE'
+      expect(tfjson['tags']['not_blue']).to eq 'FALSE'
       expect(tfjson['lifecycle_rule'][0]['expiration'][0]['days']).to eq 90
       expect(tfjson['lifecycle_rule'][1]['transition'][0]['days']).to eq 60
     end
