@@ -36,9 +36,18 @@ class GeoEngineer::Resources::AwsKinesisFirehoseDeliveryStream < GeoEngineer::Re
   end
 
   def self._all_delivery_stream_names(provider)
-    AwsClients.firehose(provider)
-              .list_delivery_streams
-              .delivery_stream_names
+    options = { limit: 100 }
+    has_more = true
+    streams = []
+    while has_more
+      resp = AwsClients.firehose(provider)
+                       .list_delivery_streams(options)
+
+      streams += resp.delivery_stream_names
+      has_more = resp.has_more_delivery_streams
+      options[:exclusive_start_delivery_stream_name] = resp.delivery_stream_names[-1] if resp.delivery_stream_names != []
+    end
+    streams
   end
 
   def self._all_delivery_streams(provider, names)
