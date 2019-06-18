@@ -5,7 +5,8 @@
 ########################################################################
 class GeoEngineer::Resources::AwsIamPolicy < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name, :policy]) }
-  validate -> { validate_policy_length(self.policy) }
+  validate -> { validate_policy_length(self.policy, 10_240) }
+  validate -> { validate_resources_not_empty(self.policy) }
 
   after :initialize, -> {
     _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id }
@@ -32,6 +33,28 @@ class GeoEngineer::Resources::AwsIamPolicy < GeoEngineer::Resource
 
   def support_tags?
     false
+  end
+
+  # Validates that the policy has at least one statement
+  def validate_resources_not_empty(policy)
+    return unless policy
+    json_policy = JSON.parse(policy)
+    lower_policy = json_policy.transform_keys(&:downcase)
+    statements = lower_policy["statement"] \
+      || lower_policy[:statement] \
+      || []
+    return unless statements.any? { |statement| missing_resources?(statement) }
+    "Policy #{name} has a statement that has a Resource or NotResource directive that is empty"
+  end
+
+  def missing_resources?(statement)
+    lower_statement = statement.transform_keys(&:downcase)
+    resource = lower_statement["resource"] \
+      || lower_statement[:resource] \
+      || lower_statement["notresource"] \
+      || lower_statement[:notresource] \
+      || []
+    resource.empty?
   end
 
   def _policy_file(path, binding_obj = nil)
