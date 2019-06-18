@@ -57,9 +57,9 @@ module HasValidations
     return "Bad cidr block \"#{cidr_block}\" #{for_resource}"
   end
 
-  def validate_policy_length(policy)
-    return unless policy.to_s.length >= MAX_POLICY_LENGTH
-    "Policy #{name} is too large - currently #{policy.to_s.length}, max length is #{MAX_POLICY_LENGTH}"
+  def validate_policy_length(policy, max_length = MAX_POLICY_LENGTH)
+    return unless policy.to_s.length >= max_length
+    "Policy #{name} is too large - currently #{policy.to_s.length}, max length is #{max_length}"
   end
 
   # Validates that at least one of the specified attributes is present
