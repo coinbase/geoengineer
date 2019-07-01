@@ -15,6 +15,10 @@ class GeoEngineer::Resources::AwsLbListenerRule < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id       -> { "#{listener_arn}::#{priority}" } }
 
+  def support_tags?
+    false
+  end
+
   def short_type
     "lb_listener_rule"
   end
