@@ -262,4 +262,11 @@ class AwsClients
       Aws::Organizations::Client
     )
   end
+
+  def self.pinpoint(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::Pinpoint::Client
+    )
+  end
 end
