@@ -10,8 +10,26 @@ class PostgresClient
 
   def self.database_names(provider)
     conn = self.database_setup(provider)
-    rows = conn.exec( "SELECT datname FROM pg_database")
-    return rows
+    rows = conn.exec("SELECT datname FROM pg_database")
+    return rows.column_values(0)
+  end
+
+  def self.database_roles(provider)
+    conn = self.database_setup(provider)
+    rows = conn.exec("SELECT rolname FROM pg_roles")
+    return rows.column_values(0)
+  end
+
+  def self.database_schemas(provider)
+    conn = self.database_setup(provider)
+    rows = conn.exec("SELECT schema_name FROM information_schema.schemata")
+    return rows.column_values(0)
+  end
+
+  def self.database_extensions(provider)
+    conn = self.database_setup(provider)
+    rows = conn.exec("SELECT extname FROM pg_extension")
+    return rows.column_values(0)
   end
 
 end

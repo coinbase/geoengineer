@@ -1,9 +1,9 @@
 ################################################################################
-# PostgresqlDatabase is the postgresql_database+ Terraform resource.
+# PostgresqlExtension is the postgresql_extension+ Terraform resource.
 #
-# {https://www.terraform.io/docs/providers/postgresql/r/postgresql_database.html Terraform Docs}
+# {https://www.terraform.io/docs/providers/postgresql/r/postgresql_extension.html Terraform Docs}
 ################################################################################
-class GeoEngineer::Resources::PostgresqlDatabase < GeoEngineer::Resource
+class GeoEngineer::Resources::PostgresqlExtension < GeoEngineer::Resource
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{name}" } }
@@ -13,7 +13,7 @@ class GeoEngineer::Resources::PostgresqlDatabase < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    database_names = PostgresClient.database_names(provider)
-    database_names.map { |name| { _terraform_id: name }}
+    database_extensions = PostgresClient.database_extensions(provider)
+    database_extensions.map { |extension| { _terraform_id: extension }}
   end
 end
