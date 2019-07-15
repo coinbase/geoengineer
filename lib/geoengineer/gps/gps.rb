@@ -110,13 +110,15 @@ class GeoEngineer::GPS
     end
 
     # add pre-context
-    @_nodes.each { |node| node.set_values(@_nodes, @constants) }
+    nodes_hash = GeoEngineer::GPS::Finder.build_nodes_lookup_hash(@_nodes)
+    @_nodes.each { |node| node.set_values(nodes_hash, @constants) }
 
     @_nodes.each(&:validate) # validate all nodes
 
     @_nodes = expand_meta_nodes(@_nodes, @_nodes) # this validates as it expands
 
-    @_nodes.each { |node| node.set_values(@_nodes, @constants) }
+    nodes_hash = GeoEngineer::GPS::Finder.build_nodes_lookup_hash(@_nodes)
+    @_nodes.each { |node| node.set_values(nodes_hash, @constants) }
 
     @_nodes
   end
@@ -212,7 +214,10 @@ class GeoEngineer::GPS
   # This method takes the file name of the geoengineer project file
   # it calculates the location of the gps file
   def partial_of(file_name, &block)
-    org_name, project_name = file_name.gsub(".rb", "").split("/")[-2..-1]
+    projects_str, org_name, project_name = file_name.gsub(".rb", "").split("/", 3)
+
+    raise "projects must be in 'projects' folder" if projects_str != "projects"
+
     full_name = "#{org_name}/#{project_name}"
 
     @created_projects ||= {}
