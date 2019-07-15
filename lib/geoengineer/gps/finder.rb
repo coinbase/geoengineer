@@ -137,7 +137,7 @@ class GeoEngineer::GPS::Finder
   end
 
   def search_node_components(components)
-    serach_nodes_with_defaults(
+    search_nodes_with_defaults(
       components["project"],
       components["environment"],
       components["configuration"],
@@ -146,7 +146,7 @@ class GeoEngineer::GPS::Finder
     )
   end
 
-  def serach_nodes_with_defaults(project, environment, configuration, node_type, node_name)
+  def search_nodes_with_defaults(project, environment, configuration, node_type, node_name)
     project = @project             if project.empty?
     environment = @environment     if environment.empty?
     configuration = @configuration if configuration.empty?
