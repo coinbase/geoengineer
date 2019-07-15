@@ -45,8 +45,19 @@ class GeoEngineer::GPS::Finder
   attr_reader :nodes, :constants
   attr_reader :project, :environment, :configuration, :node_type, :node_name
 
+  def self.build_nodes_lookup_hash(nodes_list)
+    nodes_id_hash = {}
+    nodes_list.each { |node| nodes_id_hash[node.node_id] = node }
+    nodes_id_hash
+  end
+
   def initialize(nodes, constants, context = {})
-    @nodes = nodes
+    @nodes = if nodes.is_a?(Array)
+               GeoEngineer::GPS::Finder.build_nodes_lookup_hash(nodes)
+             else
+               nodes
+             end
+
     @constants = constants
 
     # extract the context
@@ -126,7 +137,7 @@ class GeoEngineer::GPS::Finder
   end
 
   def search_node_components(components)
-    search_nodes(
+    search_nodes_with_defaults(
       components["project"],
       components["environment"],
       components["configuration"],
@@ -135,13 +146,25 @@ class GeoEngineer::GPS::Finder
     )
   end
 
-  def search_nodes(project, environment, configuration, node_type, node_name)
+  def search_nodes_with_defaults(project, environment, configuration, node_type, node_name)
     project = @project             if project.empty?
     environment = @environment     if environment.empty?
     configuration = @configuration if configuration.empty?
     node_type = @node_type         if node_type.empty?
     node_name = @node_name         if node_name.empty?
 
-    nodes.select { |n| n.match(project, environment, configuration, node_type, node_name) }
+    search_nodes(project, environment, configuration, node_type, node_name)
+  end
+
+  def search_nodes(project, environment, configuration, node_type, node_name)
+    node_id = [project, environment, configuration, node_type, node_name].compact.join(":")
+
+    if node_id.include?("*")
+      # TODO: allow lookup hash to also *
+      nodes.values.select { |n| n.match(project, environment, configuration, node_type, node_name) }
+    else
+      # if we have an exact query without * we can use a lookup hash
+      [nodes[node_id]].compact # must return list
+    end
   end
 end
