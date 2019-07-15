@@ -121,7 +121,7 @@ class GeoEngineer::GPS::Node
   end
 
   def node_id
-    [project, environment, configuration, node_type, node_name].compact.join(":")
+    @node_id ||= [project, environment, configuration, node_type, node_name].compact.join(":")
   end
 
   def load_gps_file
