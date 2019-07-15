@@ -130,12 +130,12 @@ project.resource("aws_elb", "main-web-app") {
 }
 ```
 
-GeoEngineer command line tool `geo` can:
+The GeoEngineer command line tool `geo` can:
 
 1. **Create a plan** with `geo plan -e staging first_project.rb`
 2. **Execute the plan** with `geo apply -e staging first_project.rb`
 3. **Create a graph** with `geo graph -e staging --quiet first_project.rb | dot -Tpng > graph.png && open graph.png`
-4. **Status of Codeified Resources** with `geo status first_project.rb -e staging`
+4. **Status of Codified Resources** with `geo status first_project.rb -e staging`
 5. **Query GPS Resource Graph** with `geo query "*:*:*:*:*"`
 
 *There are more examples in the `examples` folder.*
@@ -285,12 +285,12 @@ The best way to contribute is to add resources that exist in Terraform but are n
 To define a resource:
 
 0. checkout and fork/branch GeoEngineer
-1. create a file `./lib/geoengineer/resources/<resource_type>.rb`
+1. create a file `./lib/geoengineer/resources/<provider_type>/<resource_type>.rb`
 2. define a class `class GeoEngineer::Resources::<ResourceType> < GeoEngineer::Resource`
 3. define `_terraform_id`, and potentially `_geo_id` and `self._fetch_remote_resources` method (more below).
 4. write a test file for the resource that follows the style of other similar resources
 
-### Codeified to Remote Resources
+### Codified to Remote Resources
 
 A fundamental problem with codifying resources is matching the in code resource to the real remote resource. Terraform does this by maintaining an `id` in a state file which is matched to a remote resources attribute. This attribute is different per resource, e.g. for ELB's it is their `name`, for security groups it is their `group_name` that is generated so cannot be codified.
 
@@ -298,7 +298,7 @@ Without a state file GeoEngineer uses API's to match resources, this makes gener
 
 In a GeoEngineer resource the `_terraform_id` is the id used by Terraform and the `_geo_id` is GeoEngineer ID. By default a resources `_geo_id` is the same as the `_terraform_id`, so for most resources only the `_terraform_id` is required.
 
-If `_terraform_id` is generated then the remote resource needed to be fetched via API and matched to the codified resource with `_geo_id`. This is done by implementing the `self._fetch_remote_resources` method to use the API and return a list of resources with both `_terraform_id` and `_geo_id`, then GeoEngineer can match them.
+If `_terraform_id` is generated then the remote resource needed to be fetched via API and matched to the codified resource with `_geo_id`. This is done by implementing the `self._fetch_remote_resources` method to use the API and return a list of resources as an array of hashes each containing keys `_terraform_id` and `_geo_id`, then GeoEngineer will automatically match them.
 
 For example, in `aws_security_group`'s the resource is matched based on the `Name` tag, implements as:
 
@@ -319,6 +319,10 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
   end
 end
 ```
+
+### Adding a New Provider
+
+Adding resources for a new provider requires creating a new subfolder and resources referencing the provider name in `lib/geoengineer/resources/`. If necessary, utility methods for the new provider client are stored at `lib/geoengineer/utils/`. Once the resources files are defined, no further setup is needed as provider information is pulled in from resource definitions in the project files being planned and applied.
 
 ### Validations
 
