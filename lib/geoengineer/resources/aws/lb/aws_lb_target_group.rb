@@ -4,15 +4,21 @@
 # {https://www.terraform.io/docs/providers/aws/r/lb_target_group.html Terraform Docs}
 ########################################################################
 class GeoEngineer::Resources::AwsLbTargetGroup < GeoEngineer::Resource
-  validate -> {
-    validate_required_attributes([:name, :port, :protocol, :vpc_id])
-  }
+  validate :validate_target_group_attributes
   validate -> { validate_subresource_required_attributes(:stickiness, [:type]) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id       -> { name } }
 
   MAX_RESOURCES_PER_REQUEST = 20
+
+  def validate_target_group_attributes
+    if attributes['target_type'] == 'lambda'
+      validate_required_attributes([:name])
+    else
+      validate_required_attributes([:name, :port, :protocol, :vpc_id])
+    end
+  end
 
   def to_terraform_state
     tfstate = super
