@@ -214,9 +214,12 @@ class GeoEngineer::GPS
   # This method takes the file name of the geoengineer project file
   # it calculates the location of the gps file
   def partial_of(file_name, &block)
+    # Make relative to pwd
+    file_name = file_name.sub(Dir.pwd + "/", "")
+
     projects_str, org_name, project_name = file_name.gsub(".rb", "").split("/", 3)
 
-    raise "projects must be in 'projects' folder" if projects_str != "projects"
+    raise "projects file #{file_name} must be in 'projects' folder is in '#{projects_str}' folder" if projects_str != "projects"
 
     full_name = "#{org_name}/#{project_name}"
 
