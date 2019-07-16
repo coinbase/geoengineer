@@ -8,8 +8,8 @@ describe GeoEngineer::Resources::AwsMskCluster do
   describe '#_fetch_remote_resources' do
     before do
       aws_client.stub_responses(
-        :list_clusters, { cluster_info_list: [ {cluster_name: "msk_name1"},
-                                               {cluster_name: "msk_name2"} ] }
+        :list_clusters, { cluster_info_list: [{ cluster_name: "msk_name1" },
+                                              { cluster_name: "msk_name2" }] }
       )
     end
 
