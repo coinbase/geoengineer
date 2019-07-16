@@ -7,7 +7,7 @@ class GeoEngineer::Resources::PostgresqlRole < GeoEngineer::Resource
   validate -> { validate_required_attributes([:name]) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id -> { "#{name}" } }
+  after :initialize, -> { _geo_id -> { name.to_s } }
 
   def support_tags?
     false
@@ -15,6 +15,6 @@ class GeoEngineer::Resources::PostgresqlRole < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     database_roles = PostgresClient.database_roles(provider)
-    database_roles.map { |role| { _terraform_id: role }}
+    database_roles.map { |role| { _terraform_id: role } }
   end
 end
