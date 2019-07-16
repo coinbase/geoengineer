@@ -34,4 +34,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'octokit',           '~> 4.8'
   s.add_dependency 'json-schema',       '~> 2.8.1'
   s.add_dependency 'tty-pager',         '~> 0.12.0'
+  s.add_dependency 'pg',                '~> 0.18.4'
 end

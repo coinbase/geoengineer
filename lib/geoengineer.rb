@@ -32,6 +32,7 @@ require 'octokit'
 require 'ostruct'
 require 'uri'
 require 'securerandom'
+require 'pg'
 
 Dir["#{File.dirname(__FILE__)}/geoengineer/utils/**/*.rb"].each { |f| require f }
 
