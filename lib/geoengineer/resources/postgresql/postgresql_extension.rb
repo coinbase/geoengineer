@@ -14,7 +14,7 @@ class GeoEngineer::Resources::PostgresqlExtension < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    database_extensions = PostgresClient.database_extensions(provider)
+    database_extensions = PostgresqlClient.database_extensions(provider)
     database_extensions.map { |extension| { _terraform_id: extension } }
   end
 end

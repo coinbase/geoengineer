@@ -1,8 +1,8 @@
 ########################################################################
-# PostgresClient exposes a set of API calls to fetch data from Postgres.
+# PostgresqlClient exposes a set of API calls to fetch data from Postgresql.
 # The primary reason for centralizing them here is testing and stubbing.
 ########################################################################
-class PostgresClient
+class PostgresqlClient
   def self.database_setup(provider)
     PG.connect({ host: provider.host, port: provider.port, dbname: provider.database, user: provider.username,
                  password: provider.password })

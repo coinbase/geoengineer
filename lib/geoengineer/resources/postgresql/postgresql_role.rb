@@ -14,7 +14,7 @@ class GeoEngineer::Resources::PostgresqlRole < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    database_roles = PostgresClient.database_roles(provider)
+    database_roles = PostgresqlClient.database_roles(provider)
     database_roles.map { |role| { _terraform_id: role } }
   end
 end

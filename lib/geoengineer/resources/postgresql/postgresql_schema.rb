@@ -14,7 +14,7 @@ class GeoEngineer::Resources::PostgresqlSchema < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    database_schemas = PostgresClient.database_schemas(provider)
+    database_schemas = PostgresqlClient.database_schemas(provider)
     database_schemas.map { |schema| { _terraform_id: schema } }
   end
 end
