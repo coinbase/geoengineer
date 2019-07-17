@@ -130,6 +130,13 @@ class AwsClients
     )
   end
 
+  def self.kafka(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::Kafka::Client
+    )
+  end
+
   def self.kinesis(provider = nil)
     self.client_cache(
       provider,
