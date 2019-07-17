@@ -5,11 +5,48 @@ describe GeoEngineer::Resources::AwsMskConfiguration do
 
   common_resource_tests(described_class, described_class.type_from_class_name)
 
+  before { aws_client.setup_stubbing }
+
   describe '#_fetch_remote_resources' do
     before do
       aws_client.stub_responses(
-        :list_configurations, { configurations: [{ name: "msk_config_name1" },
-                                                 { name: "msk_config_name2" }] }
+        :list_configurations,
+        {
+          configurations: [
+            {
+              name: "msk_config_name1",
+              arn: "arn:aws:iam::123456789012:user/FakeUser",
+              description: "This is msk_config_name1",
+              creation_time: Time.parse("2019-07-16 17:33:11 utc"),
+              kafka_versions: [
+                "2.3.0",
+                "2.2.1"
+              ],
+              latest_revision:
+              {
+                creation_time: Time.parse("2019-07-16 13:37:11 utc"),
+                description: "This is the final revision",
+                revision: 42
+              }
+            },
+            {
+              name: "msk_config_name2",
+              arn: "arn:aws:iam::123456789012:user/FakeUser",
+              description: "This is msk_config_name2",
+              creation_time: Time.parse("2019-07-16 17:33:11 utc"),
+              kafka_versions: [
+                "2.3.0",
+                "2.2.1"
+              ],
+              latest_revision:
+              {
+                creation_time: Time.parse("2019-07-16 13:37:11 utc"),
+                description: "This is the final revision",
+                revision: 24
+              }
+            }
+          ]
+        }
       )
     end
 

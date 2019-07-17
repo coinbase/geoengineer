@@ -5,11 +5,22 @@ describe GeoEngineer::Resources::AwsMskCluster do
 
   common_resource_tests(described_class, described_class.type_from_class_name)
 
+  before { aws_client.setup_stubbing }
+
   describe '#_fetch_remote_resources' do
     before do
       aws_client.stub_responses(
-        :list_clusters, { cluster_info_list: [{ cluster_name: "msk_name1" },
-                                              { cluster_name: "msk_name2" }] }
+        :list_clusters,
+        {
+          cluster_info_list: [
+            {
+              cluster_name: "msk_name1"
+            },
+            {
+              cluster_name: "msk_name2"
+            }
+          ]
+        }
       )
     end
 
