@@ -14,10 +14,12 @@ describe GeoEngineer::Resources::AwsMskCluster do
         {
           cluster_info_list: [
             {
-              cluster_name: "msk_name1"
+              cluster_name: "msk_name1",
+              cluster_arn: "arn:aws:iam::123456789012:user/FakeUser1"
             },
             {
-              cluster_name: "msk_name2"
+              cluster_name: "msk_name2",
+              cluster_arn: "arn:aws:iam::123456789012:user/FakeUser2"
             }
           ]
         }
@@ -29,8 +31,8 @@ describe GeoEngineer::Resources::AwsMskCluster do
       expect(resources.count).to eql 2
 
       test_msk_cluster = resources.first
-      expect(test_msk_cluster[:_terraform_id]).to eql "msk_name1"
       expect(test_msk_cluster[:_geo_id]).to eql "msk_name1"
+      expect(test_msk_cluster[:_terraform_id]).to eql "arn:aws:iam::123456789012:user/FakeUser1"
     end
   end
 end

@@ -15,7 +15,7 @@ describe GeoEngineer::Resources::AwsMskConfiguration do
           configurations: [
             {
               name: "msk_config_name1",
-              arn: "arn:aws:iam::123456789012:user/FakeUser",
+              arn: "arn:aws:iam::123456789012:user/FakeUser1",
               description: "This is msk_config_name1",
               creation_time: Time.parse("2019-07-16 17:33:11 utc"),
               kafka_versions: [
@@ -31,7 +31,7 @@ describe GeoEngineer::Resources::AwsMskConfiguration do
             },
             {
               name: "msk_config_name2",
-              arn: "arn:aws:iam::123456789012:user/FakeUser",
+              arn: "arn:aws:iam::123456789012:user/FakeUser2",
               description: "This is msk_config_name2",
               creation_time: Time.parse("2019-07-16 17:33:11 utc"),
               kafka_versions: [
@@ -55,7 +55,7 @@ describe GeoEngineer::Resources::AwsMskConfiguration do
       expect(resources.count).to eql 2
 
       test_msk_config = resources.first
-      expect(test_msk_config[:_terraform_id]).to eql "msk_config_name1"
+      expect(test_msk_config[:_terraform_id]).to eql "arn:aws:iam::123456789012:user/FakeUser1"
       expect(test_msk_config[:_geo_id]).to eql "msk_config_name1"
     end
   end
