@@ -239,7 +239,7 @@ class GeoEngineer::Resource
 
   def self._deep_symbolize_keys(obj)
     case obj
-    when Hash then
+    when Hash
       obj.each_with_object({}) do |(key, value), hash|
         hash[key.to_sym] = _deep_symbolize_keys(value)
       end
