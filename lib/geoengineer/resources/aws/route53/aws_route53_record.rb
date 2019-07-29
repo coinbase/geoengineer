@@ -16,7 +16,7 @@ class GeoEngineer::Resources::AwsRoute53Record < GeoEngineer::Resource
   }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id -> { "#{zone_id}_#{self.name&.downcase}_#{record_type}" } }
+  after :initialize, -> { _geo_id -> { "#{name}_#{self.name&.downcase}_#{record_type}" } }
 
   def to_terraform_state
     tfstate = super
