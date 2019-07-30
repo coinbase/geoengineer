@@ -69,8 +69,7 @@ class GeoEngineer::GPS
       begin
         # Merge Keys don't work with YAML.safe_load
         # since we are also loading Ruby safe_load is not needed
-        gps_text = ERB.new(File.read(gps_file)).result(binding).to_s
-        gps_hash = YAML.load(gps_text)
+        gps_hash = YAML.load(File.read(gps_file))
         # remove all keys starting with `_` to remove paritals
         gps_hash = HashUtils.remove_(gps_hash)
         JSON::Validator.validate!(schema, gps_hash) if schema
