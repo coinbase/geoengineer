@@ -1,5 +1,3 @@
-require 'geoengineer'
-
 # Role Template
 class GeoEngineer::Templates::UsersWithPolicies < GeoEngineer::Template
   attr_reader :users, :policies
