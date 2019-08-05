@@ -6,25 +6,20 @@
 
 class GeoEngineer::Resources::AwsRoute53ResolverEndpoint < GeoEngineer::Resource
     validate -> { validate_required_attributes([:name, :direction, :ip_address, :security_group_ids]) }
-   
-    after :initialize, -> { _terraform_id -> { name } }
-    after :initialize, -> { _geo_id -> { name } }
-    
-    def support_tags?
-      true
-    end
+
+    after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
+    after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
     def self._fetch_remote_resources(provider)
       AwsClients.route53resolver(provider)
-                .list_resolver_endpoints
+                .list_resolver_endpoints[:resolver_endpoints]
                 .map(&:to_h).map do |resolver|
-        resolver.merge(
+          resolver.merge(
           {
-            _terraform_id: resolver["Name"],
-            _geo_id: resolver["Name"]
+            _terraform_id: resolver[:id],
+            _geo_id: resolver[:name]
           }
         )
       end
-  end
-
-  end
+    end
+end
