@@ -184,6 +184,7 @@ class GeoEngineer::GPS
     bn = node.build_nodes
     loop_nodes(node.project, node.environment, node.configuration, bn) do |new_node|
       new_node.set_values(all_nodes, @constants)
+      new_node.add_depends_on(node.depends_on) # pass dependencies along
       new_node.validate
       expanded_nodes << new_node
     end
