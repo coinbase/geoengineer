@@ -124,6 +124,11 @@ class GeoEngineer::GPS::Node
     @node_id ||= [project, environment, configuration, node_type, node_name].compact.join(":")
   end
 
+  def add_depends_on(new_deps)
+    @depends_on += new_deps
+    @depends_on.uniq!
+  end
+
   def load_gps_file
     # TODO: stop circular referencing
     depends_on.each(&:load_gps_file)
