@@ -89,7 +89,7 @@ class GeoCLI
   end
 
   def require_environment(options = nil)
-    @env_name = options&.environment || ENV['GEO_ENV'] || 'staging'
+    @env_name = options&.environment || ENV['GEO_ENV'] || 'development'
     puts "Using environment '#{@env_name}'\n" if @verbose
     begin
       require_from_pwd "environments/#{@env_name}"
