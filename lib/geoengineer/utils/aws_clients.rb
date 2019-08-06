@@ -179,6 +179,13 @@ class AwsClients
     )
   end
 
+  def self.route53resolver(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::Route53Resolver::Client
+    )
+  end
+
   def self.s3(provider = nil)
     self.client_cache(
       provider,
