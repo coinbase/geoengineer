@@ -30,7 +30,8 @@ class GeoEngineer::Resources::AwsDbInstance < GeoEngineer::Resource
     tfstate[:primary][:attributes] = {
       'identifier' => _terraform_id,
       'final_snapshot_identifier' => final_snapshot_identifier,
-      'skip_final_snapshot' => 'true'
+      'skip_final_snapshot' => 'true',
+      'allow_major_version_upgrade' => 'false'
     }
     tfstate
   end
