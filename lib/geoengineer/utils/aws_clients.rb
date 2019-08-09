@@ -283,4 +283,11 @@ class AwsClients
       Aws::Pinpoint::Client
     )
   end
+
+  def self.acmpca(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::ACMPCA::Client
+    )
+  end
 end
