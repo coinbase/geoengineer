@@ -288,6 +288,7 @@ class AwsClients
     self.client_cache(
       provider,
       Aws::ACMPCA::Client
+  end
 
   def self.cloudhsm(provider = nil)
     self.client_cache(
