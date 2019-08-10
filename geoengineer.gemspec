@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir.glob('spec/**/*.rb')
   s.executables << 'geo'
 
-  s.required_ruby_version = '>= 2.2.5'
+  s.required_ruby_version = '>= 2.5'
   s.add_development_dependency "rspec", '~> 3.4'
   s.add_development_dependency "rake", '~> 10.4'
   s.add_development_dependency "yard", '~> 0.9'
