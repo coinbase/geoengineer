@@ -17,13 +17,7 @@ class GeoEngineer::Resources::AwsAcmpcaCertificateAuthority < GeoEngineer::Resou
 
   after :initialize, -> { _geo_id -> { [type, common_name].join("::") } }
   def common_name
-    if !self.certificate_authority_configuration.nil? &&
-       !self.certificate_authority_configuration.subject.nil? &&
-       !self.certificate_authority_configuration.subject.common_name.nil?
-
-      return self.certificate_authority_configuration.subject.common_name
-    end
-    NullObject.new()
+    certificate_authority_configuration&.subject&.common_name || NullObject.new
   end
 
   def self._fetch_remote_resources(provider)
