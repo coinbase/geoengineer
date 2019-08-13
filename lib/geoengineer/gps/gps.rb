@@ -7,7 +7,7 @@ require 'yaml'
 # GPS is not a complete solution
 ###
 class GeoEngineer::GPS
-  class GPSProjetNotFound < StandardError; end
+  class GPSProjectNotFound < StandardError; end
   class NodeTypeNotFound < StandardError; end
   class MetaNodeError < StandardError; end
   class LoadError < StandardError; end
@@ -235,7 +235,7 @@ class GeoEngineer::GPS
     environment_name = environment.name
     project_environments = project_environments(project_name)
 
-    raise GPSProjetNotFound, "project not found \"#{project_name}\"" unless project?(project_name)
+    raise GPSProjectNotFound, "project not found \"#{project_name}\"" unless project?(project_name)
 
     project = environment.project(org, name) do
       environments project_environments
