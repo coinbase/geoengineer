@@ -102,11 +102,16 @@ describe GeoEngineer::Environment do
       }
 
       p1 = env.project("org", "1") {
-        environments 'nottest'
+        environments nottest
+      }
+
+      p2 = env.project("org", "2") {
+        environments ['nottest1', 'nottest2']
       }
 
       expect(p0.class).to eq GeoEngineer::Project
       expect(p1.class).to eq NullObject
+      expect(p2.class).to eq NullObject
     end
   end
 
