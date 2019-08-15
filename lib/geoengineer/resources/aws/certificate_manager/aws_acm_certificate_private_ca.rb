@@ -8,29 +8,37 @@
 #
 # {https://www.terraform.io/docs/providers/aws/r/acmpca_certificate_authority.html}
 ########################################################################
-class GeoEngineer::Resources::AwsAcmCertificatePrivateCa < GeoEngineer::Resource
+class GeoEngineer::Resources::AwsAcmpcaCertificatePrivateCa < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
+  after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
   validate -> { validate_required_attributes([:domain_name]) }
+  ## Note: The certificate_authority_arn is a required attribute which implies
+  ## we are only requesting private ca issued certificates at this time
   validate -> { validate_required_attributes([:certificate_authority_arn]) }
   validate -> { validate_required_attributes([:options]) }
   validate -> { validate_subresource_required_attributes(:options, [:certificate_transparency_logging_preference]) }
   validate -> { validate_has_tag(:Name) }
   validate -> { validate_ctlp_disabled }
 
-  after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
-
   def validate_ctlp_disabled
-    !options&.certificate_transparency_logging_preference
+    return [] unless options&.certificate_transparency_logging_preference
+    ["certificate_transparency_logging_preference should be false for aws_acmpca_certificate_private_ca#{id}"]
   end
 
-  # The ACM certificate resource  does not wait for a certificate to be issued.
-  # Always create a new Certificate for now, no need to fetch exisiting resources
-  # The resource will be used in conjunction with aws_acm_certificate_validation resource
-  # at which point we need to fetch_remote_resources
   def self._fetch_remote_resources(provider)
-    []
-  end
+    AwsClients.acm(provider)
+              .list_certificates({ certificate_statuses: ["ISSUED"] })["certificate_summary_list"]
+              .map(&:to_h)
+              .each { |cert|
+                cert[:_terraform_id] = cert[:certificate_arn]
+                AwsClients.acm(provider)
+                          .list_tags_for_certificate({ certificate_arn: cert[:certificate_arn] })["tags"]
+                          .each { |tag|
+                  cert[:_geo_id] = tag.value if tag.key == "Name"
+                }
+              }
+ end
 
   def support_tags?
     true
