@@ -290,4 +290,11 @@ class AwsClients
       Aws::ACMPCA::Client
     )
   end
+
+  def self.acm(provider = nil)
+    self.client_cache(
+      provider,
+      Aws::ACM::Client
+    )
+  end
 end
