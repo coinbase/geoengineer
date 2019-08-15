@@ -35,10 +35,6 @@ describe GeoEngineer::Resources::AwsAcmpcaCertificatePrivateCa do
             {
               certificate_arn: "arn:aws:iam::certificate-authority/FakeCert1",
               domain_name: "example1.com"
-            # },
-            # {
-            #   certificate_arn: "arn:aws:iam::123456789012:user/FakeUser2",
-            #   domain_name: "example2.com"
             }
           ]
         }
@@ -46,7 +42,7 @@ describe GeoEngineer::Resources::AwsAcmpcaCertificatePrivateCa do
       aws_client.stub_responses(
         :list_tags_for_certificate,
         {
-          tags:[
+          tags: [
             {
               key: "Name",
               value: "mycerttag1"
@@ -54,7 +50,6 @@ describe GeoEngineer::Resources::AwsAcmpcaCertificatePrivateCa do
           ]
         }
       )
-
     end
 
     it 'should create an array of hashes from the AWS response' do

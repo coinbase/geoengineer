@@ -38,7 +38,7 @@ class GeoEngineer::Resources::AwsAcmpcaCertificatePrivateCa < GeoEngineer::Resou
                   cert[:_geo_id] = tag.value if tag.key == "Name"
                 }
               }
- end
+  end
 
   def support_tags?
     true
