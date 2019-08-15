@@ -1,45 +1,3 @@
-require 'aws-sdk-acm'
-require 'aws-sdk-acmpca'
-require 'aws-sdk-apigateway'
-require 'aws-sdk-waf'
-require 'aws-sdk-ses'
-require 'aws-sdk-s3'
-require 'aws-sdk-redshift'
-require 'aws-sdk-pinpoint'
-require 'aws-sdk-cloudfront'
-require 'aws-sdk-cloudwatch'
-require 'aws-sdk-cloudwatchlogs'
-require 'aws-sdk-cloudwatchevents'
-require 'aws-sdk-elasticloadbalancingv2'
-require 'aws-sdk-dynamodb'
-require 'aws-sdk-elasticache'
-require 'aws-sdk-elasticsearchservice'
-require 'aws-sdk-iam'
-require 'aws-sdk-kinesis'
-require 'aws-sdk-lambda'
-require 'aws-sdk-sns'
-require 'aws-sdk-sqs'
-require 'aws-sdk-kafka'
-require 'aws-sdk-kms'
-require 'aws-sdk-ec2'
-require 'aws-sdk-rds'
-require 'aws-sdk-cloudtrail'
-require 'aws-sdk-route53'
-require 'aws-sdk-route53resolver'
-require 'aws-sdk-dax'
-require 'aws-sdk-efs'
-require 'aws-sdk-states'
-require 'aws-sdk-pinpoint'
-require 'aws-sdk-organizations'
-require 'aws-sdk-autoscaling'
-require 'aws-sdk-emr'
-require 'aws-sdk-codebuild'
-require 'aws-sdk-codedeploy'
-require 'aws-sdk-ecs'
-require 'aws-sdk-directconnect'
-require 'aws-sdk-elasticloadbalancing'
-require 'aws-sdk-firehose'
-
 ########################################################################
 # AwsClients contains a list of aws-clients for use
 # The main reason for their central management is their initialisation testing and stubbing
@@ -75,6 +33,7 @@ class AwsClients
   # Clients
 
   def self.alb(provider = nil)
+    require 'aws-sdk-elasticloadbalancingv2'
     self.client_cache(
       provider,
       Aws::ElasticLoadBalancingV2::Client
@@ -82,6 +41,7 @@ class AwsClients
   end
 
   def self.api_gateway(provider = nil)
+    require 'aws-sdk-apigateway'
     self.client_cache(
       provider,
       Aws::APIGateway::Client
@@ -89,6 +49,7 @@ class AwsClients
   end
 
   def self.cloudfront(provider = nil)
+    require 'aws-sdk-cloudfront'
     self.client_cache(
       provider,
       Aws::CloudFront::Client
@@ -96,6 +57,7 @@ class AwsClients
   end
 
   def self.cloudwatch(provider = nil)
+    require 'aws-sdk-cloudwatch'
     self.client_cache(
       provider,
       Aws::CloudWatch::Client
@@ -103,6 +65,7 @@ class AwsClients
   end
 
   def self.cloudwatchevents(provider = nil)
+    require 'aws-sdk-cloudwatchevents'
     self.client_cache(
       provider,
       Aws::CloudWatchEvents::Client
@@ -110,6 +73,7 @@ class AwsClients
   end
 
   def self.cloudwatchlogs(provider = nil)
+    require 'aws-sdk-cloudwatchlogs'
     self.client_cache(
       provider,
       Aws::CloudWatchLogs::Client
@@ -117,6 +81,7 @@ class AwsClients
   end
 
   def self.directconnect(provider = nil)
+    require 'aws-sdk-directconnect'
     self.client_cache(
       provider,
       Aws::DirectConnect::Client
@@ -124,6 +89,7 @@ class AwsClients
   end
 
   def self.dax(provider = nil)
+    require 'aws-sdk-dax'
     self.client_cache(
       provider,
       Aws::DAX::Client
@@ -131,6 +97,7 @@ class AwsClients
   end
 
   def self.dynamo(provider = nil)
+    require 'aws-sdk-dynamodb'
     self.client_cache(
       provider,
       Aws::DynamoDB::Client
@@ -138,6 +105,7 @@ class AwsClients
   end
 
   def self.ec2(provider = nil)
+    require 'aws-sdk-ec2'
     self.client_cache(
       provider,
       Aws::EC2::Client
@@ -145,6 +113,7 @@ class AwsClients
   end
 
   def self.elasticache(provider = nil)
+    require 'aws-sdk-elasticache'
     self.client_cache(
       provider,
       Aws::ElastiCache::Client
@@ -152,6 +121,7 @@ class AwsClients
   end
 
   def self.elasticsearch(provider = nil)
+    require 'aws-sdk-elasticsearchservice'
     self.client_cache(
       provider,
       Aws::ElasticsearchService::Client
@@ -159,6 +129,7 @@ class AwsClients
   end
 
   def self.elb(provider = nil)
+    require 'aws-sdk-elasticloadbalancing'
     self.client_cache(
       provider,
       Aws::ElasticLoadBalancing::Client
@@ -166,6 +137,7 @@ class AwsClients
   end
 
   def self.iam(provider = nil)
+    require 'aws-sdk-iam'
     self.client_cache(
       provider,
       Aws::IAM::Client
@@ -173,6 +145,7 @@ class AwsClients
   end
 
   def self.kafka(provider = nil)
+    require 'aws-sdk-kafka'
     self.client_cache(
       provider,
       Aws::Kafka::Client
@@ -180,6 +153,7 @@ class AwsClients
   end
 
   def self.kinesis(provider = nil)
+    require 'aws-sdk-kinesis'
     self.client_cache(
       provider,
       Aws::Kinesis::Client
@@ -187,6 +161,7 @@ class AwsClients
   end
 
   def self.firehose(provider = nil)
+    require 'aws-sdk-firehose'
     self.client_cache(
       provider,
       Aws::Firehose::Client
@@ -194,6 +169,7 @@ class AwsClients
   end
 
   def self.lambda(provider = nil)
+    require 'aws-sdk-lambda'
     self.client_cache(
       provider,
       Aws::Lambda::Client
@@ -201,6 +177,7 @@ class AwsClients
   end
 
   def self.rds(provider = nil)
+    require 'aws-sdk-rds'
     self.client_cache(
       provider,
       Aws::RDS::Client
@@ -208,6 +185,7 @@ class AwsClients
   end
 
   def self.redshift(provider = nil)
+    require 'aws-sdk-redshift'
     self.client_cache(
       provider,
       Aws::Redshift::Client
@@ -215,6 +193,7 @@ class AwsClients
   end
 
   def self.route53(provider = nil)
+    require 'aws-sdk-route53'
     self.client_cache(
       provider,
       Aws::Route53::Client
@@ -222,6 +201,7 @@ class AwsClients
   end
 
   def self.route53resolver(provider = nil)
+    require 'aws-sdk-route53resolver'
     self.client_cache(
       provider,
       Aws::Route53Resolver::Client
@@ -229,6 +209,7 @@ class AwsClients
   end
 
   def self.s3(provider = nil)
+    require 'aws-sdk-s3'
     self.client_cache(
       provider,
       Aws::S3::Client
@@ -236,6 +217,7 @@ class AwsClients
   end
 
   def self.ses(provider = nil)
+    require 'aws-sdk-ses'
     self.client_cache(
       provider,
       Aws::SES::Client
@@ -243,6 +225,7 @@ class AwsClients
   end
 
   def self.states(provider = nil)
+    require 'aws-sdk-states'
     self.client_cache(
       provider,
       Aws::States::Client
@@ -250,6 +233,7 @@ class AwsClients
   end
 
   def self.sns(provider = nil)
+    require 'aws-sdk-sns'
     self.client_cache(
       provider,
       Aws::SNS::Client
@@ -257,6 +241,7 @@ class AwsClients
   end
 
   def self.sqs(provider = nil)
+    require 'aws-sdk-sqs'
     self.client_cache(
       provider,
       Aws::SQS::Client
@@ -264,6 +249,7 @@ class AwsClients
   end
 
   def self.cloudtrail(provider = nil)
+    require 'aws-sdk-cloudtrail'
     self.client_cache(
       provider,
       Aws::CloudTrail::Client
@@ -271,6 +257,7 @@ class AwsClients
   end
 
   def self.codebuild(provider = nil)
+    require 'aws-sdk-codebuild'
     self.client_cache(
       provider,
       Aws::CodeBuild::Client
@@ -278,6 +265,7 @@ class AwsClients
   end
 
   def self.kms(provider = nil)
+    require 'aws-sdk-kms'
     self.client_cache(
       provider,
       Aws::KMS::Client
@@ -285,6 +273,7 @@ class AwsClients
   end
 
   def self.waf(provider = nil)
+    require 'aws-sdk-waf'
     self.client_cache(
       provider,
       Aws::WAF::Client
@@ -292,6 +281,7 @@ class AwsClients
   end
 
   def self.emr(provider = nil)
+    require 'aws-sdk-emr'
     self.client_cache(
       provider,
       Aws::EMR::Client
@@ -299,6 +289,7 @@ class AwsClients
   end
 
   def self.efs(provider = nil)
+    require 'aws-sdk-efs'
     self.client_cache(
       provider,
       Aws::EFS::Client
@@ -306,6 +297,7 @@ class AwsClients
   end
 
   def self.codedeploy(provider = nil)
+    require 'aws-sdk-codedeploy'
     self.client_cache(
       provider,
       Aws::CodeDeploy::Client
@@ -313,6 +305,7 @@ class AwsClients
   end
 
   def self.organizations(provider = nil)
+    require 'aws-sdk-organizations'
     self.client_cache(
       provider,
       Aws::Organizations::Client
@@ -320,6 +313,7 @@ class AwsClients
   end
 
   def self.pinpoint(provider = nil)
+    require 'aws-sdk-pinpoint'
     self.client_cache(
       provider,
       Aws::Pinpoint::Client
@@ -327,6 +321,7 @@ class AwsClients
   end
 
   def self.acmpca(provider = nil)
+    require 'aws-sdk-acmpca'
     self.client_cache(
       provider,
       Aws::ACMPCA::Client
@@ -334,6 +329,7 @@ class AwsClients
   end
 
   def self.acm(provider = nil)
+    require 'aws-sdk-acm'
     self.client_cache(
       provider,
       Aws::ACM::Client
