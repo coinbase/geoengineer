@@ -59,7 +59,7 @@ describe GeoEngineer::Resources::AwsAcmpcaCertificateAuthority do
       )
     end
 
-    it 'should create an array of hashes from the AWS response' do
+    it 'creates an array of hashes from the AWS response' do
       resources = GeoEngineer::Resources::AwsAcmpcaCertificateAuthority._fetch_remote_resources(nil)
       expect(resources.count).to eql 2
 
