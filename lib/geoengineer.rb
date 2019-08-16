@@ -26,7 +26,6 @@ end
 module GeoEngineer::GPS::Nodes
 end
 
-require 'aws-sdk'
 require 'json'
 require 'octokit'
 require 'ostruct'
