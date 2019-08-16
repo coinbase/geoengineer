@@ -25,7 +25,7 @@ class GeoEngineer::Resources::AwsCloudhsmV2Cluster < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     client = AwsClients.cloudhsm(provider)
-    client.describe_clusters[:clusters]
+    r = client.describe_clusters[:clusters]
           .map(&:to_h).map do |hsm|
       tags = client.list_tags({
         resource_id: hsm[:cluster_id],
@@ -35,6 +35,7 @@ class GeoEngineer::Resources::AwsCloudhsmV2Cluster < GeoEngineer::Resource
         {
           _terraform_id: hsm[:cluster_id],
           _geo_id: tags.find { |tag| tag[:key] == "Name" }&.dig(:value),
+          cluster_id: hsm[:cluster_id],
         }
       )
       
