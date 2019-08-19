@@ -1,6 +1,6 @@
 ## Run this from the root directory of geo.
 ##
-##  ./bin/geo plan examples/example_acmpca_certificate.rb
+##  ./bin/geo plan examples/example_acm_certificate.rb
 ##
 GeoCLI.instance.env_name = "geoexperiments"
 GeoCLI.instance.environment = GeoEngineer::Environment.new("geoexperiments")
@@ -8,7 +8,7 @@ project = GeoCLI.instance.environment.project("org","geoexperiments"){
     environments "geoexperiments"
 }
 
-cert = project.resource("aws_acmpca_certificate_private_ca", "acbhq_dot_net") {
+cert = project.resource("aws_acm_certificate", "acbhq_dot_net") {
     tags {
         Name "acbhq.net"
     }

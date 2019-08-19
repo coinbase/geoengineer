@@ -8,7 +8,7 @@
 #
 # {https://www.terraform.io/docs/providers/aws/r/acmpca_certificate_authority.html}
 ########################################################################
-class GeoEngineer::Resources::AwsAcmpcaCertificatePrivateCa < GeoEngineer::Resource
+class GeoEngineer::Resources::AwsAcmCertificate < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
