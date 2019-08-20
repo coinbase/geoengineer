@@ -8,7 +8,7 @@ class GeoEngineer::Resources::AwsCloudhsmV2Cluster < GeoEngineer::Resource
   validate -> { validate_has_tag(:Name) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id -> {NullObject.maybe(tags)[:Name] } }
+  after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
   def to_terraform_state
     tfstate = super
@@ -27,14 +27,16 @@ class GeoEngineer::Resources::AwsCloudhsmV2Cluster < GeoEngineer::Resource
     client = AwsClients.cloudhsm(provider)
     client.describe_clusters[:clusters]
           .map(&:to_h).map do |hsm_cluster|
-      tags = client.list_tags({
-        resource_id: hsm_cluster[:cluster_id],
-        max_results: 50 # 50 is the highest we can set this to
-      })[:tag_list]
+      tags = client.list_tags(
+        {
+          resource_id: hsm_cluster[:cluster_id],
+          max_results: 50 # 50 is the highest we can set this to
+        }
+      )[:tag_list]
       hsm_cluster.merge(
         {
           _terraform_id: hsm_cluster[:cluster_id],
-          _geo_id: tags.find { |tag| tag[:key] == "Name" }&.dig(:value),
+          _geo_id: tags.find { |tag| tag[:key] == "Name" }&.dig(:value)
         }
       )
     end

@@ -5,7 +5,7 @@
 ########################################################################
 class GeoEngineer::Resources::AwsCloudhsmV2Hsm < GeoEngineer::Resource
   validate -> { validate_required_attributes([:cluster_id, :subnet_id]) }
-  
+
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{cluster_id}_#{subnet_id}" } }
 
@@ -21,7 +21,7 @@ class GeoEngineer::Resources::AwsCloudhsmV2Hsm < GeoEngineer::Resource
             _geo_id: "#{hsm[:cluster_id]}_#{hsm[:subnet_id]}"
           }
         )
-      end  
+      end
     end
     flattened_hsms
   end
