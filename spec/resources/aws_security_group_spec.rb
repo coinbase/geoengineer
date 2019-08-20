@@ -31,6 +31,26 @@ describe(GeoEngineer::Resources::AwsSecurityGroup) do
 
       expect(bad_cidrs.validate_correct_cidr_blocks.length).to eq 3
     end
+
+    it 'fails when protocol is -1 but ports other than 0 are specified' do
+      expect(GeoEngineer::Resources::AwsSecurityGroup.new('type', 'id') {
+        ingress {
+          protocol '-1'
+          to_port 53
+          from_port 53
+          cidr_blocks ['0.0.0.0/0']
+        }
+      }.errors.grep(/Cannot specify protocol of -1/i).size).to eq 1
+
+      expect(GeoEngineer::Resources::AwsSecurityGroup.new('type', 'id') {
+        ingress {
+          protocol '-1'
+          to_port 0
+          from_port 0
+          cidr_blocks ['0.0.0.0/0']
+        }
+      }.errors.grep(/Cannot specify protocol of -1/i).size).to eq 0
+    end
   end
 
   describe "_terraform_id and _geo_id" do
