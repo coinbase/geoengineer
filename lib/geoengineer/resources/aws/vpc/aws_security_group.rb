@@ -12,6 +12,14 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
   validate -> {
     validate_subresource_required_attributes(:egress, [:from_port, :protocol, :to_port])
   }
+  validate -> {
+    all_ingress.map do |i|
+      if i.protocol.to_s == '-1' && !(i.to_port.to_s == '0' && i.from_port.to_s == '0')
+        'Cannot specify protocol of -1 with a port number other than 0 ' \
+        "(to_port = #{i.to_port} from_port = #{i.from_port})"
+      end
+    end
+  }
   validate -> { validate_has_tag(:Name) }
 
   before :validation, -> { flatten_cidr_and_sg_blocks }
