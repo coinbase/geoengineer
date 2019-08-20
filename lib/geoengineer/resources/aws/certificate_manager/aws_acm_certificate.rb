@@ -1,5 +1,5 @@
 ########################################################################
-# AwsAcmpcaCertificate resource issued by AWS Private CA
+# AwsAcmCertificate resource issued by AWS Private CA
 #
 # Creating a private CA issued certificate
 # domain_name - (Required) A domain name for which the certificate should be issued
@@ -8,7 +8,7 @@
 #
 # {https://www.terraform.io/docs/providers/aws/r/acmpca_certificate_authority.html}
 ########################################################################
-class GeoEngineer::Resources::AwsAcmpcaCertificatePrivateCa < GeoEngineer::Resource
+class GeoEngineer::Resources::AwsAcmCertificate < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
 
@@ -19,12 +19,6 @@ class GeoEngineer::Resources::AwsAcmpcaCertificatePrivateCa < GeoEngineer::Resou
   validate -> { validate_required_attributes([:options]) }
   validate -> { validate_subresource_required_attributes(:options, [:certificate_transparency_logging_preference]) }
   validate -> { validate_has_tag(:Name) }
-  validate -> { validate_ctlp_disabled }
-
-  def validate_ctlp_disabled
-    return [] unless options&.certificate_transparency_logging_preference
-    ["certificate_transparency_logging_preference should be false for aws_acmpca_certificate_private_ca#{id}"]
-  end
 
   def self._fetch_remote_resources(provider)
     AwsClients.acm(provider)
