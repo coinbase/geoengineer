@@ -332,6 +332,8 @@ class AwsClients
     self.client_cache(
       provider,
       Aws::CloudHSMV2::Client
+    )
+  end
 
   def self.acm(provider = nil)
     require 'aws-sdk-acm'

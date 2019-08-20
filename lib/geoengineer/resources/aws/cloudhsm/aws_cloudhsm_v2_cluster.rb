@@ -25,20 +25,18 @@ class GeoEngineer::Resources::AwsCloudhsmV2Cluster < GeoEngineer::Resource
 
   def self._fetch_remote_resources(provider)
     client = AwsClients.cloudhsm(provider)
-    r = client.describe_clusters[:clusters]
-          .map(&:to_h).map do |hsm|
+    client.describe_clusters[:clusters]
+          .map(&:to_h).map do |hsm_cluster|
       tags = client.list_tags({
-        resource_id: hsm[:cluster_id],
+        resource_id: hsm_cluster[:cluster_id],
         max_results: 50 # 50 is the highest we can set this to
       })[:tag_list]
-      hsm.merge(
+      hsm_cluster.merge(
         {
-          _terraform_id: hsm[:cluster_id],
+          _terraform_id: hsm_cluster[:cluster_id],
           _geo_id: tags.find { |tag| tag[:key] == "Name" }&.dig(:value),
-          cluster_id: hsm[:cluster_id],
         }
       )
-      
-      end
+    end
   end
 end
