@@ -1,12 +1,12 @@
 require_relative '../spec_helper'
 
-describe(GeoEngineer::Resources::AwsCloudhsmV2Cluster) do
+describe(GeoEngineer::Resources::AwsCloudhsmV2Hsm) do
   common_resource_tests(described_class, described_class.type_from_class_name)
-  name_tag_geo_id_tests(GeoEngineer::Resources::AwsCloudhsmV2Cluster)
+  name_tag_geo_id_tests(GeoEngineer::Resources::AwsCloudhsmV2Hsm)
 
   describe "#_fetch_remote_resources" do
     it 'should create list of hashes from returned AWS SDK' do
-      chsm_client = AwsClients.cloudhsm
+      chsm_cilent = AwsClients.cloudhsm
       stub = chsm_client.stub_data(
         :describe_clusters, {
           clusters: [{
@@ -40,7 +40,7 @@ describe(GeoEngineer::Resources::AwsCloudhsmV2Cluster) do
         }
       )
       chsm_client.stub_responses(:describe_clusters, stub)
-      remote_resources = GeoEngineer::Resources::AwsCloudhsmV2Cluster._fetch_remote_resources(nil)
+      remote_resources = GeoEngineer::Resources::AwsCloudhsmV2Hsm._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq(1)
     end
   end

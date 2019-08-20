@@ -329,6 +329,7 @@ class AwsClients
   end
 
   def self.cloudhsm(provider = nil)
+    require 'aws-sdk-cloudhsmv2'
     self.client_cache(
       provider,
       Aws::CloudHSMV2::Client
