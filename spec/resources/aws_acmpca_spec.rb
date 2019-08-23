@@ -14,11 +14,13 @@ describe GeoEngineer::Resources::AwsAcmpcaCertificateAuthority do
         "abcbhq_dot_net"
       ) {
         type "ROOT"
-        certificate_authority_configuration {
-          subject {
-            common_name "abcbhq.net"
+        certificate_authority_configuration [
+          {
+            subject: [{
+              common_name: "abcbhq.net"
+            }]
           }
-        }
+        ]
       }
       expect(resources[:_geo_id]).to eql "ROOT::abcbhq.net"
     end
