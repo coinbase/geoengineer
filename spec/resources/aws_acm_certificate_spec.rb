@@ -17,9 +17,9 @@ describe GeoEngineer::Resources::AwsAcmCertificate do
         tags {
           Name "test"
         }
-        options {
-          certificate_transparency_logging_preference "DISABLED"
-        }
+        options [{
+          certificate_transparency_logging_preference: "DISABLED"
+        }]
       }
       expect(resources[:_geo_id]).to eql "test"
     end
