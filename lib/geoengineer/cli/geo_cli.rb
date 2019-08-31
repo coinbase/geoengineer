@@ -220,6 +220,8 @@ class GeoCLI
     status_cmd
     test_cmd
     query_cmd
+    export_graph_command
+    diff_graph_command
   end
 
   def run
@@ -227,9 +229,6 @@ class GeoCLI
     program :version, GeoEngineer::VERSION
     program :description, 'GeoEngineer will help you Terraform your resources'
     always_trace!
-
-    # check terraform installed
-    return puts "Please install terraform" unless terraform_installed?
 
     # global_options
     global_options
