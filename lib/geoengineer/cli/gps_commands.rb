@@ -49,6 +49,7 @@ module GeoCLI::GPSCommands
     end
   end
 
+  # rubocop:disable Metrics/AbcSize
   def query_cmd
     command :query do |c|
       c.syntax = './geo query <query> --attributes ATTRIBUTES --expanded'
@@ -57,7 +58,7 @@ module GeoCLI::GPSCommands
       c.option '--expanded', 'If true, display the attributes with defaults inserted'
       c.option '--out PATH', String, 'File path to store output'
 
-      c.action do |args, options|
+      c.action pre_steps do |args, options|
         options.default({ environment: "development", expanded: false })
         require_environment(options)
 
@@ -75,6 +76,7 @@ module GeoCLI::GPSCommands
       end
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   # rubocop:disable Metrics/MethodLength
   def export_graph_command
@@ -110,7 +112,7 @@ module GeoCLI::GPSCommands
       c.option '--stdout', 'Prints output to terminal instead of writing to graph.json'
       c.option '--file FILENAME', String, 'Exports the file to the given path instead of graph.json'
 
-      c.action do |args, options|
+      c.action pre_steps do |args, options|
         # We have to stub commands because gps/nodes/postgres.rb tests for new resources in setup
         GeoCLI::TestCmdStubs.stub!
         options.default({ stdout: false, file: './graph.json' })
@@ -127,6 +129,7 @@ module GeoCLI::GPSCommands
     end
   end
 
+  # rubocop:disable Metrics/AbcSize
   def diff_graph_command
     command :'diff-graph' do |c|
       c.syntax = './geo diff-graph FILE1 FILE2'
@@ -154,7 +157,7 @@ module GeoCLI::GPSCommands
       c.option '--stdout', 'Prints output to terminal instead of writing to diff.json'
       c.option '--file FILENAME', String, 'Exports the file to the given path instead of diff.json'
 
-      c.action do |args, options|
+      c.action pre_steps do |args, options|
         options.default({ stdout: false, file: './diff.json' })
         diff = GeoEngineer::GPS::GraphUtils.difference(
           GeoEngineer::GPS::GraphUtils.flatten(JSON.parse(File.read(args[0]))),
@@ -170,5 +173,6 @@ module GeoCLI::GPSCommands
       end
     end
   end
+  # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
 end

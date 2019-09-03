@@ -78,7 +78,7 @@ module GeoCLI::StatusCommand
   end
 
   def status_action
-    lambda do |args, options|
+    pre_steps do |args, options|
       type_stats = type_stats(options)
       status = calculate_status(type_stats)
       status = report_json(type_stats, status)

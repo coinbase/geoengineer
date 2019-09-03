@@ -88,7 +88,7 @@ module GeoCLI::TerraformCommands
     command :test do |c|
       c.syntax = 'geo test [<geo_files>]'
       c.description = 'Generates files while mocking AWS (useful for testing/debugging)'
-      action = lambda do |args, options|
+      action = pre_steps do |args, options|
         create_terraform_files(false)
       end
       c.action ->(args, options) { GeoCLI::TestCmdStubs.stub! && init_action(:plan, &action).call(args, options) }
@@ -100,10 +100,7 @@ module GeoCLI::TerraformCommands
       c.syntax = 'geo plan [<geo_files>]'
       c.description = 'Generate and show an execution plan'
       c.option '--allow-destroy', 'Run the plan with allow_destroy = true, useful for debugging'
-      action = lambda do |args, options|
-        # check terraform installed
-        return puts "Please install terraform" unless terraform_installed?
-
+      action = pre_steps do |args, options|
         env.allow_destroy(true) if options.allow_destroy
         create_terraform_files
         terraform_plan
@@ -117,10 +114,7 @@ module GeoCLI::TerraformCommands
       c.syntax = 'geo apply [<geo_files>]'
       c.option '--yes', 'Ignores the sanity check'
       c.description = 'Apply an execution plan'
-      action = lambda do |args, options|
-        # check terraform installed
-        return puts "Please install terraform" unless terraform_installed?
-
+      action = pre_steps do |args, options|
         create_terraform_files
         terraform_plan
         unless options.yes || yes?("Apply the above plan? [YES/NO]")
@@ -134,15 +128,11 @@ module GeoCLI::TerraformCommands
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
   def destroy_cmd
     command :destroy do |c|
       c.syntax = 'geo destroy [<geo_files>]'
       c.description = 'Destroy an execution plan'
-      action = lambda do |args, options|
-        # check terraform installed
-        return puts "Please install terraform" unless terraform_installed?
-
+      action = pre_steps do |args, options|
         create_terraform_files
         exit_code = terraform_plan_destroy.exitstatus
         if exit_code.nonzero?
@@ -159,5 +149,4 @@ module GeoCLI::TerraformCommands
       c.action init_action(:destroy, &action)
     end
   end
-  # rubocop:enable Metrics/AbcSize
 end

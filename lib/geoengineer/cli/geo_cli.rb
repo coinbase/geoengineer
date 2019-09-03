@@ -93,8 +93,8 @@ class GeoCLI
     puts "Using environment '#{@env_name}'\n" if @verbose
     begin
       require_from_pwd "environments/#{@env_name}"
-    rescue LoadError
-      puts "unable to load 'environments/#{@env_name}'" if @verbose
+    rescue LoadError => e
+      puts "unable to load 'environments/#{@env_name}': #{e}" if @verbose
     end
   end
 
@@ -205,11 +205,26 @@ class GeoCLI
       String.disable_colorization = true
       @no_color = ' -no-color'
     }
+
+    global_option('--no-mp', 'Removes the ability to monkey patch the CLI by including a .geo.rb file')
+    global_option('--no-terraform', 'Removes the requirement for terraform to be installed')
   end
 
   def terraform_installed?
     terraform_version = shell_exec('which terraform')
     terraform_version.exitstatus.zero?
+  end
+
+  def pre_steps
+    lambda do |args, options|
+      # Require any patches to the way geo works
+      require_from_pwd '.geo' if File.file?("#{Dir.pwd}/.geo.rb") && !options.no_mp
+
+      # check terraform installed
+      throw("Please install terraform") if !options.no_terraform && !terraform_installed?
+
+      yield(args, options)
+    end
   end
 
   def add_commands
@@ -232,9 +247,6 @@ class GeoCLI
 
     # global_options
     global_options
-
-    # Require any patches to the way geo works
-    require_from_pwd '.geo' if File.file?("#{Dir.pwd}/.geo.rb")
 
     # Add commands
     add_commands
