@@ -6,7 +6,7 @@
 class GeoEngineer::Resources::AwsS3BucketObject < GeoEngineer::Resource
   validate -> { validate_required_attributes([:bucket]) }
 
-  after :initialize, -> { _terraform_id -> { bucket } }
+  after :initialize, -> { _terraform_id -> { "#{bucket}_#{key}" } }
 
   def to_terraform_state
     tfstate = super
