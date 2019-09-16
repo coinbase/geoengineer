@@ -71,7 +71,9 @@ module GeoEngineer::ApiGatewayHelpers
       cache = GeoEngineer::ApiGatewayHelpers._rest_api_cache
       return cache[provider] if cache[provider]
 
-      ret = _client(provider).get_rest_apis['items'].map(&:to_h).map do |rr|
+      # TODO: This should be paginated by looking at the position parameter returned
+      #       See: https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/APIGateway/Client.html#get_rest_apis-instance_method
+      ret = _client(provider).get_rest_apis({ limit: 500 })['items'].map(&:to_h).map do |rr|
         rr[:_terraform_id]    = rr[:id]
         rr[:_geo_id]          = rr[:name]
         rr[:root_resource_id] = _root_resource_id(provider, rr)
