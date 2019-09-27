@@ -31,7 +31,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'commander',         '~> 4.4'
   s.add_dependency 'colorize',          '~> 0.7'
   s.add_dependency 'parallel',          '~> 1.10'
-  s.add_dependency 'octokit',           '~> 4.8'
+  s.add_dependency 'octokit',           '~> 4.14'
+  # We are temporarily adding this dependency because there is an
+  # incompatibility between octokit and faraday on the latest version.
+  s.add_dependency 'faraday',           '~> 0.15.4'
   s.add_dependency 'json-schema',       '~> 2.8.1'
   s.add_dependency 'tty-pager',         '~> 0.12.0'
   s.add_dependency 'pg',                '~> 0.18.4'
