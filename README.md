@@ -164,7 +164,7 @@ end
 
 ### Geo Planning System (GPS)
 
-GeoEngineer describes resources in the **cloud** domain, not **your** application domain. For example, security group ingress is "cloud" way of defining "what can call your service". The friction between these two domains makes communication with others (e.g. developers) difficult.
+GeoEngineer describes resources in the **cloud** domain, not **your** application domain. For example, security group ingress is the "cloud" way of defining "what can call your service". The friction between these two domains makes communication with others (e.g. developers) difficult.
 
 GPS is an abstraction that helps you describe your cloud in the language of your domain. GPS:
 
