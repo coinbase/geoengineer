@@ -196,6 +196,17 @@ development:
         ports: "80:80"
 ```
 
+If you have multiple environments and wish something to be applied to all of them evenly, you can use `_default` as a special environment keyword. This will be applied to all known environments, unless they are already defined. For example, if you had a project that was deployed to all environments except one named `internal`, you could use the following example:
+
+```yml
+_default:
+  common:
+    service:
+      api:
+        ports: "80:80"
+internal: {}
+```
+
 The `service` node type is defined to take a string of ports and build a Load balancer:
 
 ```ruby
