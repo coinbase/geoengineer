@@ -45,6 +45,50 @@ describe GeoEngineer::GPS do
     end
   end
 
+  describe '#loop_projects_hash' do
+    it 'should build a hash of node objects' do
+      h = { "p1" => { "e1" => { "c1" => { "test_node" => { "n1" => {} } } } } }
+      c = GeoEngineer::GPS::Constants.new({ "e1" => {}, "e2" => {} })
+      g = GeoEngineer::GPS.new(h, c)
+
+      # expect the returned hash to match the inputted hash
+      expanded_hash = g.loop_projects_hash(h) {}
+      expect(expanded_hash).to eq(h)
+    end
+
+    it 'should expand _default environment keyword to all known environments' do
+      h = { "p1" => { "_default" => { "c1" => { "test_node" => { "n1" => {} } } } } }
+      c = GeoEngineer::GPS::Constants.new({ "e1" => {}, "e2" => {} })
+      g = GeoEngineer::GPS.new(h, c)
+
+      # expect the returned hash to include the project in all environments (e1, e2)
+      eh = { "p1" => {
+        "e1" => { "c1" => { "test_node" => { "n1" => {} } } },
+        "e2" => { "c1" => { "test_node" => { "n1" => {} } } }
+      } }
+      expanded_hash = g.loop_projects_hash(h) {}
+      expect(expanded_hash).to eq(eh)
+    end
+
+    it 'should expand _default environment except ones already specified' do
+      h = { "p1" => {
+        "_default" => { "c1" => { "test_node" => { "n1" => {} } } },
+        "e2" => { "c2" => { "test_node" => { "n2" => {} } } }
+      } }
+      c = GeoEngineer::GPS::Constants.new({ "e1" => {}, "e2" => {} })
+      g = GeoEngineer::GPS.new(h, c)
+
+      # expect the returned hash to include the project in all environments (e1,
+      # e2), but they shouldn't match each other.
+      eh = { "p1" => {
+        "e1" => { "c1" => { "test_node" => { "n1" => {} } } },
+        "e2" => { "c2" => { "test_node" => { "n2" => {} } } }
+      } }
+      expanded_hash = g.loop_projects_hash(h) {}
+      expect(expanded_hash).to eq(eh)
+    end
+  end
+
   describe '#find' do
     it 'proxies the request to the finder' do
       h = { "org/p1" => { "e1" => { "c1" => { "test_node" => { "n1" => { "name" => "asd" } } } } } }

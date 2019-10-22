@@ -1,12 +1,18 @@
 # HashUtils class for helper methods
 class HashUtils
+  ALLOWED_UNDERSCORE_KEYWORDS = %w[_default].freeze
+
   def self.remove_(hash)
     hash = hash.dup
     hash.each_pair do |key, value|
-      hash.delete(key) && next if key.to_s.start_with?("_")
+      hash.delete(key) && next if key_filtered?(key)
       hash[key] = remove_(value) if value.is_a?(Hash)
     end
     hash
+  end
+
+  def self.key_filtered?(key)
+    key.to_s.start_with?("_") && !ALLOWED_UNDERSCORE_KEYWORDS.include?(key.to_s)
   end
 
   def self.json_dup(object)
