@@ -273,7 +273,7 @@ class GeoEngineer::GPS
         n.create_resources(project) unless n.meta?
       rescue StandardError => e
         # adding context to error
-        raise [n.node_id, e.message].join(": ")
+        raise $ERROR_INFO, [n.node_id, e.message].join(": "), $ERROR_INFO.backtrace
       end
     end
   end
