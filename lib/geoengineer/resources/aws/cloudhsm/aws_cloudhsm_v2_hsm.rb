@@ -1,13 +1,14 @@
 ########################################################################
-# AwsCloudHsm is the +aws_cloudhsm_v2_cluster+ terrform resource,
+# AwsCloudHsm is the +aws_cloudhsm_v2_hsm+ terrform resource,
 #
-# {https://www.terraform.io/docs/providers/aws/r/cloudhsm_v2_cluster.html}
+# {https://www.terraform.io/docs/providers/aws/r/cloudhsm_v2_hsm.html}
 ########################################################################
 class GeoEngineer::Resources::AwsCloudhsmV2Hsm < GeoEngineer::Resource
   validate -> { validate_required_attributes([:cluster_id, :subnet_id]) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id -> { "#{cluster_id}_#{subnet_id}" } }
+  after :initialize, -> { _geo_id -> { "#{self.cluster_id}_#{self.subnet_id}" } }
+
 
   def self._fetch_remote_resources(provider)
     client = AwsClients.cloudhsm(provider)
@@ -23,6 +24,7 @@ class GeoEngineer::Resources::AwsCloudhsmV2Hsm < GeoEngineer::Resource
         )
       end
     end
+    puts flattened_hsms
     flattened_hsms
   end
 
