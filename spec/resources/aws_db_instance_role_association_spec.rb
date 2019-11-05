@@ -19,13 +19,13 @@ describe GeoEngineer::Resources::AwsDbInstanceRoleAssociation do
                 role_arn: "somearn2",
                 feature_name: "s3Import"
               }
-            ]},
+            ] },
             { db_instance_identifier: 'name2', associated_roles: [
               {
                 role_arn: "somearn3",
                 feature_name: "s3Import"
               }
-            ]}
+            ] }
           ]
         }
       )
