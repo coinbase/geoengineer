@@ -17,7 +17,6 @@ class GeoEngineer::Resources::AwsAcmCertificate < GeoEngineer::Resource
   ## we are only requesting private ca issued certificates at this time
   validate -> { validate_required_attributes([:certificate_authority_arn]) }
   validate -> { validate_required_attributes([:options]) }
-  validate -> { validate_subresource_required_attributes(:options, [:certificate_transparency_logging_preference]) }
   validate -> { validate_has_tag(:Name) }
 
   def self._fetch_remote_resources(provider)

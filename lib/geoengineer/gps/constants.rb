@@ -25,6 +25,12 @@ class GeoEngineer::GPS::Constants
 
   # look up in environment then look in the _global
   def dereference(environment, attribute)
+    if environment == "*"
+      return constants.map do |specific_environment, _|
+        dereference(specific_environment, attribute)
+      end.compact
+    end
+
     from_current_env = constants.dig(environment, attribute)
     return from_current_env unless from_current_env.nil?
 

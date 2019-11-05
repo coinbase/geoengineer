@@ -34,6 +34,11 @@ describe GeoEngineer::GPS::Constants do
       expect(c.dereference("e", "truthy?")).to eq true
       expect(c.dereference("e", "falsey?")).to eq false
     end
+
+    it 'works with wildcards' do
+      c = GeoEngineer::GPS::Constants.new({ "a": { "foo": 1 }, "b": { "foo": 2 } })
+      expect(c.dereference("*", "foo")).to eq [1, 2]
+    end
   end
 
   context 'yamltags' do

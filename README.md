@@ -164,7 +164,7 @@ end
 
 ### Geo Planning System (GPS)
 
-GeoEngineer describes resources in the **cloud** domain, not **your** application domain. For example, security group ingress is "cloud" way of defining "what can call your service". The friction between these two domains makes communication with others (e.g. developers) difficult.
+GeoEngineer describes resources in the **cloud** domain, not **your** application domain. For example, security group ingress is the "cloud" way of defining "what can call your service". The friction between these two domains makes communication with others (e.g. developers) difficult.
 
 GPS is an abstraction that helps you describe your cloud in the language of your domain. GPS:
 
@@ -194,6 +194,17 @@ development:
     service:
       api:
         ports: "80:80"
+```
+
+If you have multiple environments and wish something to be applied to all of them evenly, you can use `_default` as a special environment keyword. This will be applied to all known environments, unless they are already defined. For example, if you had a project that was deployed to all environments except one named `internal`, you could use the following example:
+
+```yml
+_default:
+  common:
+    service:
+      api:
+        ports: "80:80"
+internal: {}
 ```
 
 The `service` node type is defined to take a string of ports and build a Load balancer:

@@ -8,16 +8,16 @@ class GeoEngineer::Resources::AwsAcmpcaCertificateAuthority < GeoEngineer::Resou
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
 
   validate -> { validate_required_attributes([:type]) }
-  validate -> { validate_required_attributes([:tags]) }
   validate -> { validate_required_attributes([:certificate_authority_configuration]) }
-  validate -> { validate_subresource_required_attributes(:certificate_authority_configuration, [:subject]) }
-  validate -> { validate_subresource_required_attributes(:certificate_authority_configuration, [:key_algorithm]) }
-  validate -> { validate_subresource_required_attributes(:certificate_authority_configuration, [:signing_algorithm]) }
-  validate -> { validate_subresource_required_attributes(:subject, [:common_name]) }
 
   after :initialize, -> { _geo_id -> { [type, common_name].join("::") } }
   def common_name
-    certificate_authority_configuration&.subject&.common_name || NullObject.new
+    if self.certificate_authority_configuration&.first &&
+       self.certificate_authority_configuration.first[:subject] &&
+       self.certificate_authority_configuration.first[:subject].first
+      return self.certificate_authority_configuration.first[:subject].first[:common_name]
+    end
+    NullObject.new
   end
 
   def self._fetch_remote_resources(provider)

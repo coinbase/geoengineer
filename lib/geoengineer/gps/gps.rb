@@ -156,6 +156,20 @@ class GeoEngineer::GPS
 
   def loop_projects_hash(projects_hash, &block)
     projects_hash.each_pair do |project, environments|
+      # If the environments includes _default, pull out its value, and loop over
+      # all other known environments and add it back in, if it doesn't already
+      # exist. This allows _default to be used as a template for cookie cutter
+      # definitions.
+      if environments.key?("_default")
+        defenv = environments.delete("_default")
+
+        # NOTE: the constants appeared to be the best place to easily get all known environments.
+        all_environments = @constants.constants.keys.reject { |env| env.start_with?('_') }
+        all_environments.each do |env|
+          environments[env] = HashUtils.deep_dup(defenv) unless environments[env]
+        end
+      end
+
       environments.each_pair do |environment, configurations|
         configurations.each_pair do |configuration, nodes|
           loop_nodes(project, environment, configuration, nodes, &block)
@@ -259,7 +273,7 @@ class GeoEngineer::GPS
         n.create_resources(project) unless n.meta?
       rescue StandardError => e
         # adding context to error
-        raise [n.node_id, e.message].join(": ")
+        raise $ERROR_INFO, [n.node_id, e.message].join(": "), $ERROR_INFO.backtrace
       end
     end
   end

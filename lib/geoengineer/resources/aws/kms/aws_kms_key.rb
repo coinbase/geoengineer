@@ -15,7 +15,7 @@ class GeoEngineer::Resources::AwsKmsKey < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    keys = AwsClients.kms(provider).list_keys[:keys].map do |i|
+    keys = AwsClients.kms(provider).list_keys({ limit: 1000 })[:keys].map do |i|
       AwsClients.kms(provider).describe_key({ key_id: i.key_id }).key_metadata.to_h
     end
 
