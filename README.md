@@ -354,7 +354,7 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
       next unless in_eg.cidr_blocks
       in_eg.cidr_blocks.each do |cidr|
         begin
-          NetAddr::CIDR.create(cidr)
+          NetAddr::IPv4Net.parse(cidr)
         rescue NetAddr::ValidationError
           errors << "Bad cidr block \"#{cidr}\" #{for_resource}"
         end
