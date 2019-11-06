@@ -29,20 +29,18 @@ class GeoEngineer::Resources::AwsVpcIpv4CidrBlockAssociation < GeoEngineer::Reso
     errors << err_msg(msg) unless additional_cidr.netmask.prefix_len.between?(16, 28)
   end
 
-  def is_a_subnet_or_equal(ipv4net_source, ipv4net_dest)
+  def a_subnet_or_equal?(ipv4net_source, ipv4net_dest)
     # https://www.rubydoc.info/gems/netaddr/NetAddr%2FIPv4Net:rel
     # irb(main):002:0> slash_15 = NetAddr::IPv4Net.parse('10.0.0.0/15')
-    # => #<NetAddr::IPv4Net:0x00007fc150a82dc0 @m32=#<NetAddr::Mask32:0x00007fc150a82fc8 @prefix_len=15, @mask=4294836224>, @base=#<NetAddr::IPv4:0x00007fc150a82d98 @addr=167772160>>
     # irb(main):003:0> slash_16 = NetAddr::IPv4Net.parse('10.0.0.0/16')
-    # => #<NetAddr::IPv4Net:0x00007fc151b902e8 @m32=#<NetAddr::Mask32:0x00007fc151b90630 @prefix_len=16, @mask=4294901760>, @base=#<NetAddr::IPv4:0x00007fc151b902c0 @addr=167772160>>
     # irb(main):004:0> slash_15.rel(slash_16)
     # => 1
     # irb(main):005:0> slash_16.rel(slash_15)
     # => -1
-    if ipv4net_source.rel(ipv4net_dest) === 0 || ipv4net_source.rel(ipv4net_dest) === 1
+    if ipv4net_source.rel(ipv4net_dest) == 0 || ipv4net_source.rel(ipv4net_dest) == 1 # rubocop:disable Style/NumericPredicate, Style/IfUnlessModifier, Metrics/LineLength
       return true
     end
-    return false
+    return false # rubocop:disable Style/RedundantReturn
   end
 
   def single_restricted_range(errors, primary_cidr, additional_cidr)
@@ -50,10 +48,10 @@ class GeoEngineer::Resources::AwsVpcIpv4CidrBlockAssociation < GeoEngineer::Reso
                          cidr("172.16.0.0/12"),
                          cidr("192.168.0.0/16"),
                          cidr("198.19.0.0/16")]
-    remaining_restricted_ranges = restricted_ranges.reject { |r| is_a_subnet_or_equal(r, primary_cidr) }
+    remaining_restricted_ranges = restricted_ranges.reject { |r| a_subnet_or_equal?(r, primary_cidr) }
 
     remaining_restricted_ranges.each do |r|
-      if is_a_subnet_or_equal(r, additional_cidr)
+      if a_subnet_or_equal?(r, additional_cidr)
         errors << err_msg("Primary VPC range [#{primary_cidr}] Cannot add additional CIDR blocks from the restricted "\
           "ranges [ #{remaining_restricted_ranges.join(', ')} ]")
       end
@@ -62,15 +60,15 @@ class GeoEngineer::Resources::AwsVpcIpv4CidrBlockAssociation < GeoEngineer::Reso
 
   def no_overlap(errors, primary_cidr, additional_cidr)
     msg = "The additional CIDR cannot overlap the primary VPC range"
-    errors << err_msg(msg) if is_a_subnet_or_equal(primary_cidr, additional_cidr)
+    errors << err_msg(msg) if a_subnet_or_equal?(primary_cidr, additional_cidr)
   end
 
   def special_ranges(errors, primary_cidr, additional_cidr)
-    rule1 = is_a_subnet_or_equal(cidr("10.0.0.0/15"), primary_cidr) && is_a_subnet_or_equal(cidr("10.0.0.0/16"), additional_cidr)
+    rule1 = a_subnet_or_equal?(cidr("10.0.0.0/15"), primary_cidr) && a_subnet_or_equal?(cidr("10.0.0.0/16"), additional_cidr)
     msg1 = "primary CIDR in 10.0.0.0/15. cannot add a CIDR block from the 10.0.0.0/16 range."
     errors << err_msg(msg1) if rule1
 
-    rule2 = is_a_subnet_or_equal(cidr("172.16.0.0/12"), primary_cidr) && is_a_subnet_or_equal(cidr("172.31.0.0/16"), additional_cidr)
+    rule2 = a_subnet_or_equal?(cidr("172.16.0.0/12"), primary_cidr) && a_subnet_or_equal?(cidr("172.31.0.0/16"), additional_cidr)
     msg2 = "primary CIDR in 172.16.0.0/12. cannot add a CIDR block from the 172.31.0.0/16 range"
     errors << err_msg(msg2) if rule2
   end
@@ -93,7 +91,7 @@ class GeoEngineer::Resources::AwsVpcIpv4CidrBlockAssociation < GeoEngineer::Reso
 
     no_overlap(errors, primary_cidr, additional_cidr)
 
-    return errors if is_a_subnet_or_equal(cidr("100.64.0.0/10"), additional_cidr)
+    return errors if a_subnet_or_equal?(cidr("100.64.0.0/10"), additional_cidr)
 
     single_restricted_range(errors, primary_cidr, additional_cidr)
 
