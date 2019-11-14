@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "yard", '~> 0.9'
   s.add_development_dependency "pry-byebug", '~> 3.4'
 
-  s.add_dependency 'netaddr',           '~> 1.5'
+  s.add_dependency 'netaddr',           '~> 2.0.4'
   s.add_dependency 'aws-sdk',           '~> 3'
   s.add_dependency 'commander',         '~> 4.4'
   s.add_dependency 'colorize',          '~> 0.7'

@@ -52,7 +52,7 @@ module HasValidations
   # Returns error when argument fails validation
   def validate_cidr_block(cidr_block)
     return "Empty cidr block" if cidr_block.nil? || cidr_block.empty?
-    return if NetAddr::CIDR.create(cidr_block)
+    return if NetAddr::IPv4Net.parse(cidr_block)
   rescue NetAddr::ValidationError
     return "Bad cidr block \"#{cidr_block}\" #{for_resource}"
   end
