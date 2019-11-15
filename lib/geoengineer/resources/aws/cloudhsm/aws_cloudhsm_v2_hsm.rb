@@ -9,7 +9,6 @@ class GeoEngineer::Resources::AwsCloudhsmV2Hsm < GeoEngineer::Resource
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{self.cluster_id}_#{self.subnet_id}" } }
 
-
   def self._fetch_remote_resources(provider)
     client = AwsClients.cloudhsm(provider)
     flattened_hsms = []

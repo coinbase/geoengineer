@@ -6,7 +6,7 @@ describe(GeoEngineer::Resources::AwsCloudhsmV2Hsm) do
 
   describe "#_fetch_remote_resources" do
     it 'should create list of hashes from returned AWS SDK' do
-      chsm_cilent = AwsClients.cloudhsm
+      chsm_client = AwsClients.cloudhsm
       stub = chsm_client.stub_data(
         :describe_clusters, {
           clusters: [{
