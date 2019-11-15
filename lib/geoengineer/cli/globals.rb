@@ -2,8 +2,8 @@
 # It should not be included in the library
 require_relative './geo_cli'
 
-def environment(name, &block)
-  GeoCLI.instance.create_environment(name, &block)
+def environment(name, remote_state = false, &block)
+  GeoCLI.instance.create_environment(name, remote_state, &block)
 end
 
 def env
