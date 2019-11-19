@@ -12,8 +12,8 @@ module GeoCLI::TerraformCommands
       file.write(JSON.pretty_generate(@environment.to_terraform_json()))
     }
 
-    # create terrafrom state
-    write_state if with_state
+    # create terrafrom state if remote state is not supported
+    write_state if with_state && !@environment.remote_state_supported?
   end
 
   def write_state
@@ -41,12 +41,15 @@ module GeoCLI::TerraformCommands
   end
 
   def terraform_plan
+    terraform_plan_commands = []
+    terraform_plan_commands << "terraform plan --refresh=false -parallelism=#{terraform_parallelism}"
+    terraform_plan_commands << "-state=#{@terraform_state_file}" unless env.remote_state_supported?
+    terraform_plan_commands << "-out=#{@plan_file} #{@no_color}"
     plan_commands = [
       "cd #{@tmpdir}",
       "terraform init #{@no_color}",
       "terraform refresh #{@no_color}",
-      "terraform plan --refresh=false -parallelism=#{terraform_parallelism}" \
-      " -state=#{@terraform_state_file} -out=#{@plan_file} #{@no_color}"
+      terraform_plan_commands.join(" ")
     ]
 
     exit_code = shell_exec(plan_commands.join(" && "), true).exitstatus
@@ -56,11 +59,15 @@ module GeoCLI::TerraformCommands
   end
 
   def terraform_plan_destroy
+    terraform_plan_commands = []
+    terraform_plan_commands << "terraform plan -destroy --refresh=false -parallelism=#{terraform_parallelism}"
+    terraform_plan_commands << "-state=#{@terraform_state_file}" unless env.remote_state_supported?
+    terraform_plan_commands << "-out=#{@plan_file} #{@no_color}"
+
     plan_destroy_commands = [
       "cd #{@tmpdir}",
       "terraform refresh #{@no_color}",
-      "terraform plan -destroy --refresh=false -parallelism=#{terraform_parallelism}" \
-      " -state=#{@terraform_state_file} -out=#{@plan_file} #{@no_color}"
+      terraform_plan_commands.join(" ")
     ]
 
     shell_exec(plan_destroy_commands.join(" && "), true)
