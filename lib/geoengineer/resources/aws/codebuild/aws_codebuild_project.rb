@@ -18,8 +18,6 @@ class GeoEngineer::Resources::AwsCodebuildProject < GeoEngineer::Resource
   validate -> { validate_subresource_required_attributes(:secondary_artifacts, [:type, :artifact_identifier]) }
   validate -> { validate_subresource_required_attributes(:secondary_sources, [:type, :source_identifier]) }
 
-  validate -> { validate_subresource_required_attributes(:cache, [:location]) }
-
   validate -> { validate_subresource_required_attributes(:environment, [:compute_type, :image, :type]) }
 
   validate -> { validate_subresource_required_attributes(:environment_variable, [:name, :value]) }
