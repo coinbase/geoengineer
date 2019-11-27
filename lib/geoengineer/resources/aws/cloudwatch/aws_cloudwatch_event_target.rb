@@ -28,7 +28,7 @@ class GeoEngineer::Resources::AwsCloudwatchEventTarget < GeoEngineer::Resource
       .list_rules
       .rules
       .map(&:to_h)
-      .map { |rule| _get_rule_targets(rule) }
+      .map { |rule| _get_rule_targets(provider, rule) }
       .flatten
       .map do |rule_target|
       rule_target.merge(
@@ -40,9 +40,9 @@ class GeoEngineer::Resources::AwsCloudwatchEventTarget < GeoEngineer::Resource
     end
   end
 
-  def self._get_rule_targets(rule)
+  def self._get_rule_targets(provider, rule)
     AwsClients
-      .cloudwatchevents
+      .cloudwatchevents(provider)
       .list_targets_by_rule({ rule: rule[:name] })[:targets]
       .map(&:to_h)
       .map { |target| target.merge({ rule_name: rule[:name] }) }
