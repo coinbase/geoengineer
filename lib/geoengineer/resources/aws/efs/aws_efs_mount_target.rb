@@ -14,9 +14,9 @@ class GeoEngineer::Resources::AwsEfsMountTarget < GeoEngineer::Resource
   end
 
   def self._fetch_remote_resources(provider)
-    AwsClients.efs.describe_file_systems['file_systems'].map(&:to_h).map { |file_system|
+    AwsClients.efs(provider).describe_file_systems['file_systems'].map(&:to_h).map { |file_system|
       args = { file_system_id: file_system[:file_system_id] }
-      AwsClients.efs.describe_mount_targets(args)['mount_targets'].map(&:to_h).map do |mount_target|
+      AwsClients.efs(provider).describe_mount_targets(args)['mount_targets'].map(&:to_h).map do |mount_target|
         mount_target.merge(
           {
             _terraform_id: mount_target[:mount_target_id],

@@ -19,8 +19,8 @@ class GeoEngineer::Resources::AwsKinesisStream < GeoEngineer::Resource
     tfstate
   end
 
-  def self._stream_description(stream_name)
-    AwsClients.kinesis
+  def self._stream_description(provider, stream_name)
+    AwsClients.kinesis(provider)
               .describe_stream({ stream_name: stream_name })
               .stream_description
               .to_h
@@ -29,7 +29,7 @@ class GeoEngineer::Resources::AwsKinesisStream < GeoEngineer::Resource
   def self._all_streams(provider)
     AwsClients.kinesis(provider)
               .list_streams[:stream_names]
-              .map { |s| self._stream_description(s) }
+              .map { |s| self._stream_description(provider, s) }
   end
 
   def self._fetch_remote_resources(provider)
