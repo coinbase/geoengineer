@@ -27,7 +27,7 @@ class GeoCLI
   attr_accessor :environment, :env_name
 
   # CLI FLAGS AND OPTIONS
-  attr_accessor :verbose, :no_color
+  attr_accessor :verbose, :verbose_state_output, :no_color
 
   def init_tmp_dir(name)
     @tmpdir = "#{Dir.pwd}/tmp/#{name}"
@@ -137,12 +137,14 @@ class GeoCLI
     puts "Total Errors #{errs.length}"
   end
 
-  def shell_exec(cmd, verbose = @verbose)
+  def shell_exec(cmd, verbose = @verbose, verbose_state_output = @verbose_state_output)
     stdin, stdout_and_stderr, wait_thr = Open3.popen2e({}, *cmd)
 
     puts(">> #{cmd}\n") if verbose
     stdout_and_stderr.each do |line|
-      puts(line) if verbose
+      next unless verbose
+      next if line =~ /Refreshing state.../ && !verbose_state_output
+      puts(line)
     end
     puts("<< Exited with status: #{wait_thr.value.exitstatus}\n\n") if verbose
 
@@ -198,6 +200,11 @@ class GeoCLI
     @verbose = true
     global_option('--quiet', 'reduce the noisy outputs (default they are on)') {
       @verbose = false
+    }
+
+    @verbose_state_output = false
+    global_option('--show-refresh-state', 'show the refreshing state output (default they are off)') {
+      @verbose_state_output = true
     }
 
     @no_color = ''
