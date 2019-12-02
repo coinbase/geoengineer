@@ -36,6 +36,7 @@ Metrics/MethodLength:
   # Rubocop auto-gen was not correctly identifying this.
   Exclude:
     - 'lib/geoengineer/resources/aws/ses/aws_ses_event_destination.rb'
+    - 'lib/geoengineer/resources/aws/vpc/aws_security_group.rb'
 
 # Offense count: 2
 Metrics/AbcSize:
@@ -44,6 +45,7 @@ Metrics/AbcSize:
   Exclude:
     - 'lib/geoengineer/resources/aws/ses/aws_ses_event_destination.rb'
     - 'lib/geoengineer/resources/aws/api_gateway/helpers.rb'
+    - 'lib/geoengineer/resources/aws/vpc/aws_security_group.rb'
 
 Style/Lambda:
   Enabled: false

@@ -5,6 +5,7 @@
 ########################################################################
 class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
   validate :validate_correct_cidr_blocks
+  validate :validate_rules_have_src_dest
   validate -> { validate_required_attributes([:name, :description]) }
   validate -> {
     validate_subresource_required_attributes(:ingress, [:from_port, :protocol, :to_port])
@@ -73,15 +74,19 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
 
   def flatten_cidr_and_sg_blocks
     (self.all_ingress + self.all_egress).each do |in_eg|
-      in_eg.cidr_blocks      = in_eg.cidr_blocks.flatten     if in_eg.cidr_blocks
-      in_eg.security_groups  = in_eg.security_groups.flatten if in_eg.security_groups
+      in_eg.cidr_blocks      = in_eg.cidr_blocks.flatten      if in_eg.cidr_blocks
+      in_eg.ipv6_cidr_blocks = in_eg.ipv6_cidr_blocks.flatten if in_eg.ipv6_cidr_blocks
+      in_eg.security_groups  = in_eg.security_groups.flatten  if in_eg.security_groups
+      in_eg.prefix_list_ids  = in_eg.prefix_list_ids.flatten  if in_eg.prefix_list_ids
     end
   end
 
   def uniq_cidr_and_sg_blocks
     (self.all_ingress + self.all_egress).each do |in_eg|
-      in_eg.cidr_blocks      = in_eg.cidr_blocks.uniq.sort if in_eg.cidr_blocks
-      in_eg.security_groups  = in_eg.security_groups.uniq if in_eg.security_groups
+      in_eg.cidr_blocks      = in_eg.cidr_blocks.uniq.sort      if in_eg.cidr_blocks
+      in_eg.ipv6_cidr_blocks = in_eg.ipv6_cidr_blocks.uniq.sort if in_eg.ipv6_cidr_blocks
+      in_eg.security_groups  = in_eg.security_groups.uniq       if in_eg.security_groups
+      in_eg.prefix_list_ids  = in_eg.prefix_list_ids.uniq       if in_eg.prefix_list_ids
     end
   end
 
@@ -94,6 +99,38 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
         errors << error unless error.nil?
       end
     end
+    errors
+  end
+
+  def validate_rules_have_src_dest
+    errors = []
+
+    self.all_ingress.map do |i|
+      src_count = 0
+      src_count += i.cidr_blocks.length      if i.cidr_blocks
+      src_count += i.ipv6_cidr_blocks.length if i.ipv6_cidr_blocks
+      src_count += i.security_groups.length  if i.security_groups
+      src_count += i.prefix_list_ids.length  if i.prefix_list_ids
+
+      if src_count.zero?
+        errors << 'Security group ingress rules must specify at least one source ' \
+        '(cidr_blocks, ipv6_cidr_blocks, prefix_list_ids, or security_groups)'
+      end
+    end
+
+    self.all_egress.map do |e|
+      dst_count = 0
+      dst_count += e.cidr_blocks.length      if e.cidr_blocks
+      dst_count += e.ipv6_cidr_blocks.length if e.ipv6_cidr_blocks
+      dst_count += e.security_groups.length  if e.security_groups
+      dst_count += e.prefix_list_ids.length  if e.prefix_list_ids
+
+      if dst_count.zero?
+        errors << 'Security group egress rules must specify at least one destination ' \
+        '(cidr_blocks, ipv6_cidr_blocks, prefix_list_ids, or security_groups)'
+      end
+    end
+
     errors
   end
 
