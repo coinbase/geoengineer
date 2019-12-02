@@ -67,6 +67,14 @@ describe(GeoEngineer::Resources::AwsSecurityGroup) do
           cidr_blocks ['0.0.0.0/0']
         }
       }.errors.grep(/rules must specify at least one source/i).size).to eq 0
+
+      expect(GeoEngineer::Resources::AwsSecurityGroup.new('type', 'id') {
+        ingress {
+          to_port 80
+          from_port 80
+          self['self'] = true
+        }
+      }.errors.grep(/rules must specify at least one source/i).size).to eq 0
     end
   end
 
