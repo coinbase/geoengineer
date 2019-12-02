@@ -111,10 +111,11 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
       src_count += i.ipv6_cidr_blocks.length if i.ipv6_cidr_blocks
       src_count += i.security_groups.length  if i.security_groups
       src_count += i.prefix_list_ids.length  if i.prefix_list_ids
+      src_count += 1                         if i['self'] == true
 
       if src_count.zero?
         errors << 'Security group ingress rules must specify at least one source ' \
-        '(cidr_blocks, ipv6_cidr_blocks, prefix_list_ids, or security_groups)'
+        '(cidr_blocks, ipv6_cidr_blocks, prefix_list_ids, security_groups, or self)'
       end
     end
 
@@ -124,10 +125,11 @@ class GeoEngineer::Resources::AwsSecurityGroup < GeoEngineer::Resource
       dst_count += e.ipv6_cidr_blocks.length if e.ipv6_cidr_blocks
       dst_count += e.security_groups.length  if e.security_groups
       dst_count += e.prefix_list_ids.length  if e.prefix_list_ids
+      dst_count += 1                         if e['self'] == true
 
       if dst_count.zero?
         errors << 'Security group egress rules must specify at least one destination ' \
-        '(cidr_blocks, ipv6_cidr_blocks, prefix_list_ids, or security_groups)'
+        '(cidr_blocks, ipv6_cidr_blocks, prefix_list_ids, security_groups, or self)'
       end
     end
 
