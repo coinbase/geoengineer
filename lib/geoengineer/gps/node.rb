@@ -56,11 +56,11 @@ class GeoEngineer::GPS::Node
   end
 
   def project_org
-    project.split("/")[0]
+    project.split("/", 2)[0]
   end
 
   def project_name
-    project.split("/")[1]
+    project.split("/", 2)[1]
   end
 
   def set_values(nodes, constants)
