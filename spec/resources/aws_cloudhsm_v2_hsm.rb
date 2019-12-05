@@ -7,7 +7,7 @@ describe(GeoEngineer::Resources::AwsCloudhsmV2Hsm) do
   describe "#_fetch_remote_resources" do
     it 'should create list of hashes from returned AWS SDK' do
       chsm_client = AwsClients.cloudhsm
-      stub = chsm_client.stub_data(
+      cluster_stub = chsm_client.stub_data(
         :describe_clusters, {
           clusters: [{
             backup_policy: "DEFAULT",
@@ -39,7 +39,27 @@ describe(GeoEngineer::Resources::AwsCloudhsmV2Hsm) do
           }]
         }
       )
-      chsm_client.stub_responses(:describe_clusters, stub)
+      tags_stub = chsm_client.stub_data(
+        :list_tags, {
+          tag_list: [{ key: "Name", value: "testing" }]
+        }
+      )
+
+      chsm_client.stub_responses(:describe_clusters, cluster_stub)
+      chsm_client.stub_responses(:list_tags, tags_stub)
+
+      ec2_client = AwsClients.ec2
+      subnet_stub = ec2_client.stub_data(
+        :describe_subnets, {
+          subnets: [{
+            subnet_id: '1',
+            cidr_block: "10.10.0.0/24",
+            tags: [{ key: 'Name', value: 'one' }]
+          }]
+        }
+      )
+      ec2_client.stub_data(:describe_subnet, subnet_stub)
+
       remote_resources = GeoEngineer::Resources::AwsCloudhsmV2Hsm._fetch_remote_resources(nil)
       expect(remote_resources.length).to eq(1)
     end
