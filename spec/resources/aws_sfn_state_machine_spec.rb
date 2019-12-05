@@ -16,12 +16,14 @@ describe(GeoEngineer::Resources::AwsSfnStateMachine) do
             {
               name: 'FakeName',
               state_machine_arn: "arn1",
-              creation_date: Time.now
+              creation_date: Time.now,
+              type: "STANDARD"
             },
             {
               name: 'FakeName',
               state_machine_arn: "arn1",
-              creation_date: Time.now
+              creation_date: Time.now,
+              type: "STANDARD"
             }
           ]
         }
