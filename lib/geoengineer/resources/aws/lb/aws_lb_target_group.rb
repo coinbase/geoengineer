@@ -22,12 +22,11 @@ class GeoEngineer::Resources::AwsLbTargetGroup < GeoEngineer::Resource
 
   def to_terraform_state
     tfstate = super
-    tfstate[:primary][:attributes] = {
-      'id' => _terraform_id,
-      'deregistration_delay' => '300',
-      'proxy_protocol_v2' => 'false',
-      'slow_start' => '0'
-    }
+    tfstate[:primary][:attributes] ||= {}
+    tfstate[:primary][:attributes]['id'] = _terraform_id
+    tfstate[:primary][:attributes]['proxy_protocol_v2'] = remote_resource._proxy_protocol_v2 || 'false'
+    tfstate[:primary][:attributes]['deregistration_delay'] = remote_resource._deregistration_delay || '300'
+    tfstate[:primary][:attributes]['slow_start'] = remote_resource._slow_start || '0'
     tfstate
   end
 
@@ -41,7 +40,7 @@ class GeoEngineer::Resources::AwsLbTargetGroup < GeoEngineer::Resource
     _fetch_all_target_groups(true, [], client, nil).map(&:to_h).map do |target_group|
       target_group[:_terraform_id] = target_group[:target_group_arn]
       target_group[:_geo_id] = target_group[:target_group_name]
-      target_group
+      _set_attributes(client, target_group)
     end
   end
 
@@ -53,5 +52,23 @@ class GeoEngineer::Resources::AwsLbTargetGroup < GeoEngineer::Resource
                              target_groups + target_group_resp['target_groups'],
                              client,
                              target_group_resp.next_marker)
+  end
+
+  def self._set_attributes(client, target_group)
+    attributes = client.describe_target_group_attributes({ target_group_arn: target_group[:target_group_arn] })
+    attributes_h = attributes.attributes.map { |item| [item[:key], item[:value]] }.to_h
+    unless attributes_h["deregistration_delay.timeout_seconds"].nil?
+      target_group[:_deregistration_delay] =
+        attributes_h["deregistration_delay.timeout_seconds"]
+    end
+    unless attributes_h["proxy_protocol_v2.enabled"].nil?
+      target_group[:_proxy_protocol_v2] =
+        attributes_h["proxy_protocol_v2.enabled"]
+    end
+    unless attributes_h["slow_start.duration_seconds"].nil?
+      target_group[:_slow_start] =
+        attributes_h["slow_start.duration_seconds"]
+    end
+    target_group
   end
 end
