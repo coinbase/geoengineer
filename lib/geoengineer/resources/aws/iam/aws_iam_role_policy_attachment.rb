@@ -47,6 +47,8 @@ class GeoEngineer::Resources::AwsIamRolePolicyAttachment < GeoEngineer::Resource
 
     @@role_cache[policy_arn] = roles
     roles
+  rescue Aws::IAM::Errors::NoSuchEntity
+    nil
   end
 
   def remote_resource_params
@@ -54,11 +56,15 @@ class GeoEngineer::Resources::AwsIamRolePolicyAttachment < GeoEngineer::Resource
     return {} unless arn
 
     attached_roles = fetch_entities(arn)
+    return {} unless attached_roles
     build_remote_resource_params(arn, attached_roles)
   end
 
   def determine_policy_arn
-    return policy_arn if policy_arn && !_policy
+    if policy_arn && !_policy
+      # check if the policy ARN is likely a Terraform reference, if so we can't fetch it so return nil
+      return /^\${[a-zA-Z0-9\._-]+}$/.match?(policy_arn) ? nil : policy_arn
+    end
 
     return nil unless _policy
     return nil unless _policy.remote_resource
