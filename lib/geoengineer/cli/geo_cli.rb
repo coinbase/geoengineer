@@ -112,6 +112,12 @@ class GeoCLI
 
   # this method accepts .rb files and .gps.yml files
   def require_geo_files(files)
+    # if remote state files are supported, all project files must be used
+    # otherwise terraform will assume resources should be deleted.
+    if env.remote_state_supported? && !files.empty?
+      throw "This environment is configured to use remote Terraform state files, which requires loading all project files.
+             Re-run the geo command with no arguments."
+    end
     # load everything if empty
     return require_all_projects if files.empty?
 
