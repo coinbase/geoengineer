@@ -8,7 +8,7 @@ class GeoEngineer::Resources::AwsInternetGateway < GeoEngineer::Resource
   validate -> { validate_has_tag(:Name) }
 
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
-  after :initialize, -> { _geo_id -> { NullObject.maybe(tags)[:Name] } }
+  after :initialize, -> { _geo_id -> { vpc_id } }
 
   def self._fetch_remote_resources(provider)
     AwsClients.ec2(provider)
@@ -16,7 +16,7 @@ class GeoEngineer::Resources::AwsInternetGateway < GeoEngineer::Resource
       gateway.merge(
         {
           _terraform_id: gateway[:internet_gateway_id],
-          _geo_id: gateway[:tags]&.find { |tag| tag[:key] == "Name" }&.dig(:value)
+          _geo_id: gateway.dig(:attachments)&.find { |a| !a[:vpc_id].nil? }&.dig(:vpc_id)
         }
       )
     end
