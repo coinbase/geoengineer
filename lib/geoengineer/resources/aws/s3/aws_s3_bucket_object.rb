@@ -19,6 +19,9 @@ class GeoEngineer::Resources::AwsS3BucketObject < GeoEngineer::Resource
       'content'      => remote_resource.content,
       'content_type' => remote_resource.content_type
     }
+
+    tfstate[:primary][:attributes]['force_destroy'] =
+      force_destroy.nil? || force_destroy == '' ? 'false' : force_destroy
     tfstate
   end
 
