@@ -7,20 +7,10 @@ class GeoEngineer::Resources::AwsCloudhsmV2Hsm < GeoEngineer::Resource
   validate -> { validate_required_attributes([:subnet_id]) }
   validate -> { validate_at_least_one_present([:_cluster, :cluster_id]) }
 
-  before :validation, -> { cluster_id _cluster.to_ref(:id) if _cluster && !cluster_id }
-  before :validation, -> { _cluster_name _cluster.tags[:Name] if _cluster && !cluster_id }
-
+  after :initialize, -> { cluster_id -> { self._cluster.to_ref(:id) if self._cluster } }
+  after :initialize, -> { _cluster_name -> { self._cluster.tags[:Name] if self._cluster } }
   after :initialize, -> { _terraform_id -> { NullObject.maybe(remote_resource)._terraform_id } }
   after :initialize, -> { _geo_id -> { "#{self._cluster_name || self.cluster_id}_#{self.subnet_id}" } }
-
-  # def to_terraform_state
-  #   tfstate = super
-
-  #   attributes['cluster_id'] = remote_resource[:cluster_id] if remote_resource
-
-  #   tfstate[:primary][:attributes] = attributes
-  #   tfstate
-  # end
 
   def self._fetch_remote_resources(provider)
     client = AwsClients.cloudhsm(provider)
