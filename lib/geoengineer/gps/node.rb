@@ -144,6 +144,7 @@ class GeoEngineer::GPS::Node
     id_lambda = -> { resource_id(name) } if id_lambda.nil?
     read_method = name.to_s
     ref_method = "#{name}_ref"
+    tf_method = "#{name}_terraform_name"
     create_method = "create_#{name}"
 
     define_method(read_method) do
@@ -155,6 +156,12 @@ class GeoEngineer::GPS::Node
       instance_exec(&load_gps_file) if auto_load
       id = instance_exec(&id_lambda)
       "${#{type}.#{id}.#{attribute}}"
+    end
+
+    define_method(tf_method) do |auto_load = true|
+      instance_exec(&load_gps_file) if auto_load
+      id = instance_exec(&id_lambda)
+      "#{type}.#{id}"
     end
 
     define_method(create_method) do |project|

@@ -114,8 +114,6 @@ class GeoEngineer::GPS
 
     @_nodes.each(&:validate) # validate all nodes
 
-    @_nodes = expand_meta_nodes(@_nodes, @_nodes) # this validates as it expands
-
     nodes_hash = GeoEngineer::GPS::Finder.build_nodes_lookup_hash(@_nodes)
     @_nodes.each { |node| node.set_values(nodes_hash, @constants) }
 
@@ -193,27 +191,37 @@ class GeoEngineer::GPS
     end
   end
 
-  def expand_meta_node(node, all_nodes)
+  # expand_meta_node is used to expand a meta node and recursively check for
+  # additional meta nodes. It will return all of the that were created from the
+  # initial meta node, including child meta nodes. The returned list will not
+  # include the initial node. As it loops, it will also append new nodes to the
+  # global node list to ensure they're referentially available as it goes.
+  def expand_meta_node(node)
     expanded_nodes = []
     bn = node.build_nodes
     loop_nodes(node.project, node.environment, node.configuration, bn) do |new_node|
-      new_node.set_values(all_nodes, @constants)
+      new_node.set_values(nodes, @constants)
       new_node.add_depends_on(node.depends_on) # pass dependencies along
       new_node.validate
       expanded_nodes << new_node
+      self.nodes << new_node
     end
 
     # recurse through to further expand
-    expand_meta_nodes(expanded_nodes, all_nodes)
+    expand_meta_nodes(expanded_nodes)
   end
 
-  def expand_meta_nodes(nodes, all_nodes)
+  # expand_meta_nodes is used to loop through a list of nodes and recursively
+  # expand any meta nodes. It is similar to expand_meta_node, however has two
+  # differences. First, it takes in a list of nodes instead of a single one.
+  # Second, the returned list of added nodes will include the initial node list.
+  def expand_meta_nodes(meta_nodes)
     # dup the list to create new list
-    expanded_nodes = nodes.dup
-    nodes.each do |node|
+    expanded_nodes = meta_nodes.dup
+    meta_nodes.each do |node|
       next unless node.meta?
 
-      built_nodes = expand_meta_node(node, all_nodes)
+      built_nodes = expand_meta_node(node)
       built_nodes.each do |bnode|
         # Error if the meta-node is overwriting an existing node
         already_built_error = "\"#{node.node_name}\" overwrites node \"#{bnode.node_name}\""
@@ -268,7 +276,14 @@ class GeoEngineer::GPS
   end
 
   def create_all_resource_for_project(project, project_nodes)
+    # loop all meta nodes within the project and expand them recursively, then
+    # append to out local list of nodes to create resources for
+    expanded_nodes = []
     project_nodes.each do |n|
+      expanded_nodes += expand_meta_node(n) if n.meta?
+    end
+
+    (project_nodes + expanded_nodes).each do |n|
       begin
         n.create_resources(project) unless n.meta?
       rescue StandardError => e
