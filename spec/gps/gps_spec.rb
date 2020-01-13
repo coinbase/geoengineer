@@ -115,5 +115,141 @@ describe GeoEngineer::GPS do
 
       expect(called).to eq true
     end
+
+    it 'should expand meta_nodes' do
+      h = {
+        "org/p1" => { "e1" => { "c1" => { "test_meta_node" => { "n1" => {} } } } }
+      }
+      g = GeoEngineer::GPS.new(h, {})
+
+      called = false
+      g.create_project("org", "p1", GeoEngineer::Environment.new("e1")) do |project, config, nodes|
+        called = true
+        expect(config).to eq "c1"
+        expect(project.full_name).to eq "org/p1"
+        expect(nodes.where(":::test_meta_node:n1").length).to eq 1
+        expect(nodes.where(":::test_node:n1").length).to eq 1
+      end
+
+      expect(called).to eq true
+      expect(g.nodes.length).to eq 2
+    end
+
+    it 'should expand meta nodes which build meta nodes' do
+      h = {
+        "org/p1" => { "e1" => { "c1" => { "test_meta_meta_node" => { "n1" => {} } } } }
+      }
+      g = GeoEngineer::GPS.new(h, {})
+
+      called = false
+      g.create_project("org", "p1", GeoEngineer::Environment.new("e1")) do |project, config, nodes|
+        called = true
+        expect(config).to eq "c1"
+        expect(project.full_name).to eq "org/p1"
+        expect(nodes.where(":::test_meta_meta_node:*").length).to eq 1
+        expect(nodes.where(":::test_meta_node:*").length).to eq 1
+        expect(nodes.where(":::test_node:*").length).to eq 1
+      end
+
+      expect(called).to eq true
+      expect(g.nodes.length).to eq 3
+    end
+
+    it 'should expand meta nodes which build meta nodes and reference each other' do
+      h = {
+        "org/p1" => { "e1" => { "c1" => { "test_circular_meta" => {
+          "n1" => { "child_resource" => "org/p2:e1:c1:test_circular_node:n2#elb" }
+        } } } },
+        "org/p2" => { "e1" => { "c1" => { "test_circular_node" => {
+          "n2" => { "child_resource" => "org/p1:e1:c1:test_node:n1#elb" }
+        } } } }
+      }
+      g = GeoEngineer::GPS.new(h, {})
+      e = GeoEngineer::Environment.new("e1")
+
+      called = false
+      g.create_project("org", "p2", e)
+      g.create_project("org", "p1", e) do |project, config, nodes|
+        called = true
+        expect(config).to eq "c1"
+        expect(project.full_name).to eq "org/p1"
+        expect(nodes.where(":::test_circular_meta:n1").length).to eq 1
+        expect(nodes.where(":::test_node:n1").length).to eq 1
+        expect(nodes.where("org/p2:e1:c1:test_circular_node:n2").length).to eq 1
+      end
+
+      expect(called).to eq true
+      expect(g.nodes.length).to eq 3
+
+      n1 = g.where("org/p1:e1:c1:test_circular_meta:n1")
+      expect(n1.first.child_resource).to eq "${aws_elb.elb_org_p2_c1_test_circular_node_n2.id}"
+
+      expect(g.where("org/p1:e1:c1:test_node:n1").length).to eq 1
+      expect(g.where("org/p1:e1:c1:test_node:n1").first.elb).to_not be_nil
+      expect(g.where("org/p2:e1:c1:test_circular_node:n2").first.child_resource).to eq "${aws_elb.elb_org_p1_c1_test_node_n1.id}"
+      expect(g.where("org/p2:e1:c1:test_circular_node:n2").first.elb).to_not be_nil
+    end
+  end
+
+  describe '#load_gps_file' do
+    before(:each) do
+      @old_pwdir = Dir.pwd
+      Dir.chdir(File.join(File.dirname(__FILE__), 'examples'))
+    end
+
+    after(:each) do
+      Dir.chdir(@old_pwdir)
+    end
+
+    it 'should load gps files' do
+      g = GeoEngineer::GPS.load_projects(File.join(Dir.pwd, "projects", ""), { "e1" => {} })
+      def g.env
+        GeoEngineer::Environment.new("e1")
+      end
+
+      GeoEngineer::GPS.load_gps_file(g, File.join('projects', 'org', 'p1.gps.yml'))
+      GeoEngineer::GPS.load_gps_file(g, File.join('projects', 'org', 'p2.gps.yml'))
+
+      expect(g.nodes.length).to eq 3
+
+      cmn1 = g.where("org/p1:e1:c1:test_circular_meta:n1").first
+      expect(cmn1.child_resource).to eq "${aws_elb.elb_org_p2_c1_test_circular_node_n2.id}"
+
+      tnn1 = g.where("org/p1:e1:c1:test_node:n1")
+      expect(tnn1.length).to eq 1
+      expect(tnn1.first.elb).to_not be_nil
+      expect(tnn1.first.elb).to_not be_nil
+
+      tcnn2 = g.where("org/p2:e1:c1:test_circular_node:n2")
+      expect(tcnn2.length).to eq 1
+      expect(tcnn2.first.child_resource).to eq "${aws_elb.elb_org_p1_c1_test_node_n1.id}"
+      expect(tcnn2.first.elb).to_not be_nil
+    end
+
+    it 'should load ruby files' do
+      g = GeoCLI.instance.gps
+      def g.env
+        GeoEngineer::Environment.new("e1")
+      end
+
+      g.load_gps_file(File.join('projects', 'org', 'p3.rb'))
+      g.load_gps_file(File.join('projects', 'org', 'p2.gps.yml'))
+      g.load_gps_file(File.join('projects', 'org', 'p1.gps.yml'))
+
+      expect(g.nodes.length).to eq 3
+
+      cmn1 = g.where("org/p1:e1:c1:test_circular_meta:n1")
+      expect(cmn1.first.child_resource).to eq "${aws_elb.elb_org_p2_c1_test_circular_node_n2.id}"
+
+      tnn1 = g.where("org/p1:e1:c1:test_node:n1")
+      expect(tnn1.length).to eq 1
+      expect(tnn1.first.elb).to_not be_nil
+      expect(tnn1.first.elb).to_not be_nil
+
+      tcnn2 = g.where("org/p2:e1:c1:test_circular_node:n2")
+      expect(tcnn2.length).to eq 1
+      expect(tcnn2.first.child_resource).to eq "${aws_elb.elb_org_p1_c1_test_node_n1.id}"
+      expect(tcnn2.first.elb).to_not be_nil
+    end
   end
 end
