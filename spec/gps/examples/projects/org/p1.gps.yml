@@ -1,0 +1,5 @@
+e1:
+  c1:
+    test_circular_meta:
+      n1:
+        child_resource: org/p2:::test_circular_node:n2#elb

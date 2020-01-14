@@ -72,3 +72,53 @@ class GeoEngineer::GPS::Nodes::TestMetaMetaNode < GeoEngineer::GPS::MetaNode
     }
   end
 end
+
+class GeoEngineer::GPS::Nodes::TestCircularMeta < GeoEngineer::GPS::Nodes::TestMetaNode
+  attr_reader :child_resource
+
+  def json_schema
+    {
+      "type":  "object",
+      "additionalProperties" => false,
+      "properties":  {
+        "name":  {
+          "type":  "string",
+          "default":  "default"
+        },
+        "child_resource": {
+          "type": "string"
+        }
+      }
+    }
+  end
+
+  def build_nodes
+    @child_resource = finder.dereference!(attributes["child_resource"])
+    super
+  end
+end
+
+class GeoEngineer::GPS::Nodes::TestCircularNode < GeoEngineer::GPS::Nodes::TestNode
+  attr_reader :child_resource
+
+  def json_schema
+    {
+      "type":  "object",
+      "additionalProperties" => false,
+      "properties":  {
+        "name":  {
+          "type":  "string",
+          "default":  "default"
+        },
+        "child_resource": {
+          "type": "string"
+        }
+      }
+    }
+  end
+
+  def create_resources(project)
+    @child_resource = finder.dereference!(attributes["child_resource"])
+    super(project)
+  end
+end
