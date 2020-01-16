@@ -59,8 +59,8 @@ class GeoEngineer::Resources::AwsApiGatewayRestApi < GeoEngineer::Resource
     NullObject.maybe(remote_resource).root_resource_id
   end
 
-  def _policy_file(path)
-    policy _json_file(:policy, path)
+  def _policy_file(path, binding_obj = nil)
+    _json_file(:policy, path, binding_obj)
   end
 
   def to_terraform_state
